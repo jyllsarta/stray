@@ -1,0 +1,2 @@
+require 'stray/users.schema'
+require 'stray/user_statuses.schema'
