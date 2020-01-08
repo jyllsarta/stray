@@ -2,6 +2,8 @@
   #app
     p
       | {{ message }}
+      a(href="/")
+        | ぽよ
 </template>
 
 <script>
@@ -14,9 +16,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 p {
   font-size: 2em;
   text-align: center;
+  a {
+    text-decoration: none;
+  }
 }
 </style>
