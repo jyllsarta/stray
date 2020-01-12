@@ -6,7 +6,7 @@
         | ぽよ
 </template>
 
-<script>
+<script lang="ts">
 export default {
   data: function () {
     return {
@@ -17,11 +17,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-  a {
-    text-decoration: none;
-  }
+#app{
+  margin: 50px auto;
+  // TODO: ウィンドウサイズはデバッグしやすいように小さめにしているけど、将来的に再検討する
+  width: 800px;
+  height: 600px;
+  background-color: #DADADA;
 }
 </style>
