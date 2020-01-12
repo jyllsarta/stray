@@ -74,12 +74,12 @@
           | ☆神殺しの彗星のアミュレット+65535を拾った！
       .item
         .at
-          | 11:22
+          | 23:55
         .content
           | ★食品サンプルを拾った！
       .item
         .at
-          | 11:22
+          | 7:06
         .content
           | 野うさぎ4体との戦闘だ！
           | HP: (80,54)→(66,13) / 4ターン
@@ -164,7 +164,7 @@ export default {
       width: 100%;
       height: 40px;
       background-color: $main-color;
-      margin-bottom: $space;
+      margin-bottom: $thin_space;
       border-radius: $radius;
       line-height: 100%;
       padding-top: (40px - $font-size-normal) / 2;
@@ -259,6 +259,7 @@ export default {
     width: $window-width - $space * 2;
     bottom: $space;
     left: $space;
+    
   }
 }
 </style>
