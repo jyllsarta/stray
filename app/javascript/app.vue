@@ -1,6 +1,16 @@
 <template lang="pug">
   #app
     // いまはコンポーネントに分けていないけど、それぞれをインタラクティブにするタイミングで分割を行う
+    .field
+      .ground
+        img.siroko(
+          src="images/ui/siro.png"
+          :style="{transform: 'translateX(' + ui.position.siroko + 'px) scale('+ ui.direction.siroko * -1 +', 1)'}"
+        )
+        img.kuroko(
+          src="images/ui/kuro.png"
+          :style="{transform: 'translateX(' + ui.position.kuroko + 'px) scale('+ ui.direction.kuroko * -1 +', 1)'}"
+        )
     .header.window
       .clock.header_content
         .label
@@ -95,8 +105,41 @@
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
+      ui: {
+        position:{
+          siroko: 100,
+          kuroko: -40,
+        },
+        direction:{
+          siroko: 1,
+          kuroko: -1,
+        },
+      }
     }
+  },
+  mounted(){
+    this.init();
+  },
+  methods: {
+    init(){
+      this.update();
+    },
+    update(){
+      this.proceedCharacter();
+      requestAnimationFrame(this.update);
+    },
+    proceedCharacter(){
+      ["siroko", "kuroko"].forEach((name)=>{
+        // TODO: speedと反射基準点をcontantsから拾う
+        this.ui.position[name] += 1 * this.ui.direction[name];
+          if(this.ui.position[name] > 200){
+              this.ui.direction[name] *= -1;
+          }
+          if(this.ui.position[name] < -200){
+              this.ui.direction[name] *= -1;
+          }
+      });
+    },
   }
 }
 </script>
@@ -113,7 +156,18 @@ export default {
   color: $white;
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-size: 16px;
-
+  .field{
+    .ground{
+      position: absolute;
+      bottom: 100px;
+      height: 200px;
+      left: 50%;
+      img{
+        position: absolute;
+        height: 200px;
+      }
+    }
+  }
   .window{
     position: absolute;
     border: 1px solid $gray3;
@@ -271,9 +325,6 @@ export default {
     align-content: space-between;
     img{
       height: 100%;
-    }
-    .siroko{
-
     }
     .chat_window{
       padding: $thin_space;
