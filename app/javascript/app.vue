@@ -41,7 +41,7 @@
             .label
               | HP：
             .value
-              | 9132239 / 13554439
+              | 221 / 350
           .exp
             .label
               | EXP：
@@ -64,8 +64,14 @@
               | EXP：
             .value
               | 13%
-
     .chat.window
+      img.siroko(src="images/ui/chat_siroko.png")
+      .chat_window
+        .siroko.bubble
+          | このへんは特になんにもないね
+        .kuroko.bubble
+          | 霊力の流れを感じる...
+      img.kuroko(src="images/ui/chat_kuroko.png")
     .log.window
       .item
         .at
@@ -153,7 +159,7 @@ export default {
     }
   }
   .right_menu{
-    height: $window-height - 100px - $space * 3;
+    height: $window-height - $space * 2;
     width: 200px - $space * 3;
     top: $space;
     right: $space;
@@ -163,7 +169,7 @@ export default {
     .item{
       width: 100%;
       height: 40px;
-      background-color: $main-color;
+      background-color: $gray3;
       margin-bottom: $thin_space;
       border-radius: $radius;
       line-height: 100%;
@@ -175,9 +181,9 @@ export default {
     }
   }
   .log{
-    height: 600px - 240px - $space * 5;
+    height: 600px - 140px - $space * 4;
     width: 300px;
-    top: $space * 3 + 140px;
+    bottom: $space;
     left: $space;
     display: flex;
     flex-direction: column;
@@ -256,10 +262,41 @@ export default {
   }
   .chat{
     height: 100px;
-    width: $window-width - $space * 2;
+    width: $window-width - 500px - $space;
     bottom: $space;
-    left: $space;
-    
+    left: 300px + $space * 2;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    img{
+      height: 100%;
+    }
+    .siroko{
+
+    }
+    .chat_window{
+      padding: $thin_space;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      // TODO: background-colorが発言のあるとこまでになるような工夫をしたい
+      .bubble{
+        padding: $thin_space;
+        background-color: $gray3;
+        margin-bottom: $thin_space;
+        border-radius: $radius;
+      }
+      .siroko{
+        text-align: left;
+      }
+      .kuroko{
+        text-align: right;
+      }
+    }
+    .kuroko{
+
+    }
   }
 }
 </style>
