@@ -102,6 +102,7 @@
 </template>
 
 <script lang="ts">
+import Constants from "./packs/constants.ts"
 export default {
   data: function () {
     return {
@@ -132,10 +133,10 @@ export default {
       ["siroko", "kuroko"].forEach((name)=>{
         // TODO: speedと反射基準点をcontantsから拾う
         this.ui.position[name] += 1 * this.ui.direction[name];
-          if(this.ui.position[name] > 200){
+          if(this.ui.position[name] > Constants.window.ground.right){
               this.ui.direction[name] *= -1;
           }
-          if(this.ui.position[name] < -200){
+          if(this.ui.position[name] < Constants.window.ground.left){
               this.ui.direction[name] *= -1;
           }
       });
