@@ -131,6 +131,7 @@ export default {
     },
     proceedCharacter(){
       ["siroko", "kuroko"].forEach((name)=>{
+        // TODO: スピード制御ロジック
         // TODO: speedと反射基準点をcontantsから拾う
         this.ui.position[name] += 1 * this.ui.direction[name];
           if(this.ui.position[name] > Constants.window.ground.right){
