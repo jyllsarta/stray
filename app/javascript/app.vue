@@ -5,11 +5,11 @@
       .ground
         img.siroko(
           src="images/ui/siro.png"
-          :style="{transform: 'translateX(' + ui.position.siroko + 'px) scale('+ ui.direction.siroko * -1 +', 1)'}"
+          :style="{transform: 'translateX(' + $store.state.ui.position.siroko + 'px) scale('+ $store.state.ui.direction.siroko * -1 +', 1)'}"
         )
         img.kuroko(
           src="images/ui/kuro.png"
-          :style="{transform: 'translateX(' + ui.position.kuroko + 'px) scale('+ ui.direction.kuroko * -1 +', 1)'}"
+          :style="{transform: 'translateX(' + $store.state.ui.position.kuroko + 'px) scale('+ $store.state.ui.direction.kuroko * -1 +', 1)'}"
         )
     .header.window
       .clock.header_content
@@ -102,22 +102,14 @@
 </template>
 
 <script lang="ts">
-import Constants from "./packs/constants.ts"
+import Constants from "./packs/constants.ts";
+import store from './packs/store.ts'
+
 export default {
   data: function () {
-    return {
-      ui: {
-        position:{
-          siroko: 100,
-          kuroko: -40,
-        },
-        direction:{
-          siroko: 1,
-          kuroko: -1,
-        },
-      }
-    }
+    return {};
   },
+  store,
   mounted(){
     this.init();
   },
@@ -133,13 +125,13 @@ export default {
       ["siroko", "kuroko"].forEach((name)=>{
         // TODO: スピード制御ロジック
         // TODO: speedと反射基準点をcontantsから拾う
-        this.ui.position[name] += 1 * this.ui.direction[name];
-          if(this.ui.position[name] > Constants.window.ground.right){
-              this.ui.direction[name] *= -1;
-          }
-          if(this.ui.position[name] < Constants.window.ground.left){
-              this.ui.direction[name] *= -1;
-          }
+        this.$store.commit("moveCharacter", {characterName: name, delta: 1});
+        if(this.$store.state.ui.position[name] > Constants.window.ground.right){
+          this.$store.commit("reflectCharacter", {characterName: name});
+        }
+        if(this.$store.state.ui.position[name] < Constants.window.ground.left){
+          this.$store.commit("reflectCharacter", {characterName: name});
+        }
       });
     },
   }
