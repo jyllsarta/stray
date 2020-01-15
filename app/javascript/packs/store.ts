@@ -14,6 +14,12 @@ const store = new Vuex.Store({
         siroko: 1,
         kuroko: -1,
       },
+    },
+    user: {
+      // これはもしかしたらレスポンスにあるものをまるまるあとから追加するほうがいいかもしれない
+      // その場合ユーザモデルのロード完了までUI側でエラーが出続けるのがしんどいかもだけど検討できる
+      hp: 100,
+      hp_max: 1000,
     }
   },
   mutations: {
@@ -22,6 +28,10 @@ const store = new Vuex.Store({
     },
     reflectCharacter(state, payload) {
       state.ui.direction[payload.characterName] *= -1;
+    },
+    updateUserModel(state, payload) {
+      console.log(payload);
+      state.user = payload;
     },
   }
 });

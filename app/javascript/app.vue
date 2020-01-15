@@ -51,7 +51,7 @@
             .label
               | HP：
             .value
-              | 221 / 350
+              | {{$store.state.user.hp}} / {{$store.state.user.hp_max}}
           .exp
             .label
               | EXP：
@@ -99,17 +99,22 @@
         .content
           | 野うさぎ4体との戦闘だ！
           | HP: (80,54)→(66,13) / 4ターン
+    Api
 </template>
 
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
+import Api from './Api'
 
 export default {
   data: function () {
     return {};
   },
   store,
+  components: {
+    Api,
+  },
   mounted(){
     this.init();
   },
@@ -139,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "stylesheets/constants";
+@import "stylesheets/constants";
 #app{
   position: relative;
   margin: 50px auto;
