@@ -20,7 +20,14 @@ const store = new Vuex.Store({
       // その場合ユーザモデルのロード完了までUI側でエラーが出続けるのがしんどいかもだけど検討できる
       hp: 100,
       hp_max: 1000,
-    }
+    },
+    masterdata: {
+
+    },
+    //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
+    events: [
+
+    ],
   },
   mutations: {
     moveCharacter(state, payload) {
@@ -32,6 +39,14 @@ const store = new Vuex.Store({
     updateUserModel(state, payload) {
       console.log(payload);
       state.user = payload;
+    },
+    updateMasterData(state, payload) {
+      console.log(payload);
+      state.masterdata = payload;
+    },
+    updateLatestEvents(state, payload) {
+      console.log(payload);
+      state.events = payload;
     },
   }
 });
