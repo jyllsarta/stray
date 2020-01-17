@@ -3,7 +3,6 @@ class User::AccessToken < ApplicationRecord
   def self.generate(user)
     raw_token = SecureRandom.hex(64)
     access_token = User::AccessToken.new(user: user)
-    # TODO: saltを足す
     access_token.token = self.hash_method(raw_token)
     access_token.save!
     raw_token
@@ -15,6 +14,7 @@ class User::AccessToken < ApplicationRecord
 
 private
   def self.hash_method(token)
+    # TODO: saltを足す
     Digest::SHA256.hexdigest(token)
   end
 end
