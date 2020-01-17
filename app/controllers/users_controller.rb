@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def create
     @user = User.create
     @access_token = User::AccessToken.generate(@user)
@@ -6,5 +7,6 @@ class UsersController < ApplicationController
   def events
   end
   def status
+    @user = current_user
   end
 end

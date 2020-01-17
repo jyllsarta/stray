@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "user_statuses", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
+    t.datetime "event_updated_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

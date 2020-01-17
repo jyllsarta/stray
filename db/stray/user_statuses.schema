@@ -1,4 +1,5 @@
 create_table "user_statuses", force: :cascade do |t|
   t.integer :user_id, null: false, default: 0
-  t.datetime :event_update_at
+  t.datetime :event_updated_at, null: false, default: 0
+  t.timestamps
 end

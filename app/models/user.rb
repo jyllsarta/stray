@@ -6,13 +6,8 @@ class User < ApplicationRecord
     user = self.new
     user.id = user.fetch_random_id
     user.save!
-    user.status = User::Status.create(user: user)
+    user.status = User::Status.create(user: user, event_updated_at: Time.now)
     user
-  end
-
-  def generate_access_token
-    token = User::AccessToken.generate(user: user)
-    user.access_tokens.append()
   end
 
   def fetch_random_id
