@@ -20,6 +20,7 @@ const store = new Vuex.Store({
       // その場合ユーザモデルのロード完了までUI側でエラーが出続けるのがしんどいかもだけど検討できる
       hp: 100,
       hp_max: 1000,
+      event_updated_at: 123123123,
     },
     masterdata: {
 

@@ -42,7 +42,14 @@ export default {
     fetchUserModel(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/status.json`;
-      axios.get(path)
+      axios.get(
+        path,
+        {
+          // TODO: 認証が必要なAPI全部に載せるのはしんどいのでグローバルな設定に移譲したい
+          headers: {
+            "X-AccessToken": localStorage.access_token,
+          }
+        })
         .then((results) => {
           console.log(results);
           console.log("OK");
