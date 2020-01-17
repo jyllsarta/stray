@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :clients, only: [:index]
   resources :users, only: [:create] do
     post :register_name # ユーザ名の登録
+    post :regenerate_token, on: :collection # アクセストークンの再取得
     get :status
     get :events
   end

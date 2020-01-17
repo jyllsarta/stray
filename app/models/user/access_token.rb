@@ -8,8 +8,8 @@ class User::AccessToken < ApplicationRecord
     raw_token
   end
 
-  def self.find_user_by_token(raw_token)
-    self.find_by(token: self.hash_method(raw_token))&.user
+  def self.find_user_by_token!(raw_token)
+    self.find_by!(token: self.hash_method(raw_token))&.user
   end
 
 private

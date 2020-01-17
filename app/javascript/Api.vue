@@ -55,8 +55,8 @@ export default {
           console.log("OK");
           this.$store.commit("updateUserModel", results.data.payload)
         })
-        .catch((results) => {
-          console.warn(results);
+        .catch((error) => {
+          console.warn(error.response);
           console.warn("NG");
         });
     },
@@ -120,6 +120,33 @@ export default {
         .then((results) => {
           console.log(results);
           console.log("OK");
+        })
+        .catch((error) => {
+          console.log(error.response);
+          console.warn("NG");
+        });
+    },
+    regenerateToken(name, password){
+      const path = `/users/regenerate_token`;
+      axios.post(
+        path,
+        {
+          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
+        },
+        {
+          headers: {
+            accept: 'application/json',
+          },
+          data: {
+            name: name,
+            password: password
+          }
+        })
+        .then((results) => {
+          console.log(results);
+          console.log("OK");
+          localStorage.user_id = results.data.user_id;
+          localStorage.access_token = results.data.access_token;
         })
         .catch((error) => {
           console.log(error.response);
