@@ -41,7 +41,7 @@ export default {
   .item{
     width: 100%;
     height: 40px;
-    background-color: $gray3;
+    background-color: $clickable-color;
     margin-bottom: $thin_space;
     border-radius: $radius;
     line-height: 100%;
@@ -49,6 +49,7 @@ export default {
     padding-left: $space;
     &:hover{
       filter: brightness(110%);
+      transform: scale(1.02);
     }
   }
 }

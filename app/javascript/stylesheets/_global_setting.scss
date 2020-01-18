@@ -32,15 +32,21 @@
     .back_button{
       width:  8%;
       height: $font-size-large * 1.5 + 2px;
-      &::after{
-        content: "◀";
-      }
       border-radius: $radius;
       border: 1px solid $gray2;
       text-align: center;
       font-size: $font-size-large;
       line-height: 150%;
       margin-right: $space;
+      background-color: $clickable-color;
+      &::after{
+        content: "◀";
+      }
+      &:hover{
+        filter: brightness(110%);
+        transform: scale(1.02);
+      }
+
     }
     .title{
       font-size: $font-size-large;

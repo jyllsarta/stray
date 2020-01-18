@@ -196,8 +196,12 @@ export default {
           height: $font-size-normal * 1.5;
         }
         .submit{
-          background-color: $gray3;
+          background-color: $clickable-color;
           height: 30px;
+          &:hover{
+            filter: brightness(110%);
+            transform: scale(1.02);
+          }
         }
       }
     }
