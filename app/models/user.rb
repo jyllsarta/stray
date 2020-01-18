@@ -28,8 +28,7 @@ class User < ApplicationRecord
 
   private
   def self.hash_method(token)
-    # TODO: saltを足す
-    Digest::SHA256.hexdigest(token)
+    Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])
   end
 
   def self.fetch_random_id

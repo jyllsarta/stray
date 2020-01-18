@@ -14,7 +14,6 @@ class User::AccessToken < ApplicationRecord
 
 private
   def self.hash_method(token)
-    # TODO: saltを足す
-    Digest::SHA256.hexdigest(token)
+    Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])
   end
 end
