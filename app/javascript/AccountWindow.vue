@@ -52,8 +52,6 @@
             .item(v-if="restore.status != 'waiting'")
               .desc_without_border
                 | {{restore.message}}
-
-
 </template>
 
 <script lang="ts">
@@ -154,16 +152,20 @@ export default {
 @import "stylesheets/global_setting";
 .account{
   .description{
-    padding: $thin_space;
+    padding: $space;
     white-space: pre-wrap;
+    border-bottom: 1px solid $gray3;
   }
   .windows{
     display: flex;
     flex-direction: row;
     padding: $space;
+    height: 80%;
+    .backup{
+      border-right: 1px solid $gray3;
+    }
     .backup, .restore{
       width: 50%;
-      height: 80%;
       .head{
         text-align: center;
         color: $accent-color;
@@ -185,6 +187,7 @@ export default {
           border: 1px solid $gray2;
           color: $white;
           width: 50%;
+          border-radius: $radius;
         }
         .desc_without_border{
           display: inline-block;
