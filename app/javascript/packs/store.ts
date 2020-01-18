@@ -25,6 +25,7 @@ const store = new Vuex.Store({
       hp: 100,
       hp_max: 1000,
       event_updated_at: 123123123,
+      user_id: 999999999,
     },
     masterdata: {
     },

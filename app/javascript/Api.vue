@@ -99,60 +99,6 @@ export default {
           console.warn("NG");
         });
     },
-    registerName(name, password){
-      const user_id = localStorage.user_id;
-      const path = `/users/${user_id}/register_name`;
-      axios.post(
-        path,
-        {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            accept: 'application/json',
-            "X-AccessToken": localStorage.access_token,
-          },
-          data: {
-            name: name,
-            password: password
-          }
-        })
-        .then((results) => {
-          console.log(results);
-          console.log("OK");
-        })
-        .catch((error) => {
-          console.log(error.response);
-          console.warn("NG");
-        });
-    },
-    regenerateToken(name, password){
-      const path = `/users/regenerate_token`;
-      axios.post(
-        path,
-        {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            accept: 'application/json',
-          },
-          data: {
-            name: name,
-            password: password
-          }
-        })
-        .then((results) => {
-          console.log(results);
-          console.log("OK");
-          localStorage.user_id = results.data.user_id;
-          localStorage.access_token = results.data.access_token;
-        })
-        .catch((error) => {
-          console.log(error.response);
-          console.warn("NG");
-        });
-    },
   }
 }
 </script>
