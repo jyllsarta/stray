@@ -1,11 +1,15 @@
 <template lang="pug">
- .right_menu.window
+  .right_menu.window
     .item
       | 回復
     .item
       | 装備
     .item
       | ステータス
+    .item(
+      @click="$store.commit('updateWindowShowState', {windowName: 'account', state: true})"
+    )
+      | 引き継ぎ設定(仮)
 </template>
 
 <script lang="ts">

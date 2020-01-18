@@ -14,6 +14,10 @@ const store = new Vuex.Store({
         siroko: 1,
         kuroko: -1,
       },
+      // ウィンドウの開閉状況
+      window: {
+        account: false,
+      }
     },
     user: {
       // これはもしかしたらレスポンスにあるものをまるまるあとから追加するほうがいいかもしれない
@@ -23,20 +27,24 @@ const store = new Vuex.Store({
       event_updated_at: 123123123,
     },
     masterdata: {
-
     },
     //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
     events: [
-
     ],
   },
   mutations: {
+    // ui系
     moveCharacter(state, payload) {
       state.ui.position[payload.characterName] += payload.delta * state.ui.direction[payload.characterName];
     },
     reflectCharacter(state, payload) {
       state.ui.direction[payload.characterName] *= -1;
     },
+    updateWindowShowState(state, payload){
+      state.ui.window[payload.windowName] = payload.state;
+    },
+
+    // ステート更新系
     updateUserModel(state, payload) {
       console.log(payload);
       state.user = payload;

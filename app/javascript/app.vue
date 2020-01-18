@@ -6,6 +6,7 @@
     Status
     Chat
     Log
+    AccountWindow(v-if="$store.state.ui.window.account")
     Api
 </template>
 
@@ -19,6 +20,7 @@ import RightMenu from './RightMenu'
 import Log from './Log'
 import Status from './Status'
 import Chat from './Chat'
+import AccountWindow from './AccountWindow'
 
 export default {
   data: function () {
@@ -33,6 +35,7 @@ export default {
     Log,
     Status,
     Chat,
+    AccountWindow,
   },
   mounted(){
   },
@@ -42,22 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "stylesheets/constants";
-#app{
-  position: relative;
-  margin: 50px auto;
-  // TODO: ウィンドウサイズはデバッグしやすいように小さめにしているけど、将来的に再検討する
-  width: $window-width;
-  height: $window-height;
-  background-color: $background;
-  color: $white;
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-size: 16px;
-  .window{
-    position: absolute;
-    border: 1px solid $gray3;
-    border-radius: $radius;
-    padding: $thin_space;
-  }
-}
+@import "stylesheets/global_setting";
 </style>
