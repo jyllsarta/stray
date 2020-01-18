@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_one :status
   has_one :access_tokens
   class AlreadyUsed < StandardError; end
+  class EmptyName < StandardError; end
+  class EmptyPassword < StandardError; end
 
   def self.create
     user = self.new
@@ -13,6 +15,8 @@ class User < ApplicationRecord
 
   def register_name(name: nil, password: nil)
     # 自分以外に同じ名前で登録しているやつがいたらエラーを出す
+    raise EmptyName if name.blank?
+    raise EmptyPassword if password.blank?
     raise AlreadyUsed if User.where.not(id: self.id).exists?(name: name)
     self.update!(name: name, password_hash: User.hash_method(password))
   end
