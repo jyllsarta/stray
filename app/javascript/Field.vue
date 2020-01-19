@@ -2,11 +2,11 @@
   .field
     .ground
       img.siroko(
-        src="images/ui/siro.png"
+        src="images/ui/pink.png"
         :style="{transform: 'translateX(' + $store.state.ui.position.siroko + 'px) scale('+ $store.state.ui.direction.siroko * -1 +', 1)'}"
       )
       img.kuroko(
-        src="images/ui/kuro.png"
+        src="images/ui/yellow.png"
         :style="{transform: 'translateX(' + $store.state.ui.position.kuroko + 'px) scale('+ $store.state.ui.direction.kuroko * -1 +', 1)'}"
       )
 </template>
@@ -53,7 +53,7 @@ export default {
 .field{
   .ground{
     position: absolute;
-    bottom: 100px;
+    bottom: 100px + $space * 2;
     height: 200px;
     left: 50%;
     img{
