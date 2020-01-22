@@ -7,4 +7,5 @@ Rails.application.routes.draw do
     get :status
     get :events
   end
+  resources :masterdata, only: [:index]
 end
