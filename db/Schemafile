@@ -1,4 +1,3 @@
-# TODO: ディレクトリ以下にあるものを全部requireするようにしたい
-require 'stray/users.schema'
-require 'stray/user_statuses.schema'
-require 'stray/user_access_tokens.schema'
+Dir.glob("db/stray/*.schema").each do |file|
+  require file.split("/")[1..-1].join("/")
+end
