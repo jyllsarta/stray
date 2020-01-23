@@ -1,3 +1,3 @@
 json.masterdata do
-  json.items []
+  json.array! @items , :name, :str, :dex, :def, :agi
 end
