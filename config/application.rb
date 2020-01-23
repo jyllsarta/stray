@@ -2,7 +2,8 @@ require_relative 'boot'
 
 require 'rails/all'
 
-require 'dotenv/load'
+require 'dotenv'
+Dotenv.load
 
 require_relative 'constants'
 

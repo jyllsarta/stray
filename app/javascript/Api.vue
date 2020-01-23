@@ -63,7 +63,17 @@ export default {
     fetchLatestEvents(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/events.json`;
-      axios.get(path)
+      axios.post(
+        path,
+        {
+          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
+        },
+        {
+          headers: {
+            "X-AccessToken": localStorage.access_token,
+            accept: 'application/json'
+          }
+        })
         .then((results) => {
           console.log(results);
           console.log("OK");

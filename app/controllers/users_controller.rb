@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   end
 
   def events
+    @events = current_user.get_and_execute_latest_events!
   end
 
   def status

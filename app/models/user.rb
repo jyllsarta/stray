@@ -13,6 +13,10 @@ class User < ApplicationRecord
     user
   end
 
+  def get_and_execute_latest_events!
+    [ItemEvent.new, ItemEvent.new] # TODO: ファサードに移譲する
+  end
+
   def register_name(name: nil, password: nil)
     # 自分以外に同じ名前で登録しているやつがいたらエラーを出す
     raise EmptyName if name.blank?
