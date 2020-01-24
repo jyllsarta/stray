@@ -26,6 +26,10 @@ class ItemEvent < Event
     user_item.save!
   end
 
+  def consume_time
+    Constants.default_event_interval_seconds
+  end
+
 private
   def item
     @_item ||= Item.find(@item_id)

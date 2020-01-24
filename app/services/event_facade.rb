@@ -1,17 +1,29 @@
 class EventFacade
+  def initialize
+    @now = Time.now
+  end
+
   def get_and_execute_latest_events!(user)
     events = []
-    2.times do #TODO: 実施回数を現在時刻ベースで決定する
-      events.append(pick_random_event)
-    end
-
-    events.each do |event|
-      event.execute!(user)
+    ActiveRecord::Base.transaction do
+      user.status.calibrate_event_updated_at(@now)
+      event = pick_next_event(user)
+      while(next_event_available?(user, event)) 
+        events.append(event)
+        event.execute!(user)
+        user.status.tick_timer!(event.consume_time)
+        event = pick_next_event(user)
+      end
     end
     events
   end
 
-  def pick_random_event
+  def pick_next_event(user)
+    # 死んでたら復活イベントがピックされる
     ItemEvent.new
+  end
+
+  def next_event_available?(user, event)
+    @now - user.status.event_updated_at > event.consume_time
   end
 end

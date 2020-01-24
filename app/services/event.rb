@@ -11,4 +11,7 @@ class Event
   def execute!
     raise NotImplementedError
   end
+  def consume_time
+    raise NotImplementedError
+  end
 end
