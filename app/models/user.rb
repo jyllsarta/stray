@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_one :status
+  has_many :items
   has_one :access_tokens
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end

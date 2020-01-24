@@ -29,6 +29,12 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_items", force: :cascade do |t|
+    t.integer "item_id", default: 0
+    t.integer "rank", default: 0
+    t.integer "user_id", default: 0
+  end
+
   create_table "user_statuses", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at", null: false
