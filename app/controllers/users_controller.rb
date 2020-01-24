@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
 
   def events
-    @events = current_user.get_and_execute_latest_events!
+    @events = EventFacade.new.get_and_execute_latest_events!(current_user)
   end
 
   def status
