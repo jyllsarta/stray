@@ -1,12 +1,12 @@
 <template lang="pug">
   .chat.window
-    img.siroko(src="images/ui/chat_pink.png")
+    img.siroko(src="images/ui/chat_spica.png")
     .chat_window
       .siroko.bubble
         | このへんは特になんにもないね
       .kuroko.bubble
         | 霊力の流れを感じる...
-    img.kuroko(src="images/ui/chat_yellow.png")
+    img.kuroko(src="images/ui/chat_tirol.png")
 </template>
 
 <script lang="ts">

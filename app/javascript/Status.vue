@@ -63,10 +63,10 @@ export default {
   display: flex;
   flex-direction: column;
   .siroko .profile{
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_pink.png");
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_spica.png");
   }
   .kuroko .profile{
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_yellow.png");
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_tirol.png");
   }
   .siroko, .kuroko {
     width: 100%;

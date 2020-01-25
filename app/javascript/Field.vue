@@ -2,11 +2,11 @@
   .field
     .ground
       img.siroko(
-        src="images/ui/pink.png"
+        src="images/ui/spica.png"
         :style="{transform: 'translateX(' + $store.state.ui.position.siroko + 'px) scale('+ $store.state.ui.direction.siroko * -1 +', 1)'}"
       )
       img.kuroko(
-        src="images/ui/yellow.png"
+        src="images/ui/tirol.png"
         :style="{transform: 'translateX(' + $store.state.ui.position.kuroko + 'px) scale('+ $store.state.ui.direction.kuroko * -1 +', 1)'}"
       )
 </template>
