@@ -8,6 +8,7 @@
     Log
     AccountWindow(v-if="$store.state.ui.window.account")
     Api
+    Timer
 </template>
 
 <script lang="ts">
@@ -21,6 +22,7 @@ import Log from './Log'
 import Status from './Status'
 import Chat from './Chat'
 import AccountWindow from './AccountWindow'
+import Timer from './Timer'
 
 export default {
   data: function () {
@@ -36,6 +38,7 @@ export default {
     Status,
     Chat,
     AccountWindow,
+    Timer,
   },
   watch: {
     // イベント発生時の処理
@@ -46,7 +49,6 @@ export default {
           this.processEvent(event);
         });
       },
-      deep: true,
     }
   },
   methods: {
@@ -66,7 +68,6 @@ export default {
       event.resolved = true;
     },
     resolveItemEvent(event){
-      console.log(`resolved item event`);
       this.$store.commit("incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
     }
   },

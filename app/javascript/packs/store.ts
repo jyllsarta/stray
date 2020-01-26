@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Constants from "./constants.ts";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
       window: {
         account: false,
       }
+    },
+    timer: {
+      next_event: 99
     },
     // ユーザモデル更新で入る
     user: {
@@ -59,6 +63,9 @@ const store = new Vuex.Store({
     },
     incrementItemRank(state, payload) {
       state.user.items[payload.item_id].rank += payload.amount;
+    },
+    updateEventTimer(state, payload){
+      state.timer.next_event = payload.time;
     }
   }
 });

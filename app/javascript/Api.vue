@@ -10,6 +10,7 @@ export default {
     return {};
   },
   mounted(){
+    // 画面読み込み時など最初に順番を制御して読み込みたいAPI群を制御するコンポーネント
     this.init();
   },
   methods: {
@@ -110,6 +111,16 @@ export default {
           console.warn("NG");
         });
     },
+  },
+  watch: {
+    // storeのイベントタイマーを監視して、0秒になったタイミングで追加のイベントを取得しに行く
+    "$store.state.timer.next_event": {
+      handler: function(newVal, oldVal){
+        if(oldVal > 0 && newVal == 0){
+          this.fetchLatestEvents();
+        }
+      }
+    }
   }
 }
 </script>
