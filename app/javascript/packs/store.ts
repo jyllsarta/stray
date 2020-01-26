@@ -54,7 +54,8 @@ const store = new Vuex.Store({
       state.masterdata = payload;
     },
     updateLatestEvents(state, payload) {
-      state.event = payload;
+      state.event.next_event_at = payload.next_event_at;
+      state.event.events = state.event.events.concat(payload.events);
     },
     incrementItemRank(state, payload) {
       state.user.items[payload.item_id].rank += payload.amount;
