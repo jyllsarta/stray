@@ -1,21 +1,24 @@
 <template lang="pug">
   #app
-    Field
-    Header
-    RightMenu
-    Status
-    Chat
-    Log
-    AccountWindow(v-if="$store.state.ui.window.account")
-    EquipWindow(v-if="$store.state.ui.window.equip")
-    Api
-    Timer
+    Guide
+    .game
+      Field
+      Header
+      RightMenu
+      Status
+      Chat
+      Log
+      AccountWindow(v-if="$store.state.ui.window.account")
+      EquipWindow(v-if="$store.state.ui.window.equip")
+      Api
+      Timer
 </template>
 
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import Api from './Api'
+import Guide from './Guide'
 import Field from './Field'
 import Header from './Header'
 import RightMenu from './RightMenu'
@@ -33,6 +36,7 @@ export default {
   store,
   components: {
     Api,
+    Guide,
     Field,
     Header,
     RightMenu,

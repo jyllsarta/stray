@@ -39,7 +39,7 @@ export default {
 @import "stylesheets/constants";
 .header{
   height: 60px;
-  width: 824px;
+  width: $window-width - 200px;
   top: $space;
   left: $space;
   display: flex;

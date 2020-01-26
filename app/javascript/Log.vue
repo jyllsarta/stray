@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/constants";
 .log{
-  height: 600px - 140px - $space * 4;
+  height: $window-height - 140px - $space * 4;
   width: 300px;
   bottom: $space;
   left: $space;

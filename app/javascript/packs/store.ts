@@ -18,8 +18,9 @@ const store = new Vuex.Store({
       // ウィンドウの開閉状況
       window: {
         account: false,
-        equip: false,
-      }
+        equip: true,
+      },
+      guide: "ここにガイドが出るよ",
     },
     timer: {
       next_event: 99
@@ -49,6 +50,10 @@ const store = new Vuex.Store({
     },
     updateWindowShowState(state, payload){
       state.ui.window[payload.windowName] = payload.state;
+    },
+    //こいつは簡便化のためにpayloadを直接代入
+    updateGuide(state, payload){
+      state.ui.guide = payload;
     },
 
     // ステート更新系
