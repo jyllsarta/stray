@@ -11,6 +11,8 @@ $thin_space: 4px;
 $radius: 4px;
 
 $guide-height: 30px;
+// global_setting.scss の .menu .back に依存があるので変更時には追従すること
+// calc の中身に変数が展開できなくてこうなってしまった...
 $window-width: 1024px;
 $window-height: 570px;
 
