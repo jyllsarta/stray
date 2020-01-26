@@ -8,21 +8,21 @@
           | 装備
       .body
         .chara
-          | メインキャラ
+          | Spica
         .sub_chara
-          | サブキャラ
+          | Tirol
         .reinforcements
-          | 加護一覧
+          | Reinforcements
         .sub_chara_equips
-          | サブキャラの装備メニュー
+          | Tirol
         .sub_chara_status
-          | サブキャラのステ
+          | Status
         .item_list_main
-          | メインの装備リスト
+          | Equips
         .detail
-          | 選択中アイテムの詳細
+          | Detail
         .main_chara_equips
-          | メインキャラの装備メニュー
+          | List
 
 </template>
 
@@ -59,65 +59,67 @@ $item_list-main-width:400px;
 $reinforcement-list-height: 200px;
 $sub-chara-status-height: 40px;
 
-  .body{
-    *{
-      background-color: $gray2;
-    }
-    .chara{
-      position: absolute;
-      bottom: $thin_space;
-      left: $thin_space;
-      width: $character-width - $thin_space * 2;
-      height: $character-height;
-    }
-    .sub_chara{
-      position: absolute;
-      bottom: 250px;
-      left: 80px;
-      width: $sub-character-width;
-      height: $sub-character-height;
-    }
-    .reinforcements{
-      position: absolute;
-      top: $thin_space;
-      left: $character-width;
-      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: $reinforcement-list-height;
-    }
-    .sub_chara_equips{
-      position: absolute;
-      top: $reinforcement-list-height + $sub-chara-status-height + $thin_space * 3;
-      left: $character-width;
-      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: calc(100% - #{$main-chara-equip-height} - #{$reinforcement-list-height} - #{$sub-chara-status-height} - #{$thin_space * 5});
-    }
-    .sub_chara_status{
-      position: absolute;
-      top: $reinforcement-list-height + $thin_space * 2;
-      left: $character-width;
-      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: $sub-chara-status-height;
-    }
-    .item_list_main{
-      position: absolute;
-      top: $thin_space;
-      right: $detail-width + $thin_space * 2;
-      width: $item-list-main-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
-    }
-    .detail{
-      position: absolute;
-      top: $thin_space;
-      right: $thin_space;
-      width: $detail-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
-    }
-    .main_chara_equips{
-      position: absolute;
-      bottom: $thin_space;
-      right: $thin_space;
-      width: calc(100% - #{$character-width} - #{$thin_space});
-      height: $main-chara-equip-height;
-    }
+.body{
+  * {
+    border: 1px solid $gray3;
+    font-size: $font-size-large;
+    color: $accent-color;
   }
+  .chara{
+    position: absolute;
+    bottom: $thin_space;
+    left: $thin_space;
+    width: $character-width - $thin_space * 2;
+    height: $character-height;
+  }
+  .sub_chara{
+    position: absolute;
+    bottom: 250px;
+    left: 80px;
+    width: $sub-character-width;
+    height: $sub-character-height;
+  }
+  .reinforcements{
+    position: absolute;
+    top: $thin_space;
+    left: $character-width;
+    width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
+    height: $reinforcement-list-height;
+  }
+  .sub_chara_equips{
+    position: absolute;
+    top: $reinforcement-list-height + $sub-chara-status-height + $thin_space * 3;
+    left: $character-width;
+    width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
+    height: calc(100% - #{$main-chara-equip-height} - #{$reinforcement-list-height} - #{$sub-chara-status-height} - #{$thin_space * 5});
+  }
+  .sub_chara_status{
+    position: absolute;
+    top: $reinforcement-list-height + $thin_space * 2;
+    left: $character-width;
+    width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
+    height: $sub-chara-status-height;
+  }
+  .item_list_main{
+    position: absolute;
+    top: $thin_space;
+    right: $detail-width + $thin_space * 2;
+    width: $item-list-main-width;
+    height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+  }
+  .detail{
+    position: absolute;
+    top: $thin_space;
+    right: $thin_space;
+    width: $detail-width;
+    height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+  }
+  .main_chara_equips{
+    position: absolute;
+    bottom: $thin_space;
+    right: $thin_space;
+    width: calc(100% - #{$character-width} - #{$thin_space});
+    height: $main-chara-equip-height;
+  }
+}
 </style>
