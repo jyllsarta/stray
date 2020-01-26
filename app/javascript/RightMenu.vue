@@ -2,7 +2,9 @@
   .right_menu.window
     .item
       | 回復
-    .item
+    .item(
+      @click="$store.commit('updateWindowShowState', {windowName: 'equip', state: true})"
+    )
       | 装備
     .item
       | ステータス

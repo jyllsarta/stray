@@ -7,6 +7,7 @@
     Chat
     Log
     AccountWindow(v-if="$store.state.ui.window.account")
+    EquipWindow(v-if="$store.state.ui.window.equip")
     Api
     Timer
 </template>
@@ -22,6 +23,7 @@ import Log from './Log'
 import Status from './Status'
 import Chat from './Chat'
 import AccountWindow from './AccountWindow'
+import EquipWindow from './EquipWindow'
 import Timer from './Timer'
 
 export default {
@@ -38,6 +40,7 @@ export default {
     Status,
     Chat,
     AccountWindow,
+    EquipWindow,
     Timer,
   },
   watch: {

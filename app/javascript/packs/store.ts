@@ -18,6 +18,7 @@ const store = new Vuex.Store({
       // ウィンドウの開閉状況
       window: {
         account: false,
+        equip: false,
       }
     },
     timer: {
