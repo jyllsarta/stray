@@ -19,19 +19,24 @@ const store = new Vuex.Store({
         account: false,
       }
     },
+    // ユーザモデル更新で入る
     user: {
-      // これはもしかしたらレスポンスにあるものをまるまるあとから追加するほうがいいかもしれない
-      // その場合ユーザモデルのロード完了までUI側でエラーが出続けるのがしんどいかもだけど検討できる
+      // レスポンスそのまま
       hp: 100,
       hp_max: 1000,
       event_updated_at: 123123123,
       user_id: 999999999,
     },
     masterdata: {
+      // マスタデータロードで入る
     },
     //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
-    events: [
-    ],
+    event: {
+      next_event_at: 123123123,
+      events: [
+
+      ]
+    },
   },
   mutations: {
     // ui系
@@ -56,7 +61,7 @@ const store = new Vuex.Store({
     },
     updateLatestEvents(state, payload) {
       console.log(payload);
-      state.events = payload;
+      state.event = payload;
     },
   }
 });
