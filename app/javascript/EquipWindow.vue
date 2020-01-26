@@ -7,6 +7,23 @@
         .title
           | 装備
       .body
+        .chara
+          | メインキャラ
+        .sub_chara
+          | サブキャラ
+        .reinforcements
+          | 加護一覧
+        .sub_chara_equips
+          | サブキャラの装備メニュー
+        .sub_chara_status
+          | サブキャラのステ
+        .item_list_main
+          | メインの装備リスト
+        .detail
+          | 選択中アイテムの詳細
+        .main_chara_equips
+          | メインキャラの装備メニュー
+
 </template>
 
 <script lang="ts">
@@ -29,4 +46,78 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
+
+// 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
+
+$detail-width: 150px;
+$character-width: 200px;
+$character-height: 400px;
+$sub-character-width: 100px;
+$sub-character-height: 200px;
+$main-chara-equip-height: 170px;
+$item_list-main-width:400px;
+$reinforcement-list-height: 200px;
+$sub-chara-status-height: 40px;
+
+  .body{
+    *{
+      background-color: $gray2;
+    }
+    .chara{
+      position: absolute;
+      bottom: $space;
+      left: $space;
+      width: $character-width - $space * 2;
+      height: $character-height;
+    }
+    .sub_chara{
+      position: absolute;
+      bottom: 250px;
+      left: 80px;
+      width: $sub-character-width;
+      height: $sub-character-height;
+    }
+    .reinforcements{
+      position: absolute;
+      top: $space;
+      left: $character-width;
+      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$space * 3});
+      height: $reinforcement-list-height;
+    }
+    .sub_chara_equips{
+      position: absolute;
+      top: $reinforcement-list-height + $sub-chara-status-height + $space * 3;
+      left: $character-width;
+      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$space * 3});
+      height: calc(100% - #{$main-chara-equip-height} - #{$reinforcement-list-height} - #{$sub-chara-status-height} - #{$space * 5});
+    }
+    .sub_chara_status{
+      position: absolute;
+      top: $reinforcement-list-height + $space * 2;
+      left: $character-width;
+      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$space * 3});
+      height: $sub-chara-status-height;
+    }
+    .item_list_main{
+      position: absolute;
+      top: $space;
+      right: $detail-width + $space * 2;
+      width: $item-list-main-width;
+      height: calc(100% - #{$main-chara-equip-height} - #{$space * 3});
+    }
+    .detail{
+      position: absolute;
+      top: $space;
+      right: $space;
+      width: $detail-width;
+      height: calc(100% - #{$main-chara-equip-height} - #{$space * 3});
+    }
+    .main_chara_equips{
+      position: absolute;
+      bottom: $space;
+      right: $space;
+      width: calc(100% - #{$character-width} - #{$space});
+      height: $main-chara-equip-height;
+    }
+  }
 </style>
