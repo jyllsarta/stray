@@ -37,10 +37,39 @@ export default {
     Chat,
     AccountWindow,
   },
-  mounted(){
+  watch: {
+    // イベント発生時の処理
+    // なーんかダーティな書き方な気がしてならないけど、とりあえず他に方法が思いつかなかったのでこれで
+    "$store.state.event.events": {
+      handler: function(events){
+        events.filter(event=>!event.resolved).forEach((event)=>{
+          this.processEvent(event);
+        });
+      },
+      deep: true,
+    }
   },
   methods: {
-  }
+    processEvent(event){
+      switch (event.type) {
+        case "Item":
+          this.resolveItemEvent(event);
+          break;
+        case "Battle":
+          break;
+        case "Stair":
+          break;
+        default:
+          console.warn(`undefined event type: ${event.type}`);
+          break;
+      }
+      event.resolved = true;
+    },
+    resolveItemEvent(event){
+      console.log(`resolved item event`);
+      this.$store.commit("incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
+    }
+  },
 }
 </script>
 

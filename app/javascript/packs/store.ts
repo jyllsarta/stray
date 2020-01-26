@@ -22,10 +22,8 @@ const store = new Vuex.Store({
     // ユーザモデル更新で入る
     user: {
       // レスポンスそのまま
-      hp: 100,
-      hp_max: 1000,
-      event_updated_at: 123123123,
       user_id: 999999999,
+      items: {},
     },
     masterdata: {
       // マスタデータロードで入る
@@ -33,9 +31,7 @@ const store = new Vuex.Store({
     //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
     event: {
       next_event_at: 123123123,
-      events: [
-
-      ]
+      events: []
     },
   },
   mutations: {
@@ -52,17 +48,17 @@ const store = new Vuex.Store({
 
     // ステート更新系
     updateUserModel(state, payload) {
-      console.log(payload);
       state.user = payload;
     },
     updateMasterData(state, payload) {
-      console.log(payload);
       state.masterdata = payload;
     },
     updateLatestEvents(state, payload) {
-      console.log(payload);
       state.event = payload;
     },
+    incrementItemRank(state, payload) {
+      state.user.items[payload.item_id].rank += payload.amount;
+    }
   }
 });
 export default store;

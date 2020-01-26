@@ -11,6 +11,9 @@ class UsersController < ApplicationController
 
   def status
     @user = current_user
+    @items = current_user.items.map do |item|
+      [item.item_id, item.attributes]
+    end.to_h
   end
 
   def register_name
