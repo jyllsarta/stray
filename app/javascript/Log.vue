@@ -1,21 +1,10 @@
 <template lang="pug">
   .log.window
-    .item
+    .item(v-for="log in logs")
       .at
-        | 11:22
+        | {{composeTime(log.at)}}
       .content
-        | ☆神殺しの彗星のアミュレット+65535を拾った！
-    .item
-      .at
-        | 23:55
-      .content
-        | ★食品サンプルを拾った！
-    .item
-      .at
-        | 7:06
-      .content
-        | 野うさぎ4体との戦闘だ！
-        | HP: (80,54)→(66,13) / 4ターン
+        | {{log.message}}
 </template>
 
 <script lang="ts">
@@ -27,9 +16,20 @@ export default {
     return {};
   },
   store,
-  mounted(){
+  computed: {
+    logs(){
+      // TODO: ログ件数の最大値をConstantsで規定する
+      return this.$store.state.event.events.map(l=>l.logs).flat();
+    },
   },
   methods: {
+    formatZero(int){
+      return ("0" + int).slice(-2);
+    },
+    composeTime(at){
+      const date = new Date(at * 1000);
+      return `${this.formatZero(date.getHours())}:${this.formatZero(date.getMinutes())}`
+    }
   }
 }
 </script>

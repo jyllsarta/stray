@@ -17,6 +17,7 @@ export default {
       console.log("mounted api system!");
       this.fetchMasterData();
       this.loadUserData();
+      this.fetchLatestEvents();
     },
     loadUserData(){
       if(localStorage.access_token){

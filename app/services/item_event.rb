@@ -1,5 +1,6 @@
 class ItemEvent < Event
-  def initialize(rank=0)
+  def initialize(rank=0, at=Time.now)
+    @at = at
     @rank = rank
     @item_id = lot_item_id!
     @amount = lot_amount!
@@ -16,8 +17,13 @@ class ItemEvent < Event
     }
   end
 
-  def log
-    "#{item.name}を拾った！"
+  def logs
+    [
+      {
+        at: @at.to_i,
+        message: "#{item.name}を拾った！"
+      }
+    ]
   end
 
   def execute!(user)
@@ -36,7 +42,7 @@ private
   end
 
   def lot_item_id!
-    @rank + SecureRandom.rand(5)
+    @rank + SecureRandom.rand(1..5)
   end
 
   def lot_amount!

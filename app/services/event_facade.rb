@@ -8,7 +8,7 @@ class EventFacade
     ActiveRecord::Base.transaction do
       user.status.calibrate_event_updated_at(@now)
       event = pick_next_event(user)
-      while(next_event_available?(user, event)) 
+      while next_event_available?(user, event)
         events.append(event)
         event.execute!(user)
         user.status.tick_timer!(event.consume_time)
@@ -20,7 +20,7 @@ class EventFacade
 
   def pick_next_event(user)
     # 死んでたら復活イベントがピックされる
-    ItemEvent.new
+    ItemEvent.new(0, user.status.event_updated_at)
   end
 
   def next_event_available?(user, event)

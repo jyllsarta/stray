@@ -5,7 +5,8 @@ class Event
   def detail
     raise NotImplementedError
   end
-  def log
+  # 戦闘イベントなどは1イベントで複数行ログ出力する可能性がある
+  def logs
     raise NotImplementedError
   end
   def execute!
