@@ -1,9 +1,9 @@
 <template lang="pug">
   .status.window
-    .siroko
+    .spica
       .profile
         .name
-          | しろこ
+          | スピカ
         .lv
           | Lv:19
       .gauge
@@ -17,10 +17,10 @@
             | EXP：
           .value
             | 85%
-    .kuroko
+    .tirol
       .profile
         .name
-          | くろこ
+          | チロル
         .lv
           | Lv:34445
       .gauge
@@ -62,13 +62,13 @@ export default {
   font-size: $font-size-mini;
   display: flex;
   flex-direction: column;
-  .siroko .profile{
+  .spica .profile{
     background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_spica.png");
   }
-  .kuroko .profile{
+  .tirol .profile{
     background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 1)  100%), url("/images/ui/profile_background_tirol.png");
   }
-  .siroko, .kuroko {
+  .spica, .tirol {
     width: 100%;
     line-height: 120%;
     display: flex;

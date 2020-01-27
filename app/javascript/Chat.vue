@@ -1,12 +1,12 @@
 <template lang="pug">
   .chat.window
-    img.siroko(src="images/ui/chat_spica.png")
+    img.spica(src="images/ui/chat_spica.png")
     .chat_window
-      .siroko.bubble
+      .spica.bubble
         | このへんは特になんにもないね
-      .kuroko.bubble
+      .tirol.bubble
         | 霊力の流れを感じる...
-    img.kuroko(src="images/ui/chat_tirol.png")
+    img.tirol(src="images/ui/chat_tirol.png")
 </template>
 
 <script lang="ts">
@@ -51,14 +51,14 @@ export default {
       margin-bottom: $thin_space;
       border-radius: $radius;
     }
-    .siroko{
+    .spica{
       text-align: left;
     }
-    .kuroko{
+    .tirol{
       text-align: right;
     }
   }
-  .kuroko{
+  .tirol{
 
   }
 }

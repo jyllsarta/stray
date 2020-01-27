@@ -1,13 +1,13 @@
 <template lang="pug">
   .field
     .ground
-      img.siroko(
+      img.spica(
         src="images/ui/spica.png"
-        :style="{transform: 'translateX(' + $store.state.ui.position.siroko + 'px) scale('+ $store.state.ui.direction.siroko * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + $store.state.ui.position.spica + 'px) scale('+ $store.state.ui.direction.spica * -1 +', 1)'}"
       )
-      img.kuroko(
+      img.tirol(
         src="images/ui/tirol.png"
-        :style="{transform: 'translateX(' + $store.state.ui.position.kuroko + 'px) scale('+ $store.state.ui.direction.kuroko * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + $store.state.ui.position.tirol + 'px) scale('+ $store.state.ui.direction.tirol * -1 +', 1)'}"
       )
 </template>
 
@@ -32,7 +32,7 @@ export default {
       requestAnimationFrame(this.update);
     },
     proceedCharacter(){
-      ["siroko", "kuroko"].forEach((name)=>{
+      ["spica", "tirol"].forEach((name)=>{
         // TODO: スピード制御ロジック
         // TODO: speedと反射基準点をcontantsから拾う
         this.$store.commit("moveCharacter", {characterName: name, delta: 1});

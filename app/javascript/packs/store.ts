@@ -8,12 +8,12 @@ const store = new Vuex.Store({
     ui: {
       // これに関してはUIシステム側で個別にストアを持つのが正解って気がするなあ
       position:{
-        siroko: 100,
-        kuroko: -40,
+        spica: 100,
+        tirol: -40,
       },
       direction:{
-        siroko: 1,
-        kuroko: -1,
+        spica: 1,
+        tirol: -1,
       },
       // ウィンドウの開閉状況
       window: {
