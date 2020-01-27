@@ -29,6 +29,19 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_character_equips", force: :cascade do |t|
+    t.integer "user_character_id", default: 0
+    t.integer "user_item_id", default: 0
+    t.integer "position_id", default: 0
+  end
+
+  create_table "user_characters", force: :cascade do |t|
+    t.integer "user_id", default: 0
+    t.integer "character_id", default: 0
+    t.integer "hp", default: 0
+    t.integer "hp_max", default: 0
+  end
+
   create_table "user_items", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "item_id", default: 0
