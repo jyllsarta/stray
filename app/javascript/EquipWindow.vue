@@ -34,8 +34,15 @@
           .label
             | 詳細
         .main_chara_equips.block
-          .label
-            | スピカのステータス
+          .label_box
+            .label
+              | スピカのステータス
+            .current_parameters_label
+              | ステータス
+            .this_item_label
+              | 選択中の装備
+            .to_status_label
+              | 効果値
           .main
             .equips
               .equip
@@ -50,11 +57,11 @@
               .status
                 | STR 987654321
               .status
-                | STR 987654321
+                | DEX 987654321
               .status
-                | STR 987654321
+                | RES 987654321
               .status
-                | STR 987654321
+                | AGI 987654321
             .this_item
               .status
                 | +987654321
@@ -140,12 +147,30 @@ export default {
   }
 
   .main_chara_equips{
+    .label_box{
+      display: flex;
+      flex-direction: row;
+      color: $accent-color;
+      align-content: flex-end;
+      .label{
+        width: 43%;
+      }
+      .current_parameters_label{
+        width: 17%;
+      }
+      .this_item_label{
+        width: 17%;
+      }
+      .to_status_label{
+        width: 17%;
+      }
+    }
     .main{
       display: flex;
       flex-direction: row;
       height: calc(100% - #{$font-size-large});
       .equips{
-        width: 45%;
+        width: 43%;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -163,6 +188,36 @@ export default {
           &:nth-child(4){
             padding-left: 32px;
           }
+        }
+      }
+      .current_parameters{
+        width: 17%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .status{
+          padding: 2px;
+          text-align: right;
+        }
+      }
+      .this_item{
+        width: 19%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .status{
+          font-size: $font-size-mini;
+          padding-left: $space;
+        }
+      }
+      .to_status{
+        width: 17%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .status_diff{
+          font-size: $font-size-mini;
+          text-align: right;
         }
       }
     }
