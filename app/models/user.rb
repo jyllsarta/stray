@@ -10,9 +10,18 @@ class User < ApplicationRecord
 
   def self.create
     user = self.new
-    user.id = User.fetch_random_id
-    user.save!
-    user.status = User::Status.create(user: user, event_updated_at: Time.now)
+    ActiveRecord::Base.transaction do
+      user.id = User.fetch_random_id
+      user.save!
+      user.status = User::Status.create!(user: user, event_updated_at: Time.now)
+      user.characters.create!(character_id: User::Character.character_ids[:spica])
+      user.characters.create!(character_id: User::Character.character_ids[:tirol])
+      user.characters.each do |character|
+        (1..4).each do |i|
+          character.equips.create!(position: i)
+        end
+      end
+    end
     user
   end
 

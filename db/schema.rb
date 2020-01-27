@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "user_character_equips", force: :cascade do |t|
     t.integer "user_character_id", default: 0
-    t.integer "user_item_id", default: 0
-    t.integer "position_id", default: 0
+    t.integer "user_item_id"
+    t.integer "position", default: 0
   end
 
   create_table "user_characters", force: :cascade do |t|
