@@ -19,17 +19,121 @@
               | 先制Lv2
             .reinforcement
               | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
+            .reinforcement
+              | 雷光Lv4
         .sub_chara_status.block
           .label
             | チロルのステータス
           .status
             .atk
-              | ATK: 351287952
-            .atk
-              | DEF: 659998714
+              span.current
+                | ATK: 351287952
+              span.diff
+                | (+987987987)
+            .def
+              span.current
+                | DEF: 351287952
+              span.diff
+                | (+987987987)
+          .equips
+            .equip
+              | ★やさしいなんでもない系装備
+            .equip
+              | ★やさしいなんでもない系装備
+            .equip
+              | ★やさしいなんでもない系装備
+            .equip
+              | ★やさしいなんでもない系装備
         .item_list_main.block
           .label
             | アイテム
+          .misc
+            | ソート順とかを置くところ
+          .item_list
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
+            .item
+              .category_icon
+                | ◆
+              .item_name
+                | ☆爆発性の文字数が多めの装備+987654
+              .value
+                | 39393939
         .detail.block
           .label
             | 詳細
@@ -105,6 +209,20 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
 
+// 箱自体の配置
+// 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
+
+$detail-width: 150px;
+$character-width: 200px;
+$character-height: 320px;
+$sub-character-width: 100px;
+$sub-character-height: 170px;
+$main-chara-equip-height: 170px;
+$item_list-main-width:400px;
+$reinforcement-list-height: 200px;
+
+
+
 // 通常のスタイル定義
 .body{
   .block{
@@ -113,7 +231,7 @@ export default {
   }
 
   .label{
-    font-size: $font-size-large;
+    font-size: $font-size-normal;
     color: $accent-color;
     line-height: 100%;
   }
@@ -129,6 +247,8 @@ export default {
     .reinforcement_list{
       display: flex;
       flex-direction: column;
+      flex-wrap: wrap;
+      height: $reinforcement-list-height - $font-size-large;
       padding: $thin_space;
       .reinforcement{
         margin: $thin_space;
@@ -144,6 +264,50 @@ export default {
 
   .sub_chara_status{
     font-size: $font-size-mini;
+    padding-bottom: $space;
+    .status{
+      padding: $thin_space;
+    }
+    .equips{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      .equip{
+        padding: 2px;
+        font-size: $font-size-mini;
+      }
+    }
+  }
+
+  .item_list_main{
+    .misc{
+      height: 50px;
+      border-bottom: 1px solid $gray3;
+      padding: $space;
+    }
+    .item_list{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 50px - #{$font-size-normal});
+      justify-content: space-around;
+      padding: $thin_space;
+      .item{
+        padding: 2px;
+        display: flex;
+        flex-direction: row;
+        line-height: 100%;
+        .category_icon{
+          width: 5%;
+        }
+        .item_name{
+          width: 75%;
+        }
+        .value{
+          width: 20%;
+        }
+      }
+    }
   }
 
   .main_chara_equips{
@@ -223,19 +387,6 @@ export default {
     }
   }
 }
-
-
-// 箱自体の配置
-// 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
-
-$detail-width: 150px;
-$character-width: 200px;
-$character-height: 320px;
-$sub-character-width: 100px;
-$sub-character-height: 170px;
-$main-chara-equip-height: 170px;
-$item_list-main-width:400px;
-$reinforcement-list-height: 200px;
 
 .body{
   .chara{
