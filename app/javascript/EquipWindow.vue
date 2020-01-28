@@ -137,6 +137,21 @@
         .detail.block
           .label
             | 詳細
+          .item_name
+            | 爆発性の文字数が多めの装備
+          .parameters
+            .parameter
+              | TOTAL 39393939
+            .parameter
+              | STR 39393939
+            .parameter
+              | DEX 39393939
+            .parameter
+              | VIT 39393939
+            .parameter
+              | STR 39393939
+          .flavor_text
+            | このゲームのフレーバーテキストはとっても長くて、最大で100文字にもなるつもりなんですが、ちょっと今は思いつかないので仮の文言をこうしていれているところなんですよ。今どれくらいですか？あと7文字ですね。
         .main_chara_equips.block
           .label_box
             .label
@@ -307,6 +322,29 @@ $reinforcement-list-height: 200px;
           width: 20%;
         }
       }
+    }
+  }
+
+  .detail{
+    font-size: $font-size-mini;
+    .item_name{
+      padding: $thin_space;
+      height: 50px;
+    }
+    .parameters{
+      padding: $thin_space;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100px;
+      .parameter{
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .flavor_text{
+      line-height: 115%;
+      padding: $thin_space;
     }
   }
 
