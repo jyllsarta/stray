@@ -61,76 +61,20 @@
           .misc
             | ソート順とかを置くところ
           .item_list
-            .item
+            .item(v-for="item in $store.getters.getItems")
               .category_icon
                 | ◆
               .item_name
-                | ☆爆発性の文字数が多めの装備+987654
+                | ☆{{item.name}}+{{item.rank}}
               .value
                 | 39393939
-            .item
+            .item(v-for="nilItem in new Array(10 - $store.getters.getItems.length).fill(1)")
               .category_icon
                 | ◆
               .item_name
-                | ☆爆発性の文字数が多めの装備+987654
+                | ？？？
               .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
-            .item
-              .category_icon
-                | ◆
-              .item_name
-                | ☆爆発性の文字数が多めの装備+987654
-              .value
-                | 39393939
+                | -
         .detail.block
           .label
             | 詳細

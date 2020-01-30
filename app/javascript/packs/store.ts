@@ -71,6 +71,10 @@ const store = new Vuex.Store({
       }
       return state.user.items[itemId].rank;
     },
+    //今後page制御されることになるんだと思う
+    getItems: (state) => {
+      return Object.values(state.user.items).map(item=>Object.assign(item, state.masterdata.items[item.item_id]));
+    }
   },
   mutations: {
     // ui系
