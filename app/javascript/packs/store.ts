@@ -22,7 +22,8 @@ const store = new Vuex.Store({
       },
       guide: "ここにガイドが出るよ",
       equip_window: {
-        main_character_id: 1, //装備編集中のキャラID
+        main_character_id: 1, // 装備編集中のキャラID
+        selecting_item_id: 1, // 現在マウスがあたってる装備ID
       }
     },
 
@@ -97,6 +98,9 @@ const store = new Vuex.Store({
     //こいつは簡便化のためにpayloadを直接代入
     updateGuide(state, payload){
       state.ui.guide = payload;
+    },
+    updateSelectingItemId(state, payload){
+      state.ui.equip_window.selecting_item_id = payload;
     },
 
     // ステート更新系

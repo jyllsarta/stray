@@ -61,7 +61,7 @@
           .misc
             | ソート順とかを置くところ
           .item_list
-            .item(v-for="item in $store.getters.getItems")
+            .item(v-for="item in $store.getters.getItems", @mouseover="$store.commit('updateSelectingItemId', item.id)")
               .category_icon
                 | ◆
               .item_name
@@ -82,15 +82,15 @@
             | 爆発性の文字数が多めの装備
           .parameters
             .parameter
-              | TOTAL 39393939
+              | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
             .parameter
-              | STR 39393939
+              | STR {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).str}}
             .parameter
-              | DEX 39393939
+              | DEX {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).dex}}
             .parameter
-              | VIT 39393939
+              | DEF {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).def}}
             .parameter
-              | STR 39393939
+              | AGI {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).agi}}
           .flavor_text
             | このゲームのフレーバーテキストはとっても長くて、最大で100文字にもなるつもりなんですが、ちょっと今は思いつかないので仮の文言をこうしていれているところなんですよ。今どれくらいですか？あと7文字ですね。
         .main_chara_equips.block
@@ -120,13 +120,14 @@
                 | AGI 987654321
             .this_item
               .status
-                | +987654321
+                // TODO: マイナス対応
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).str}}
               .status
-                | +987654321
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).dex}}
               .status
-                | +987654321
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).def}}
               .status
-                | +987654321
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).agi}}
             .to_status
               .status
                 | ATK: 987654321
