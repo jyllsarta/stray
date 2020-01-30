@@ -67,7 +67,7 @@
               .item_name
                 | ☆{{item.name}}+{{item.rank}}
               .value
-                | 39393939
+                | {{$store.getters.getItemEffectValue(item.id)}}
             .item(v-for="nilItem in new Array(10 - $store.getters.getItems.length).fill(1)")
               .category_icon
                 | ◆
