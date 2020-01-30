@@ -14,27 +14,13 @@
         .reinforcements.block
           .label
             | 加護
-          .reinforcement_list
+          .reinforcement_list(v-if="false")
+            // 一旦加護実装まで封印
             .reinforcement
               | 先制Lv2
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
-            .reinforcement
-              | 雷光Lv4
+          .no-reinforcement(v-else="false")
+            .message
+              | 加護がありません
         .sub_chara_status.block
           .label
             | チロルのステータス
@@ -211,6 +197,19 @@ $reinforcement-list-height: 200px;
         &::before{
           content: "◇";
         }
+      }
+    }
+    .no-reinforcement{
+      display: flex;
+      height: $reinforcement-list-height - $font-size-large;
+      justify-content: space-around;
+      flex-direction: column;
+      .message{
+        font-size: $font-size-mini;
+        width: 100%;
+        height: $font-size-normal;
+        line-height: 100%;
+        text-align: center;
       }
     }
   }
