@@ -5,8 +5,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    // グローバルな画面状態これに関してはUIシステム側で個別にストアを持つのが正解って気がするなあ
     ui: {
-      // これに関してはUIシステム側で個別にストアを持つのが正解って気がするなあ
       position:{
         spica: 100,
         tirol: -40,
@@ -21,23 +21,49 @@ const store = new Vuex.Store({
         equip: true,
       },
       guide: "ここにガイドが出るよ",
+      equip_window: {
+        main_character_id: 1, //装備編集中のキャラID
+      }
     },
+
     timer: {
       next_event: 99
     },
+
     // ユーザモデル更新で入る
     user: {
       // レスポンスそのまま
       user_id: 999999999,
       items: {},
+      equips: {
+        1: [],
+        2: [],
+      }
     },
+
     masterdata: {
       // マスタデータロードで入る
     },
+
     //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
     event: {
       next_event_at: 123123123,
       events: []
+    },
+  },
+  getters: {
+    // 将来的にはUserItemモデルを返すようにしなければならない気がしている
+    getEquipsByCharacterId: (state) => (characterId) => {
+      const characterName = [null, "spica", "tirol"][characterId];
+      const equips = state.user.equips[characterName];
+      if(!equips){ //こんなふうにガード書かなきゃいけないのちょいしんどいね
+        return [];
+      }
+      return equips.map(c => state.masterdata.items[c])
+    },
+    getSubCharacterId: (state) => {
+      // これでいいのか感はある
+      return state.ui.equip_window.main_character_id === 1 ? 2 : 1;
     },
   },
   mutations: {
@@ -61,7 +87,7 @@ const store = new Vuex.Store({
       state.user = payload;
     },
     updateMasterData(state, payload) {
-      state.masterdata = payload;
+      state.masterdata = payload.masterdata;
     },
     updateLatestEvents(state, payload) {
       state.event.next_event_at = payload.next_event_at;

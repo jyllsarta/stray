@@ -50,14 +50,11 @@
               span.diff
                 | (+987987987)
           .equips
-            .equip
-              | ★やさしいなんでもない系装備
-            .equip
-              | ★やさしいなんでもない系装備
-            .equip
-              | ★やさしいなんでもない系装備
-            .equip
-              | ★やさしいなんでもない系装備
+            .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.getters.getSubCharacterId)")
+              | {{item.name}}
+            // 空枠を埋める
+            .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
+              | -
         .item_list_main.block
           .label
             | アイテム
@@ -164,14 +161,10 @@
               | 効果値
           .main
             .equips
-              .equip
-                | ★やさしいなんでもない系装備+878763
-              .equip
-                | ★やさしいなんでもない系装備+878763
-              .equip
-                | ★やさしいなんでもない系装備+878763
-              .equip
-                | ★やさしいなんでもない系装備+878763
+              .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id)")
+                | ★{{item.name}}+878763
+              .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
+                | -
             .current_parameters
               .status
                 | STR 987654321
