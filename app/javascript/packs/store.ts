@@ -77,6 +77,9 @@ const store = new Vuex.Store({
       return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id));
     },
     getUserItem: (state) => (itemId) => {
+      if(!state.user.items[itemId] || !state.masterdata.items[itemId]){
+        return {};
+      }
       return Object.assign(state.user.items[itemId], state.masterdata.items[itemId]);
     },
     getItemEffectValue: (state, getter) => (itemId) => {
