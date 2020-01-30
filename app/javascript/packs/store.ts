@@ -65,6 +65,12 @@ const store = new Vuex.Store({
       // これでいいのか感はある
       return state.ui.equip_window.main_character_id === 1 ? 2 : 1;
     },
+    getUserItemRank: (state) => (itemId) => {
+      if(!state.user.items[itemId]){
+        return 0;
+      }
+      return state.user.items[itemId].rank;
+    },
   },
   mutations: {
     // ui系

@@ -162,7 +162,7 @@
           .main
             .equips
               .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id)")
-                | ★{{item.name}}+878763
+                | ★{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
               .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
