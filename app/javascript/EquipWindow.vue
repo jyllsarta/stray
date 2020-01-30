@@ -51,7 +51,7 @@
               .category_icon
                 | ◆
               .item_name
-                | ☆{{item.name}}+{{item.rank}}
+                | {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{item.rank}}
               .value
                 | {{$store.getters.getItemEffectValue(item.id)}}
             .item(v-for="nilItem in new Array(10 - $store.getters.getItems.length).fill(1)")
@@ -65,7 +65,7 @@
           .label
             | 詳細
           .item_name
-            | 爆発性の文字数が多めの装備
+            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).name}}
           .parameters
             .parameter
               | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
@@ -78,7 +78,7 @@
             .parameter
               | AGI {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).agi}}
           .flavor_text
-            | このゲームのフレーバーテキストはとっても長くて、最大で100文字にもなるつもりなんですが、ちょっと今は思いつかないので仮の文言をこうしていれているところなんですよ。今どれくらいですか？あと7文字ですね。
+            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text}}
         .main_chara_equips.block
           .label_box
             .label
@@ -92,7 +92,7 @@
           .main
             .equips
               .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id)")
-                | ★{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
+                |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
               .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters

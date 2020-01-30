@@ -4,5 +4,7 @@ create_table "items", force: :cascade  do |t|
   t.integer :dex
   t.integer :def
   t.integer :agi
+  t.integer :rarity
+  t.string :flavor_text
   t.timestamps
 end

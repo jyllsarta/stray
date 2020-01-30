@@ -86,6 +86,10 @@ const store = new Vuex.Store({
       const item = getter.getUserItem(itemId);
       return item.str + item.dex + item.def + item.agi;
     },
+    getItemRarityIcon: (state, getter) => (itemId) => {
+      const item = state.masterdata.items[itemId];
+      return [null, "", "*", "☆", "★", "◆"][item.rarity];
+    },
   },
   mutations: {
     // ui系
