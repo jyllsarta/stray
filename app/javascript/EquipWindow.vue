@@ -36,10 +36,10 @@
               span.diff
                 | (+987987987)
           .equips
-            .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.getters.getSubCharacterId)")
+            .equip(v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)")
               | {{item.name}}
             // 空枠を埋める
-            .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
+            .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
               | -
         .item_list_main.block
           .label
@@ -47,7 +47,10 @@
           .misc
             | ソート順とかを置くところ
           .item_list
-            .item(v-for="item in $store.getters.getItems", @mouseover="$store.commit('updateSelectingItemId', item.id)")
+            .item(
+              v-for="item in $store.getters.getItems", @mouseover="$store.commit('updateSelectingItemId', item.id)"
+              @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
+              )
               .category_icon
                 | ◆
               .item_name
@@ -91,9 +94,12 @@
               | 効果値
           .main
             .equips
-              .equip(v-for="item in $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id)")
+              .equip(
+                v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id)"
+                @click="$store.commit('removeEquip', {itemId: item.id, characterId: $store.state.ui.equip_window.main_character_id})"
+                )
                 |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
-              .equip(v-for="nilItem in (new Array(4 - $store.getters.getEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
+              .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
               .status
@@ -123,8 +129,6 @@
                 | DEF: 987654321
               .status_diff
                 | (+987654321)
-
-
 </template>
 
 <script lang="ts">
@@ -141,7 +145,12 @@ export default {
   mounted(){
   },
   methods: {
-  }
+    tryAttachEquip(itemId, characterId){
+      if(!this.$store.getters.isAlreadyEquippedBySomeone(itemId)){
+        this.$store.commit('attachEquip', {itemId: itemId, characterId: characterId})
+      }
+    },
+  },
 }
 </script>
 
@@ -159,8 +168,6 @@ $sub-character-height: 170px;
 $main-chara-equip-height: 170px;
 $item_list-main-width:400px;
 $reinforcement-list-height: 200px;
-
-
 
 // 通常のスタイル定義
 .body{

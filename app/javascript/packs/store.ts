@@ -24,6 +24,14 @@ const store = new Vuex.Store({
       equip_window: {
         main_character_id: 1, // 装備編集中のキャラID
         selecting_item_id: 1, // 現在マウスがあたってる装備ID
+        draft: {
+          spica: [],
+          tirol: [],
+        },
+        initial: {
+          spica: [],
+          tirol: [],
+        },
       }
     },
 
@@ -54,9 +62,9 @@ const store = new Vuex.Store({
   },
   getters: {
     // 将来的にはUserItemモデルを返すようにしなければならない気がしている
-    getEquipsByCharacterId: (state) => (characterId) => {
+    getCurrentEquipsByCharacterId: (state) => (characterId) => {
       const characterName = [null, "spica", "tirol"][characterId];
-      const equips = state.user.equips[characterName];
+      const equips = state.ui.equip_window.draft[characterName];
       if(!equips){ //こんなふうにガード書かなきゃいけないのちょいしんどいね
         return [];
       }
@@ -90,6 +98,9 @@ const store = new Vuex.Store({
       const item = state.masterdata.items[itemId];
       return [null, "", "*", "☆", "★", "◆"][item.rarity];
     },
+    isAlreadyEquippedBySomeone: (state) => (itemId) => {
+      return state.ui.equip_window.draft.spica.concat(state.ui.equip_window.draft.tirol).includes(itemId)
+    },
   },
   mutations: {
     // ui系
@@ -108,6 +119,20 @@ const store = new Vuex.Store({
     },
     updateSelectingItemId(state, payload){
       state.ui.equip_window.selecting_item_id = payload;
+    },
+    initializeEquipWindow(state){
+      ["spica", "tirol"].forEach(characterName=>{
+        state.ui.equip_window.draft[characterName] = state.user.equips[characterName];
+        state.ui.equip_window.initial[characterName] = state.user.equips[characterName];
+      });
+    },
+    removeEquip(state, payload){
+      const characterName = [null, "spica", "tirol"][payload.characterId];
+      state.ui.equip_window.draft[characterName] = state.ui.equip_window.draft[characterName].filter(i=>i!==payload.itemId)
+    },
+    attachEquip(state, payload){
+      const characterName = [null, "spica", "tirol"][payload.characterId];
+      state.ui.equip_window.draft[characterName].push(payload.itemId);
     },
 
     // ステート更新系

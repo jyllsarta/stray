@@ -55,7 +55,8 @@ export default {
         .then((results) => {
           console.log(results);
           console.log("OK");
-          this.$store.commit("updateUserModel", results.data.payload)
+          this.$store.commit("updateUserModel", results.data.payload);
+          this.$store.commit("initializeEquipWindow");
         })
         .catch((error) => {
           console.warn(error.response);
