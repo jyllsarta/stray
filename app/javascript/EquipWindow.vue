@@ -8,9 +8,9 @@
           | 装備
       .body
         .sub_chara
-          img.sub_character_image(src="images/characters/tirol.png")
+          img.sub_character_image(:src="'images/characters/' + $store.getters.getSubCharacterName + '.png'")
         .chara
-          img.character_image(src="images/characters/spica.png")
+          img.character_image(:src="'images/characters/' + $store.getters.getMainCharacterName + '.png'")
         .switch_character_button.clickable(@click="$store.commit('switchMainCharacter')")
           | 編集キャラ交代
         .reinforcements.block
@@ -25,7 +25,7 @@
               | 加護がありません
         .sub_chara_status.block
           .label
-            | チロルのステータス
+            | {{$store.getters.getSubCharacterJapaneseName}}のステータス
           .status
             .atk
               span.current
@@ -87,7 +87,7 @@
         .main_chara_equips.block
           .label_box
             .label
-              | スピカのステータス
+              | {{$store.getters.getMainCharacterJapaneseName}}のステータス
             .current_parameters_label
               | ステータス
             .this_item_label

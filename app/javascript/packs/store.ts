@@ -74,6 +74,18 @@ const store = new Vuex.Store({
       // これでいいのか感はある
       return state.ui.equip_window.main_character_id === 1 ? 2 : 1;
     },
+    getMainCharacterName: (state) => {
+      return [null, "spica", "tirol"][state.ui.equip_window.main_character_id];
+    },
+    getSubCharacterName: (state, getters) => {
+      return [null, "spica", "tirol"][getters.getSubCharacterId];
+    },
+    getMainCharacterJapaneseName: (state) => {
+      return [null, "スピカ", "チロル"][state.ui.equip_window.main_character_id];
+    },
+    getSubCharacterJapaneseName: (state, getters) => {
+      return [null, "スピカ", "チロル"][getters.getSubCharacterId];
+    },
     getUserItemRank: (state) => (itemId) => {
       if(!state.user.items[itemId]){
         return 0;
