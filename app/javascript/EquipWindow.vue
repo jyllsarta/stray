@@ -8,9 +8,9 @@
           | 装備
       .body
         .sub_chara
-          img.sub_character_image(src="images/ui/tirol.png")
+          img.sub_character_image(src="images/characters/tirol.png")
         .chara
-          img.character_image(src="images/ui/spica.png")
+          img.character_image(src="images/characters/spica.png")
         .reinforcements.block
           .label
             | 加護
@@ -162,12 +162,16 @@ export default {
 
 $detail-width: 150px;
 $character-width: 200px;
-$character-height: 320px;
+$character-height: 380px;
 $sub-character-width: 100px;
-$sub-character-height: 170px;
+$sub-character-height: 200px;
 $main-chara-equip-height: 170px;
 $item_list-main-width:400px;
 $reinforcement-list-height: 200px;
+
+.content{
+  overflow: hidden;
+}
 
 // 通常のスタイル定義
 .body{
@@ -374,14 +378,14 @@ $reinforcement-list-height: 200px;
   .chara{
     position: absolute;
     bottom: $thin_space;
-    left: $thin_space;
+    left: -50px;
     width: $character-width - $thin_space * 2;
     height: $character-height;
   }
   .sub_chara{
     position: absolute;
     bottom: 250px;
-    left: 80px;
+    left: 100px;
     width: $sub-character-width;
     height: $sub-character-height;
   }
