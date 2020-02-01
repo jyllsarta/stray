@@ -11,6 +11,8 @@
           img.sub_character_image(src="images/characters/tirol.png")
         .chara
           img.character_image(src="images/characters/spica.png")
+        .switch_character_button.clickable(@click="$store.commit('switchMainCharacter')")
+          | 編集キャラ交代
         .reinforcements.block
           .label
             | 加護
@@ -191,6 +193,13 @@ $reinforcement-list-height: 200px;
   }
   .sub_character_image{
     width: 160px;
+  }
+
+  .switch_character_button{
+    position: absolute;
+    top: 60px;
+    left: $space;
+    padding: $space;
   }
 
   .reinforcements{

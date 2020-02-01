@@ -134,6 +134,9 @@ const store = new Vuex.Store({
       const characterName = [null, "spica", "tirol"][payload.characterId];
       state.ui.equip_window.draft[characterName].push(payload.itemId);
     },
+    switchMainCharacter(state){
+      state.ui.equip_window.main_character_id = state.ui.equip_window.main_character_id === 1 ? 2 : 1;
+    },
 
     // ステート更新系
     updateUserModel(state, payload) {

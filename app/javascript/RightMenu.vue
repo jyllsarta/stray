@@ -1,15 +1,15 @@
 <template lang="pug">
   .right_menu.window
-    .item
+    .item.clickable
       | 回復
-    .item(
+    .item.clickable(
       @mouseover="$store.commit('updateGuide', '装備メニューを表示します。')",
       @click="$store.commit('updateWindowShowState', {windowName: 'equip', state: true})"
     )
       | 装備
-    .item
+    .item.clickable
       | ステータス
-    .item(
+    .item.clickable(
       @mouseover="$store.commit('updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('updateWindowShowState', {windowName: 'account', state: true})"
     )
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "stylesheets/constants";
+@import "stylesheets/global_setting";
 .right_menu{
   height: $window-height - $space * 2;
   width: 200px - $space * 3;
@@ -45,16 +45,10 @@ export default {
   .item{
     width: 100%;
     height: 40px;
-    background-color: $clickable-color;
     margin-bottom: $thin_space;
-    border-radius: $radius;
     line-height: 100%;
     padding-top: (40px - $font-size-normal) / 2;
     padding-left: $space;
-    &:hover{
-      filter: brightness(110%);
-      transform: scale(1.02);
-    }
   }
 }
 </style>

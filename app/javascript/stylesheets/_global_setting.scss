@@ -72,3 +72,12 @@
     padding: $space;
   }
 }
+
+.clickable{
+  background-color: $clickable-color;
+  border-radius: $radius;
+  &:hover{
+    filter: brightness(110%);
+    transform: scale(1.02);
+  }
+}
