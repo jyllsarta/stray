@@ -131,6 +131,9 @@ const store = new Vuex.Store({
       const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent))
       return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
     },
+    getCharacterAccumulatedParameterDiff: (state, getters) => (characterId, paramName) => {
+      return getters.getCharacterAccumulatedParameter(characterId, paramName, true) - getters.getCharacterAccumulatedParameter(characterId, paramName, false);
+    },
   },
   mutations: {
     // ui系

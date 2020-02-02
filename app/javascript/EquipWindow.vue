@@ -31,12 +31,12 @@
               span.current
                 | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, 'atk', true)}}
               span.diff
-                | (+987987987)
+                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, 'atk')}})
             .def
               span.current
                 | DEF: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, 'def', true)}}
               span.diff
-                | (+987987987)
+                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, 'def')}})
           .equips
             .equip(v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)")
               | {{item.name}}
@@ -139,11 +139,11 @@
               .status
                 | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'atk', true)}}
               .status_diff
-                | (+987654321)
+                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.state.ui.equip_window.main_character_id, 'atk')}})
               .status
                 | DEF: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'def', true)}}
               .status_diff
-                | (+987654321)
+                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.state.ui.equip_window.main_character_id, 'def')}})
 </template>
 
 <script lang="ts">
