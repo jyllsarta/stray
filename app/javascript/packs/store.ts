@@ -121,10 +121,16 @@ const store = new Vuex.Store({
     isAlreadyEquippedBySomeone: (state) => (itemId) => {
       return state.ui.equip_window.draft.spica.concat(state.ui.equip_window.draft.tirol).includes(itemId)
     },
-    getCurrentCharacterParameter: (state, getters) => (characterId, paramName) => {
+    getCharacterParameter: (state, getters) => (characterId, paramName, isCurrent) => {
+      const env = isCurrent ? 'draft' : 'initial';
       const characterName =  [null, "spica", "tirol"][characterId];
-      return state.ui.equip_window.draft[characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
-    }
+      return state.ui.equip_window[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
+    },
+    getCharacterAccumulatedParameter: (state, getters) => (characterId, paramName, isCurrent) => {
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
+      const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent))
+      return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
+    },
   },
   mutations: {
     // ui系
