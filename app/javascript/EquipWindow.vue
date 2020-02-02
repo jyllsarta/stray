@@ -106,13 +106,25 @@
                 | -
             .current_parameters
               .status
-                | STR 987654321
+                .label
+                  | STR
+                .value
+                  | {{$store.getters.getCurrentCharacterParameter($store.state.ui.equip_window.main_character_id, 'str')}}
               .status
-                | DEX 987654321
+                .label
+                  | DEX
+                .value
+                  | {{$store.getters.getCurrentCharacterParameter($store.state.ui.equip_window.main_character_id, 'dex')}}
               .status
-                | RES 987654321
+                .label
+                  | DEF
+                .value
+                  | {{$store.getters.getCurrentCharacterParameter($store.state.ui.equip_window.main_character_id, 'def')}}
               .status
-                | AGI 987654321
+                .label
+                  | AGI
+                .value
+                  | {{$store.getters.getCurrentCharacterParameter($store.state.ui.equip_window.main_character_id, 'agi')}}
             .this_item
               .status
                 // TODO: マイナス対応
@@ -360,7 +372,14 @@ $reinforcement-list-height: 200px;
         justify-content: space-around;
         .status{
           padding: 2px;
-          text-align: right;
+          .label{
+            display: inline-block;
+            width: 30%;
+          }
+          .value{
+            display: inline-block;
+            width: 70%;
+          }
         }
       }
       .this_item{

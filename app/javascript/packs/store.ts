@@ -121,6 +121,10 @@ const store = new Vuex.Store({
     isAlreadyEquippedBySomeone: (state) => (itemId) => {
       return state.ui.equip_window.draft.spica.concat(state.ui.equip_window.draft.tirol).includes(itemId)
     },
+    getCurrentCharacterParameter: (state, getters) => (characterId, paramName) => {
+      const characterName =  [null, "spica", "tirol"][characterId];
+      return state.ui.equip_window.draft[characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
+    }
   },
   mutations: {
     // ui系
