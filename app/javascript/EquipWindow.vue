@@ -27,16 +27,11 @@
           .label
             | {{$store.getters.getSubCharacterJapaneseName}}のステータス
           .status
-            .atk
+            .param(v-for="param in ['atk', 'def']")
               span.current
-                | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, 'atk', true)}}
+                | {{param.toUpperCase()}}: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, param, true)}}
               span.diff
-                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, 'atk')}})
-            .def
-              span.current
-                | DEF: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, 'def', true)}}
-              span.diff
-                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, 'def')}})
+                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, param)}})
           .equips
             .equip(v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)")
               | {{item.name}}
@@ -75,14 +70,8 @@
           .parameters
             .parameter
               | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
-            .parameter
-              | STR {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('str')}}
-            .parameter
-              | DEX {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('dex')}}
-            .parameter
-              | DEF {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('def')}}
-            .parameter
-              | AGI {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('agi')}}
+            .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
+              | {{param.toUpperCase()}} {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf(param)}}
           .flavor_text
             | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text}}
         .main_chara_equips.block
@@ -105,36 +94,15 @@
               .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
-              .status
+              .status(v-for="param in ['str', 'dex', 'def', 'agi']")
                 .label
-                  | STR
+                  | {{param.toUpperCase()}}
                 .value
-                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, 'str', true)}}
-              .status
-                .label
-                  | DEX
-                .value
-                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, 'dex', true)}}
-              .status
-                .label
-                  | DEF
-                .value
-                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, 'def', true)}}
-              .status
-                .label
-                  | AGI
-                .value
-                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, 'agi', true)}}
+                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, param, true)}}
             .this_item
-              .status
-                // TODO: マイナス対応
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('str')}}
-              .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('dex')}}
-              .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('def')}}
-              .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('agi')}}
+              // TODO: マイナス対応
+              .status(v-for="param in ['str', 'dex', 'def', 'agi']")
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf(param)}}
             .to_status
               .status
                 | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'atk', true)}}
