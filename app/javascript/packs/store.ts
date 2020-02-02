@@ -61,11 +61,11 @@ const store = new Vuex.Store({
     },
   },
   getters: {
-    // 将来的にはUserItemモデルを返すようにしなければならない気がしている
+    // TODO: 将来的にはUserItemモデルを返すようにしなければならない気がしている
     getCurrentEquipsByCharacterId: (state) => (characterId) => {
       const characterName = [null, "spica", "tirol"][characterId];
       const equips = state.ui.equip_window.draft[characterName];
-      if(!equips){ //こんなふうにガード書かなきゃいけないのちょいしんどいね
+      if(!equips){ //TODO: こんなふうにガード書かなきゃいけないのちょいしんどいね
         return [];
       }
       return equips.map(c => state.masterdata.items[c])
@@ -92,13 +92,15 @@ const store = new Vuex.Store({
       }
       return state.user.items[itemId].rank;
     },
-    //今後page制御されることになるんだと思う
+    // TODO: 今後page制御されることになるんだと思う
     getItems: (state, getters) => {
       return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id));
     },
     getUserItem: (state) => (itemId) => {
       if(!state.user.items[itemId] || !state.masterdata.items[itemId]){
         return {
+          // TODO: エラーを吐かせないためにこんなことしなきゃいけないの純粋にしんどい
+          // マウント順の制御とかできるのでしょうか...アルファ開発が終わったら手を付ける
           effectValueOf: (i)=>0,
         };
       }
