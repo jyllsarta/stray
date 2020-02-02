@@ -98,13 +98,19 @@ const store = new Vuex.Store({
     },
     getUserItem: (state) => (itemId) => {
       if(!state.user.items[itemId] || !state.masterdata.items[itemId]){
-        return {};
+        return {
+          effectValueOf: (i)=>0,
+        };
       }
-      return Object.assign(state.user.items[itemId], state.masterdata.items[itemId]);
+      let ui = Object.assign(state.user.items[itemId], state.masterdata.items[itemId]);
+      ui.effectValueOf = function (paramName) {
+        return Math.floor(this[paramName] + 0.1 * this.rank + this[paramName]);
+      };
+      return ui;
     },
-    getItemEffectValue: (state, getter) => (itemId) => {
-      const item = getter.getUserItem(itemId);
-      return item.str + item.dex + item.def + item.agi;
+    getItemEffectValue: (state, getters) => (itemId) => {
+      const item = getters.getUserItem(itemId);
+      return ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
     },
     getItemRarityIcon: (state, getter) => (itemId) => {
       const item = state.masterdata.items[itemId];

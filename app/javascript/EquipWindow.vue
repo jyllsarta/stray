@@ -76,13 +76,13 @@
             .parameter
               | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
             .parameter
-              | STR {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).str}}
+              | STR {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('str')}}
             .parameter
-              | DEX {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).dex}}
+              | DEX {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('dex')}}
             .parameter
-              | DEF {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).def}}
+              | DEF {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('def')}}
             .parameter
-              | AGI {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).agi}}
+              | AGI {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('agi')}}
           .flavor_text
             | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text}}
         .main_chara_equips.block
@@ -116,13 +116,13 @@
             .this_item
               .status
                 // TODO: マイナス対応
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).str}}
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('str')}}
               .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).dex}}
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('dex')}}
               .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).def}}
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('def')}}
               .status
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).agi}}
+                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf('agi')}}
             .to_status
               .status
                 | ATK: 987654321
