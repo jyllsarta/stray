@@ -52,6 +52,7 @@
             .item(
               v-for="item in $store.getters.getItems", @mouseover="$store.commit('updateSelectingItemId', item.id)"
               @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
+              :class="$store.getters.isAlreadyEquippedBySomeone(item.id) ? 'disabled' : ''"
               )
               .category_icon
                 | ◆
@@ -280,6 +281,9 @@ $reinforcement-list-height: 200px;
         }
       }
     }
+  }
+  .disabled{
+    opacity: 0.4;
   }
 
   .detail{
