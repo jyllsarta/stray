@@ -14,11 +14,16 @@ export default {
     this.init();
   },
   methods: {
+    isAuthorized(){
+      return localStorage.access_token !== ""; 
+    },
     init(){
       console.log("mounted api system!");
       this.fetchMasterData();
       this.loadUserData();
-      this.fetchLatestEvents();
+      if(this.isAuthorized()){
+        this.fetchLatestEvents();
+      }
     },
     loadUserData(){
       if(localStorage.access_token){
