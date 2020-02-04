@@ -1,9 +1,9 @@
 <template lang="pug">
   .menu
-    .back(@click="$store.commit('updateWindowShowState', {windowName: 'equip', state: false})")
+    .back(@click="closeWindow")
     .window.content
       .title_area
-        .back_button(@click="$store.commit('updateWindowShowState', {windowName: 'equip', state: false})")
+        .back_button(@click="closeWindow")
         .title
           | 装備
       .body
@@ -158,6 +158,10 @@ export default {
           console.warn("NG");
         });
     },
+    closeWindow(){
+      this.submit();
+      this.$store.commit('updateWindowShowState', {windowName: 'equip', state: false});
+    }
   },
 }
 </script>
