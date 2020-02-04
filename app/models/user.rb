@@ -7,6 +7,7 @@ class User < ApplicationRecord
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end
   class EmptyPassword < StandardError; end
+  class DuplicateEquips < StandardError; end
 
   def self.create
     user = self.new
@@ -36,6 +37,11 @@ class User < ApplicationRecord
   def self.regenerate_token(name: nil, password: nil)
     user = User.find_by!(name: name, password_hash: User.hash_method(password))
     User::AccessToken.generate(user)
+  end
+
+  def equip_no_duiplicate?
+    item_ids = characters.map(&:equip_item_ids).flatten.compact
+    return item_ids.count == item_ids.uniq.count
   end
 
   private
