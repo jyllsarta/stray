@@ -18,7 +18,7 @@ const store = new Vuex.Store({
       // ウィンドウの開閉状況
       window: {
         account: false,
-        equip: true,
+        equip: false,
       },
       guide: "ここにガイドが出るよ",
       equip_window: {
