@@ -25,7 +25,8 @@ namespace :db do
     end
 
     def ridgepole(*options)
-      command = ['bundle exec ridgepole', "--config #{config_file}"]
+      command = ["bundle exec ridgepole", "--config #{config_file}"]
+      command += ["-E production"] if Rails.env.production?
       system [command + options].join(' ')
     end
   end
