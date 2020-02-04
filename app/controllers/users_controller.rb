@@ -14,6 +14,8 @@ class UsersController < ApplicationController
     @items = current_user.items.map do |item|
       [item.item_id, item.attributes]
     end.to_h
+    @spica_equips = current_user.characters.spica.first.equip_item_ids.compact
+    @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
   end
 
   def register_name

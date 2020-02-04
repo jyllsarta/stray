@@ -1,12 +1,12 @@
 json.payload do
   json.user_id @user.id
   json.items @items
-  json.equips do # TODO: 装備周りでクライアントでUI組む間の仮レスポンス
+  json.equips do
     json.spica do
-      json.array! [1,3,5]
+      json.array! @spica_equips
     end
     json.tirol do
-      json.array! [4,2]
+      json.array! @tirol_equips
     end
   end
 end
