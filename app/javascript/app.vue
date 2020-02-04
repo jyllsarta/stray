@@ -10,7 +10,7 @@
       Log
       AccountWindow(v-if="$store.state.ui.window.account")
       EquipWindow(v-if="$store.state.ui.window.equip")
-      Api
+      Api(ref="api")
       Timer
 </template>
 
@@ -75,8 +75,14 @@ export default {
       event.resolved = true;
     },
     resolveItemEvent(event){
-      this.$store.commit("incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
-    }
+      if(this.$store.state.user.items[event.detail.id]){
+        this.$store.commit("incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
+      }
+      else{
+        // この親子関係があるからなんとかなってるけど、どっからでもAPIを呼べるようにならないといつか困る予感
+        this.$refs.api.fetchUserModel();
+      }
+    },
   },
 }
 </script>
