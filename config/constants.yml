@@ -1,2 +1,2 @@
-default_event_interval_seconds: 100
+default_event_interval_seconds: 10
 max_event_consume_time_seconds: 1000

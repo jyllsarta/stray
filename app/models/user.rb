@@ -44,6 +44,10 @@ class User < ApplicationRecord
     return item_ids.count == item_ids.uniq.count
   end
 
+  def debug_charge_max_events!
+    status.update!(event_updated_at: status.event_updated_at - 1.year)
+  end
+
   private
   def self.hash_method(token)
     Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])
