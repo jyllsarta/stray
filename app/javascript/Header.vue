@@ -14,12 +14,12 @@
       .label
         | 現在地
       .content
-        | 翠海の輝浜
+        | {{$store.getters.getCurrentDungeon.name}}
     .dungeon_depth.header_content
       .label
         | 階層
       .content
-        | 26442F
+        | {{$store.state.user.status.current_dungeon_depth}} / {{$store.getters.getCurrentDungeon.depth}}F
 </template>
 
 <script lang="ts">

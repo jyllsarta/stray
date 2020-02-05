@@ -47,10 +47,15 @@ const store = new Vuex.Store({
       equips: {
         1: [],
         2: [],
-      }
+      },
+      status: {
+        current_dungeon_id: 1,
+        current_dungeon_depth: 1,
+      },
     },
 
     masterdata: {
+      dungeons: {},
       // マスタデータロードで入る
     },
 
@@ -134,6 +139,10 @@ const store = new Vuex.Store({
     getCharacterAccumulatedParameterDiff: (state, getters) => (characterId, paramName) => {
       return getters.getCharacterAccumulatedParameter(characterId, paramName, true) - getters.getCharacterAccumulatedParameter(characterId, paramName, false);
     },
+    getCurrentDungeon: (state) => {
+      //このスタブもnull安全演算子があれば回避できるんだけどなあ
+      return state.masterdata.dungeons[state.user.status.current_dungeon_id] || {};
+    }
   },
   mutations: {
     // ui系

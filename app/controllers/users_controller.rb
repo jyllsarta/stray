@@ -11,6 +11,7 @@ class UsersController < ApplicationController
 
   def status
     @user = current_user
+    @status = current_user.status
     @items = current_user.items.map do |item|
       [item.item_id, item.attributes]
     end.to_h

@@ -111,4 +111,7 @@ Item.create([
   }
 ])
 
+Dungeon.delete_all
+Dungeon.create(id: 1, name: "翠海の輝浜", depth: 400)
+
 puts "seeded!"

@@ -14,7 +14,7 @@ class User < ApplicationRecord
     ActiveRecord::Base.transaction do
       user.id = User.fetch_random_id
       user.save!
-      user.status = User::Status.create!(user: user, event_updated_at: Time.now)
+      user.status = User::Status.create!(user: user, event_updated_at: Time.now, current_dungeon_id: Dungeon.first.id)
       user.characters.create!(character_id: User::Character.character_ids[:spica])
       user.characters.create!(character_id: User::Character.character_ids[:tirol])
       user.characters.each do |character|

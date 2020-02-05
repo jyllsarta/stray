@@ -1,0 +1,6 @@
+create_table "user_dungeon_progresses", force: :cascade do |t|
+  t.integer :user_id, null: false, default: 0
+  t.belongs_to :dungeon, null: false
+  t.integer :max_depth, null: false, default: 0
+  t.timestamps
+end

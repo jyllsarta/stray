@@ -12,6 +12,13 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
+  create_table "dungeons", force: :cascade do |t|
+    t.string "name"
+    t.integer "depth"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.integer "str"
@@ -44,6 +51,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "hp_max", default: 0
   end
 
+  create_table "user_dungeon_progresses", force: :cascade do |t|
+    t.integer "user_id", default: 0, null: false
+    t.bigint "dungeon_id", null: false
+    t.integer "max_depth", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dungeon_id"], name: "index_user_dungeon_progresses_on_dungeon_id"
+  end
+
   create_table "user_items", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "item_id", default: 0
@@ -53,6 +69,8 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_statuses", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at", null: false
+    t.integer "current_dungeon_id", default: 1, null: false
+    t.integer "current_dungeon_depth", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
