@@ -179,6 +179,9 @@ const store = new Vuex.Store({
     switchMainCharacter(state){
       state.ui.equip_window.main_character_id = state.ui.equip_window.main_character_id === 1 ? 2 : 1;
     },
+    incrementCurrentDungeonDepth(state){
+      state.user.status.current_dungeon_depth++;
+    },
 
     // ステート更新系
     updateUserModel(state, payload) {

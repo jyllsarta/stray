@@ -19,8 +19,7 @@ class EventFacade
   end
 
   def pick_next_event(user)
-    # 死んでたら復活イベントがピックされる
-    ItemEvent.new(0, user.status.event_updated_at)
+    EventPicker.new(user).pick!
   end
 
   def next_event_available?(user, event)
