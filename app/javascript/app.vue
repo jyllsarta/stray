@@ -67,6 +67,7 @@ export default {
         case "Battle":
           break;
         case "Stair":
+          this.resolveStairEvent();
           break;
         default:
           console.warn(`undefined event type: ${event.type}`);
@@ -82,6 +83,9 @@ export default {
         // この親子関係があるからなんとかなってるけど、どっからでもAPIを呼べるようにならないといつか困る予感
         this.$refs.api.fetchUserModel();
       }
+    },
+    resolveStairEvent(){
+      this.$store.commit("incrementCurrentDungeonDepth")
     },
   },
 }
