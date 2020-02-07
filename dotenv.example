@@ -1,0 +1,2 @@
+PASSWORD_SALT=my_secret_salt
+SECRET_KEY_BASE=my_secret_secret_key

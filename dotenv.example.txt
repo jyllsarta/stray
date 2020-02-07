@@ -1,1 +1,0 @@
-PASSWORD_SALT=my_secret_salt
