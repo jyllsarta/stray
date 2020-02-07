@@ -134,6 +134,7 @@ export default {
   },
   store,
   mounted(){
+    this.$store.commit("initializeEquipWindow");
   },
   methods: {
     tryAttachEquip(itemId, characterId){
@@ -168,6 +169,7 @@ export default {
     },
     closeWindow(){
       this.submit();
+      this.$store.commit('syncEquipDraft');
       this.$store.commit('updateWindowShowState', {windowName: 'equip', state: false});
     }
   },

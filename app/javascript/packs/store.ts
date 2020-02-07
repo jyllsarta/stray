@@ -168,13 +168,18 @@ const store = new Vuex.Store({
         state.ui.equip_window.initial[characterName] = state.user.equips[characterName];
       });
     },
+    syncEquipDraft(state){
+      ["spica", "tirol"].forEach(characterName=>{
+        state.user.equips[characterName] = state.ui.equip_window.draft[characterName];
+      });
+    },
     removeEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
       state.ui.equip_window.draft[characterName] = state.ui.equip_window.draft[characterName].filter(i=>i!==payload.itemId)
     },
     attachEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
-      state.ui.equip_window.draft[characterName].push(payload.itemId);
+      state.ui.equip_window.draft[characterName] = state.ui.equip_window.draft[characterName].concat(payload.itemId);
     },
     switchMainCharacter(state){
       state.ui.equip_window.main_character_id = state.ui.equip_window.main_character_id === 1 ? 2 : 1;
