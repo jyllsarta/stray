@@ -33,7 +33,11 @@
               span.diff
                 | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, param)}})
           .equips
-            .equip(v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)")
+            .equip(
+              v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)"
+              @mouseenter="$store.commit('updateSelectingItemId', item.id)"
+              @mouseleave="$store.commit('updateSelectingItemId', 0)"
+            )
               | {{item.name}}
             // 空枠を埋める
             .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
@@ -45,10 +49,12 @@
             | ソート順とかを置くところ
           .item_list
             .item(
-              v-for="item in $store.getters.getItems", @mouseover="$store.commit('updateSelectingItemId', item.id)"
+              v-for="item in $store.getters.getItems",
+              @mouseenter="$store.commit('updateSelectingItemId', item.id)"
+              @mouseleave="$store.commit('updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
               :class="$store.getters.isAlreadyEquippedBySomeone(item.id) ? 'disabled' : ''"
-              )
+            )
               .category_icon
                 | ◆
               .item_name
@@ -66,14 +72,14 @@
           .label
             | 詳細
           .item_name
-            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).name}}
+            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).name || "-"}}
           .parameters
             .parameter
               | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
             .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
               | {{param.toUpperCase()}} {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf(param)}}
           .flavor_text
-            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text}}
+            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text || "-"}}
         .main_chara_equips.block
           .label_box
             .label
@@ -88,8 +94,10 @@
             .equips
               .equip(
                 v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id)"
+                @mouseenter="$store.commit('updateSelectingItemId', item.id)"
+                @mouseleave="$store.commit('updateSelectingItemId', 0)"
                 @click="$store.commit('removeEquip', {itemId: item.id, characterId: $store.state.ui.equip_window.main_character_id})"
-                )
+              )
                 |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
               .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -

@@ -10,6 +10,16 @@ Item.delete_all
 
 Item.create([
   {
+    id: 0,
+    name: "-",
+    str: 0,
+    dex: 0,
+    def: 0,
+    agi: 0,
+    flavor_text: "-",
+    rarity: 1,
+  },
+  {
     id: 1,
     name: "木の棒",
     str: 1,
