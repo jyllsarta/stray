@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: user_characters
+#
+#  id           :integer          not null, primary key
+#  user_id      :integer          default(0)
+#  character_id :integer          default(NULL)
+#  hp           :integer          default(0)
+#  hp_max       :integer          default(0)
+#
+
 class User::Character < ApplicationRecord
   belongs_to :user
   has_many :equips, foreign_key: :user_character_id

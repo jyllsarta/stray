@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: user_access_tokens
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  token      :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class User::AccessToken < ApplicationRecord
   belongs_to :user
   def self.generate(user)
