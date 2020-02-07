@@ -54,7 +54,7 @@ class User < ApplicationRecord
   end
 
   def self.fetch_random_id
-    rand = SecureRandom.rand(999_999_999) + 1
+    rand = SecureRandom.rand(100_000_000..999_999_999)
     return fetch_random_id if User.exists?(id: rand)
     rand
   end
