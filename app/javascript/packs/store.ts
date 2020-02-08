@@ -102,7 +102,10 @@ const store = new Vuex.Store({
       return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id));
     },
     getItemsWithPager: (state, getters) => {
-      return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id)).slice((state.ui.equip_window.current_page - 1) * 10 ,(state.ui.equip_window.current_page) * 10).filter(x=>x);
+      return Object.values(state.user.items)
+          .map(item=>getters.getUserItem(item.item_id))
+          .slice((state.ui.equip_window.current_page - 1) * Constants.itemsPerPage ,(state.ui.equip_window.current_page) * Constants.itemsPerPage)
+          .filter(x=>x);
     },
     getUserItem: (state) => (itemId) => {
       if(!state.user.items[itemId] || !state.masterdata.items[itemId]){
@@ -176,12 +179,12 @@ const store = new Vuex.Store({
     changePage(state, payload){
       let page = state.ui.equip_window.current_page;
       page += payload;
-      const maxPage = Math.ceil(Object.keys(state.user.items).length / 10);
+      const maxPage = Math.ceil(Object.keys(state.user.items).length / Constants.itemsPerPage);
       if(page > maxPage){
         page = maxPage;
       }
-      if(page < 0){
-        page = 0;
+      if(page < 1){
+        page = 1;
       }
       state.ui.equip_window.current_page = page;
     },

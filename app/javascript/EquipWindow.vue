@@ -40,16 +40,19 @@
             )
               | {{item.name}}
             // 空枠を埋める
-            .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
+            .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
               | -
         .item_list_main.block
           .label
             | アイテム
           .misc
-            .button(@click="$store.commit('changePage', -1)")
-              | ◀
-            .button(@click="$store.commit('changePage', 1)")
-              | ▶
+            .pager
+              .button(@click="$store.commit('changePage', -1)")
+                | ◀
+              .state
+                | ページ {{$store.state.ui.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
+              .button(@click="$store.commit('changePage', 1)")
+                | ▶
           .item_list
             .item(
               v-for="item in $store.getters.getItemsWithPager",
@@ -102,7 +105,7 @@
                 @click="$store.commit('removeEquip', {itemId: item.id, characterId: $store.state.ui.equip_window.main_character_id})"
               )
                 |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
-              .equip(v-for="nilItem in (new Array(4 - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
+              .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
@@ -179,6 +182,9 @@ export default {
   computed: {
     currentItem(){
       return this.$store.getters.getUserItem(this.$store.state.ui.equip_window.selecting_item_id);
+    },
+    Constants(){
+      return Constants;
     }
   }
 }
@@ -285,6 +291,9 @@ export default {
         height: 50px;
         border-bottom: 1px solid $gray3;
         padding: $space;
+        .pager{
+          display: flex;
+        }
       }
       .item_list{
         width: 100%;
