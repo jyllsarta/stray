@@ -44,6 +44,21 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: $font-size-mini;
+  overflow-y: scroll;
+  &::-webkit-scrollbar{
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track{
+    background: transparent;
+    border: none;
+    border-radius: $radius;
+    box-shadow: inset 0 0 2px #777;
+  }
+  &::-webkit-scrollbar-thumb{
+    background: $gray2;
+    border-radius: $radius;
+    box-shadow: none;
+  }
   .item{
     width: 100%;
     line-height: 120%;
