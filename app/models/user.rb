@@ -59,6 +59,12 @@ class User < ApplicationRecord
     status.update!(event_updated_at: status.event_updated_at - 1.year)
   end
 
+  def debug_get_all_items!
+    Item.all.each do |item|
+      items.find_or_create_by(item: item)
+    end
+  end
+
   private
   def self.hash_method(token)
     Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])

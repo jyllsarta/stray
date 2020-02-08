@@ -46,10 +46,13 @@
           .label
             | アイテム
           .misc
-            | ソート順とかを置くところ
+            .button(@click="$store.commit('changePage', -1)")
+              | ◀
+            .button(@click="$store.commit('changePage', 1)")
+              | ▶
           .item_list
             .item(
-              v-for="item in $store.getters.getItems",
+              v-for="item in $store.getters.getItemsWithPager",
               @mouseenter="$store.commit('updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
@@ -61,7 +64,7 @@
                 | {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{item.rank}}
               .value
                 | {{$store.getters.getItemEffectValue(item.id)}}
-            .item(v-for="nilItem in new Array(10 - $store.getters.getItems.length).fill(1)")
+            .item(v-for="nilItem in new Array(10 - $store.getters.getItemsWithPager.length).fill(1)")
               .category_icon
                 | ◆
               .item_name
@@ -72,14 +75,14 @@
           .label
             | 詳細
           .item_name
-            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).name || "-"}}
+            | {{currentItem ? currentItem.name : "-"}}
           .parameters
             .parameter
               | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
             .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
-              | {{param.toUpperCase()}} {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf(param)}}
+              | {{param.toUpperCase()}} {{currentItem ? currentItem.effectValueOf(param) : ''}}
           .flavor_text
-            | {{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).flavor_text || "-"}}
+            | {{currentItem ? currentItem.flavor_text : "-"}}
         .main_chara_equips.block
           .label_box
             .label
@@ -110,7 +113,7 @@
             .this_item
               // TODO: マイナス対応
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
-                | +{{$store.getters.getUserItem($store.state.ui.equip_window.selecting_item_id).effectValueOf(param)}}
+                | +{{currentItem ? currentItem.effectValueOf(param) : ''}}
             .to_status
               .status
                 | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'atk', true)}}
@@ -173,6 +176,11 @@ export default {
       this.$store.commit('updateWindowShowState', {windowName: 'equip', state: false});
     }
   },
+  computed: {
+    currentItem(){
+      return this.$store.getters.getUserItem(this.$store.state.ui.equip_window.selecting_item_id);
+    }
+  }
 }
 </script>
 

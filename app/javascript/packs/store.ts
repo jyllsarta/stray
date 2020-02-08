@@ -23,7 +23,8 @@ const store = new Vuex.Store({
       guide: "ここにガイドが出るよ",
       equip_window: {
         main_character_id: 1, // 装備編集中のキャラID
-        selecting_item_id: 1, // 現在マウスがあたってる装備ID
+        selecting_item_id: 0, // 現在マウスがあたってる装備ID
+        current_page: 1,
         draft: {
           spica: [],
           tirol: [],
@@ -97,17 +98,15 @@ const store = new Vuex.Store({
       }
       return state.user.items[itemId].rank;
     },
-    // TODO: 今後page制御されることになるんだと思う
     getItems: (state, getters) => {
       return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id));
     },
+    getItemsWithPager: (state, getters) => {
+      return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id)).slice((state.ui.equip_window.current_page - 1) * 10 ,(state.ui.equip_window.current_page) * 10).filter(x=>x);
+    },
     getUserItem: (state) => (itemId) => {
       if(!state.user.items[itemId] || !state.masterdata.items[itemId]){
-        return {
-          // TODO: エラーを吐かせないためにこんなことしなきゃいけないの純粋にしんどい
-          // マウント順の制御とかできるのでしょうか...アルファ開発が終わったら手を付ける
-          effectValueOf: (i)=>0,
-        };
+        return null;
       }
       let ui = Object.assign(state.user.items[itemId], state.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
@@ -117,10 +116,16 @@ const store = new Vuex.Store({
     },
     getItemEffectValue: (state, getters) => (itemId) => {
       const item = getters.getUserItem(itemId);
+      if(!item){
+        return 0;
+      }
       return ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
     },
     getItemRarityIcon: (state, getter) => (itemId) => {
       const item = state.masterdata.items[itemId];
+      if(!item){
+        return "";
+      }
       return [null, "", "*", "☆", "★", "◆"][item.rarity];
     },
     isAlreadyEquippedBySomeone: (state) => (itemId) => {
@@ -133,7 +138,7 @@ const store = new Vuex.Store({
     },
     getCharacterAccumulatedParameter: (state, getters) => (characterId, paramName, isCurrent) => {
       const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
-      const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent))
+      const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent));
       return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
     },
     getCharacterAccumulatedParameterDiff: (state, getters) => (characterId, paramName) => {
@@ -167,6 +172,18 @@ const store = new Vuex.Store({
         state.ui.equip_window.draft[characterName] = state.user.equips[characterName];
         state.ui.equip_window.initial[characterName] = state.user.equips[characterName];
       });
+    },
+    changePage(state, payload){
+      let page = state.ui.equip_window.current_page;
+      page += payload;
+      const maxPage = Math.ceil(Object.keys(state.user.items).length / 10);
+      if(page > maxPage){
+        page = maxPage;
+      }
+      if(page < 0){
+        page = 0;
+      }
+      state.ui.equip_window.current_page = page;
     },
     syncEquipDraft(state){
       ["spica", "tirol"].forEach(characterName=>{
