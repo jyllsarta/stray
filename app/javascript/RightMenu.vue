@@ -7,8 +7,6 @@
       @click="$store.commit('updateWindowShowState', {windowName: 'equip', state: true})"
     )
       | 装備
-    .item.clickable
-      | ステータス
     .item.clickable(
       @mouseover="$store.commit('updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('updateWindowShowState', {windowName: 'account', state: true})"
