@@ -118,8 +118,19 @@ Item.create([
     agi: 4,
     flavor_text: "まだ仮のフレーバーテキストだ。",
     rarity: 1,
+  },
+  {
+    id: 11,
+    name: "食品サンプル",
+    str: 20,
+    dex: 20,
+    def: 30,
+    agi: 40,
+    flavor_text: "まだ仮のフレーバーテキストだ。",
+    rarity: 4,
   }
-])
+
+            ])
 
 Dungeon.delete_all
 Dungeon.create(id: 1, name: "翠海の輝浜", depth: 400)
