@@ -211,6 +211,10 @@ const store = new Vuex.Store({
     incrementCurrentDungeonDepth(state){
       state.user.status.current_dungeon_depth++;
     },
+    applyBattleDamage(state, payload){
+      state.user.characters.spica.hp -= payload[0];
+      state.user.characters.tirol.hp -= payload[1];
+    },
 
     // ステート更新系
     updateUserModel(state, payload) {

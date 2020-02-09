@@ -9,7 +9,9 @@ class BattleEvent < Event
   end
 
   def detail
-    {}
+    {
+      damages: @battle.damages
+    }
   end
 
   def logs

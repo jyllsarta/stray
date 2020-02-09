@@ -65,6 +65,7 @@ export default {
           this.resolveItemEvent(event);
           break;
         case "Battle":
+          this.resolveBattleEvent(event);
           break;
         case "Stair":
           this.resolveStairEvent();
@@ -83,6 +84,9 @@ export default {
         // この親子関係があるからなんとかなってるけど、どっからでもAPIを呼べるようにならないといつか困る予感
         this.$refs.api.fetchUserModel();
       }
+    },
+    resolveBattleEvent(event){
+      this.$store.commit("applyBattleDamage", event.detail.damages)
     },
     resolveStairEvent(){
       this.$store.commit("incrementCurrentDungeonDepth")

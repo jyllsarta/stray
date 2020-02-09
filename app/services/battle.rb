@@ -22,8 +22,7 @@ class Battle
 
   def damages
     raise NotYet unless @done
-    # ダメージ量は正の値でほしいので 今 - 前 になる
-    @user.characters.zip(@before_character_conditions).map {|now, before|  now.hp - before["hp"]}
+    @user.characters.zip(@before_character_conditions).map {|now, before|  before["hp"] - now.hp}
   end
 
 private
