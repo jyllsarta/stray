@@ -25,4 +25,13 @@ class User::Character < ApplicationRecord
       equip.update!(user_item: user.items.find_by(item_id: item_ids[i]))
     end
   end
+
+  def damage!(value)
+    self.hp = [self.hp - value, 0].max
+    save!
+  end
+
+  def alive?
+    self.hp.positive?
+  end
 end
