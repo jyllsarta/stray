@@ -215,6 +215,10 @@ const store = new Vuex.Store({
       state.user.characters.spica.hp -= payload[0];
       state.user.characters.tirol.hp -= payload[1];
     },
+    resurrect(state){
+      state.user.characters.spica.hp = state.user.characters.spica.hp_max;
+      state.user.characters.tirol.hp = state.user.characters.tirol.hp_max;
+    },
 
     // ステート更新系
     updateUserModel(state, payload) {

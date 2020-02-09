@@ -6,6 +6,7 @@ class EventFacade
   def get_and_execute_latest_events!(user)
     events = []
     ActiveRecord::Base.transaction do
+      user.lock!
       user.status.calibrate_event_updated_at(@now)
       event = pick_next_event(user)
       while next_event_available?(user, event)

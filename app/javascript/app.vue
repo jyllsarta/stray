@@ -70,6 +70,9 @@ export default {
         case "Stair":
           this.resolveStairEvent();
           break;
+        case "Resurrect":
+          this.resolveResurrectEvent(event);
+          break;
         default:
           console.warn(`undefined event type: ${event.type}`);
           break;
@@ -86,10 +89,16 @@ export default {
       }
     },
     resolveBattleEvent(event){
-      this.$store.commit("applyBattleDamage", event.detail.damages)
+      this.$store.commit("applyBattleDamage", event.detail.damages);
     },
     resolveStairEvent(){
-      this.$store.commit("incrementCurrentDungeonDepth")
+      this.$store.commit("incrementCurrentDungeonDepth");
+    },
+    resolveResurrectEvent(event){
+        console.log(event);
+        if(event.detail.completed){
+        this.$store.commit("resurrect");
+      }
     },
   },
 }

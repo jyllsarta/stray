@@ -35,6 +35,10 @@ class User::Character < ApplicationRecord
     self.hp.positive?
   end
 
+  def dead?
+    !alive?
+  end
+
   def resurrect!
     self.update!(hp: self.hp_max)
   end

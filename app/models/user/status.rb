@@ -27,4 +27,20 @@ class User::Status < ApplicationRecord
     self.event_updated_at = [self.event_updated_at, time - Constants.max_event_consume_time_seconds].max
     save!
   end
+
+  def start_resurrect_timer!
+    self.update!(resurrect_timer: 0)
+  end
+
+  def tick_resurrect_timer!(seconds)
+    self.increment!(:resurrect_timer, seconds)
+  end
+
+  def resurrect_progress
+    (100 * self.resurrect_timer / Constants.resurrect_time_seconds).floor
+  end
+
+  def resurrect_completed?
+    self.resurrect_timer >= Constants.resurrect_time_seconds
+  end
 end

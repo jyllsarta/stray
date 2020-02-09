@@ -1,10 +1,9 @@
 class Battle
-  class NotYet < StandardError; end
 
   def initialize(user, rank=0)
     @user = user
     @rank = rank
-    @before_character_conditions = user.characters.map(&:attributes)
+    @before_character_conditions = @user.characters.map(&:attributes)
     @done = false
   end
 
@@ -12,17 +11,17 @@ class Battle
     @user.characters.each do |character|
       character.damage!(10)
     end
+    @user.status.start_resurrect_timer! unless is_win
+    @after_character_conditions = @user.characters.map(&:attributes)
     @done = true
   end
 
   def is_win
-    raise NotYet unless @done
     @user.characters.any?(&:alive?)
   end
 
   def damages
-    raise NotYet unless @done
-    @user.characters.zip(@before_character_conditions).map {|now, before|  before["hp"] - now.hp}
+    @after_character_conditions.zip(@before_character_conditions).map {|after, before|  before["hp"] - after["hp"]}
   end
 
 private
