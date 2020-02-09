@@ -53,6 +53,10 @@ const store = new Vuex.Store({
         current_dungeon_id: 1,
         current_dungeon_depth: 1,
       },
+      characters: {
+        spica: {},
+        tirol: {},
+      }
     },
 
     masterdata: {

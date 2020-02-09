@@ -11,7 +11,7 @@
           .label
             | HP：
           .value
-            | {{$store.state.user.hp}} / {{$store.state.user.hp_max}}
+            | {{$store.state.user.characters.spica.hp}} / {{$store.state.user.characters.spica.hp_max}}
         .exp
           .label
             | EXP：
@@ -28,7 +28,7 @@
           .label
             | HP：
           .value
-            | 9132239 / 13554439
+            | {{$store.state.user.characters.tirol.hp}} / {{$store.state.user.characters.tirol.hp_max}}
         .exp
           .label
             | EXP：
