@@ -27,5 +27,21 @@ class BattleCharacter
     self.new(parameters, strength, hp)
   end
 
+  def hp
+    @hp
+  end
+
+  def alive?
+    @hp.positive?
+  end
+
+  def dead?
+    !alive?
+  end
+
+  def damage!(value)
+    @hp -= value
+  end
+
 #private
 end

@@ -26,6 +26,8 @@ class BattleEvent < Event
   def execute!(user)
     @battle = Battle.new(user)
     @battle.execute!
+    @battle.apply_damages!
+    user.status.start_resurrect_timer! unless @battle.is_win
   end
 
   def consume_time
