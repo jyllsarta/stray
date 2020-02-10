@@ -29,9 +29,9 @@
           .status
             .param(v-for="param in ['atk', 'def']")
               span.current
-                | {{param.toUpperCase()}}: {{$store.getters.getCharacterAccumulatedParameter($store.getters.getSubCharacterId, param, true)}}
+                | {{param.toUpperCase()}}: {{$store.getters.getCharacterStrength($store.getters.getSubCharacterId, param, true)}}
               span.diff
-                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.getters.getSubCharacterId, param)}})
+                | ({{$store.getters.getCharacterStrengthDiff($store.getters.getSubCharacterId, param)}})
           .equips
             .equip(
               v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)"
@@ -119,13 +119,13 @@
                 | +{{currentItem ? currentItem.effectValueOf(param) : ''}}
             .to_status
               .status
-                | ATK: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'atk', true)}}
+                | ATK: {{$store.getters.getCharacterStrength($store.state.ui.equip_window.main_character_id, 'atk', true)}}
               .status_diff
-                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.state.ui.equip_window.main_character_id, 'atk')}})
+                | ({{$store.getters.getCharacterStrengthDiff($store.state.ui.equip_window.main_character_id, 'atk')}})
               .status
-                | DEF: {{$store.getters.getCharacterAccumulatedParameter($store.state.ui.equip_window.main_character_id, 'def', true)}}
+                | DEF: {{$store.getters.getCharacterStrength($store.state.ui.equip_window.main_character_id, 'def', true)}}
               .status_diff
-                | ({{$store.getters.getCharacterAccumulatedParameterDiff($store.state.ui.equip_window.main_character_id, 'def')}})
+                | ({{$store.getters.getCharacterStrengthDiff($store.state.ui.equip_window.main_character_id, 'def')}})
 </template>
 
 <script lang="ts">

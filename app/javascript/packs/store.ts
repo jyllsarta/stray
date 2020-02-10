@@ -128,7 +128,7 @@ const store = new Vuex.Store({
       }
       return ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
     },
-    getItemRarityIcon: (state, getter) => (itemId) => {
+    getItemRarityIcon: (state) => (itemId) => {
       const item = state.masterdata.items[itemId];
       if(!item){
         return "";
@@ -143,13 +143,13 @@ const store = new Vuex.Store({
       const characterName =  [null, "spica", "tirol"][characterId];
       return state.ui.equip_window[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
     },
-    getCharacterAccumulatedParameter: (state, getters) => (characterId, paramName, isCurrent) => {
+    getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {
       const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
       const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent));
       return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
     },
-    getCharacterAccumulatedParameterDiff: (state, getters) => (characterId, paramName) => {
-      return getters.getCharacterAccumulatedParameter(characterId, paramName, true) - getters.getCharacterAccumulatedParameter(characterId, paramName, false);
+    getCharacterStrengthDiff: (state, getters) => (characterId, paramName) => {
+      return getters.getCharacterStrength(characterId, paramName, true) - getters.getCharacterStrength(characterId, paramName, false);
     },
     getCurrentDungeon: (state) => {
       //このスタブもnull安全演算子があれば回避できるんだけどなあ
