@@ -42,4 +42,23 @@ class User::Character < ApplicationRecord
   def resurrect!
     self.update!(hp: self.hp_max)
   end
+
+  def compacted_equips
+    equips.includes(user_item: [:item]).select{|equip| equip.user_item.present?}
+  end
+
+  def parameters
+    compacted_equips.each_with_object({}) do |equip, hash|
+      hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
+    end
+  end
+
+  def strength
+    lambda = ->(a, b){(a + b) /2  + [a, b].min}
+    params = parameters
+    {
+      atk: lambda.call(params[:str], params[:dex]),
+      def: lambda.call(params[:def], params[:agi])
+    }
+  end
 end
