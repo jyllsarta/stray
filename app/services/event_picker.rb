@@ -2,6 +2,11 @@ class EventPicker
   def initialize(user)
     @user = user
   end
+
+  def rank
+    @user.status.current_dungeon_rank
+  end
+
   def pick!
 
     # 死んでたら復活抽選しかしない
@@ -11,11 +16,11 @@ class EventPicker
     rand = SecureRandom.rand(3)
     case rand
     when 0
-      return ItemEvent.new(0, @user.status.event_updated_at)
+      return ItemEvent.new(rank, @user.status.event_updated_at)
     when 1
-      return StairEvent.new(0, @user.status.event_updated_at)
+      return StairEvent.new(rank, @user.status.event_updated_at)
     when 2
-      return BattleEvent.new(0, @user.status.event_updated_at)
+      return BattleEvent.new(rank, @user.status.event_updated_at)
     else
       raise "unknown event id"
     end

@@ -13,6 +13,11 @@
 
 class User::Status < ApplicationRecord
   belongs_to :user
+  belongs_to :dungeon, foreign_key: :current_dungeon_id
+
+  def current_dungeon_rank
+    dungeon.rank(current_dungeon_depth)
+  end
 
   def tick_timer!(seconds)
     self.event_updated_at += seconds

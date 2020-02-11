@@ -10,4 +10,8 @@
 #
 
 class Dungeon < ApplicationRecord
+  # TODO: 複数ダンジョン実装時にベースランクとランク上昇ペースを定義する
+  def rank(current_depth)
+    [current_depth / 40, self.depth].min
+  end
 end
