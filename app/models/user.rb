@@ -60,7 +60,7 @@ class User < ApplicationRecord
   end
 
   def debug_get_all_items!
-    Item.all.each do |item|
+    ::Item.all.each do |item|
       items.find_or_create_by(item: item)
     end
   end
