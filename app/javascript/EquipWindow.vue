@@ -177,6 +177,7 @@ export default {
       this.submit();
       this.$store.commit('syncEquipDraft');
       this.$store.commit('updateWindowShowState', {windowName: 'equip', state: false});
+      this.$store.commit("addEventLog", "装備を編集した！");
     }
   },
   computed: {
