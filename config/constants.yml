@@ -5,6 +5,9 @@ resurrect_time_seconds: 25
 character:
   initial_hp_max: 100
 
+item:
+  default_max_rank: 10
+
 event:
   item:
     max_rarity: 5
