@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "user_id", default: 0
     t.integer "character_id", default: 0
     t.integer "hp", default: 0
-    t.integer "hp_max", default: 100
+    t.integer "hp_max", default: 0
   end
 
   create_table "user_dungeon_progresses", force: :cascade do |t|
@@ -69,10 +69,10 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_statuses", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "current_dungeon_id", default: 1, null: false
     t.integer "current_dungeon_depth", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "resurrect_timer", default: 0, null: false
   end
 

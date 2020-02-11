@@ -2,5 +2,5 @@ create_table "user_characters", force: :cascade  do |t|
   t.integer :user_id, default: 0
   t.integer :character_id, default: 0 #1:spica, 2:tirol
   t.integer :hp, default: 0
-  t.integer :hp_max, default: 100
+  t.integer :hp_max, default: 0
 end
