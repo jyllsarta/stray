@@ -102,6 +102,12 @@ const store = new Vuex.Store({
       }
       return state.user.items[itemId].rank;
     },
+    // 画面表示用(ランク0ならプラスを表示しない)
+    getUserItemRankTextForDisplay: (state, getters) => (itemId) => {
+      const rank = getters.getUserItemRank(itemId);
+      // 0 はfalsy なことを使ったハック
+      return rank ? `+${rank}`: "";
+    },
     getItems: (state, getters) => {
       return Object.values(state.user.items).map(item=>getters.getUserItem(item.item_id));
     },

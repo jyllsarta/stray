@@ -64,7 +64,7 @@
               .category_icon
                 | ◆
               .item_name
-                | {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{item.rank}}
+                | {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}{{$store.getters.getUserItemRankTextForDisplay(item.id)}}
               .value
                 | {{$store.getters.getItemEffectValue(item.id)}}
             .item(v-for="nilItem in new Array(10 - $store.getters.getItemsWithPager.length).fill(1)")
@@ -104,7 +104,7 @@
                 @mouseleave="$store.commit('updateSelectingItemId', 0)"
                 @click="$store.commit('removeEquip', {itemId: item.id, characterId: $store.state.ui.equip_window.main_character_id})"
               )
-                |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}+{{$store.getters.getUserItemRank(item.id)}}
+                |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}{{$store.getters.getUserItemRankTextForDisplay(item.id)}}
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
