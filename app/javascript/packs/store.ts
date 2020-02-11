@@ -117,7 +117,7 @@ const store = new Vuex.Store({
       }
       let ui = Object.assign(state.user.items[itemId], state.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] + 0.1 * this.rank + this[paramName]);
+        return Math.floor(this[paramName] + 0.1 * this.rank * this[paramName]);
       };
       return ui;
     },
