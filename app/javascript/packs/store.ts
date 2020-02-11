@@ -203,6 +203,9 @@ const store = new Vuex.Store({
     },
     attachEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
+      if(state.ui.equip_window.draft[characterName].length >= Constants.maxEquipCount){
+        return;
+      }
       state.ui.equip_window.draft[characterName] = state.ui.equip_window.draft[characterName].concat(payload.itemId);
     },
     switchMainCharacter(state){
