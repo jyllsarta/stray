@@ -1,14 +1,15 @@
 class BattleCharacter
-  def initialize(parameters, strength, hp, character=nil)
+  def initialize(parameters, strength, hp, hp_max, character=nil)
     @parameters = parameters
     @strength = strength
     @hp = hp
+    @hp_max = hp_max
     # イベントボスなどの特殊戦闘ロジックで必要になったら直接参照する事もできることにする
     @ref_character = character
   end
 
   def self.new_player(character)
-    self.new(character.parameters, character.strength, character.hp, character)
+    self.new(character.parameters, character.strength, character.hp, character.hp_max, character)
   end
 
   def self.new_enemy(rank=0)
@@ -24,11 +25,24 @@ class BattleCharacter
       def: rank * 20
     }
     hp = rank * 30 + 100
-    self.new(parameters, strength, hp)
+    hp_max = hp
+    self.new(parameters, strength, hp, hp_max)
   end
 
   def hp
     @hp
+  end
+
+  def hp_max
+    @hp_max
+  end
+
+  def atk
+    @strength[:atk]
+  end
+
+  def def
+    @strength[:def]
   end
 
   def alive?
