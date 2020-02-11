@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     post :regenerate_token, on: :collection # アクセストークンの再取得
     get :status
     post :events
+    post :resurrect
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end

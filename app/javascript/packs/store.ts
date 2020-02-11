@@ -231,6 +231,20 @@ const store = new Vuex.Store({
       state.event.next_event_at = payload.next_event_at;
       state.event.events = state.event.events.concat(payload.events);
     },
+    addEventLog(state, payload){
+      const manualEvent = {
+        resolved: true,
+        detail: {},
+        logs: [
+          {
+            at: Math.floor(new Date()/1000),
+            message: payload
+          }
+        ],
+        type: "ManualEvent",
+      };
+      state.event.events.push(manualEvent);
+    },
     incrementItemRank(state, payload) {
       state.user.items[payload.item_id].rank += payload.amount;
     },

@@ -1,6 +1,9 @@
 <template lang="pug">
   .right_menu.window
-    .item.clickable
+    .item.clickable(
+      @mouseover="$store.commit('updateGuide', '手動で完全回復します。')",
+      @click="resurrect"
+    )
       | 回復
     .item.clickable(
       @mouseover="$store.commit('updateGuide', '装備メニューを表示します。')",
@@ -17,6 +20,7 @@
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
+import axios from "axios";
 
 export default {
   data: function () {
@@ -26,6 +30,31 @@ export default {
   mounted(){
   },
   methods: {
+    resurrect(){
+      const user_id = localStorage.user_id;
+      const path = `/users/${user_id}/resurrect`;
+      axios.post(
+        path,
+        {
+          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
+        },
+        {
+          headers: {
+            "X-AccessToken": localStorage.access_token,
+            accept: 'application/json'
+          }
+        })
+        .then((results) => {
+          console.log(results);
+          console.log("OK");
+          this.$store.commit("resurrect");
+          this.$store.commit("addEventLog", "ご主人パワーで完全回復した！");
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+        });
+    }
   }
 }
 </script>

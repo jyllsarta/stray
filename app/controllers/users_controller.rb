@@ -9,6 +9,11 @@ class UsersController < ApplicationController
     @next_event_at = current_user.status.next_event_at
   end
 
+  def resurrect
+    current_user.status.manual_resurrect!
+    render json: {success: true}, status: :ok
+  end
+
   def status
     @user = current_user
     @status = current_user.status

@@ -28,6 +28,13 @@ class User::Status < ApplicationRecord
     save!
   end
 
+  def manual_resurrect!
+    ActiveRecord::Base.transaction do
+      user.characters.map(&:resurrect!)
+      self.update!(resurrect_timer: Constants.resurrect_time_seconds)
+    end
+  end
+
   def start_resurrect_timer!
     self.update!(resurrect_timer: 0)
   end
