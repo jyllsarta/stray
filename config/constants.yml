@@ -4,3 +4,11 @@ resurrect_time_seconds: 25
 
 character:
   initial_hp_max: 100
+
+event:
+  item:
+    max_rarity: 5
+    # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり
+    id_range: 10
+    # レアリティidと重みを一致させたいのでrarity: 0 は重み0 をつける
+    weights: [0, 8000, 1400, 400, 150, 50]
