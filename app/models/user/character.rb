@@ -13,7 +13,7 @@ class User::Character < ApplicationRecord
   belongs_to :user
   has_many :equips, foreign_key: :user_character_id
   enum character_id: { spica: 1, tirol: 2 }
-  after_initialize :set_default
+  before_create :before_create
 
   def set_default
     self.hp = Constants.character.initial_hp_max

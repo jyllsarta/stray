@@ -54,7 +54,7 @@ class BattleCharacter
   end
 
   def damage!(value)
-    @hp -= value
+    @hp = [@hp - value, 0].max
   end
 
 #private
