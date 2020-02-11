@@ -50,9 +50,9 @@ class User < ApplicationRecord
     User::AccessToken.generate(user)
   end
 
-  def equip_no_duiplicate?
+  def equip_no_duplicate?
     item_ids = characters.map(&:equip_item_ids).flatten.compact
-    return item_ids.count == item_ids.uniq.count
+    item_ids.count == item_ids.uniq.count
   end
 
   def debug_charge_max_events!
