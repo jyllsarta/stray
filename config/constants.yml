@@ -4,6 +4,18 @@ resurrect_time_seconds: 25
 
 character:
   initial_hp_max: 100
+  # constants.tsと定義を共有しているので注意
+  default_parameters:
+    spica:
+      str: 10
+      dex: 10
+      def: 10
+      agi: 10
+    tirol:
+      str: 10
+      dex: 10
+      def: 10
+      agi: 10
 
 item:
   default_max_rank: 10

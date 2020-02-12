@@ -168,7 +168,9 @@ const store = new Vuex.Store({
     getCharacterParameter: (state, getters) => (characterId, paramName, isCurrent) => {
       const env = isCurrent ? 'draft' : 'initial';
       const characterName =  [null, "spica", "tirol"][characterId];
-      return state.ui.equip_window[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
+      const equipParameter = state.ui.equip_window[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0)
+      const defaultParameter = Constants.character.defaultParameters[characterName][paramName];
+      return equipParameter + defaultParameter;
     },
     getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {
       const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];

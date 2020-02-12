@@ -54,8 +54,8 @@ class User::Character < ApplicationRecord
   end
 
   def parameters
-    # 完全に裸だった場合nilを返してしまうので、デフォ0のオブジェクトから始めてイテレートする
-    compacted_equips.each_with_object({str: 0, dex: 0, def: 0, agi: 0}) do |equip, hash|
+    default_parameters = Constants.character.default_parameters[character_id].to_h
+    compacted_equips.each_with_object(default_parameters) do |equip, hash|
       hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
     end
   end
