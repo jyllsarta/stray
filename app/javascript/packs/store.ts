@@ -102,9 +102,9 @@ const store = new Vuex.Store({
       const order = state.ui.equip_window.current_sort_order
       switch(state.ui.equip_window.current_sort_id){
         case 0:
-          return (a, b) => { return (b.id - a.id) * order };
+          return (a, b) => { return (a.id - b.id) * order };
         case 1:
-          return (a, b) => { return (getters.getItemEffectValue(b.id) - getters.getItemEffectValue(a.id)) * order };
+          return (a, b) => { return (getters.getItemEffectValue(a.id) - getters.getItemEffectValue(b.id)) * order };
         default:
           console.warn("undefined sort algorithm set");
         return null;
@@ -248,6 +248,12 @@ const store = new Vuex.Store({
     resurrect(state){
       state.user.characters.spica.hp = state.user.characters.spica.hp_max;
       state.user.characters.tirol.hp = state.user.characters.tirol.hp_max;
+    },
+    reverseItemSortOrder(state){
+      state.ui.equip_window.current_sort_order *= -1;
+    },
+    switchItemSortLambda(state, payload){
+      state.ui.equip_window.current_sort_id = payload;
     },
 
     // ステート更新系

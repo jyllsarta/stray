@@ -53,6 +53,13 @@
                 | ページ {{$store.state.ui.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
               .button(@click="$store.commit('changePage', 1)")
                 | ▶
+            .sort
+              .reverse_order(@click="$store.commit('reverseItemSortOrder')")
+                | [{{$store.state.ui.equip_window.current_sort_order === 1 ? '昇順' : '降順'}}]
+              .change_order(@click="$store.commit('switchItemSortLambda', 0)")
+                | {{$store.state.ui.equip_window.current_sort_id === 0 ? '★' : ''}}ID順
+              .change_order(@click="$store.commit('switchItemSortLambda', 1)")
+                | {{$store.state.ui.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
           .item_list
             .item(
               v-for="item in $store.getters.getItemsWithPagerSorted",
@@ -292,8 +299,16 @@ export default {
         height: 50px;
         border-bottom: 1px solid $gray3;
         padding: $space;
+        display: flex;
         .pager{
           display: flex;
+          padding: $space;
+        }
+        .sort{
+          display: flex;
+          div{
+            padding: $space;
+          }
         }
       }
       .item_list{
