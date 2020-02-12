@@ -25,6 +25,8 @@ const store = new Vuex.Store({
         main_character_id: 1, // 装備編集中のキャラID
         selecting_item_id: 0, // 現在マウスがあたってる装備ID
         current_page: 1,
+        current_sort_id: 0,
+        current_sort_order: 1, // 1:asc, -1:desc
         draft: {
           spica: [],
           tirol: [],
@@ -96,6 +98,18 @@ const store = new Vuex.Store({
     getSubCharacterJapaneseName: (state, getters) => {
       return [null, "スピカ", "チロル"][getters.getSubCharacterId];
     },
+    getCurrentSortLambda: (state, getters) => {
+      const order = state.ui.equip_window.current_sort_order
+      switch(state.ui.equip_window.current_sort_id){
+        case 0:
+          return (a, b) => { return (b.id - a.id) * order };
+        case 1:
+          return (a, b) => { return (getters.getItemEffectValue(b.id) - getters.getItemEffectValue(a.id)) * order };
+        default:
+          console.warn("undefined sort algorithm set");
+        return null;
+      }
+    },
     getUserItemRank: (state) => (itemId) => {
       if(!state.user.items[itemId]){
         return 0;
@@ -114,6 +128,13 @@ const store = new Vuex.Store({
     getItemsWithPager: (state, getters) => {
       return Object.values(state.user.items)
           .map(item=>getters.getUserItem(item.item_id))
+          .slice((state.ui.equip_window.current_page - 1) * Constants.itemsPerPage ,(state.ui.equip_window.current_page) * Constants.itemsPerPage)
+          .filter(x=>x);
+    },
+    getItemsWithPagerSorted: (state, getters) => {
+      return Object.values(state.user.items)
+          .map(item=>getters.getUserItem(item.item_id))
+          .sort(getters.getCurrentSortLambda)
           .slice((state.ui.equip_window.current_page - 1) * Constants.itemsPerPage ,(state.ui.equip_window.current_page) * Constants.itemsPerPage)
           .filter(x=>x);
     },

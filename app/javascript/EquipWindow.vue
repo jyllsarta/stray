@@ -55,7 +55,7 @@
                 | ▶
           .item_list
             .item(
-              v-for="item in $store.getters.getItemsWithPager",
+              v-for="item in $store.getters.getItemsWithPagerSorted",
               @mouseenter="$store.commit('updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
