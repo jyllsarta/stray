@@ -123,7 +123,7 @@
             .this_item
               // TODO: マイナス対応
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
-                | +{{currentItem ? currentItem.effectValueOf(param) : ''}}
+                | {{currentItem ? withPlus(currentItem.effectValueOf(param)) : '-'}}
             .to_status
               .status
                 | ATK: {{$store.getters.getCharacterStrength($store.state.ui.equip_window.main_character_id, 'atk', true)}}
@@ -185,6 +185,9 @@ export default {
       this.$store.commit('syncEquipDraft');
       this.$store.commit('updateWindowShowState', {windowName: 'equip', state: false});
       this.$store.commit("addEventLog", "装備を編集した！");
+    },
+    withPlus(num){
+      return num > 0 ? "+" + num : num;
     }
   },
   computed: {
@@ -193,7 +196,7 @@ export default {
     },
     Constants(){
       return Constants;
-    }
+    },
   }
 }
 </script>
