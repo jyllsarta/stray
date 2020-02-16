@@ -26,5 +26,6 @@ const Constants = {
   nextEventDelaySeconds: 3,
   itemsPerPage: 10,
   maxEquipCount: 4,
+  eventIllustShowMilliSeconds: 2000,
 };
 export default Constants;

@@ -6,8 +6,9 @@
       Header
       RightMenu
       Status
-      Chat
       Log
+      Chat
+      EventIllust
       AccountWindow(v-if="$store.state.ui.window.account")
       EquipWindow(v-if="$store.state.ui.window.equip")
       Api(ref="api")
@@ -25,6 +26,7 @@ import RightMenu from './RightMenu'
 import Log from './Log'
 import Status from './Status'
 import Chat from './Chat'
+import EventIllust from './EventIllust'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import Timer from './Timer'
@@ -43,6 +45,7 @@ export default {
     Log,
     Status,
     Chat,
+    EventIllust,
     AccountWindow,
     EquipWindow,
     Timer,

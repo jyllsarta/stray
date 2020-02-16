@@ -35,6 +35,10 @@ const store = new Vuex.Store({
           spica: [],
           tirol: [],
         },
+      },
+      event_illust: {
+        showing: false,
+        type: "item",
       }
     },
 
@@ -256,6 +260,13 @@ const store = new Vuex.Store({
     },
     switchItemSortLambda(state, payload){
       state.ui.equip_window.current_sort_id = payload;
+    },
+    showEventIllust(state, payload){
+      state.ui.event_illust.showing = true;
+      state.ui.event_illust.type = payload;
+    },
+    removeEventIllust(state, payload){
+      state.ui.event_illust.showing = false;
     },
 
     // ステート更新系
