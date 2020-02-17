@@ -3,7 +3,7 @@
     transition(name="show-in")
       img.illust(
         v-if="$store.state.ui.event_illust.showing",
-        src="images/events/item.png"
+        :src="`images/events/${$store.state.ui.event_illust.type}.png`"
       )
 </template>
 

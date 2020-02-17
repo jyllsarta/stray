@@ -287,10 +287,10 @@ const store = new Vuex.Store({
         logs: [
           {
             at: Math.floor(new Date()/1000),
-            message: payload
+            message: payload.message
           }
         ],
-        type: "ManualEvent",
+        type: payload.type,
       };
       state.event.events.push(manualEvent);
     },

@@ -55,6 +55,9 @@ export default {
     // なーんかダーティな書き方な気がしてならないけど、とりあえず他に方法が思いつかなかったのでこれで
     "$store.state.event.events": {
       handler: function(events){
+        if(events.filter(event=>!event.resolved).length > 0){
+          this.showEventIllust(events.slice(-1)[0]);
+        }
         events.filter(event=>!event.resolved).forEach((event)=>{
           this.processEvent(event);
         });
@@ -62,18 +65,21 @@ export default {
     }
   },
   methods: {
+    showEventIllust(event){
+      this.$store.commit("showEventIllust", event.type);
+    },
     processEvent(event){
       switch (event.type) {
-        case "Item":
+        case "item":
           this.resolveItemEvent(event);
           break;
-        case "Battle":
+        case "battle":
           this.resolveBattleEvent(event);
           break;
-        case "Stair":
+        case "stair":
           this.resolveStairEvent();
           break;
-        case "Resurrect":
+        case "resurrect":
           this.resolveResurrectEvent(event);
           break;
         default:

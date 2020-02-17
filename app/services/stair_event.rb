@@ -4,7 +4,7 @@ class StairEvent < Event
   end
 
   def type
-    "Stair"
+    "stair"
   end
 
   def detail

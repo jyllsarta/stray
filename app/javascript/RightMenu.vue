@@ -48,7 +48,8 @@ export default {
           console.log(results);
           console.log("OK");
           this.$store.commit("resurrect");
-          this.$store.commit("addEventLog", "ご主人パワーで完全回復した！");
+          this.$store.commit("addEventLog", {message: "ご主人パワーで完全回復した！"});
+          this.$store.commit("showEventIllust", "resurrect");
         })
         .catch((error) => {
           console.warn(error.response);

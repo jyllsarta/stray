@@ -11,7 +11,7 @@ class ItemEvent < Event
   end
 
   def type
-    "Item"
+    "item"
   end
 
   def detail

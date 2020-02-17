@@ -5,7 +5,7 @@ class BattleEvent < Event
   end
 
   def type
-    "Battle"
+    "battle"
   end
 
   def detail

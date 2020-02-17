@@ -4,7 +4,7 @@ class ResurrectEvent < Event
   end
 
   def type
-    "Resurrect"
+    "resurrect"
   end
 
   def detail
