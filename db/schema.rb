@@ -71,9 +71,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "event_updated_at", null: false
     t.integer "current_dungeon_id", default: 1, null: false
     t.integer "current_dungeon_depth", default: 1, null: false
+    t.integer "resurrect_timer", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "resurrect_timer", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|
