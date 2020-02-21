@@ -1,6 +1,6 @@
-default_event_interval_seconds: 10
-max_event_consume_time_seconds: 1000
-resurrect_time_seconds: 25
+default_event_interval_seconds: <%= Rails.env.production? ? 50 : 10 %>
+max_event_consume_time_seconds: <%= Rails.env.production? ? 6000 : 1000 %>
+resurrect_time_seconds: <%= Rails.env.production? ? 3600 : 25 %>
 
 character:
   initial_hp_max: 100
