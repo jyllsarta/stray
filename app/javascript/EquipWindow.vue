@@ -1,5 +1,5 @@
 <template lang="pug">
-  .menu
+  .menu(@click.right.prevent="removeLastEquip")
     .back(@click="closeWindow")
     .window.content
       .title_area
@@ -150,6 +150,14 @@ export default {
     this.$store.commit("initializeEquipWindow");
   },
   methods: {
+    removeLastEquip(){
+      const characterId = this.$store.state.ui.equip_window.main_character_id;
+      const item = this.$store.getters.getCurrentEquipsByCharacterId(characterId).pop();
+      if(!item){
+        return;
+      }
+      this.$store.commit('removeEquip', {itemId: item.id, characterId: characterId})
+    },
     tryAttachEquip(itemId, characterId){
       if(!this.$store.getters.isAlreadyEquippedBySomeone(itemId)){
         this.$store.commit('attachEquip', {itemId: itemId, characterId: characterId})
