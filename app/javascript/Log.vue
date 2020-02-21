@@ -1,15 +1,17 @@
 <template lang="pug">
-  .log.window
-    .item(v-for="log in logs")
-      .at
-        | {{composeTime(log.at)}}
-      .content
-        | {{log.message}}
+  .log.window(ref="log")
+    transition-group(name="show-in")
+      .item(v-for="log in logs", :key="'' + log.pseudo_id + log.at")
+        .at
+          | {{composeTime(log.at)}}
+        .content
+          | {{log.message}}
 </template>
 
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
+import Vue from 'vue'
 
 export default {
   data: function () {
@@ -29,6 +31,22 @@ export default {
     composeTime(at){
       const date = new Date(at * 1000);
       return `${this.formatZero(date.getHours())}:${this.formatZero(date.getMinutes())}`
+    },
+    scroll(delta){
+      this.$refs.log.scrollBy(0, delta);
+    }
+  },
+  watch: {
+    "logs": {
+      handler: function(newVal, oldVal){
+        const count = newVal.length - oldVal.length;
+        Vue.nextTick(()=>{
+          //大雑把にだいたい画面の下の方にいたらスクロールする
+          if(this.$refs.log.scrollHeight - this.$refs.log.scrollTop < 600){
+            this.scroll(count * 50);
+          }
+        });
+      }
     }
   }
 }
@@ -79,6 +97,21 @@ export default {
     &:hover{
       filter: brightness(110%);
     }
+  }
+
+  .show-in-enter-active {
+    transition: all .3s;
+  }
+  .show-in-leave-active {
+    transition: all .3s;
+  }
+  .show-in-enter{
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  .show-in-leave-to{
+    transform: translateX(0px);
+    opacity: 0;
   }
 }
 </style>

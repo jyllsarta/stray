@@ -286,8 +286,10 @@ const store = new Vuex.Store({
         detail: {},
         logs: [
           {
+            // 手動追加されるログは同時刻に発生することがあり得るので、ユニーク性を担保するためにサロゲートキーを発行する
+            pseudo_id: Math.floor(Math.random() * 1000000000),
             at: Math.floor(new Date()/1000),
-            message: payload.message
+            message: payload.message,
           }
         ],
         type: payload.type,
