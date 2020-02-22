@@ -6,8 +6,11 @@
 # regenerate_token_users POST /users/regenerate_token(.:format)       users#regenerate_token
 #            user_status GET  /users/:user_id/status(.:format)        users#status
 #            user_events POST /users/:user_id/events(.:format)        users#events
+#         user_resurrect POST /users/:user_id/resurrect(.:format)     users#resurrect
 #       user_equips_edit POST /users/:user_id/equips/edit(.:format)   equips#edit
 #                  users POST /users(.:format)                        users#create
+#               messages GET  /messages(.:format)                     messages#index
+#                        POST /messages(.:format)                     messages#create
 #             masterdata GET  /masterdata(.:format)                   masterdata#index
 
 Rails.application.routes.draw do
@@ -22,5 +25,6 @@ Rails.application.routes.draw do
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end
+  resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
 end
