@@ -11,9 +11,9 @@ header{
   .title{
     font-size: 40px;
     line-height: 120%;
-    background: linear-gradient(to bottom, #ece9f4, #b5c3c7);//背景色にグラデーションを指定
-    -webkit-background-clip: text;//テキストでくり抜く
-    -webkit-text-fill-color: transparent;//くり抜いた部分は背景を表示
+    background: linear-gradient(to bottom, #ece9f4, #b5c3c7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
