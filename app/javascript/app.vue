@@ -13,6 +13,7 @@
       EquipWindow(v-if="$store.state.ui.window.equip")
       Api(ref="api")
       Timer
+    MessageForm
 </template>
 
 <script lang="ts">
@@ -30,6 +31,7 @@ import EventIllust from './EventIllust'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import Timer from './Timer'
+import MessageForm from './MessageForm'
 
 export default {
   data: function () {
@@ -49,6 +51,7 @@ export default {
     AccountWindow,
     EquipWindow,
     Timer,
+    MessageForm,
   },
   watch: {
     // イベント発生時の処理
