@@ -1,5 +1,33 @@
-.messages{
-  .message{
-    display: flex;
+
+.main{
+  background-color: rgb(35, 50, 67);
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 50px;
+  padding: 10px;
+  color: #f0f4f0;
+
+  .back_to_game{
+    padding: 5px;
+    font-size: 20px;
+  }
+
+  .messages{
+    .index{
+      border-bottom: 1px solid #646a74;
+    }
+    .message{
+      display: flex;
+      width: 100%;
+      .user_id{
+        margin: 2px;
+        width: 10%;
+        border-right: 1px solid #646a74;
+      }
+      .message{
+        margin: 2px;
+        width: 90%;
+      }
+    }
   }
 }

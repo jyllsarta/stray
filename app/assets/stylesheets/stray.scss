@@ -20,4 +20,10 @@ header{
 body{
   background-image: url("/images/ui/bg.png");
   background-repeat: repeat;
+  a:link, a:visited{
+    color: #93baeb;
+  }
+  a:hover{
+    color: #d4ddf1;
+  }
 }
