@@ -14,6 +14,21 @@
     width: $window-width;
     height: $window-height;
   }
+
+  .open_window-enter-active {
+    transition: all .1s;
+  }
+  .open_window-leave-active {
+    transition: all .1s;
+  }
+  .open_window-enter{
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  .open_window-leave-to{
+    transform: translateX(-30px);
+    opacity: 0;
+  }
 }
 
 .window{
@@ -63,11 +78,11 @@
 
   .content{
     position: absolute;
-    width: 95%;
-    height: 95%;
+    width: $window-width - $space * 4;
+    height: $window-height - $space * 4;
     background-color: $background;
-    top: 2.5%;
-    left: 2.5%;
+    top: $space * 2;
+    left: $space * 2;
     opacity: $opacity;
     padding: $space;
   }

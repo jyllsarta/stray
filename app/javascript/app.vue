@@ -9,8 +9,10 @@
       Log
       Chat
       EventIllust
-      AccountWindow(v-if="$store.state.ui.window.account")
-      EquipWindow(v-if="$store.state.ui.window.equip")
+      transition(name="open_window")
+        AccountWindow(v-if="$store.state.ui.window.account")
+      transition(name="open_window")
+        EquipWindow(v-if="$store.state.ui.window.equip")
       Api(ref="api")
       Timer
     MessageForm

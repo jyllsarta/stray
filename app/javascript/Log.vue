@@ -100,13 +100,13 @@ export default {
   }
 
   .show-in-enter-active {
-    transition: all .3s;
+    transition: all .1s;
   }
   .show-in-leave-active {
-    transition: all .3s;
+    transition: all .1s;
   }
   .show-in-enter{
-    transform: translateX(-50px);
+    transform: translateX(0px);
     opacity: 0;
   }
   .show-in-leave-to{
