@@ -20,7 +20,7 @@ const store = new Vuex.Store({
         account: false,
         equip: false,
       },
-      guide: "ここにガイドが出るよ",
+      guide: "-",
       equip_window: {
         main_character_id: 1, // 装備編集中のキャラID
         selecting_item_id: 0, // 現在マウスがあたってる装備ID
