@@ -21,7 +21,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "start": "webpack --config webpack.dev.js"
+    "build": "webpack --config webpack.prod.js --progress",
+    "start": "webpack-dev-server --config webpack.dev.js --progress --colors"
   }
 }
