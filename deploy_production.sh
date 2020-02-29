@@ -16,8 +16,8 @@ bundle exec rails db:ridgepole:apply
 echo "# db seed"
 bundle exec rails db:seed
 
-echo "# precompile asset"
-bundle exec rails assets:precompile
+echo "# compile asset"
+yarn build
 
 echo "# kill older server"
 bundle exec rails db:seed
