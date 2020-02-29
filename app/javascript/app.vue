@@ -55,6 +55,10 @@ export default {
     Timer,
     MessageForm,
   },
+  mounted(){
+    const x = null;
+    console.log(x?.a);
+  },
   watch: {
     // イベント発生時の処理
     // なーんかダーティな書き方な気がしてならないけど、とりあえず他に方法が思いつかなかったのでこれで
