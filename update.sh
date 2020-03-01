@@ -16,3 +16,5 @@ bundle exec rails db:ridgepole:apply
 echo "# db seed"
 bundle exec rails db:seed
 
+echo "#test db migrate"
+RAILS_ENV=test bundle exec rails db:ridgepole:apply
