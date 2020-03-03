@@ -58,13 +58,12 @@ jobs: # a collection of steps
 
       - run:
           name: Database setup
-          command: bin/rails db:ridgepole:apply --trace
+          command: bin/rails db:ridgepole:apply
 
       - run:
           name: Run rspec in parallel
           command: |
             bundle exec rspec --profile 10 \
-                              --format RspecJunitFormatter \
                               --out test_results/rspec.xml \
                               --format progress \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
