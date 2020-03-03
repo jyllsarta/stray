@@ -25,10 +25,10 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "dex"
     t.integer "def"
     t.integer "agi"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "rarity"
     t.string "flavor_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -77,11 +77,11 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_statuses", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "current_dungeon_id", default: 1, null: false
     t.integer "current_dungeon_depth", default: 1, null: false
     t.integer "resurrect_timer", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
