@@ -1,24 +1,17 @@
-# README
+[![codecov](https://codecov.io/gh/jyllsarta/stray/branch/master/graph/badge.svg)](https://codecov.io/gh/jyllsarta/stray)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# スピカとチロル
 
-Things you may want to cover:
+* 放置ゲー
+* ブラウザ
+* kawaii!
 
-* Ruby version
+なお手軽ゲームです。開発中。web公開予定。
 
-* System dependencies
+## install
 
-* Configuration
+サーバが動いてなくても自分で遊ぶ環境を構築できます。
 
-* Database creation
+WIP
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`.circle/config.yml` を読めば分かる人はわかると思う
