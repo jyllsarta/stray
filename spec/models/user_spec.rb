@@ -70,6 +70,28 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#regenetate_token" do
+    let(:user){ create(:user) }
+    let(:random_name){ SecureRandom.hex(16) }
+    let(:password){ "my secret password" }
+    before do
+      user.register_name(name: random_name, password: password)
+    end
+    subject { User.regenerate_token(name: name, password: password) }
+    context "user exists" do
+      let(:name){ user.name }
+      it "succeeds" do
+        expect{subject}.to_not raise_error
+      end
+    end
+    context "user doesn't exists" do
+      let(:name){ user.name + "X" }
+      it "fails" do
+        expect{subject}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe "#equip_no_duplicate?" do
     let(:user){ create(:user) }
     subject { user.equip_no_duplicate? }
