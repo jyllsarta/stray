@@ -64,6 +64,10 @@ jobs: # a collection of steps
           command: bin/rails db:ridgepole:apply
 
       - run:
+          name: Copy Sample ENV
+          command: cp dotenv.example .env
+
+      - run:
           name: Run rspec in parallel
           command: |
             bundle exec rspec --profile 10 \
