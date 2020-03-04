@@ -12,6 +12,7 @@
 require 'rails_helper'
 
 RSpec.describe User::Character, type: :model do
+  let!(:dungeon){ create(:dungeon) }
   let(:user){ User.create }
 
   describe "#set_default" do
