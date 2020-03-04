@@ -11,8 +11,8 @@
 
 FactoryBot.define do
   factory :user, class: 'User' do
-    sequence(:id) {|n| SecureRandom.rand(100_000_000..999_999_999)}
-    sequence(:name) {|n| "#{n} aqua"}
+    sequence(:id) {|_| SecureRandom.rand(100_000_000..999_999_999)}
+    name{"user ##{id}"}
     password_hash {""}
   end
 end

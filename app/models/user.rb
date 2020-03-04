@@ -41,7 +41,7 @@ class User < ApplicationRecord
     # 自分以外に同じ名前で登録しているやつがいたらエラーを出す
     raise EmptyName if name.blank?
     raise EmptyPassword if password.blank?
-    raise AlreadyUsed if User.where.not(id: self.id).exists?(name: name)
+    raise AlreadyUsed if User.same_name_user_exists?(self.id, name)
     self.update!(name: name, password_hash: User.hash_method(password))
   end
 
@@ -66,6 +66,11 @@ class User < ApplicationRecord
   end
 
   private
+
+  def self.same_name_user_exists?(id, name)
+    where.not(id: id).exists?(name: name)
+  end
+
   def self.hash_method(token)
     Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])
   end
