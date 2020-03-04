@@ -10,5 +10,7 @@
 
 FactoryBot.define do
   factory :user_item, class: 'User::Item' do
+    item_id {1}
+    rank {1}
   end
 end
