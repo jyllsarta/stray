@@ -12,4 +12,14 @@
 require 'rails_helper'
 
 RSpec.describe User::AccessToken, type: :model do
+  describe "#create" do
+    let(:user){ create(:user) }
+    subject { User::AccessToken.generate(user) }
+    it "returns token string" do
+      expect(subject.class).to eq(String)
+    end
+    it "creates record" do
+      expect{ subject }.to change(User::AccessToken, :count).by(1)
+    end
+  end
 end
