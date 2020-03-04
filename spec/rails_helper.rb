@@ -13,4 +13,8 @@ require 'rails_helper'
 require 'rspec/rails'
 require 'factory_bot_rails'
 
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+
 Dir[Rails.root.join("spec/support/*.rb")].each {|f| require f }
