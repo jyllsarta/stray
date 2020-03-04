@@ -11,5 +11,7 @@
 
 FactoryBot.define do
   factory :dungeon, class: 'Dungeon' do
+    depth { 100 }
+    name { "サメの巣" }
   end
 end
