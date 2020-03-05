@@ -76,10 +76,10 @@ jobs: # a collection of steps
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
       - run:
           name: Post Result to Twitter(succeeded)
-          command: bundle exec rake post_result
+          command: bundle exec rake twitter:post_success
       - run:
           name: Post Result to Twitter(failed)
-          command: bundle exec rake post_result
+          command: bundle exec rake twitter:post_fail
           when: on_fail
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
