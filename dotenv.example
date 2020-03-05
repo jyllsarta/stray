@@ -1,2 +1,8 @@
 PASSWORD_SALT=my_secret_salt
 SECRET_KEY_BASE=my_secret_secret_key
+TWITTER_CONSUMER_KEY=xxxxxxxxxx
+TWITTER_CONSUMER_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWITTER_ACCESS_KEY=xxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxx
+TWITTER_ACCESS_TOKEN_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CIRCLECI_PROJECT_URL=https://circleci.com/gh/__YOUR_GITHUB_ACCOUNT__/__YOUR_REPOSITORY_NAME__/
+TWITTER_USERNAME=@null

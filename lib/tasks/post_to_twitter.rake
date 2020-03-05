@@ -13,10 +13,54 @@ end
 
 namespace :twitter do
   task post_success: :environment do
-    TwitterAPI.post("テスト通ったわよ！ https://circleci.com/gh/jyllsarta/stray/#{ENV['CIRCLE_BUILD_NUM']}")
+    emoji = random_success_emoji
+    TwitterAPI.post("[BUILD PASSED] #{emoji}#{random_success_message}#{emoji} #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
   end
 
   task post_fail: :environment do
-    TwitterAPI.post("@jyll ばかばかっ！テスト落ちてるよ！！ https://circleci.com/gh/jyllsarta/stray/#{ENV['CIRCLE_BUILD_NUM']}")
+    emoji = random_fail_emoji
+    TwitterAPI.post("#{ENV['TWITTER_USERNAME']} [BUILD FAILED] #{emoji}#{random_fail_message}#{emoji} #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
+  end
+
+  private
+
+  def random_success_message
+    [
+      "テスト通ったわよ！",
+      "YOU WIN",
+      "百点あげちゃうわ！",
+      "パーフェクトでござる",
+      "やりますね！",
+      "いぇいいぇーいっ！！！",
+      "さすがご主人さまです",
+      "いいジャン",
+      "やるぅーっ",
+      "いーーーーーーーねっ！",
+      "見てくださいこの美しいコミット"
+    ].sample
+  end
+
+  def random_fail_message
+    [
+      "ばかばかっ！テスト落ちてるじゃない！",
+      "テストが落ちたわよ",
+      "CI失敗してるから見といて",
+      "へんじがない　ただのしかばねのようだ",
+      "ダメっぽいねこりゃ　だめっぽいっすね",
+      "ちょちょちょちょーい！！",
+      "運営がテストこけさせてますよ",
+      "こらこらこらこらーっ！",
+      "ちょっ...テスト落ちてるわよ！",
+      "ぴぴー！ぴぴぴぴぴぴぴーーーー！！",
+      "オアーッ"
+    ].sample
+  end
+
+  def random_success_emoji
+    "😃😉😗😺👌✌️👍👏🙌🙏💪👦🙆🙋🤴🧙🧚🧜💃🕺👑💌🎆🎇🎉🎊💡🍈🥐🥓🍢🍩🍺🍻🥂💗💯♨️✔️✅⭕🉐🈁🉑㊗️".split("").sample
+  end
+
+  def random_fail_emoji
+    "🙃🙄🤢😮😞😈💀☠️💩👻👽👾✋👎👊🙅‍♀️🤷‍♀️👮💂👷🧟💣🔪🧨💸⚔️🔫💊🛏️🍌🥒🍤💢💤💔🔔⚠️⛔☢️🔞❗📛❌🈲".split("").sample
   end
 end
