@@ -74,6 +74,12 @@ jobs: # a collection of steps
                               --out test_results/rspec.xml \
                               --format progress \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      # Save test results for timing analysis
+      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: test_results
+      - codecov/upload:
+          file: test_results/rspec.xml
+  post_result:
       - run:
           name: Post Result to Twitter(succeeded)
           command: bundle exec rake twitter:post_success
@@ -81,8 +87,12 @@ jobs: # a collection of steps
           name: Post Result to Twitter(failed)
           command: bundle exec rake twitter:post_fail
           when: on_fail
-      # Save test results for timing analysis
-      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: test_results
-      - codecov/upload:
-          file: test_results/rspec.xml
+
+workflows:
+    version: 2
+    build-deploy:
+        jobs:
+            - build
+            - post_result:
+                requires:
+                    - build
