@@ -96,6 +96,10 @@ workflows:
     build-deploy:
         jobs:
             - build:
+                filters:
+                    branches:
+                        ignore:
+                            - /feature-.*/
             - post_result:
                 requires:
                     - build
