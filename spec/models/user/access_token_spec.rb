@@ -22,4 +22,21 @@ RSpec.describe User::AccessToken, type: :model do
       expect{ subject }.to change(User::AccessToken, :count).by(1)
     end
   end
+
+  describe "#find_user_by_token!" do
+    let(:user){ create(:user) }
+    subject { User::AccessToken.find_user_by_token!(token) }
+    context "token exists" do
+      let!(:token) { User::AccessToken.generate(user) }
+      it "returns user" do
+        expect(subject).to eq(user)
+      end
+    end
+    context "with no token" do
+      let(:token) { "" }
+      it "returns user" do
+        expect{subject}.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
 end
