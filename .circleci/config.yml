@@ -14,6 +14,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: circleci-demo-ruby
           RAILS_ENV: test
+    working_directory: ~/stray
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
 
@@ -82,6 +83,7 @@ jobs: # a collection of steps
   post_result:
     docker: # run the steps with Docker
       - image: circleci/ruby:2.6.5-stretch-node # ...with this image as the primary container; this is where all `steps` will run
+    working_directory: ~/stray
     steps:
       - run:
           name: Post Result to Twitter(succeeded)
