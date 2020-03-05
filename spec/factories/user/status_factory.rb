@@ -14,5 +14,8 @@
 
 FactoryBot.define do
   factory :user_status, class: 'User::Status' do
+    current_dungeon_depth { 1 }
+    event_updated_at { Time.now }
+    current_dungeon_id { 1 }
   end
 end
