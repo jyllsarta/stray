@@ -49,10 +49,6 @@ class User::Character < ApplicationRecord
     self.update!(hp: self.hp_max)
   end
 
-  def compacted_equips
-    equips.includes(user_item: [:item]).select{|equip| equip.user_item.present?}
-  end
-
   def parameters
     default_parameters = Constants.character.default_parameters[character_id].to_h
     compacted_equips.each_with_object(default_parameters) do |equip, hash|
@@ -67,5 +63,11 @@ class User::Character < ApplicationRecord
       atk: lambda.call(params[:str], params[:dex]),
       def: lambda.call(params[:def], params[:agi])
     }
+  end
+
+  private
+
+  def compacted_equips
+    equips.includes(user_item: [:item]).select{|equip| equip.user_item.present?}
   end
 end

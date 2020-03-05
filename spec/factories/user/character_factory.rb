@@ -11,5 +11,6 @@
 
 FactoryBot.define do
   factory :user_character, class: 'User::Character' do
+    character_id {1}
   end
 end
