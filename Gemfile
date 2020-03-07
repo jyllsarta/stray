@@ -36,6 +36,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'codecov'
   gem 'twitter'
+  gem 'json_expressions'
 end
 
 group :development do
