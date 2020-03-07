@@ -142,6 +142,11 @@ RSpec.describe "Users", type: :request do
         do_post
         response
       end
+      before do
+        # イベントのフォーマットと内容のテストは別の場所でやる
+        # ここで全種類のイベントが発生できるようにfactoryを書くのは地獄なのでやらない
+        user.status.update!(event_updated_at: Time.now)
+      end
       it 'returns events list' do
         expect(subject).to have_http_status(200)
         expect(JSON.parse(response.body)).to match_json_expression(
