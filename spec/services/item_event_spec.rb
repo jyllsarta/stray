@@ -52,6 +52,7 @@ RSpec.describe ItemEvent, type: :model do
         expect{subject}.to change(user.items, :count).by(1)
       end
     end
+
     context "持ってるアイテムが選ばれた時" do
       context "ランクがまだ最大になっていなかったら" do
         let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: 1)}
@@ -88,6 +89,14 @@ RSpec.describe ItemEvent, type: :model do
       end
     end
 
+    context "とても高いランクのイベントが発生した時" do
+      let(:rank){100000}
+      it "正常にランダムアイテムが付与される" do
+        subject
+        # このspec内ではアイテムIDは 1 ~ 5 しか存在しない
+        expect((1..5).include?(event.instance_variable_get("@item_id"))).to be_truthy
+      end
+    end
   end
   describe "#consume_time" do
     subject { event.consume_time }

@@ -60,7 +60,6 @@ private
       sum += weight
       return i if seed <= sum
     end
-    raise "no way!"
   end
 
   def lot_item!(rank, rarity)
