@@ -1,6 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+
+  describe "POST /users/create" do
+    let(:do_post) { post users_path + ".json", params: params }
+    let(:params) do
+      {}
+    end
+    subject do
+      do_post
+      response
+    end
+    it 'returns events list' do
+      expect(subject).to have_http_status(200)
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   access_token: String,
+                                                   user_id: Integer
+                                               }
+                                           )
+    end
+  end
+
   describe "POST /users/:id/register_name" do
     include_context("stub_current_user")
     let(:user){ User.create }
@@ -101,6 +122,8 @@ RSpec.describe "Users", type: :request do
   describe "GET /users/:id/status" do
     include_context("stub_current_user")
     let(:user){ User.create }
+    let!(:item){ create(:item) }
+    let!(:user_item){ create(:user_item, user: user, item: item)}
     let(:do_get) { get user_status_path(user_id: user.id) + ".json" }
     subject do
       do_get
@@ -113,7 +136,9 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    payload: {
                                                        user_id: Integer,
-                                                       items: Hash,
+                                                       items: {
+                                                           "#{item.id}": Hash,
+                                                       },
                                                        status: {
                                                            current_dungeon_depth: Integer,
                                                            current_dungeon_id: Integer
