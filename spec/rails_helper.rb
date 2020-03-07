@@ -18,3 +18,9 @@ RSpec.configure do |config|
 end
 
 Dir[Rails.root.join("spec/support/*.rb")].each {|f| require f }
+
+shared_context "stub_current_user" do
+  before do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+  end
+end
