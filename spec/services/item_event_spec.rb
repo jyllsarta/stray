@@ -1,14 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe ItemEvent, type: :model do
+  before do
+    # Item は IDにロジックが食い込んでるのでtest dbに適当に溜め込むわけにはいかない
+    Item.delete_all
+  end
   let(:user){create(:user)}
   let(:event){ ItemEvent.new(rank) }
   let(:rank){1}
-  let!(:item1){create(:item, rarity: 1)}
-  let!(:item2){create(:item, rarity: 2)}
-  let!(:item3){create(:item, rarity: 3)}
-  let!(:item4){create(:item, rarity: 4)}
-  let!(:item5){create(:item, rarity: 5)}
+  let!(:item1){create(:item, id: 1, rarity: 1)}
+  let!(:item2){create(:item, id: 2, rarity: 2)}
+  let!(:item3){create(:item, id: 3, rarity: 3)}
+  let!(:item4){create(:item, id: 4, rarity: 4)}
+  let!(:item5){create(:item, id: 5, rarity: 5)}
 
   describe "#type" do
     subject { event.type }
