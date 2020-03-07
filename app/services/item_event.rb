@@ -39,7 +39,7 @@ class ItemEvent < Event
     user_item = user.items.find_or_initialize_by(item_id: @item_id)
     @_message = get_message(user_item)
     # TODO: 金実装時におまけで金を貰えるようにする
-    user_item.rank += @amount if user_item.rank < Constants.item.default_max_rank
+    user_item.rank = [user_item.rank + @amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank
     user_item.save!
     @done = true
   end
