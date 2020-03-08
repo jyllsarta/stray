@@ -170,7 +170,7 @@ RSpec.describe "Users", type: :request do
       before do
         # イベントのフォーマットと内容のテストは別の場所でやる
         # ここで全種類のイベントが発生できるようにfactoryを書くのは地獄なのでやらない
-        user.status.update!(event_updated_at: Time.now)
+        user.status.update!(event_updated_at: Time.now + 1.hour)
       end
       it 'returns events list' do
         expect(subject).to have_http_status(200)
