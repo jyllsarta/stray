@@ -8,9 +8,10 @@ class StairEvent < Event
   end
 
   def detail
+    # TODO: itemからのコピペミスだと思うので直す
     {
       id: @item_id,
-      amount: @amount  
+      amount: @amount
     }
   end
 
