@@ -29,6 +29,7 @@ class BattleCharacter
     self.new(parameters, strength, hp, hp_max)
   end
 
+  # TODO: これ attr_reader でええやんな
   def hp
     @hp
   end
