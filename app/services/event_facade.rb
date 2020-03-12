@@ -19,11 +19,13 @@ class EventFacade
     events
   end
 
+  # TODO: ここ以降全部privateにしたい
+
   def pick_next_event(user)
     EventPicker.new(user).pick!
   end
 
   def next_event_available?(user, event)
-    @now - user.status.event_updated_at > event.consume_time
+    @now - user.status.event_updated_at >= event.consume_time
   end
 end
