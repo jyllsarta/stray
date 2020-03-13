@@ -156,7 +156,7 @@ export default {
   },
   store,
   mounted(){
-    this.$store.commit("initializeEquipWindow");
+    this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
     this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。')
   },
   methods: {
@@ -193,7 +193,7 @@ export default {
     },
     closeWindow(){
       this.submit();
-      this.$store.commit('syncEquipDraft');
+      this.$store.commit('syncEquipDraft', this.$store.state.equip_window.draft);
       this.$store.commit('window/updateWindowShowState', {windowName: 'equip', state: false});
       this.$store.commit("addEventLog", {message: "装備を編集した！"});
     },

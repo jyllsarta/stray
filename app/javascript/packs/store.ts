@@ -17,8 +17,8 @@ const store = new Vuex.Store({
       user_id: 999999999,
       items: {},
       equips: {
-        1: [],
-        2: [],
+        spica: [],
+        tirol: [],
       },
       status: {
         current_dungeon_id: 1,
@@ -48,21 +48,11 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    // eqwinから持ってき損ね
-    initializeEquipWindow(state){
+    syncEquipDraft(state, payload){
       ["spica", "tirol"].forEach(characterName=>{
-        state.equip_window.draft[characterName] = state.user.equips[characterName];
-        state.equip_window.initial[characterName] = state.user.equips[characterName];
+        state.user.equips[characterName] = payload[characterName];
       });
     },
-    syncEquipDraft(state){
-      ["spica", "tirol"].forEach(characterName=>{
-        state.user.equips[characterName] = state.equip_window.draft[characterName];
-      });
-    },
-    //ここまで
-
-
     incrementCurrentDungeonDepth(state){
       state.user.status.current_dungeon_depth++;
     },

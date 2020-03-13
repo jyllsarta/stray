@@ -128,6 +128,12 @@ export default {
     },
   },
   mutations: {
+    initializeEquipWindow(state, payload){
+      ["spica", "tirol"].forEach(characterName=>{
+        state.draft[characterName] = payload[characterName];
+        state.initial[characterName] = payload[characterName];
+      });
+    },
     updateSelectingItemId(state, payload){
       state.selecting_item_id = payload;
     },
