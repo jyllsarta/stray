@@ -19,6 +19,7 @@ class User < ApplicationRecord
   class EmptyName < StandardError; end
   class EmptyPassword < StandardError; end
   class DuplicateEquips < StandardError; end
+  class NotFound < StandardError; end
 
   def self.create
     user = self.new
@@ -46,7 +47,8 @@ class User < ApplicationRecord
   end
 
   def self.regenerate_token(name: nil, password: nil)
-    user = User.find_by!(name: name, password_hash: User.hash_method(password))
+    user = User.find_by(name: name, password_hash: User.hash_method(password))
+    raise NotFound unless user
     User::AccessToken.generate(user)
   end
 

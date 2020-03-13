@@ -26,18 +26,10 @@ class UsersController < ApplicationController
 
   def register_name
     current_user.register_name(name: params[:name], password: params[:password])
-  rescue User::AlreadyUsed
-    render json: {success: false, message: "このユーザ名は使われています。"}, status: :bad_request
-  rescue User::EmptyName
-    render json: {success: false, message: "名前が空です。"}, status: :bad_request
-  rescue User::EmptyPassword
-    render json: {success: false, message: "パスワードが空です。"}, status: :bad_request
   end
 
   def regenerate_token
     @access_token = User.regenerate_token(name: params[:name], password: params[:password])
     @user = User.find_by!(name: params[:name])
-  rescue ActiveRecord::RecordNotFound
-    render json: {success: false, message: "ユーザ名かパスワードが違います。"}, status: :not_found
   end
 end

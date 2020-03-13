@@ -87,7 +87,7 @@ RSpec.describe User, type: :model do
     context "user doesn't exists" do
       let(:name){ user.name + "X" }
       it "fails" do
-        expect{subject}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{subject}.to raise_error(User::NotFound)
       end
     end
   end

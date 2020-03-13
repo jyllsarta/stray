@@ -4,3 +4,19 @@ ApplicationController::NoToken:
 User::DuplicateEquips:
   status: bad_request
   message: 装備が重複しています。
+MessagesController::EmptyRequest:
+  status: bad_request
+  message: メッセージが空だよ
+User::AlreadyUsed:
+  status: bad_request
+  message: このユーザ名は使われています。
+User::EmptyName:
+  status: bad_request
+  message: 名前が空です。
+User::EmptyPassword:
+  status: bad_request
+  message: パスワードが空です。
+User::NotFound:
+  status: not_found
+  message: ユーザ名かパスワードが違います。
+

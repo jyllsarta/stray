@@ -5,8 +5,6 @@ class MessagesController < ApplicationController
     raise EmptyRequest if params[:message].blank?
     Message.create!(user_id: current_user.id, message: params[:message])
     render json: {success: true}, status: :ok
-  rescue EmptyRequest
-    render json: {success: false, message: "メッセージが空だよ"}, status: :bad_request
   end
 
   def index
