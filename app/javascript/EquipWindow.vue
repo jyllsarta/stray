@@ -11,11 +11,11 @@
           | 装備
       .body
         .sub_chara
-          img.sub_character_image(:src="'images/characters/' + $store.getters.getSubCharacterName + '.png'")
+          img.sub_character_image(:src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'")
         .chara
-          img.character_image(:src="'images/characters/' + $store.getters.getMainCharacterName + '.png'")
+          img.character_image(:src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'")
         .switch_character_button.clickable(
-          @click="$store.commit('switchMainCharacter')"
+          @click="$store.commit('equip_window/switchMainCharacter')"
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
           )
           | 編集キャラ交代
@@ -31,22 +31,22 @@
               | 加護がありません
         .sub_chara_status.block
           .label
-            | {{$store.getters.getSubCharacterJapaneseName}}のステータス
+            | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
           .status
             .param(v-for="param in ['atk', 'def']")
               span.current
-                | {{param.toUpperCase()}}: {{$store.getters.getCharacterStrength($store.getters.getSubCharacterId, param, true)}}
+                | {{param.toUpperCase()}}: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], param, true)}}
               span.diff
-                | ({{$store.getters.getCharacterStrengthDiff($store.getters.getSubCharacterId, param)}})
+                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param)}})
           .equips
             .equip(
-              v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId)"
-              @mouseenter="$store.commit('updateSelectingItemId', item.id)"
-              @mouseleave="$store.commit('updateSelectingItemId', 0)"
+              v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
+              @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
+              @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
             )
               | {{item.name}}
             // 空枠を埋める
-            .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters.getCurrentEquipsByCharacterId($store.getters.getSubCharacterId).length).fill(1))")
+            .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
               | -
         .item_list_main.block
           .label
@@ -56,34 +56,34 @@
               .button(@click="$store.commit('changePage', -1)")
                 | ◀
               .state
-                | ページ {{$store.state.ui.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
+                | ページ {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
               .button(@click="$store.commit('changePage', 1)")
                 | ▶
             .sort
               .reverse_order(
-                @click="$store.commit('reverseItemSortOrder')"
+                @click="$store.commit('equip_window/reverseItemSortOrder')"
                 @mouseover="$store.commit('guide/updateGuide', 'クリックで昇順と降順を切り替えます。')",
               )
-                | [{{$store.state.ui.equip_window.current_sort_order === 1 ? '昇順' : '降順'}}]
-              .change_order(@click="$store.commit('switchItemSortLambda', 0)", @mouseover="$store.commit('guide/updateGuide', 'ソート順をID順に切り替えます。')",)
-                | {{$store.state.ui.equip_window.current_sort_id === 0 ? '★' : ''}}ID順
-              .change_order(@click="$store.commit('switchItemSortLambda', 1)", @mouseover="$store.commit('guide/updateGuide', 'ソート順を効果値順に切り替えます。')",)
-                | {{$store.state.ui.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
+                | [{{$store.state.equip_window.current_sort_order === 1 ? '昇順' : '降順'}}]
+              .change_order(@click="$store.commit('equip_window/switchItemSortLambda', 0)", @mouseover="$store.commit('guide/updateGuide', 'ソート順をID順に切り替えます。')",)
+                | {{$store.state.equip_window.current_sort_id === 0 ? '★' : ''}}ID順
+              .change_order(@click="$store.commit('equip_window/switchItemSortLambda', 1)", @mouseover="$store.commit('guide/updateGuide', 'ソート順を効果値順に切り替えます。')",)
+                | {{$store.state.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
           .item_list
             .item(
-              v-for="item in $store.getters.getItemsWithPagerSorted",
-              @mouseenter="$store.commit('updateSelectingItemId', item.id)"
-              @mouseleave="$store.commit('updateSelectingItemId', 0)"
-              @click="tryAttachEquip(item.id, $store.state.ui.equip_window.main_character_id)"
-              :class="$store.getters.isAlreadyEquippedBySomeone(item.id) ? 'disabled' : ''"
+              v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
+              @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
+              @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
+              @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
+              :class="$store.getters['equip_window/isAlreadyEquippedBySomeone'](item.id) ? 'disabled' : ''"
             )
               .category_icon
                 | ◆
               .item_name
-                | {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}{{$store.getters.getUserItemRankTextForDisplay(item.id)}}
+                | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
               .value
-                | {{$store.getters.getItemEffectValue(item.id)}}
-            .item(v-for="nilItem in new Array(10 - $store.getters.getItemsWithPager.length).fill(1)")
+                | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+            .item(v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
               .category_icon
                 | ◆
               .item_name
@@ -97,7 +97,7 @@
             | {{currentItem ? currentItem.name : "-"}}
           .parameters
             .parameter
-              | TOTAL {{$store.getters.getItemEffectValue($store.state.ui.equip_window.selecting_item_id)}}
+              | TOTAL {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
             .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
               | {{param.toUpperCase()}} {{currentItem ? currentItem.effectValueOf(param) : ''}}
           .flavor_text
@@ -105,7 +105,7 @@
         .main_chara_equips.block
           .label_box
             .label
-              | {{$store.getters.getMainCharacterJapaneseName}}のステータス
+              | {{$store.getters['equip_window/getMainCharacterJapaneseName']}}のステータス
             .current_parameters_label
               | ステータス
             .this_item_label
@@ -115,33 +115,33 @@
           .main
             .equips
               .equip(
-                v-for="item in $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id)"
-                @mouseenter="$store.commit('updateSelectingItemId', item.id)"
-                @mouseleave="$store.commit('updateSelectingItemId', 0)"
-                @click="$store.commit('removeEquip', {itemId: item.id, characterId: $store.state.ui.equip_window.main_character_id})"
+                v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
+                @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
+                @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
+                @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
               )
-                |  {{$store.getters.getItemRarityIcon(item.id)}}{{item.name}}{{$store.getters.getUserItemRankTextForDisplay(item.id)}}
-              .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters.getCurrentEquipsByCharacterId($store.state.ui.equip_window.main_character_id).length).fill(1))")
+                |  {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+              .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
                 .label
                   | {{param.toUpperCase()}}
                 .value
-                  | {{$store.getters.getCharacterParameter($store.state.ui.equip_window.main_character_id, param, true)}}
+                  | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}
             .this_item
               // TODO: マイナス対応
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
                 | {{currentItem ? withPlus(currentItem.effectValueOf(param)) : '-'}}
             .to_status
               .status
-                | ATK: {{$store.getters.getCharacterStrength($store.state.ui.equip_window.main_character_id, 'atk', true)}}
+                | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
               .status_diff
-                | ({{$store.getters.getCharacterStrengthDiff($store.state.ui.equip_window.main_character_id, 'atk')}})
+                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')}})
               .status
-                | DEF: {{$store.getters.getCharacterStrength($store.state.ui.equip_window.main_character_id, 'def', true)}}
+                | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
               .status_diff
-                | ({{$store.getters.getCharacterStrengthDiff($store.state.ui.equip_window.main_character_id, 'def')}})
+                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')}})
 </template>
 
 <script lang="ts">
@@ -161,16 +161,16 @@ export default {
   },
   methods: {
     removeLastEquip(){
-      const characterId = this.$store.state.ui.equip_window.main_character_id;
-      const item = this.$store.getters.getCurrentEquipsByCharacterId(characterId).pop();
+      const characterId = this.$store.state.equip_window.main_character_id;
+      const item = this.$store.getters['equip_window/getCurrentEquipsByCharacterId'](characterId).pop();
       if(!item){
         return;
       }
-      this.$store.commit('removeEquip', {itemId: item.id, characterId: characterId})
+      this.$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: characterId})
     },
     tryAttachEquip(itemId, characterId){
-      if(!this.$store.getters.isAlreadyEquippedBySomeone(itemId)){
-        this.$store.commit('attachEquip', {itemId: itemId, characterId: characterId})
+      if(!this.$store.getters['equip_window/isAlreadyEquippedBySomeone'](itemId)){
+        this.$store.commit('equip_window/attachEquip', {itemId: itemId, characterId: characterId})
       }
     },
     submit(){
@@ -179,8 +179,8 @@ export default {
       ax.post(
         path,
         {
-          spica: this.$store.state.ui.equip_window.draft.spica,
-          tirol: this.$store.state.ui.equip_window.draft.tirol,
+          spica: this.$store.state.equip_window.draft.spica,
+          tirol: this.$store.state.equip_window.draft.tirol,
         })
         .then((results) => {
           console.log(results);
@@ -203,7 +203,7 @@ export default {
   },
   computed: {
     currentItem(){
-      return this.$store.getters.getUserItem(this.$store.state.ui.equip_window.selecting_item_id);
+      return this.$store.getters['equip_window/getUserItem'](this.$store.state.equip_window.selecting_item_id);
     },
     Constants(){
       return Constants;
