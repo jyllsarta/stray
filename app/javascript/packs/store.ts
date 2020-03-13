@@ -5,6 +5,7 @@ import field from "./store/field.ts"
 import window from "./store/window.ts"
 import guide from "./store/guide.ts"
 import event_illust from "./store/event_illust.ts"
+import timer from "./store/timer.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -26,10 +27,6 @@ const store = new Vuex.Store({
           tirol: [],
         },
       },
-    },
-
-    timer: {
-      next_event: 99
     },
 
     // ユーザモデル更新で入る
@@ -264,15 +261,13 @@ const store = new Vuex.Store({
     incrementItemRank(state, payload) {
       state.user.items[payload.item_id].rank += payload.amount;
     },
-    updateEventTimer(state, payload){
-      state.timer.next_event = payload.time;
-    }
   },
   modules: {
     field: field,
     window: window,
     guide: guide,
     event_illust: event_illust,
+    timer: timer,
   }
 });
 export default store;

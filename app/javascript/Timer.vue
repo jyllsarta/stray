@@ -20,7 +20,7 @@ export default {
       const now = new Date();
       // 実際にサーバ上でイベントが発生する時刻より Constants.nextEventDelaySeconds 秒だけ遅れさせてからリクエストを取りに行く
       const time = Math.max(Math.ceil((next_date - now) / 1000) + Constants.nextEventDelaySeconds, 0);
-      this.$store.commit("updateEventTimer", {time: time});
+      this.$store.commit("timer/updateEventTimer", {time: time});
     },
   },
 }
