@@ -7,12 +7,12 @@
       | 回復
     .item.clickable(
       @mouseover="$store.commit('updateGuide', '装備メニューを表示します。')",
-      @click="$store.commit('updateWindowShowState', {windowName: 'equip', state: true})"
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'equip', state: true})"
     )
       | 装備
     .item.clickable(
       @mouseover="$store.commit('updateGuide', '引き継ぎ関連のメニューを表示します。')",
-      @click="$store.commit('updateWindowShowState', {windowName: 'account', state: true})"
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )
       | 引き継ぎ設定(仮)
 </template>

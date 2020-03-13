@@ -1,9 +1,9 @@
 <template lang="pug">
   .menu
-    .back(@click="$store.commit('updateWindowShowState', {windowName: 'account', state: false})")
+    .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
     .window.content
       .title_area
-        .back_button(@click="$store.commit('updateWindowShowState', {windowName: 'account', state: false})")
+        .back_button(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
         .title
           | アカウント管理
       .account

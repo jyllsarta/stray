@@ -10,9 +10,9 @@
       Chat
       EventIllust
       transition(name="open_window")
-        AccountWindow(v-if="$store.state.ui.window.account")
+        AccountWindow(v-if="$store.state.window.account")
       transition(name="open_window")
-        EquipWindow(v-if="$store.state.ui.window.equip")
+        EquipWindow(v-if="$store.state.window.equip")
       Api(ref="api")
       Timer
     MessageForm

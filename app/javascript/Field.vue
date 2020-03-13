@@ -3,11 +3,11 @@
     .ground
       img.spica(
         src="images/ui/spica.png"
-        :style="{transform: 'translateX(' + $store.state.ui.position.spica + 'px) scale('+ $store.state.ui.direction.spica * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + $store.state.field.position.spica + 'px) scale('+ $store.state.field.direction.spica * -1 +', 1)'}"
       )
       img.tirol(
         src="images/ui/tirol.png"
-        :style="{transform: 'translateX(' + $store.state.ui.position.tirol + 'px) scale('+ $store.state.ui.direction.tirol * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + $store.state.field.position.tirol + 'px) scale('+ $store.state.field.direction.tirol * -1 +', 1)'}"
       )
 </template>
 
@@ -35,12 +35,12 @@ export default {
       ["spica", "tirol"].forEach((name)=>{
         // TODO: スピード制御ロジック
         // TODO: speedと反射基準点をcontantsから拾う
-        this.$store.commit("moveCharacter", {characterName: name, delta: 1});
-        if(this.$store.state.ui.position[name] > Constants.window.ground.right){
-          this.$store.commit("reflectCharacter", {characterName: name});
+        this.$store.commit("field/moveCharacter", {characterName: name, delta: 1});
+        if(this.$store.state.field.position[name] > Constants.window.ground.right){
+          this.$store.commit("field/reflectCharacter", {characterName: name});
         }
-        if(this.$store.state.ui.position[name] < Constants.window.ground.left){
-          this.$store.commit("reflectCharacter", {characterName: name});
+        if(this.$store.state.field.position[name] < Constants.window.ground.left){
+          this.$store.commit("field/reflectCharacter", {characterName: name});
         }
       });
     },

@@ -1,25 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Constants from "./constants.ts";
+import field from "./store/field.ts"
+import window from "./store/window.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     // グローバルな画面状態これに関してはUIシステム側で個別にストアを持つのが正解って気がするなあ
     ui: {
-      position:{
-        spica: 100,
-        tirol: -40,
-      },
-      direction:{
-        spica: 1,
-        tirol: -1,
-      },
-      // ウィンドウの開閉状況
-      window: {
-        account: false,
-        equip: false,
-      },
       guide: "-",
       equip_window: {
         main_character_id: 1, // 装備編集中のキャラID
@@ -190,16 +179,6 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    // ui系
-    moveCharacter(state, payload) {
-      state.ui.position[payload.characterName] += payload.delta * state.ui.direction[payload.characterName];
-    },
-    reflectCharacter(state, payload) {
-      state.ui.direction[payload.characterName] *= -1;
-    },
-    updateWindowShowState(state, payload){
-      state.ui.window[payload.windowName] = payload.state;
-    },
     //こいつは簡便化のためにpayloadを直接代入
     updateGuide(state, payload){
       state.ui.guide = payload;
@@ -302,6 +281,10 @@ const store = new Vuex.Store({
     updateEventTimer(state, payload){
       state.timer.next_event = payload.time;
     }
+  },
+  modules: {
+    field: field,
+    window: window,
   }
 });
 export default store;
