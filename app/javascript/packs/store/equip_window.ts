@@ -151,6 +151,8 @@ export default {
     switchItemSortLambda(state, payload){
       state.current_sort_id = payload;
     },
-
+    changePage(state, payload){
+      state.current_page = payload;
+    }
   }
 }

@@ -53,11 +53,11 @@
             | アイテム
           .misc
             .pager
-              .button(@click="$store.commit('changePage', -1)")
+              .button(@click="changePage(-1)")
                 | ◀
               .state
                 | ページ {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
-              .button(@click="$store.commit('changePage', 1)")
+              .button(@click="changePage(1)")
                 | ▶
             .sort
               .reverse_order(
@@ -199,6 +199,18 @@ export default {
     },
     withPlus(num){
       return num > 0 ? "+" + num : num;
+    },
+    changePage(delta){
+      let page = this.$store.state.equip_window.current_page;
+      page += delta;
+      const maxPage = Math.ceil(Object.keys(this.$store.state.user.items).length / Constants.itemsPerPage);
+      if(page > maxPage){
+        page = maxPage;
+      }
+      if(page < 1){
+        page = 1;
+      }
+      this.$store.commit("equip_window/changePage", page);
     }
   },
   computed: {

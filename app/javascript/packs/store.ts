@@ -48,25 +48,12 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-
     // eqwinから持ってき損ね
     initializeEquipWindow(state){
       ["spica", "tirol"].forEach(characterName=>{
         state.equip_window.draft[characterName] = state.user.equips[characterName];
         state.equip_window.initial[characterName] = state.user.equips[characterName];
       });
-    },
-    changePage(state, payload){
-      let page = state.equip_window.current_page;
-      page += payload;
-      const maxPage = Math.ceil(Object.keys(state.user.items).length / Constants.itemsPerPage);
-      if(page > maxPage){
-        page = maxPage;
-      }
-      if(page < 1){
-        page = 1;
-      }
-      state.equip_window.current_page = page;
     },
     syncEquipDraft(state){
       ["spica", "tirol"].forEach(characterName=>{
