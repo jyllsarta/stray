@@ -40,7 +40,7 @@ export default {
           console.log("OK");
           this.$store.commit("resurrect");
           this.$store.commit("addEventLog", {message: "ご主人パワーで完全回復した！"});
-          this.$store.commit("showEventIllust", "resurrect");
+          this.$store.commit("event_illust/showEventIllust", "resurrect");
         })
         .catch((error) => {
           console.warn(error.response);

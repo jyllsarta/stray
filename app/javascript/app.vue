@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     showEventIllust(event){
-      this.$store.commit("showEventIllust", event.type);
+      this.$store.commit("event_illust/showEventIllust", event.type);
     },
     processEvent(event){
       switch (event.type) {

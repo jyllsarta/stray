@@ -4,6 +4,7 @@ import Constants from "./constants.ts";
 import field from "./store/field.ts"
 import window from "./store/window.ts"
 import guide from "./store/guide.ts"
+import event_illust from "./store/event_illust.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -25,10 +26,6 @@ const store = new Vuex.Store({
           tirol: [],
         },
       },
-      event_illust: {
-        showing: false,
-        type: "item",
-      }
     },
 
     timer: {
@@ -236,13 +233,6 @@ const store = new Vuex.Store({
     switchItemSortLambda(state, payload){
       state.ui.equip_window.current_sort_id = payload;
     },
-    showEventIllust(state, payload){
-      state.ui.event_illust.showing = true;
-      state.ui.event_illust.type = payload;
-    },
-    removeEventIllust(state, payload){
-      state.ui.event_illust.showing = false;
-    },
 
     // ステート更新系
     updateUserModel(state, payload) {
@@ -282,6 +272,7 @@ const store = new Vuex.Store({
     field: field,
     window: window,
     guide: guide,
+    event_illust: event_illust,
   }
 });
 export default store;

@@ -2,8 +2,8 @@
   .event_illust
     transition(name="show-in")
       img.illust(
-        v-if="$store.state.ui.event_illust.showing",
-        :src="`images/events/${$store.state.ui.event_illust.type}.png`"
+        v-if="$store.state.event_illust.showing",
+        :src="`images/events/${$store.state.event_illust.type}.png`"
       )
 </template>
 
@@ -18,11 +18,11 @@ export default {
   store,
   methods: {
     remove(){
-      this.$store.commit("removeEventIllust");
+      this.$store.commit("event_illust/removeEventIllust");
     }
   },
   watch: {
-    "$store.state.ui.event_illust.showing": {
+    "$store.state.event_illust.showing": {
       handler: function(newVal, oldVal){
         if(newVal === true){
           setTimeout(this.remove, Constants.eventIllustShowMilliSeconds);
