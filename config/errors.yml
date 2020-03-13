@@ -1,2 +1,6 @@
-ApplicationController::NoToken: bad_request
-User::DuplicateEquips: bad_request
+ApplicationController::NoToken:
+  status: bad_request
+  message: invalid token.
+User::DuplicateEquips:
+  status: bad_request
+  message: 装備が重複しています。

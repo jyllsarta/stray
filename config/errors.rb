@@ -4,10 +4,12 @@ class ErrorManager
   end
 
   def self.custom_errors
-    @@errors
+    @@errors.map do |k, v|
+      [k, v[:status]]
+    end.to_h
   end
 
-  def self.status(exception)
-    @@errors[exception].to_sym
+  def self.find_exception(exception_class)
+    @@errors[exception_class.to_s]
   end
 end
