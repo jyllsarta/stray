@@ -12,9 +12,8 @@ RSpec.describe ApplicationController, type: :model do
       before do
         allow(controller).to receive_message_chain(:request, :headers).and_return( {"X-AccessToken": ""} )
       end
-      it "returns error response" do
-        subject
-        expect(controller).to have_received(:render).once # NoTokenのrescue
+      it "raises error" do
+        expect{subject}.to raise_error ApplicationController::NoToken
       end
     end
     context "with correct token" do
@@ -25,7 +24,6 @@ RSpec.describe ApplicationController, type: :model do
       end
       it "returns user object" do
         expect(subject).to eq(user)
-        expect(controller).to_not have_received(:render) # NoTokenのrescue
       end
     end
     context "with invalid token" do
@@ -34,9 +32,8 @@ RSpec.describe ApplicationController, type: :model do
         token = User::AccessToken.generate(user)
         allow(controller).to receive_message_chain(:request, :headers).and_return( {"X-AccessToken" => token + "something error string"} )
       end
-      it "returns user object" do
-        subject
-        expect(controller).to have_received(:render).once # ActiveRecord::RecordNotFound の rescue
+      it "raises error" do
+        expect{subject}.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
