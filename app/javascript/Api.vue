@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import axios from "axios";
+import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
@@ -49,14 +50,7 @@ export default {
     fetchUserModel(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/status.json`;
-      axios.get(
-        path,
-        {
-          // TODO: 認証が必要なAPI全部に載せるのはしんどいのでグローバルな設定に移譲したい
-          headers: {
-            "X-AccessToken": localStorage.access_token,
-          }
-        })
+      ax.get(path)
         .then((results) => {
           console.log(results);
           console.log("OK");
@@ -71,17 +65,7 @@ export default {
     fetchLatestEvents(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/events.json`;
-      axios.post(
-        path,
-        {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            "X-AccessToken": localStorage.access_token,
-            accept: 'application/json'
-          }
-        })
+      ax.post(path)
         .then((results) => {
           console.log(results);
           console.log("OK");
@@ -94,16 +78,7 @@ export default {
     },
     signUp(){
       const path = `/users`;
-      axios.post(
-        path,
-        {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            accept: 'application/json'
-          }
-        })
+      ax.post(path)
         .then((results) => {
           console.log(results);
           console.log("OK");

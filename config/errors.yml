@@ -1,3 +1,6 @@
+ActionController::InvalidAuthenticityToken:
+  status: bad_request
+  message: invalid csrf_token.
 ApplicationController::NoToken:
   status: bad_request
   message: invalid token.
