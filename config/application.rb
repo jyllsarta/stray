@@ -21,6 +21,9 @@ Dotenv.load
 
 require_relative 'constants'
 
+require_relative 'errors'
+ErrorManager.load!
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -33,6 +36,6 @@ module Stray
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.action_dispatch.rescue_responses.update( YAML.load_file("config/errors.yml") )
+    config.action_dispatch.rescue_responses.update( ErrorManager.custom_errors )
   end
 end

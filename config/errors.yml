@@ -1,1 +1,2 @@
 ApplicationController::NoToken: bad_request
+User::DuplicateEquips: bad_request
