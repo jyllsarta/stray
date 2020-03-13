@@ -147,7 +147,7 @@
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
-import axios from 'axios'
+import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
@@ -176,18 +176,11 @@ export default {
     submit(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/equips/edit`;
-      axios.post(
+      ax.post(
         path,
         {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent,
           spica: this.$store.state.ui.equip_window.draft.spica,
           tirol: this.$store.state.ui.equip_window.draft.tirol,
-        },
-        {
-          headers: {
-            "X-AccessToken": localStorage.access_token,
-            accept: 'application/json'
-          }
         })
         .then((results) => {
           console.log(results);

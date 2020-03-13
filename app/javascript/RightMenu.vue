@@ -20,7 +20,8 @@
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
-import axios from "axios";
+import ax from "./packs/axios_default_setting.ts";
+
 
 export default {
   data: function () {
@@ -33,17 +34,7 @@ export default {
     resurrect(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/resurrect`;
-      axios.post(
-        path,
-        {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            "X-AccessToken": localStorage.access_token,
-            accept: 'application/json'
-          }
-        })
+      ax.post(path)
         .then((results) => {
           console.log(results);
           console.log("OK");

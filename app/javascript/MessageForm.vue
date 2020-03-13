@@ -17,7 +17,7 @@
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
-import axios from "axios";
+import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
@@ -37,17 +37,10 @@ export default {
     },
     sendMessage(){
       const path = `/messages`;
-      axios.post(
+      ax.post(
         path,
         {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent,
           message: this.message,
-        },
-        {
-          headers: {
-            accept: 'application/json',
-            "X-AccessToken": localStorage.access_token,
-          }
         })
         .then((results) => {
           console.log(results);

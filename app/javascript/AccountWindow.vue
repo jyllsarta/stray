@@ -58,6 +58,7 @@
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import axios from 'axios'
+import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
@@ -84,20 +85,11 @@ export default {
       this.register.status = "sending";
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/register_name`;
-      axios.post(
+      ax.post(
         path,
         {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            accept: 'application/json',
-            "X-AccessToken": localStorage.access_token,
-          },
-          data: {
             name: this.register.name,
             password: this.register.password
-          }
         })
         .then((results) => {
           console.log(results);
@@ -115,19 +107,11 @@ export default {
     regenerateToken(){
       this.restore.status = "sending";
       const path = `/users/regenerate_token`;
-      axios.post(
+      ax.post(
         path,
         {
-          authenticity_token: document.querySelector("meta[name=csrf-token]").attributes["content"].textContent
-        },
-        {
-          headers: {
-            accept: 'application/json',
-          },
-          data: {
-            name: this.restore.name,
-            password: this.restore.password
-          }
+          name: this.restore.name,
+          password: this.restore.password
         })
         .then((results) => {
           console.log(results);
