@@ -1,17 +1,17 @@
 <template lang="pug">
   .right_menu.window
     .item.clickable(
-      @mouseover="$store.commit('updateGuide', '手動で完全回復します。')",
+      @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
       @click="resurrect"
     )
       | 回復
     .item.clickable(
-      @mouseover="$store.commit('updateGuide', '装備メニューを表示します。')",
+      @mouseover="$store.commit('guide/updateGuide', '装備メニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'equip', state: true})"
     )
       | 装備
     .item.clickable(
-      @mouseover="$store.commit('updateGuide', '引き継ぎ関連のメニューを表示します。')",
+      @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )
       | 引き継ぎ設定(仮)

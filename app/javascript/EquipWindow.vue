@@ -5,7 +5,7 @@
       .title_area
         .back_button(
           @click="closeWindow"
-          @mouseover="$store.commit('updateGuide', '編集を確定してメニューを閉じます。')",
+          @mouseover="$store.commit('guide/updateGuide', '編集を確定してメニューを閉じます。')",
         )
         .title
           | 装備
@@ -16,7 +16,7 @@
           img.character_image(:src="'images/characters/' + $store.getters.getMainCharacterName + '.png'")
         .switch_character_button.clickable(
           @click="$store.commit('switchMainCharacter')"
-          @mouseover="$store.commit('updateGuide', '装備を編集するキャラを交代します。')",
+          @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
           )
           | 編集キャラ交代
         .reinforcements.block
@@ -62,12 +62,12 @@
             .sort
               .reverse_order(
                 @click="$store.commit('reverseItemSortOrder')"
-                @mouseover="$store.commit('updateGuide', 'クリックで昇順と降順を切り替えます。')",
+                @mouseover="$store.commit('guide/updateGuide', 'クリックで昇順と降順を切り替えます。')",
               )
                 | [{{$store.state.ui.equip_window.current_sort_order === 1 ? '昇順' : '降順'}}]
-              .change_order(@click="$store.commit('switchItemSortLambda', 0)", @mouseover="$store.commit('updateGuide', 'ソート順をID順に切り替えます。')",)
+              .change_order(@click="$store.commit('switchItemSortLambda', 0)", @mouseover="$store.commit('guide/updateGuide', 'ソート順をID順に切り替えます。')",)
                 | {{$store.state.ui.equip_window.current_sort_id === 0 ? '★' : ''}}ID順
-              .change_order(@click="$store.commit('switchItemSortLambda', 1)", @mouseover="$store.commit('updateGuide', 'ソート順を効果値順に切り替えます。')",)
+              .change_order(@click="$store.commit('switchItemSortLambda', 1)", @mouseover="$store.commit('guide/updateGuide', 'ソート順を効果値順に切り替えます。')",)
                 | {{$store.state.ui.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
           .item_list
             .item(
@@ -157,7 +157,7 @@ export default {
   store,
   mounted(){
     this.$store.commit("initializeEquipWindow");
-    this.$store.commit('updateGuide', '装備メニューです。右クリックで装備を外せます。')
+    this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。')
   },
   methods: {
     removeLastEquip(){

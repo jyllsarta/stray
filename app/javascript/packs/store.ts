@@ -3,13 +3,13 @@ import Vuex from 'vuex'
 import Constants from "./constants.ts";
 import field from "./store/field.ts"
 import window from "./store/window.ts"
+import guide from "./store/guide.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     // グローバルな画面状態これに関してはUIシステム側で個別にストアを持つのが正解って気がするなあ
     ui: {
-      guide: "-",
       equip_window: {
         main_character_id: 1, // 装備編集中のキャラID
         selecting_item_id: 0, // 現在マウスがあたってる装備ID
@@ -179,10 +179,6 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    //こいつは簡便化のためにpayloadを直接代入
-    updateGuide(state, payload){
-      state.ui.guide = payload;
-    },
     updateSelectingItemId(state, payload){
       state.ui.equip_window.selecting_item_id = payload;
     },
@@ -285,6 +281,7 @@ const store = new Vuex.Store({
   modules: {
     field: field,
     window: window,
+    guide: guide,
   }
 });
 export default store;

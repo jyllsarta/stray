@@ -1,7 +1,7 @@
 <template lang="pug">
   .guide
     .guide
-     | {{$store.state.ui.guide}}
+     | {{$store.state.guide.message}}
 </template>
 
 <script lang="ts">
