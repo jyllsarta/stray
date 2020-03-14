@@ -3,11 +3,6 @@ class EventPicker
     @user = user
   end
 
-  # TODO: private送りにしたい
-  def rank
-    @user.status.current_dungeon_rank
-  end
-
   def pick!
     # 死んでたら復活抽選しかしない
     return ResurrectEvent.new(@user.status.event_updated_at) if @user.characters.all?(&:dead?)
@@ -24,5 +19,11 @@ class EventPicker
     else
       raise "unknown event id"
     end
+  end
+
+  private
+
+  def rank
+    @user.status.current_dungeon_rank
   end
 end

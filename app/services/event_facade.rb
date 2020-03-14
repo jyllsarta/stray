@@ -19,7 +19,7 @@ class EventFacade
     events
   end
 
-  # TODO: ここ以降全部privateにしたい
+  private
 
   def pick_next_event(user)
     EventPicker.new(user).pick!
