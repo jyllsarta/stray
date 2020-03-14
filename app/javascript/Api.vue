@@ -82,7 +82,6 @@ export default {
         .then((results) => {
           console.log(results);
           console.log("OK");
-          // TODO: LocalStorageもある主グローバル変数なので、変更させる場所を一元管理したほうがいいかもなあ
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
           this.fetchUserModel();

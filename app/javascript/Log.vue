@@ -32,8 +32,8 @@ export default {
       const date = new Date(at * 1000);
       return `${this.formatZero(date.getHours())}:${this.formatZero(date.getMinutes())}`
     },
-    scroll(delta){
-      this.$refs.log.scrollBy(0, delta);
+    scrollToBottom(){
+      this.$refs.log.scrollTo(0, this.$refs.log.scrollHeight);
     }
   },
   watch: {
@@ -41,9 +41,9 @@ export default {
       handler: function(newVal, oldVal){
         const count = newVal.length - oldVal.length;
         Vue.nextTick(()=>{
-          //大雑把にだいたい画面の下の方にいたらスクロールする
+          //大雑把にだいたい画面の下の方にいたら下限をキープする
           if(this.$refs.log.scrollHeight - this.$refs.log.scrollTop < 600){
-            this.scroll(count * 50);
+            this.scrollToBottom();
           }
         });
       }

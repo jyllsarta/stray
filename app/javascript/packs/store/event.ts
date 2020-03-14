@@ -1,4 +1,5 @@
 import { store } from '../store.ts'
+import Constants from "../constants.ts";
 
 export default {
   namespaced: true,
@@ -11,7 +12,7 @@ export default {
   mutations: {
     updateLatestEvents(state, payload) {
       state.next_event_at = payload.next_event_at;
-      state.events = state.events.concat(payload.events);
+      state.events = state.events.concat(payload.events).slice(-Constants.log.maxLength);
     },
     addEventLog(state, payload){
       const manualEvent = {
@@ -28,6 +29,7 @@ export default {
         type: payload.type,
       };
       state.events.push(manualEvent);
+      state.events = state.events.slice(-Constants.log.maxLength)
     },
   }
 }
