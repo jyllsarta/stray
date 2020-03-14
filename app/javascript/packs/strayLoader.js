@@ -7,5 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     render: h => h(App),
   }).$mount();
   document.getElementById("window").appendChild(app.$el);
-  window.stray = app; // TODO: productionビルド時に代入させないようにしたい
+  if (process.env.NODE_ENV !== 'production') {
+    window.stray = app;
+  }
 });
