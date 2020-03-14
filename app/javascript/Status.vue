@@ -1,3 +1,4 @@
+
 <template lang="pug">
   .status.window
     .spica
@@ -9,12 +10,13 @@
       .gauge
         .hp
           .label
-            | HP：
+            | HP
           .value
             | {{$store.state.user.characters.spica.hp}} / {{$store.state.user.characters.spica.hp_max}}
+        .gauge(:style="{width: hpGaugeWidth('spica') }")
         .exp
           .label
-            | EXP：
+            | EXP
           .value
             | 85%
     .tirol
@@ -26,12 +28,13 @@
       .gauge
         .hp
           .label
-            | HP：
+            | HP
           .value
             | {{$store.state.user.characters.tirol.hp}} / {{$store.state.user.characters.tirol.hp_max}}
+        .gauge(:style="{width: hpGaugeWidth('tirol') }")
         .exp
           .label
-            | EXP：
+            | EXP
           .value
             | 13%
 </template>
@@ -42,18 +45,22 @@ import store from './packs/store.ts'
 
 export default {
   data: function () {
-    return {};
+    return {
+      character_base_width: 190
+    };
   },
   store,
-  mounted(){
-  },
   methods: {
+    hpGaugeWidth(characterName){
+      return this.$store.getters['user/getCharacterHpPercent'](characterName) / 100 * this.character_base_width;
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "stylesheets/constants";
+
 .status{
   height: 80px;
   width: 300px;
@@ -74,7 +81,7 @@ export default {
     display: flex;
     margin-bottom: $thin_space;
     .profile {
-      width: 4.5rem; // "Lv:12345 "
+      width: 5rem; // "Lv:12345 "
       border-right: 1px solid $gray2;
       padding-right: $thin_space;
       background-position: center;
@@ -83,23 +90,32 @@ export default {
     }
     .gauge {
       width: 100%;
-      flex: 1;
+      height: 100%;
       white-space: pre-wrap;
       padding-left: $thin_space;
       display: flex;
       flex-direction: column;
       .hp, .exp{
         width: 100%;
+        height: 16px;
         .label{
           display: inline-block;
-          width: 25%;
+          width: 2rem;
           text-align: right;
           padding-right: $thin_space;
+          border-right: 1px solid $gray3;
         }
         .value{
+          padding-left: $thin_space;
           display: inline-block;
-          width: 75%;
+          width: calc(100% - 2rem);
         }
+      }
+      .gauge{
+        margin-left: 2rem;
+        width: 190px;
+        background-color: #93baeb;
+        height: 1px;
       }
     }
   }

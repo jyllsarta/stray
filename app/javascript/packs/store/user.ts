@@ -20,6 +20,10 @@ export default {
     }
   },
   getters: {
+    getCharacterHpPercent: (state) => (characterName) => {
+      const character = state.characters[characterName];
+      return character.hp / character.hp_max * 100;
+    }
   },
   mutations: {
     syncEquipDraft(state, payload){
