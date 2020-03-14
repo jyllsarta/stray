@@ -8,6 +8,7 @@ import event_illust from "./store/event_illust.ts"
 import timer from "./store/timer.ts"
 import equip_window from "./store/equip_window.ts";
 import masterdata from "./store/masterdata.ts"
+import event from "./store/event.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -30,12 +31,6 @@ const store = new Vuex.Store({
         tirol: {},
       }
     },
-
-    //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
-    event: {
-      next_event_at: 123123123,
-      events: []
-    },
   },
   getters: {
   },
@@ -56,30 +51,9 @@ const store = new Vuex.Store({
       state.user.characters.spica.hp = state.user.characters.spica.hp_max;
       state.user.characters.tirol.hp = state.user.characters.tirol.hp_max;
     },
-
     // ステート更新系
     updateUserModel(state, payload) {
       state.user = payload;
-    },
-    updateLatestEvents(state, payload) {
-      state.event.next_event_at = payload.next_event_at;
-      state.event.events = state.event.events.concat(payload.events);
-    },
-    addEventLog(state, payload){
-      const manualEvent = {
-        resolved: true,
-        detail: {},
-        logs: [
-          {
-            // 手動追加されるログは同時刻に発生することがあり得るので、ユニーク性を担保するためにサロゲートキーを発行する
-            pseudo_id: Math.floor(Math.random() * 1000000000),
-            at: Math.floor(new Date()/1000),
-            message: payload.message,
-          }
-        ],
-        type: payload.type,
-      };
-      state.event.events.push(manualEvent);
     },
     incrementItemRank(state, payload) {
       state.user.items[payload.item_id].rank += payload.amount;
@@ -93,6 +67,7 @@ const store = new Vuex.Store({
     timer: timer,
     equip_window: equip_window,
     masterdata: masterdata,
+    event: event,
   }
 });
 export default store;

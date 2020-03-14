@@ -195,7 +195,7 @@ export default {
       this.submit();
       this.$store.commit('syncEquipDraft', this.$store.state.equip_window.draft);
       this.$store.commit('window/updateWindowShowState', {windowName: 'equip', state: false});
-      this.$store.commit("addEventLog", {message: "装備を編集した！"});
+      this.$store.commit("event/addEventLog", {message: "装備を編集した！"});
     },
     withPlus(num){
       return num > 0 ? "+" + num : num;

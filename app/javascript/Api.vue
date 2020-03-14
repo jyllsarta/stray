@@ -69,7 +69,7 @@ export default {
         .then((results) => {
           console.log(results);
           console.log("OK");
-          this.$store.commit("updateLatestEvents", results.data);
+          this.$store.commit("event/updateLatestEvents", results.data);
         })
         .catch((error) => {
           console.warn(error.response);
