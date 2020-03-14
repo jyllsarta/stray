@@ -23,10 +23,7 @@ export default {
     getCurrentEquipsByCharacterId: (state, getters, rootState, rootGetters) => (characterId) => {
       const characterName = [null, "spica", "tirol"][characterId];
       const equips = state.draft[characterName];
-      if(!equips){ //TODO: こんなふうにガード書かなきゃいけないのちょいしんどいね
-        return [];
-      }
-      return equips.map(c => rootState.masterdata.items[c])
+      return equips?.map(c => rootState.masterdata.items[c])
     },
     getSubCharacterId: (state) => {
       // これでいいのか感はある
@@ -57,10 +54,7 @@ export default {
       }
     },
     getUserItemRank: (state, getters, rootState, rootGetters) => (itemId) => {
-      if(!rootState.user.items[itemId]){
-        return 0;
-      }
-      return rootState.user.items[itemId].rank;
+      return rootState.user?.items[itemId]?.rank || 0;
     },
     // 画面表示用(ランク0ならプラスを表示しない)
     getUserItemRankTextForDisplay: (state, getters) => (itemId) => {
