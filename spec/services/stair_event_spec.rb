@@ -15,12 +15,7 @@ RSpec.describe StairEvent, type: :model do
   describe "#detail" do
     subject { event.detail }
     it "returns formatted hash" do
-      expect(subject).to match_json_expression(
-                             {
-                                 id: nil, # TODO: おそらくアイテムからのコピペミスなので直す
-                                 amount: nil
-                             }
-                         )
+      expect(subject).to match_json_expression({})
     end
   end
   describe "#logs" do

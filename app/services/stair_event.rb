@@ -8,11 +8,7 @@ class StairEvent < Event
   end
 
   def detail
-    # TODO: itemからのコピペミスだと思うので直す
-    {
-      id: @item_id,
-      amount: @amount
-    }
+    {}
   end
 
   def logs
@@ -26,7 +22,7 @@ class StairEvent < Event
 
   def execute!(user)
     user.status.increment!(:current_dungeon_depth, 1)
-    # TODO: ダンジョンが選択の実装時にここでグローバルな進捗を保存する
+    # TODO: ダンジョン選択の実装時にここでグローバルな進捗を保存する
   end
 
   def consume_time
