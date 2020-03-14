@@ -193,7 +193,7 @@ export default {
     },
     closeWindow(){
       this.submit();
-      this.$store.commit('syncEquipDraft', this.$store.state.equip_window.draft);
+      this.$store.commit('user/syncEquipDraft', this.$store.state.equip_window.draft);
       this.$store.commit('window/updateWindowShowState', {windowName: 'equip', state: false});
       this.$store.commit("event/addEventLog", {message: "装備を編集した！"});
     },
