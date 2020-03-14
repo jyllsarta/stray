@@ -1,4 +1,6 @@
 class BattleCharacter
+  attr_reader :hp, :hp_max
+
   def initialize(parameters, strength, hp, hp_max, character=nil)
     @parameters = parameters
     @strength = strength
@@ -29,15 +31,6 @@ class BattleCharacter
     self.new(parameters, strength, hp, hp_max)
   end
 
-  # TODO: これ attr_reader でええやんな
-  def hp
-    @hp
-  end
-
-  def hp_max
-    @hp_max
-  end
-
   def atk
     @strength[:atk]
   end
@@ -57,6 +50,4 @@ class BattleCharacter
   def damage!(value)
     @hp = [@hp - value, 0].max
   end
-
-#private
 end
