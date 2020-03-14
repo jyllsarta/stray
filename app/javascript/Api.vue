@@ -40,7 +40,7 @@ export default {
         .then((results) => {
           console.log(results);
           console.log("OK");
-          this.$store.commit("updateMasterData", results.data);
+          this.$store.commit("masterdata/updateMasterData", results.data);
         })
         .catch((error) => {
           console.warn(error.response);

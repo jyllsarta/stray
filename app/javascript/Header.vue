@@ -14,12 +14,12 @@
       .label
         | 現在地
       .content
-        | {{$store.getters.getCurrentDungeon.name}}
+        | {{$store.getters['masterdata/getCurrentDungeon'].name}}
     .dungeon_depth.header_content
       .label
         | 階層
       .content
-        | {{$store.state.user.status.current_dungeon_depth}} / {{$store.getters.getCurrentDungeon.depth}}F
+        | {{$store.state.user.status.current_dungeon_depth}} / {{$store.getters['masterdata/getCurrentDungeon'].depth}}F
 </template>
 
 <script lang="ts">

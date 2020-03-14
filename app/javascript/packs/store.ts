@@ -7,6 +7,7 @@ import guide from "./store/guide.ts"
 import event_illust from "./store/event_illust.ts"
 import timer from "./store/timer.ts"
 import equip_window from "./store/equip_window.ts";
+import masterdata from "./store/masterdata.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -30,11 +31,6 @@ const store = new Vuex.Store({
       }
     },
 
-    masterdata: {
-      dungeons: {},
-      // マスタデータロードで入る
-    },
-
     //データモデル的にはuserの中に入れるのが正解かもしれないけど、非同期周りで変数の更新しあいが発生すると悲惨なので独立させる
     event: {
       next_event_at: 123123123,
@@ -42,10 +38,6 @@ const store = new Vuex.Store({
     },
   },
   getters: {
-    getCurrentDungeon: (state) => {
-      //このスタブもnull安全演算子があれば回避できるんだけどなあ
-      return state.masterdata.dungeons[state.user.status.current_dungeon_id] || {};
-    }
   },
   mutations: {
     syncEquipDraft(state, payload){
@@ -68,9 +60,6 @@ const store = new Vuex.Store({
     // ステート更新系
     updateUserModel(state, payload) {
       state.user = payload;
-    },
-    updateMasterData(state, payload) {
-      state.masterdata = payload.masterdata;
     },
     updateLatestEvents(state, payload) {
       state.event.next_event_at = payload.next_event_at;
@@ -103,6 +92,7 @@ const store = new Vuex.Store({
     event_illust: event_illust,
     timer: timer,
     equip_window: equip_window,
+    masterdata: masterdata,
   }
 });
 export default store;
