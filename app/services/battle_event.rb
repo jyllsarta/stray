@@ -34,11 +34,10 @@ class BattleEvent < Event
     Constants.default_event_interval_seconds
   end
 
-  # TODO: private送りにしたい
+  private
+
   def log_messages
     damages = @battle.damages
     "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘が発生した！ スピカ#{damages[0]}, チロル#{damages[1]}ダメージ。"
   end
-
-private
 end
