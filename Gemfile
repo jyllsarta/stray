@@ -55,3 +55,4 @@ gem 'ridgepole'
 gem 'slim-rails'
 gem "dotenv"
 gem "annotate"
+gem "activerecord-import"

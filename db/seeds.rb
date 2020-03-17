@@ -6,220 +6,24 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Item.delete_all
+require "csv"
 
-Item.create([
-  {
-    id: 1,
-    name: "木の棒",
-    str: 3,
-    dex: 1,
-    def: -1,
-    agi: 1,
-    flavor_text: "木の棒だ。",
-    rarity: 1,
-  },
-  {
-    id: 2,
-    name: "鉄の盾",
-    str: 0,
-    dex: -1,
-    def: 4,
-    agi: -1,
-    flavor_text: "きちんとした作りの鉄の盾。",
-    rarity: 1,
-  },
-  {
-    id: 3,
-    name: "ネバネバ",
-    str: 3,
-    dex: 3,
-    def: 0,
-    agi: -2,
-    flavor_text: "ひっついてきた。",
-    rarity: 2,
-  },
-  {
-    id: 4,
-    name: "ポーション",
-    str: 0,
-    dex: 1,
-    def: 1,
-    agi: 4,
-    flavor_text: "回復効果はない。しばらく身のこなしが軽くなる。",
-    rarity: 1,
-  },
-  {
-    id: 5,
-    name: "蟹",
-    str: 5,
-    dex: 5,
-    def: 5,
-    agi: 5,
-    flavor_text: "マスタデータの入稿が得意なカニ。いつもお世話になっています。",
-    rarity: 3,
-  },
-  {
-    id: 6,
-    name: "アイアンソード",
-    str: 6,
-    dex: -2,
-    def: 3,
-    agi: -3,
-    flavor_text: "質実剛健。",
-    rarity: 1,
-  },
-  {
-    id: 7,
-    name: "パフェ",
-    str: -1,
-    dex: 2,
-    def: 0,
-    agi: 4,
-    flavor_text: "あまーい",
-    rarity: 1,
-  },
-  {
-    id: 8,
-    name: "地図",
-    str: 12,
-    dex: 12,
-    def: 13,
-    agi: 14,
-    flavor_text: "そのへんのことがわかる。",
-    rarity: 4,
-  },
-  {
-      id: 9,
-      name: "食品サンプル",
-      str: 20,
-      dex: 20,
-      def: 30,
-      agi: 40,
-      flavor_text: "最強のアイテム。",
-      rarity: 5,
-  },
-  {
-    id: 10,
-    name: "しろこの銀看板",
-    str: 5,
-    dex: 8,
-    def: 13,
-    agi: 4,
-    flavor_text: "高性能なかんばん。",
-    rarity: 3,
-  },
-  {
-      id: 11,
-      name: "たこ",
-      str: 6,
-      dex: 0,
-      def: 6,
-      agi: 0,
-      flavor_text: "焼き立て。磯の香りがする",
-      rarity: 1,
-  },
-  {
-    id: 12,
-    name: "レーヴァテイン",
-    str: 20,
-    dex: -10,
-    def: 0,
-    agi: 6,
-    flavor_text: "つかいにくい。",
-    rarity: 2,
-  },
-  {
-    id: 13,
-    name: "にんじん",
-    str: 3,
-    dex: 15,
-    def: 10,
-    agi: 6,
-    flavor_text: "レバ剣と一緒にどうぞ",
-    rarity: 1,
-  },
-  {
-    id: 14,
-    name: "キティちゃん",
-    str: 10,
-    dex: 10,
-    def: 10,
-    agi: 10,
-    flavor_text: "万能の式神。",
-    rarity: 1,
-  },
-  {
-    id: 15,
-    name: "たこぶえ",
-    str: 7,
-    dex: 3,
-    def: 4,
-    agi: 9,
-    flavor_text: "まずいですよ！",
-    rarity: 1,
-  },
-  {
-    id: 16,
-    name: "きなこ",
-    str: 3,
-    dex: -1,
-    def: 10,
-    agi: 18,
-    flavor_text: "喉に張り付いてくる",
-    rarity: 1,
-  },
-  {
-    id: 17,
-    name: "リボン",
-    str: 10,
-    dex: 1,
-    def: 5,
-    agi: 3,
-    flavor_text: "状態異常耐性はつかない",
-    rarity: 2,
-  },
-  {
-    id: 18,
-    name: "ブーメラン",
-    str: 10,
-    dex: 10,
-    def: 4,
-    agi: 4,
-    flavor_text: "ぶんぶん",
-    rarity: 1,
-  },
-  {
-    id: 19,
-    name: "パスタ",
-    str: 0,
-    dex: 10,
-    def: 12,
-    agi: 0,
-    flavor_text: "ミートソース",
-    rarity: 1,
-  },
-  {
-    id: 20,
-    name: "クインティタニアス",
-    str: 14,
-    dex: 28,
-    def: 10,
-    agi: 30,
-    flavor_text: "アリサちゃんの弓。",
-    rarity: 3,
-  },
-  {
-    id: 21,
-    name: "食品サンプルΩ",
-    str: 99,
-    dex: 99,
-    def: 99,
-    agi: 99,
-    flavor_text: "これ手に入れたらクリアでいいよ",
-    rarity: 5,
-  }
-])
+TABLES = [:items]
+
+TABLES.map(&:to_s).each do |table_name|
+  clazz = table_name.singularize.camelize.constantize
+  clazz.delete_all
+  accepted_attributes = clazz.new.attributes.keys.map(&:to_sym)
+  records = []
+  CSV.open("#{ENV['MASTERDATA_PATH']}/#{table_name}.csv", headers: true, header_converters: :symbol) do |csv|
+    csv.each do |line|
+      attributes = line.to_h.select{|k, _| k.in? accepted_attributes}
+      records.push(clazz.new(attributes))
+    end
+  end
+  clazz.import(records)
+  puts "created #{clazz} (#{clazz.count})"
+end
 
 Dungeon.delete_all
 Dungeon.create(id: 1, name: "翠海の輝浜", depth: 400)
