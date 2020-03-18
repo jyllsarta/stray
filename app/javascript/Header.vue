@@ -18,8 +18,15 @@
     .dungeon_depth.header_content
       .label
         | 階層
-      .content
-        | {{$store.state.user.status.current_dungeon_depth}} / {{$store.getters['masterdata/getCurrentDungeon'].depth}}F
+      .content.floor
+        .current(:class="$store.getters['user/isOverFloor'] ? 'over_floor' : ''")
+          | {{$store.state.user.status.current_dungeon_depth}}
+        .sep
+          | /
+        .depth
+          | {{$store.getters['masterdata/getCurrentDungeon'].depth}}
+        .sep
+          | F
 </template>
 
 <script lang="ts">
@@ -96,6 +103,22 @@ export default {
   }
   .dungeon_depth{
     width: 15%;
+  }
+  .floor{
+    .current{
+      display: inline-block;
+    }
+    .sep{
+      padding: 0 $thin_space 0 $thin_space;
+      display: inline-block;
+      font-size: $font-size-mini;
+    }
+    .depth{
+      display: inline-block;
+    }
+    .over_floor{
+      color: $yellow;
+    }
   }
 }
 </style>

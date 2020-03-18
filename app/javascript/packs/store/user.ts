@@ -23,6 +23,10 @@ export default {
     getCharacterHpPercent: (state) => (characterName) => {
       const character = state.characters[characterName];
       return character.hp / character.hp_max * 100;
+    },
+    isOverFloor(state, getters, rootState, rootGetters){
+      const current_dungeon_id = state.status.current_dungeon_id;
+      return state.status.current_dungeon_depth >= rootState.masterdata.dungeons[current_dungeon_id].depth;
     }
   },
   mutations: {
@@ -48,7 +52,6 @@ export default {
     },
     incrementItemRank(state, payload) {
       state.items[payload.item_id].rank += payload.amount;
-    },
-
+    }
   }
 }
