@@ -4,7 +4,7 @@
       .label
         | 時刻
       .content
-        | 1月12日 15:46:33
+        | {{month}}月{{date}}日 {{hours}}:{{minutes}}:{{seconds}}
     .next_event_time.header_content
       .label
         | 次回イベントまで
@@ -29,9 +29,32 @@ import store from './packs/store.ts'
 export default {
   data: function () {
     return {
+      month: "0",
+      date: "0",
+      hours: "0",
+      minutes: "0",
+      seconds: "0",
     };
   },
+  mounted() {
+    setInterval(this.tick, 1000);
+  },
   store,
+  computed: {
+  },
+  methods: {
+    tick(){
+      const now = new Date();
+      this.month = now.getMonth() + 1;
+      this.date = now.getDate();
+      this.hours = this.format(now.getHours());
+      this.minutes = this.format(now.getMinutes());
+      this.seconds = this.format(now.getSeconds());
+    },
+    format(time){
+      return ("00" + time).slice(-2)
+    }
+  }
 }
 </script>
 
