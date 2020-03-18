@@ -18,8 +18,10 @@
             .item
               .label
                 | ユーザID
-              .desc_without_border
+              .desc_without_border(ref="user_id")
                 | {{$store.state.user.user_id}}
+              .copy_button(@click="copyUserId").button
+                | {{copy_done ? "完了！" : "コピー"}}
             .item
               .label
                 | ユーザ名
@@ -75,6 +77,7 @@ export default {
         name: "",
         password: ""
       },
+      copy_done: false,
     };
   },
   store,
@@ -128,6 +131,10 @@ export default {
           this.restore.status = "completed";
         });
     },
+    copyUserId(){
+      navigator.clipboard.writeText(localStorage.user_id);
+      this.copy_done = true;
+    },
   }
 }
 </script>
@@ -175,9 +182,17 @@ export default {
         }
         .desc_without_border{
           display: inline-block;
-          width: 50%;
+          width: 30%;
           text-align: left;
           height: $font-size-normal * 1.5;
+        }
+        .copy_button{
+          display: inline-block;
+          width: 20%;
+          text-align: center;
+          height: $font-size-normal * 1.5;
+          border: 1px solid $gray2;
+          border-radius: $radius;
         }
         .submit{
           background-color: $clickable-color;
