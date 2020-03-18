@@ -13,7 +13,7 @@
             | HP
           .value
             | {{$store.state.user.characters.spica.hp}} / {{$store.state.user.characters.spica.hp_max}}
-        .gauge(:style="{width: hpGaugeWidth('spica') }")
+        .gauge(:style="{width: hpGaugeWidth('spica'), backgroundColor: hpGaugeColor('spica') }")
         .exp
           .label
             | EXP
@@ -31,7 +31,7 @@
             | HP
           .value
             | {{$store.state.user.characters.tirol.hp}} / {{$store.state.user.characters.tirol.hp_max}}
-        .gauge(:style="{width: hpGaugeWidth('tirol') }")
+        .gauge(:style="{width: hpGaugeWidth('tirol'), backgroundColor: hpGaugeColor('tirol') }")
         .exp
           .label
             | EXP
@@ -52,7 +52,14 @@ export default {
   store,
   methods: {
     hpGaugeWidth(characterName){
-      return this.$store.getters['user/getCharacterHpPercent'](characterName) / 100 * this.character_base_width;
+      return this.hpPercent(characterName) / 100 * this.character_base_width;
+    },
+    hpPercent(characterName){
+      return this.$store.getters['user/getCharacterHpPercent'](characterName)
+    },
+    hpGaugeColor(characterName){
+      const percent = this.hpPercent(characterName);
+      return `hsla(${percent / 100 * 220}, 100%, 70%, 1)`
     }
   }
 }
