@@ -10,9 +10,9 @@
         .title
           | 装備
       .body
-        .sub_chara
+        .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}")
           img.sub_character_image(:src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'")
-        .chara
+        .chara(:style="{transform: `translateY(${main_character_position}px)`}")
           img.character_image(:src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'")
         .switch_character_button.clickable(
           @click="$store.commit('equip_window/switchMainCharacter')"
@@ -152,12 +152,16 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      move_character_handle: 0,
+      sub_character_position: 0,
+      main_character_position: 0,
     };
   },
   store,
   mounted(){
     this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
-    this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。')
+    this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。');
+    this.moveCharacter();
   },
   methods: {
     removeLastEquip(){
@@ -211,7 +215,16 @@ export default {
         page = 1;
       }
       this.$store.commit("equip_window/changePage", page);
-    }
+    },
+    moveCharacter(){
+      const now = new Date().getTime();
+      this.main_character_position = Math.sin(now / 2000) * 7;
+      this.sub_character_position = Math.sin(now / 2000 + 1) * 4;
+      this.move_character_handle = requestAnimationFrame(this.moveCharacter);
+    },
+  },
+  beforeDestroy(){
+    cancelAnimationFrame(this.move_character_handle);
   },
   computed: {
     currentItem(){
