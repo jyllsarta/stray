@@ -10,6 +10,9 @@ export default {
   getters: {
   },
   mutations: {
+    setNextEventAtTo(state, payload) {
+      state.next_event_at = payload;
+    },
     updateLatestEvents(state, payload) {
       state.next_event_at = payload.next_event_at;
       state.events = state.events.concat(payload.events).slice(-Constants.log.maxLength);

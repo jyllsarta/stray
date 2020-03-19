@@ -74,6 +74,9 @@ export default {
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
+          console.log("10秒後に再取得を試みます");
+          const ten_seconds_after = new Date().getTime() / 1000 + 10;
+          this.$store.commit("event/setNextEventAtTo", ten_seconds_after);
         });
     },
     signUp(){
