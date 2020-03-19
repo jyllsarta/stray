@@ -113,6 +113,9 @@
             .to_status_label
               | 効果値
           .main
+            .kos
+              img.ko.upper(src="images/ui/ko.png")
+              img.ko.downer(src="images/ui/ko.png")
             .equips
               .equip(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
@@ -424,6 +427,22 @@ export default {
         display: flex;
         flex-direction: row;
         height: calc(100% - #{$font-size-large});
+        .kos{
+          position: absolute;
+          .ko{
+            position: absolute;
+            width: 64px;
+            opacity: 0.7;
+          }
+          .upper{
+            top: 0;
+            left: 565px;
+          }
+          .downer{
+            top: 75px;
+            left: 565px;
+          }
+        }
         .equips{
           width: 43%;
           display: flex;
