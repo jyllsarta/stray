@@ -1,4 +1,5 @@
 import { store } from '../store.ts'
+import ax from "../axios_default_setting.ts";
 
 export default {
   namespaced: true,
@@ -53,5 +54,24 @@ export default {
     incrementItemRank(state, payload) {
       state.items[payload.item_id].rank += payload.amount;
     }
+  },
+  actions: {
+    fetchUserModel ({ commit }) {
+      return new Promise((resolve, reject) => {
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/status.json`;
+        ax.get(path)
+          .then((results) => {
+            console.log(results);
+            console.log("OK");
+            commit("updateUserModel", results.data.payload);
+            resolve();
+          })
+          .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
+      })
+    },
   }
 }

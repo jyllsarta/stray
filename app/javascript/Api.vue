@@ -48,19 +48,9 @@ export default {
         });
     },
     fetchUserModel(){
-      const user_id = localStorage.user_id;
-      const path = `/users/${user_id}/status.json`;
-      ax.get(path)
-        .then((results) => {
-          console.log(results);
-          console.log("OK");
-          this.$store.commit("user/updateUserModel", results.data.payload);
-          this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
-        })
-        .catch((error) => {
-          console.warn(error.response);
-          console.warn("NG");
-        });
+      this.$store.dispatch("user/fetchUserModel").then(()=>{
+        this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
+      });
     },
     fetchLatestEvents(){
       const user_id = localStorage.user_id;

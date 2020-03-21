@@ -15,11 +15,11 @@
         EquipWindow(v-if="$store.state.window.equip")
       Api(ref="api")
       Timer
+      EventWatcher
     MessageForm
 </template>
 
 <script lang="ts">
-import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import Api from './Api'
 import Guide from './Guide'
@@ -34,11 +34,9 @@ import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
+import EventWatcher from "./EventWatcher";
 
 export default {
-  data: function () {
-    return {};
-  },
   store,
   components: {
     Api,
@@ -53,71 +51,8 @@ export default {
     AccountWindow,
     EquipWindow,
     Timer,
+    EventWatcher,
     MessageForm,
-  },
-  mounted(){
-    const x = null;
-    console.log(x?.a);
-  },
-  watch: {
-    // イベント発生時の処理
-    // なーんかダーティな書き方な気がしてならないけど、とりあえず他に方法が思いつかなかったのでこれで
-    "$store.state.event.events": {
-      handler: function(events){
-        if(events.filter(event=>!event.resolved).length > 0){
-          this.showEventIllust(events.slice(-1)[0]);
-        }
-        events.filter(event=>!event.resolved).forEach((event)=>{
-          this.processEvent(event);
-        });
-      },
-    }
-  },
-  methods: {
-    showEventIllust(event){
-      this.$store.commit("event_illust/showEventIllust", event.type);
-    },
-    processEvent(event){
-      switch (event.type) {
-        case "item":
-          this.resolveItemEvent(event);
-          break;
-        case "battle":
-          this.resolveBattleEvent(event);
-          break;
-        case "stair":
-          this.resolveStairEvent();
-          break;
-        case "resurrect":
-          this.resolveResurrectEvent(event);
-          break;
-        default:
-          console.warn(`undefined event type: ${event.type}`);
-          break;
-      }
-      event.resolved = true;
-    },
-    resolveItemEvent(event){
-      if(this.$store.state.user.items[event.detail.id]){
-        this.$store.commit("user/incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
-      }
-      else{
-        // この親子関係があるからなんとかなってるけど、どっからでもAPIを呼べるようにならないといつか困る予感
-        this.$refs.api.fetchUserModel();
-      }
-    },
-    resolveBattleEvent(event){
-      this.$store.commit("user/applyBattleDamage", event.detail.damages);
-    },
-    resolveStairEvent(){
-      this.$store.commit("user/incrementCurrentDungeonDepth");
-    },
-    resolveResurrectEvent(event){
-        console.log(event);
-        if(event.detail.completed){
-        this.$store.commit("user/resurrect");
-      }
-    },
   },
 }
 </script>
