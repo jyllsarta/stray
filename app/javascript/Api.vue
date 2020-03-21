@@ -18,6 +18,11 @@ export default {
     isAuthorized(){
       return localStorage.access_token !== ""; 
     },
+    retryFetchLatestEvents(){
+      console.log("10秒後に再取得を試みます");
+      const ten_seconds_after = new Date().getTime() / 1000 + 10;
+      this.$store.commit("event/setNextEventAtTo", ten_seconds_after);
+    },
     init(){
       console.log("mounted api system!");
       this.fetchMasterData();
@@ -55,6 +60,10 @@ export default {
     fetchLatestEvents(){
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/events.json`;
+      if(!user_id){
+        this.retryFetchLatestEvents();
+        return;
+      }
       ax.post(path)
         .then((results) => {
           console.log(results);
@@ -64,9 +73,7 @@ export default {
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
-          console.log("10秒後に再取得を試みます");
-          const ten_seconds_after = new Date().getTime() / 1000 + 10;
-          this.$store.commit("event/setNextEventAtTo", ten_seconds_after);
+          this.retryFetchLatestEvents();
         });
     },
     signUp(){
@@ -77,6 +84,10 @@ export default {
           console.log("OK");
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
+          ax.defaults.headers = {
+            "X-AccessToken": localStorage.access_token,
+              accept: "application/json",
+          } // axios_default_setting を読み込み直す処理を入れるのが理想
           this.fetchUserModel();
         })
         .catch((error) => {
