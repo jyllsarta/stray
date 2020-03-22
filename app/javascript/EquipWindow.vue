@@ -78,12 +78,19 @@
               @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
               :class="[{ disabled: isAlreadyEquipped(item) }, rarityClass(item)]"
             )
-              .category_icon
-                | ◆
-              .item_name
-                | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
-              .value
-                | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+              .param_area
+                .category_icon
+                  | ◆
+                .item_name
+                  | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+                .value
+                  | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+              .bar_area
+                .bar(
+                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  :class="param"
+                  :style="{width: cropWidth(30 * relativeEffectivenessRatio(item.effectValueOf(param)))}"
+                  )
             .item(
               v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
               :class="[{ disabled: true }]"
@@ -243,6 +250,18 @@ export default {
         return "";
       }
       return delta > 0 ? 'plus' : 'minus';
+    },
+    relativeEffectivenessRatio(param){
+      return param / this.$store.getters['user/currentStandardParameter'];
+    },
+    cropWidth(param){
+      if(param < 0){
+        return 0;
+      }
+      if(param > 200){
+        return 200;
+      }
+      return param;
     },
   },
   beforeDestroy(){
@@ -417,17 +436,40 @@ export default {
         padding: $thin_space;
         .item{
           padding: 2px;
-          display: flex;
-          flex-direction: row;
-          line-height: 100%;
-          .category_icon{
-            width: 5%;
+          .param_area{
+            display: flex;
+            flex-direction: row;
+            line-height: 110%;
+            .category_icon{
+              width: 5%;
+            }
+            .item_name{
+              width: 75%;
+            }
+            .value{
+              width: 20%;
+            }
           }
-          .item_name{
-            width: 75%;
-          }
-          .value{
-            width: 20%;
+          .bar_area{
+            width: 80%;
+            height: 1px;
+            display: flex;
+            opacity: 0.9;
+            .bar{
+              width: 20%;
+            }
+            .str{
+              background-color: $str;
+            }
+            .dex{
+              background-color: $dex;
+            }
+            .def{
+              background-color: $def;
+            }
+            .agi{
+              background-color: $agi;
+            }
           }
           &:hover{
             filter: brightness(120%);

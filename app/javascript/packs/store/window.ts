@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     account: false,
-    equip: false,
+    equip: true,
   },
   getters: {
   },

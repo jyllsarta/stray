@@ -28,8 +28,12 @@ export default {
     isOverFloor(state, getters, rootState, rootGetters){
       const current_dungeon_id = state.status.current_dungeon_id;
       return state.status.current_dungeon_depth >= rootState.masterdata?.dungeons[current_dungeon_id]?.depth;
-    }
-  },
+    },
+    currentStandardParameter: (state) => {
+      return 100;
+    },
+  }
+  ,
   mutations: {
     syncEquipDraft(state, payload){
       ["spica", "tirol"].forEach(characterName=>{
