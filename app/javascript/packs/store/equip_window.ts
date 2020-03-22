@@ -19,11 +19,10 @@ export default {
     },
   },
   getters: {
-    // TODO: 将来的にはUserItemモデルを返すようにしなければならない気がしている
     getCurrentEquipsByCharacterId: (state, getters, rootState, rootGetters) => (characterId) => {
       const characterName = [null, "spica", "tirol"][characterId];
       const equips = state.draft[characterName];
-      return equips?.map(c => rootState.masterdata.items[c])
+      return equips?.map(c => getters.getUserItem(c));
     },
     getSubCharacterId: (state) => {
       // これでいいのか感はある

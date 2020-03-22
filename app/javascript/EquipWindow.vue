@@ -76,12 +76,12 @@
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
-              :class="[{ disabled: isAlreadyEquipped(item) }, rarityClass(item)]"
+              :class="[{ disabled: isAlreadyEquipped(item) }]"
             )
               .param_area
                 .category_icon
                   | ◆
-                .item_name
+                .item_name(:class="[rarityClass(item)]")
                   | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                 .value
                   | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
@@ -95,12 +95,19 @@
               v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
               :class="[{ disabled: true }]"
               )
-              .category_icon
-                | ◆
-              .item_name
-                | ？？？
-              .value
-                | -
+              .param_area
+                .category_icon
+                  | ◆
+                .item_name
+                  | ？？？
+                .value
+                  | -
+              .bar_area
+                .bar(
+                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  :class="param"
+                  :style="{width: 0}"
+                )
         .detail.block
           .label
             | 詳細
@@ -128,14 +135,23 @@
               img.ko.upper(src="images/ui/ko.png")
               img.ko.downer(src="images/ui/ko.png")
             .equips
-              .equip(
+              .equip.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
                 @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
-                :class="[rarityClass(item)]"
               )
-                |  {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+                .param_area
+                  .category_icon
+                    | ◆
+                  .item_name(:class="[rarityClass(item)]")
+                    | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+                .bar_area
+                  .bar(
+                    v-for="param in ['str', 'dex', 'def', 'agi']"
+                    :class="param"
+                    :style="{width: cropWidth(30 * relativeEffectivenessRatio(item.effectValueOf(param)))}"
+                  )
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
@@ -410,6 +426,49 @@ export default {
       }
     }
 
+    .item{
+      padding: 2px;
+      .param_area{
+        display: flex;
+        flex-direction: row;
+        line-height: 110%;
+        .category_icon{
+          width: 5%;
+        }
+        .item_name{
+          width: 75%;
+        }
+        .value{
+          width: 20%;
+        }
+      }
+      .bar_area{
+        width: 80%;
+        height: 1px;
+        display: flex;
+        opacity: 0.9;
+        .bar{
+          width: 20%;
+        }
+        .str{
+          background-color: $str;
+        }
+        .dex{
+          background-color: $dex;
+        }
+        .def{
+          background-color: $def;
+        }
+        .agi{
+          background-color: $agi;
+        }
+      }
+      &:hover{
+        filter: brightness(120%);
+        background-color: $gray3;
+      }
+    }
+
     .item_list_main{
       .misc{
         height: 50px;
@@ -434,48 +493,6 @@ export default {
         height: calc(100% - 50px - #{$font-size-normal});
         justify-content: space-around;
         padding: $thin_space;
-        .item{
-          padding: 2px;
-          .param_area{
-            display: flex;
-            flex-direction: row;
-            line-height: 110%;
-            .category_icon{
-              width: 5%;
-            }
-            .item_name{
-              width: 75%;
-            }
-            .value{
-              width: 20%;
-            }
-          }
-          .bar_area{
-            width: 80%;
-            height: 1px;
-            display: flex;
-            opacity: 0.9;
-            .bar{
-              width: 20%;
-            }
-            .str{
-              background-color: $str;
-            }
-            .dex{
-              background-color: $dex;
-            }
-            .def{
-              background-color: $def;
-            }
-            .agi{
-              background-color: $agi;
-            }
-          }
-          &:hover{
-            filter: brightness(120%);
-            background-color: $gray3;
-          }
-        }
       }
     }
     .disabled{
