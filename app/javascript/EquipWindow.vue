@@ -36,7 +36,7 @@
             .param(v-for="param in ['atk', 'def']")
               span.current
                 | {{param.toUpperCase()}}: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], param, true)}}
-              span.diff
+              span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param)}})
           .equips
             .equip(
@@ -84,7 +84,10 @@
                 | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
               .value
                 | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
-            .item(v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
+            .item(
+              v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
+              :class="[{ disabled: true }]"
+              )
               .category_icon
                 | ◆
               .item_name
@@ -141,11 +144,11 @@
             .to_status
               .status
                 | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
-              .status_diff
+              .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')}})
               .status
                 | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
-              .status_diff
+              .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')}})
 </template>
 
@@ -232,7 +235,13 @@ export default {
     },
     rarityClass(item){
       return `rarity${item.rarity}`;
-    }
+    },
+    deltaClass(delta){
+      if(delta === 0){
+        return "";
+      }
+      return delta > 0 ? 'plus' : 'minus';
+    },
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
