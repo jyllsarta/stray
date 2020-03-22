@@ -133,7 +133,7 @@
                 | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
-                .label
+                .label(:class="param")
                   | {{param.toUpperCase()}}
                 .value
                   | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}

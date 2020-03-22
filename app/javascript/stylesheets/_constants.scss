@@ -4,7 +4,6 @@ $white: #f0f4f0;
 $gray1: #ced1ce;
 $gray2: #a1a4a1;
 $gray3: #646a74;
-$yellow: #f8d66a;
 
 $rarity1: #f0f4f0;
 $rarity2: #f8d66a;
@@ -15,11 +14,12 @@ $rarity5: #c1b7ff;
 $plus: #f8779d;
 $minus: #779af8;
 
-$str: #f86d93;
+$str: $rarity4;
 $dex: #aef887;
-$def: #75a1f8;
-$agi: #f8df70;
+$def: $rarity3;
+$agi: $rarity2;
 
+$yellow: $rarity2;
 $clickable-color: #5e7784;
 $background: #333e4a;
 $space: 8px;
