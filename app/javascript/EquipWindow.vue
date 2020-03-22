@@ -138,8 +138,10 @@
                 .value
                   | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}
             .this_item
-              // TODO: マイナス対応
-              .status(v-for="param in ['str', 'dex', 'def', 'agi']")
+              .status(
+                v-for="param in ['str', 'dex', 'def', 'agi']"
+                :class="[currentItem ? deltaClass(currentItem.effectValueOf(param)) : '']"
+                )
                 | {{currentItem ? withPlus(currentItem.effectValueOf(param)) : '-'}}
             .to_status
               .status
@@ -427,6 +429,10 @@ export default {
           .value{
             width: 20%;
           }
+          &:hover{
+            filter: brightness(120%);
+            background-color: $gray3;
+          }
         }
       }
     }
@@ -515,6 +521,10 @@ export default {
             }
             &:nth-child(4){
               padding-left: 32px;
+            }
+            &:hover{
+              filter: brightness(120%);
+              background-color: $gray3;
             }
           }
         }
