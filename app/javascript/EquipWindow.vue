@@ -75,7 +75,7 @@
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
-              :class="$store.getters['equip_window/isAlreadyEquippedBySomeone'](item.id) ? 'disabled' : ''"
+              :class="[{ disabled: isAlreadyEquipped(item) }, rarityClass(item)]"
             )
               .category_icon
                 | ◆
@@ -225,6 +225,12 @@ export default {
       this.sub_character_position = Math.sin(now / 2000 + 1) * 4;
       this.move_character_handle = requestAnimationFrame(this.moveCharacter);
     },
+    isAlreadyEquipped(item){
+      return this.$store.getters['equip_window/isAlreadyEquippedBySomeone'](item.id);
+    },
+    rarityClass(item){
+      return `rarity${item.rarity}`;
+    }
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
@@ -278,6 +284,42 @@ export default {
     }
     .sub_character_image{
       width: 160px;
+    }
+
+    .str{
+      color: $str;
+    }
+    .dex{
+      color: $dex;
+    }
+    .def{
+      color: $def;
+    }
+    .agi{
+      color: $agi;
+    }
+
+    .rarity1{
+      color: $rarity1;
+    }
+    .rarity2{
+      color: $rarity2;
+    }
+    .rarity3{
+      color: $rarity3;
+    }
+    .rarity4{
+      color: $rarity4;
+    }
+    .rarity5{
+      color: $rarity5;
+    }
+
+    .plus{
+      color: $plus;
+    }
+    .minus{
+      color: $minus;
     }
 
     .switch_character_button{
@@ -437,6 +479,7 @@ export default {
           .upper{
             top: 0;
             left: 565px;
+
           }
           .downer{
             top: 75px;
