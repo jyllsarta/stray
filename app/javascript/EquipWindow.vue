@@ -43,6 +43,7 @@
               v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
+              :class="[rarityClass(item)]"
             )
               | {{item.name}}
             // 空枠を埋める
@@ -122,6 +123,7 @@
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
                 @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
+                :class="[rarityClass(item)]"
               )
                 |  {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
