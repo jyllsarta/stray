@@ -156,16 +156,28 @@
                 | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
-                .label(:class="param")
-                  | {{param.toUpperCase()}}
-                .value
-                  | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}
+                .param_area
+                  .label(:class="param")
+                    | {{param.toUpperCase()}}
+                  .value
+                    | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}
+                .bar_area
+                  .bar(
+                    :class="param"
+                    :style="{width: barWidthPercent(param)}"
+                  )
             .this_item
               .status(
                 v-for="param in ['str', 'dex', 'def', 'agi']"
                 :class="[currentItem ? deltaClass(currentItem.effectValueOf(param)) : '']"
                 )
-                | {{currentItem ? withPlus(currentItem.effectValueOf(param)) : '-'}}
+                .param
+                  | {{currentItem ? withPlus(currentItem.effectValueOf(param)) : '-'}}
+                .bar_area
+                  .bar(
+                    :class="param"
+                    :style="{width: currentItem ? cropWidth(100 * relativeEffectivenessRatio(currentItem.effectValueOf(param)) + withPercent(currentItem.effectValueOf(param)) ) : 0}"
+                  )
             .to_status
               .status
                 | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
@@ -279,6 +291,14 @@ export default {
       }
       return param;
     },
+    withPercent(param){
+      return param <= 0 ? '' : '%';
+    },
+    barWidthPercent(param){
+      const ratio = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
+      // 基準パラメータの2倍あったらwidth:100%にしたいので 1/2 を係数にかけてる
+      return this.cropWidth(100 * (1/2) * this.relativeEffectivenessRatio(ratio)) + this.withPercent(ratio);
+    },
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
@@ -345,6 +365,28 @@ export default {
     }
     .agi{
       color: $agi;
+    }
+
+    .bar_area{
+      width: 80%;
+      height: 1px;
+      display: flex;
+      opacity: 0.9;
+      .bar{
+        width: 20%;
+      }
+      .str{
+        background-color: $str;
+      }
+      .dex{
+        background-color: $dex;
+      }
+      .def{
+        background-color: $def;
+      }
+      .agi{
+        background-color: $agi;
+      }
     }
 
     .rarity1{
@@ -440,27 +482,6 @@ export default {
         }
         .value{
           width: 20%;
-        }
-      }
-      .bar_area{
-        width: 80%;
-        height: 1px;
-        display: flex;
-        opacity: 0.9;
-        .bar{
-          width: 20%;
-        }
-        .str{
-          background-color: $str;
-        }
-        .dex{
-          background-color: $dex;
-        }
-        .def{
-          background-color: $def;
-        }
-        .agi{
-          background-color: $agi;
         }
       }
       &:hover{
@@ -588,30 +609,49 @@ export default {
           }
         }
         .current_parameters{
-          width: 17%;
+          width: 20%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
           .status{
             padding: 2px;
-            .label{
-              display: inline-block;
-              width: 30%;
+            .param_area{
+              .label{
+                display: inline-block;
+                width: 30%;
+              }
+              .value{
+                display: inline-block;
+                width: 70%;
+              }
             }
-            .value{
-              display: inline-block;
-              width: 70%;
+            .bar_area{
+              width: 100%;
+              height: 1px;
+              .bar{
+                width: 100%;
+                height: 1px;
+              }
             }
           }
         }
         .this_item{
-          width: 19%;
+          width: 20%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
           .status{
-            font-size: $font-size-mini;
-            padding-left: $space;
+            .param{
+              padding-left: $space;
+            }
+            .bar_area{
+              height: 1px;
+              width: 50%;
+              .bar{
+                width: 100%;
+                height: 1px;
+              }
+            }
           }
         }
         .to_status{
