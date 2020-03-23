@@ -89,7 +89,7 @@
                 .bar(
                   v-for="param in ['str', 'dex', 'def', 'agi']"
                   :class="param"
-                  :style="{width: cropWidth(30 * relativeEffectivenessRatio(item.effectValueOf(param)))}"
+                  :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
             .item(
               v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
@@ -150,7 +150,7 @@
                   .bar(
                     v-for="param in ['str', 'dex', 'def', 'agi']"
                     :class="param"
-                    :style="{width: cropWidth(30 * relativeEffectivenessRatio(item.effectValueOf(param)))}"
+                    :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
@@ -180,11 +180,23 @@
                   )
             .to_status
               .status
-                | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
+                .param_area
+                  .param
+                    | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
+                .bar_area
+                  .bar.plus(
+                    :style="{width: atkBar()}"
+                  )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')}})
               .status
-                | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
+                .param_area
+                  .param
+                    | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
+                .bar_area
+                  .bar.minus(
+                    :style="{width: defBar()}"
+                  )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')}})
 </template>
@@ -295,10 +307,19 @@ export default {
       return param <= 0 ? '' : '%';
     },
     barWidthPercent(param){
-      const ratio = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
+      const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
       // 基準パラメータの2倍あったらwidth:100%にしたいので 1/2 を係数にかけてる
-      return this.cropWidth(100 * (1/2) * this.relativeEffectivenessRatio(ratio)) + this.withPercent(ratio);
+      return this.cropWidth(100 * (1/2) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
+    // atk, def は他パラメータの倍必要なので 1/4
+    atkBar(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'atk', true)
+      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    },
+    defBar(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'def', true)
+      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    }
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
@@ -386,6 +407,12 @@ export default {
       }
       .agi{
         background-color: $agi;
+      }
+      .plus{
+        background-color: $plus;
+      }
+      .minus{
+        background-color: $minus;
       }
     }
 
@@ -662,6 +689,9 @@ export default {
           .status_diff{
             font-size: $font-size-mini;
             text-align: right;
+          }
+          .bar_area{
+            width: 100%;
           }
         }
       }
