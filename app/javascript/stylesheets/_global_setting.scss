@@ -29,6 +29,9 @@
     transform: translateX(-30px);
     opacity: 0;
   }
+  ::selection{
+    background: none;
+  }
 }
 
 .window{
