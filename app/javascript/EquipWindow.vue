@@ -90,7 +90,7 @@
                   :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
             .item(
-              v-for="nilItem in new Array(10 - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
+              v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
               :class="[{ disabled: true }]"
               )
               .param_area
@@ -492,7 +492,7 @@ export default {
     }
 
     .item{
-      padding: 2px;
+      padding: $thin_space;
       .param_area{
         display: flex;
         flex-direction: row;
@@ -532,8 +532,8 @@ export default {
         display: flex;
         flex-direction: column;
         height: calc(100% - 50px - #{$font-size-normal});
-        justify-content: space-around;
         padding: $thin_space;
+        overflow: scroll;
       }
     }
     .disabled{
