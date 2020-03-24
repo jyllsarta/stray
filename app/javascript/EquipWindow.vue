@@ -353,7 +353,9 @@ export default {
   .body{
     .block{
       border-left: 1px solid $gray3;
-      //border-radius: $radius;
+      background-color: $background_with_opacity;
+      opacity: $opacity;
+      border-radius: $radius;
     }
 
     .label{
@@ -592,7 +594,7 @@ export default {
             opacity: 0.7;
           }
           .upper{
-            top: 0;
+            top: 5px;
             left: 565px;
 
           }
