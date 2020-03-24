@@ -3,7 +3,7 @@
     .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
     .window.content
       .title_area
-        .back_button(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
+        .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
         .title
           | アカウント管理
       .account
@@ -20,7 +20,7 @@
                 | ユーザID
               .desc_without_border(ref="user_id")
                 | {{$store.state.user.user_id}}
-              .copy_button(@click="copyUserId").button
+              .copy_button(@click="copyUserId").button.clickable
                 | {{copy_done ? "完了！" : "コピー"}}
             .item
               .label
@@ -31,7 +31,7 @@
                 | パスワード
               input.desc(type="password", v-model="register.password")
             .item
-              input.desc.submit(type="submit", value="登録", @click="registerName")
+              input.desc.submit.clickable(type="submit", value="登録", @click="registerName")
             .item(v-if="register.status != 'waiting'")
               .desc_without_border
                 | {{register.message}}
@@ -50,7 +50,7 @@
                 | パスワード
               input.desc(type="password", v-model="restore.password")
             .item
-              input.desc.submit(type="submit", value="復元", @click="regenerateToken")
+              input.desc.submit.clickable(type="submit", value="復元", @click="regenerateToken")
             .item(v-if="restore.status != 'waiting'")
               .desc_without_border
                 | {{restore.message}}
@@ -175,7 +175,7 @@ export default {
         }
         .desc{
           display: inline-block;
-          border: 1px solid $gray2;
+          border: 1px solid $gray1;
           color: $white;
           width: 50%;
           border-radius: $radius;
@@ -191,11 +191,9 @@ export default {
           width: 20%;
           text-align: center;
           height: $font-size-normal * 1.5;
-          border: 1px solid $gray2;
           border-radius: $radius;
         }
         .submit{
-          background-color: $clickable-color;
           height: 30px;
           &:hover{
             filter: brightness(110%);

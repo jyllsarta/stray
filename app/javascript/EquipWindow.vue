@@ -3,7 +3,7 @@
     .back(@click="closeWindow")
     .window.content
       .title_area
-        .back_button(
+        .back_button.clickable(
           @click="closeWindow"
           @mouseover="$store.commit('guide/updateGuide', '編集を確定してメニューを閉じます。')",
         )
