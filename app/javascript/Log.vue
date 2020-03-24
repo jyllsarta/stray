@@ -94,23 +94,20 @@ export default {
       white-space: pre-wrap;
       padding-left: $thin_space;
     }
-    &:hover{
-      filter: brightness(110%);
-    }
   }
 
   .show-in-enter-active {
-    transition: all .1s;
+    transition: all .4s;
   }
   .show-in-leave-active {
-    transition: all .1s;
+    transition: all .4s;
   }
   .show-in-enter{
-    transform: translateX(0px);
+    transform: translateX(-30px);
     opacity: 0;
   }
   .show-in-leave-to{
-    transform: translateX(0px);
+    transform: translateX(-30px);
     opacity: 0;
   }
 }
