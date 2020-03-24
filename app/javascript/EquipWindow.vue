@@ -79,8 +79,6 @@
               :class="[{ disabled: isAlreadyEquipped(item) }]"
             )
               .param_area
-                .category_icon
-                  | ◆
                 .item_name(:class="[rarityClass(item)]")
                   | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                 .value
@@ -96,8 +94,6 @@
               :class="[{ disabled: true }]"
               )
               .param_area
-                .category_icon
-                  | ◆
                 .item_name
                   | ？？？
                 .value
@@ -142,8 +138,6 @@
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
               )
                 .param_area
-                  .category_icon
-                    | ◆
                   .item_name(:class="[rarityClass(item)]")
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                 .bar_area
@@ -501,11 +495,8 @@ export default {
         display: flex;
         flex-direction: row;
         line-height: 110%;
-        .category_icon{
-          width: 5%;
-        }
         .item_name{
-          width: 75%;
+          width: 80%;
         }
         .value{
           width: 20%;
