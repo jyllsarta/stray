@@ -3,10 +3,12 @@
 # Table name: user_characters
 #
 #  id           :integer          not null, primary key
-#  user_id      :integer          default(0)
-#  character_id :integer          default(NULL)
+#  exp          :integer          default(0)
 #  hp           :integer          default(0)
 #  hp_max       :integer          default(0)
+#  level        :integer          default(0)
+#  character_id :integer          default(NULL)
+#  user_id      :integer          default(0)
 #
 
 class User::Character < ApplicationRecord

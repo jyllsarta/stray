@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "character_id", default: 0
     t.integer "hp", default: 0
     t.integer "hp_max", default: 0
+    t.integer "level", default: 0
+    t.integer "exp", default: 0
   end
 
   create_table "user_dungeon_progresses", force: :cascade do |t|
