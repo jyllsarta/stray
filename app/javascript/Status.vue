@@ -6,7 +6,7 @@
         .name
           | スピカ
         .lv
-          | Lv:19
+          | Lv:{{$store.state.user.characters.spica.level}}
       .gauge
         .hp
           .label
@@ -18,13 +18,14 @@
           .label
             | EXP
           .value
-            | 85%
+            | {{Math.floor($store.state.user.characters.spica.exp / expMax * 100) || 0}}%
+        .gauge(:style="{width: expGaugeWidth('spica'), backgroundColor: expGaugeColor('spica') }")
     .tirol
       .profile
         .name
           | チロル
         .lv
-          | Lv:34445
+          | Lv:{{$store.state.user.characters.spica.level}}
       .gauge
         .hp
           .label
@@ -36,7 +37,8 @@
           .label
             | EXP
           .value
-            | 13%
+            | {{Math.floor($store.state.user.characters.spica.exp / expMax * 100) || 0}}%
+        .gauge(:style="{width: expGaugeWidth('tirol'), backgroundColor: expGaugeColor('tirol') }")
 </template>
 
 <script lang="ts">
@@ -60,6 +62,21 @@ export default {
     hpGaugeColor(characterName){
       const percent = this.hpPercent(characterName);
       return `hsla(${percent / 100 * 220}, 100%, 70%, 1)`
+    },
+    expGaugeWidth(characterName){
+      return this.expPercent(characterName) / 100 * this.character_base_width;
+    },
+    expPercent(characterName){
+      return Math.floor(this.$store.state.user.characters[characterName]['exp'] / this.expMax * 100) || 0
+    },
+    expGaugeColor(characterName){
+      const percent = this.expPercent(characterName);
+      return `hsla(${percent / 100 * 130 + 90}, 100%, 70%, 1)`
+    }
+  },
+  computed: {
+    expMax(){
+      return Constants.character.expMax;
     }
   }
 }

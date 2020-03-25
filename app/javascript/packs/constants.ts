@@ -20,7 +20,8 @@ const Constants = {
         def: 10,
         agi: 10,  
       },
-    }
+    },
+    expMax: 1000,
   },
   log: {
     maxLength: 300,
