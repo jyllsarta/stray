@@ -29,6 +29,10 @@ event:
     id_range: 10
     # レアリティidと重みを一致させたいのでrarity: 0 は重み0 をつける
     weights: [0, 8000, 1400, 400, 150, 50]
+  battle:
+    # base + (0 ~ additional) 点の経験値を得る
+    base_exp: 100
+    additional_exp_range: 50
 
 dungeon:
   depth_per_rank: 40

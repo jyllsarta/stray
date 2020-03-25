@@ -60,6 +60,17 @@ RSpec.describe BattleEvent, type: :model do
         subject
         expect(user.status).to_not have_received(:start_resurrect_timer!)
       end
+      it "gains some exp" do
+        expect{subject}.to change(user.characters.first, :exp)
+      end
+      context "if character dead" do
+        before do
+          allow(user.characters.first).to receive(:dead?).and_return(true)
+        end
+        it "no gain exp" do
+          expect{subject}.to_not change(user.characters.first, :exp)
+        end
+      end
     end
     context "lose" do
       before do
@@ -68,6 +79,9 @@ RSpec.describe BattleEvent, type: :model do
       it "復活開始" do
         subject
         expect(user.status).to have_received(:start_resurrect_timer!).once
+      end
+      it "no gain exp" do
+        expect{subject}.to_not change(user.characters.first, :exp)
       end
     end
   end
