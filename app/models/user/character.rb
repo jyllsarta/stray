@@ -67,7 +67,32 @@ class User::Character < ApplicationRecord
     }
   end
 
+  def gain_exp!(value)
+    with_lock do
+      # UPDATEの発行数を減らすため、レベルアップしまくるのはメモリ上で行う
+      increment(:exp, value)
+      while can_level_up?
+        level_up
+      end
+      save!
+    end
+  end
+
   private
+
+  def can_level_up?
+    self.exp >= Constants.character.level_up_exp
+  end
+
+  def level_up
+    self.decrement(:exp, Constants.character.level_up_exp - 1)
+    self.increment(:level)
+    self.hp_max = hp_max_at(level)
+  end
+
+  def hp_max_at(level)
+    Constants.character.initial_hp_max + level * Constants.character.gain_hp_per_level
+  end
 
   def compacted_equips
     equips.includes(user_item: [:item]).select{|equip| equip.user_item.present?}

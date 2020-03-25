@@ -181,4 +181,25 @@ RSpec.describe User::Character, type: :model do
                             })
     end
   end
+
+  describe "#gain_exp!" do
+    let(:character){ create(:user_character, user: user) }
+
+    subject { character.gain_exp!(value) }
+    context "< threshold" do
+      let(:value){ Constants.character.level_up_exp - 1 }
+      it "just gains exp" do
+        expect{subject}.to change(character, :exp).by(value)
+      end
+    end
+    context ">> threshold" do
+      let(:value){ Constants.character.level_up_exp * 2 }
+      it "also level up" do
+        expect{subject}.to change(character, :level).by(2)
+      end
+      it "grows hp_max" do
+        expect{subject}.to change(character, :hp_max).by(Constants.character.gain_hp_per_level * 2)
+      end
+    end
+  end
 end

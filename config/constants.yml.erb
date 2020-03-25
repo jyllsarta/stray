@@ -4,6 +4,7 @@ resurrect_time_seconds: <%= Rails.env.production? ? 3600 : 25 %>
 
 character:
   initial_hp_max: 100
+  gain_hp_per_level: 10
   # constants.tsと定義を共有しているので注意
   default_parameters:
     spica:
@@ -16,6 +17,7 @@ character:
       dex: 10
       def: 10
       agi: 10
+  level_up_exp: 1000
 
 item:
   default_max_rank: 10
