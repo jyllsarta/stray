@@ -533,7 +533,21 @@ export default {
         flex-direction: column;
         height: calc(100% - 50px - #{$font-size-normal});
         padding: $thin_space;
-        overflow: scroll;
+        overflow-y: scroll;
+        &::-webkit-scrollbar{
+          width: 10px;
+        }
+        &::-webkit-scrollbar-track{
+          background: transparent;
+          border: none;
+          border-radius: $radius;
+          box-shadow: inset 0 0 2px #777;
+        }
+        &::-webkit-scrollbar-thumb{
+          background: $gray2;
+          border-radius: $radius;
+          box-shadow: none;
+        }
       }
     }
     .disabled{
