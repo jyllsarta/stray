@@ -17,9 +17,14 @@ export default {
         if(events.filter(event=>!event.resolved).length > 0){
           this.showEventIllust(events.slice(-1)[0]);
         }
+        // 再生した中にバトルイベントがあったら全部終わったあとにユーザデータを再ロードする
+        const hasBattleEvent = events.filter(event=>!event.resolved).filter(event=>event.type === 'battle').length > 0;
         events.filter(event=>!event.resolved).forEach((event)=>{
           this.processEvent(event);
         });
+        if(hasBattleEvent){
+          this.$store.dispatch("user/fetchUserModel");
+        }
       },
     }
   },
