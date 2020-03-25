@@ -33,6 +33,7 @@ class User < ApplicationRecord
         (1..4).each do |i|
           character.equips.create!(position: i)
         end
+        character.update!(level: 1)
       end
     end
     user
