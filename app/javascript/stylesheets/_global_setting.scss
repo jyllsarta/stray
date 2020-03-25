@@ -66,11 +66,6 @@
       &::after{
         content: "◀";
       }
-      &:hover{
-        filter: brightness(110%);
-        transform: scale(1.02);
-      }
-
     }
     .title{
       font-size: $font-size-large;
@@ -94,6 +89,7 @@
   border-radius: $radius;
   border: 1px solid $gray1;
   &:hover{
+    background-color: $clickable-hover-color;
     filter: brightness(115%);
     transform: scale(1.04);
   }
