@@ -6,8 +6,8 @@ export default {
     main_character_id: 1, // 装備編集中のキャラID
     selecting_item_id: 0, // 現在マウスがあたってる装備ID
     current_page: 1,
-    current_sort_id: 0,
-    current_sort_order: 1, // 1:asc, -1:desc
+    current_sort_id: 1,
+    current_sort_order: -1, // 1:asc, -1:desc
     draft: {
       spica: [],
       tirol: [],
