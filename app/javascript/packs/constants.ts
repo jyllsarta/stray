@@ -26,6 +26,16 @@ const Constants = {
   log: {
     maxLength: 300,
   },
+  item: {
+    rankFactor: 1.4,
+    rarityFactor: {
+      1: 1.0,
+      2: 1.1,
+      3: 1.3,
+      4: 1.65,
+      5: 2.2,
+    },
+  },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 3,
   itemsPerPage: 50,

@@ -83,9 +83,15 @@ export default {
       }
       let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] + 0.1 * this.rank * this[paramName]);
+        return Math.floor(this[paramName] / 100 * getters.rankFactor(this.rank + this.id) * getters.rarityFactor(this.rarity));
       };
       return ui;
+    },
+    rankFactor: (state, getters) => (rank) => {
+      return Math.pow(rank, Constants.item.rankFactor);
+    },
+    rarityFactor: (state, getters) => (rarity) => {
+      return Constants.item.rarityFactor[rarity];
     },
     getItemEffectValue: (state, getters) => (itemId) => {
       const item = getters.getUserItem(itemId);
