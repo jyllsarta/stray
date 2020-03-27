@@ -286,7 +286,8 @@ export default {
       return delta > 0 ? 'plus' : 'minus';
     },
     relativeEffectivenessRatio(param){
-      return param / this.$store.getters['user/currentStandardParameter'];
+      // TODO: ここの /4 は完全にUI横幅調整のためのものなので、レベデザ次第で修正していく
+      return param / 4 / this.$store.getters['user/currentStandardParameter'];
     },
     cropWidth(param){
       if(param < 0){

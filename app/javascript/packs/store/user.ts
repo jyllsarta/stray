@@ -1,5 +1,5 @@
-import { store } from '../store.ts'
 import ax from "../axios_default_setting.ts";
+import Constants from "../constants.ts";
 
 export default {
   namespaced: true,
@@ -14,6 +14,7 @@ export default {
     status: {
       current_dungeon_id: 1,
       current_dungeon_depth: 1,
+      current_dungeon_rank: 1,
     },
     characters: {
       spica: {},
@@ -29,8 +30,14 @@ export default {
       const current_dungeon_id = state.status.current_dungeon_id;
       return state.status.current_dungeon_depth >= rootState.masterdata?.dungeons[current_dungeon_id]?.depth;
     },
-    currentStandardParameter: (state) => {
-      return 100;
+    currentStandardParameter: (state, getters) => {
+      return getters.rankFactor(state.status.current_dungeon_rank);
+    },
+    rankFactor: (state, getters) => (rank) => {
+      return Math.pow(rank, Constants.item.rankFactor);
+    },
+    rarityFactor: (state, getters) => (rarity) => {
+      return Constants.item.rarityFactor[rarity];
     },
   }
   ,
