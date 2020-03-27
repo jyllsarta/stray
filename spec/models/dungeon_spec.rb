@@ -26,7 +26,7 @@ RSpec.describe Dungeon, type: :model do
     context "when current_depth >>> depth" do
       let(:current_depth) { 1000000 }
       it "returns depth_per_ranked num" do
-        expect(subject).to eq( dungeon.depth )
+        expect(subject).to eq( dungeon.depth / Constants.dungeon.depth_per_rank )
       end
     end
   end
