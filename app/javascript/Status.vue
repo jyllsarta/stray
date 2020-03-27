@@ -25,7 +25,7 @@
         .name
           | チロル
         .lv
-          | Lv:{{$store.state.user.characters.spica.level}}
+          | Lv:{{$store.state.user.characters.tirol.level}}
       .gauge
         .hp
           .label
@@ -37,7 +37,7 @@
           .label
             | EXP
           .value
-            | {{Math.floor($store.state.user.characters.spica.exp / expMax * 100) || 0}}%
+            | {{Math.floor($store.state.user.characters.tirol.exp / expMax * 100) || 0}}%
         .gauge(:style="{width: expGaugeWidth('tirol'), backgroundColor: expGaugeColor('tirol') }")
 </template>
 

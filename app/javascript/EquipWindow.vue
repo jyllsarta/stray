@@ -186,7 +186,7 @@
               .status
                 .param_area
                   .param
-                    | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
+                    | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
                 .bar_area
                   .bar.minus(
                     :style="{width: defBar()}"
