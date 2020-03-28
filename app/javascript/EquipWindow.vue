@@ -130,6 +130,8 @@
             .kos
               img.ko.upper(src="images/ui/ko.png")
               img.ko.downer(src="images/ui/ko.png")
+            .around_block
+              | 周辺の敵ATK：{{Math.floor($store.getters['user/currentStandardParameter'])}}
             .equips
               .equip.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
@@ -609,7 +611,7 @@ export default {
             opacity: 0.7;
           }
           .upper{
-            top: 5px;
+            top: 10px;
             left: 565px;
 
           }
@@ -617,6 +619,13 @@ export default {
             top: 75px;
             left: 565px;
           }
+
+        }
+        .around_block{
+          position: absolute;
+          bottom: 0;
+          right: $space;
+          font-size: $font-size-mini;
         }
         .equips{
           width: 43%;
@@ -690,6 +699,7 @@ export default {
           }
         }
         .to_status{
+          margin: $space 0 $space*3 0;
           width: 17%;
           display: flex;
           flex-direction: column;
