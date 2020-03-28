@@ -131,7 +131,7 @@
               img.ko.upper(src="images/ui/ko.png")
               img.ko.downer(src="images/ui/ko.png")
             .around_block
-              | 周辺の敵ATK：{{Math.floor($store.getters['user/currentStandardParameter'])}}
+              | 周辺の敵ATK：{{aroundEnemyAtk}}
             .equips
               .equip.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
@@ -289,7 +289,8 @@ export default {
     },
     relativeEffectivenessRatio(param){
       // TODO: ここの /4 は完全にUI横幅調整のためのものなので、レベデザ次第で修正していく
-      return param / 4 / this.$store.getters['user/currentStandardParameter'];
+      const standard = Math.max(this.$store.getters['user/currentStandardParameter'], 30);
+      return param / 4 / standard;
     },
     cropWidth(param){
       if(param < 0){
@@ -328,6 +329,9 @@ export default {
     Constants(){
       return Constants;
     },
+    aroundEnemyAtk(){
+      return this.$store.getters['user/aroundEnemyAtk'];
+    }
   }
 }
 </script>
@@ -619,7 +623,6 @@ export default {
             top: 75px;
             left: 565px;
           }
-
         }
         .around_block{
           position: absolute;

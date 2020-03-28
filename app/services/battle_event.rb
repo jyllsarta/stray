@@ -1,7 +1,8 @@
 class BattleEvent < Event
   def initialize(rank=0, at=Time.now)
     @at = at
-    @rank = rank
+    # バトルイベントの強さは矯正する
+    @rank = (rank * Constants.event.battle.enemy_rank_factor + Constants.event.battle.enemy_rank_geta).floor
   end
 
   def type
@@ -24,7 +25,7 @@ class BattleEvent < Event
   end
 
   def execute!(user)
-    @battle = Battle.new(user, 1)
+    @battle = Battle.new(user, @rank)
     @battle.execute!
     @battle.apply_damages!
     @battle.is_win ? process_win(user) : process_lose(user)

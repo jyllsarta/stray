@@ -33,6 +33,11 @@ export default {
     currentStandardParameter: (state, getters) => {
       return getters.rankFactor(state.status.current_dungeon_rank);
     },
+    aroundEnemyAtk: (state, getters) => {
+      const actual_rank = state.status.current_dungeon_rank * Constants.event.battle.enemyRankFactor + Constants.event.battle.enemyRankGeta;
+      // str, def の基準値の2倍でエネミーのATKが生成されるので 2 倍
+      return Math.floor(2 * getters.rankFactor(actual_rank));
+    },
     rankFactor: (state, getters) => (rank) => {
       return Math.pow(rank, Constants.item.rankFactor);
     },

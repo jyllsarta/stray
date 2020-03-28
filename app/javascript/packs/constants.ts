@@ -36,6 +36,12 @@ const Constants = {
       5: 2.2,
     },
   },
+  event: {
+    battle: {
+      enemyRankFactor: 0.98,
+      enemyRankGeta: 5,
+    },
+  },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 3,
   itemsPerPage: 50,
