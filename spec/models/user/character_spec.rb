@@ -146,8 +146,8 @@ RSpec.describe User::Character, type: :model do
 
   describe "#parameters" do
     let(:character){ create(:user_character, user: user) }
-    let!(:item1){ create(:item, str: 100, dex: 200, def: 300, agi: 0) }
-    let!(:item2){ create(:item, str: 100, dex: 200, def: 300, agi: 0) }
+    let!(:item1){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
+    let!(:item2){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) }
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}
@@ -156,18 +156,18 @@ RSpec.describe User::Character, type: :model do
     subject { character.parameters }
     it "returns character's parameter" do
       expect(subject).to eq({
-                                str: 210, # 100 + 100 + 10(default)
-                                dex: 410, # 200 + 200 + 10(default)
-                                def: 610, # 300 + 300 + 10(default)
-                                agi: 10,  #   0 +   0 + 10(default)
+                                str: 12, # 1 + 1 + 10(default)
+                                dex: 14, # 2 + 2 + 10(default)
+                                def: 16, # 3 + 3 + 10(default)
+                                agi: 10, # 0 + 0 + 10(default)
                             })
     end
   end
 
   describe "#strength" do
     let(:character){ create(:user_character, user: user) }
-    let!(:item1){ create(:item, str: 100, dex: 100, def: 200, agi: 0) }
-    let!(:item2){ create(:item, str: 100, dex: 100, def: 200, agi: 0) }
+    let!(:item1){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
+    let!(:item2){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}
@@ -176,8 +176,8 @@ RSpec.describe User::Character, type: :model do
     subject { character.strength }
     it "returns character's strength" do
       expect(subject).to eq({
-                                atk: 420, # 210 + 210
-                                def: 220, # (410 + 10)/2 + 10
+                                atk: 60, # 30 + 30
+                                def: 40, # (50 + 10)/2 + 10
                             })
     end
   end

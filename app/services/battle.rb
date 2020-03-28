@@ -49,7 +49,9 @@ private
   end
 
   def calc_damage(actor, target)
-    [actor.atk - target.def, (target.hp_max / 100).floor].max
+    diff_damage = [actor.atk - target.def, 0].max
+    ratio_damage = ((target.hp_max.to_f / 100) * (actor.atk.to_f / (target.def.to_f == 0 ? 1 : target.def.to_f) * Constants.event.battle.ratio_damage_factor).ceil).floor
+    diff_damage + ratio_damage
   end
 
   def lot_enemies(rank)
