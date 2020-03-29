@@ -4,6 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  agi         :integer
+#  base_rank   :integer
 #  def         :integer
 #  dex         :integer
 #  flavor_text :string

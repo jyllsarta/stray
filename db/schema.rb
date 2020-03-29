@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
+    t.integer "base_rank"
     t.integer "str"
     t.integer "dex"
     t.integer "def"
@@ -29,7 +30,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "flavor_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "base_rank"
   end
 
   create_table "messages", force: :cascade do |t|
