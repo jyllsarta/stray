@@ -22,6 +22,10 @@ export default {
     }
   },
   getters: {
+    isAliveCharacter: (state) => (characterName) => {
+      const character = state.characters[characterName];
+      return character.hp > 0;
+    },
     getCharacterHpPercent: (state) => (characterName) => {
       const character = state.characters[characterName];
       return character.hp / character.hp_max * 100;

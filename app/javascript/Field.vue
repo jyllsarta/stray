@@ -2,11 +2,11 @@
   .field
     .ground
       img.spica(
-        src="images/ui/spica.png"
+        :src="spicaImagePath"
         :style="{transform: 'translateX(' + $store.state.field.position.spica + 'px) scale('+ $store.state.field.direction.spica * -1 +', 1)'}"
       )
       img.tirol(
-        src="images/ui/tirol.png"
+        :src="tirolImagePath"
         :style="{transform: 'translateX(' + $store.state.field.position.tirol + 'px) scale('+ $store.state.field.direction.tirol * -1 +', 1)'}"
       )
 </template>
@@ -33,6 +33,9 @@ export default {
     },
     proceedCharacter(){
       ["spica", "tirol"].forEach((name)=>{
+         if(!this.$store.getters['user/isAliveCharacter'](name)){
+           return;
+         }
         // TODO: スピード制御ロジック
         // TODO: speedと反射基準点をcontantsから拾う
         this.$store.commit("field/moveCharacter", {characterName: name, delta: 1});
@@ -44,7 +47,15 @@ export default {
         }
       });
     },
-  }
+  },
+  computed: {
+    spicaImagePath(){
+      return this.$store.getters['user/isAliveCharacter']('spica') ? "images/ui/spica.png" : "images/ui/spica_dead.png";
+    },
+    tirolImagePath(){
+      return this.$store.getters['user/isAliveCharacter']('tirol') ? "images/ui/tirol.png" : "images/ui/tirol_dead.png";
+    },
+  },
 }
 </script>
 
