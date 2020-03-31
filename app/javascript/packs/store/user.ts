@@ -38,12 +38,15 @@ export default {
       return getters.rankFactor(state.status.current_dungeon_rank);
     },
     aroundEnemyAtk: (state, getters) => {
-      const actual_rank = state.status.current_dungeon_rank * Constants.event.battle.enemyRankFactor + Constants.event.battle.enemyRankGeta;
-      // str, def の基準値の2倍でエネミーのATKが生成されるので 2 倍
-      return Math.floor(2 * getters.rankFactor(actual_rank));
+      const actual_rank = getters.aroundEnemyRank;
+      // str, def の基準値4つぶん*str+dex の合算になるので2倍で、基準パラメータの8倍が敵ATKになる
+      return Math.floor(8 * getters.rankFactor(actual_rank));
+    },
+    aroundEnemyRank: (state, getters) => {
+      return Math.floor(state.status.current_dungeon_rank * Constants.event.battle.enemyRankFactor + Constants.event.battle.enemyRankGeta);
     },
     rankFactor: (state, getters) => (rank) => {
-      return Math.pow(rank, Constants.item.rankFactor);
+      return Math.floor(Math.pow(rank, Constants.item.rankFactor));
     },
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];

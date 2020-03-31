@@ -131,7 +131,7 @@
               img.ko.upper(src="images/ui/ko.png")
               img.ko.downer(src="images/ui/ko.png")
             .around_block
-              | 周辺の敵ATK：{{aroundEnemyAtk}}
+              | 周辺の敵ATK:{{aroundEnemyAtk}}
             .equips
               .equip.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
@@ -331,7 +331,10 @@ export default {
     },
     aroundEnemyAtk(){
       return this.$store.getters['user/aroundEnemyAtk'];
-    }
+    },
+    aroundEnemyRank(){
+      return this.$store.getters['user/aroundEnemyRank'];
+    },
   }
 }
 </script>

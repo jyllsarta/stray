@@ -39,7 +39,7 @@ const Constants = {
   event: {
     battle: {
       enemyRankFactor: 0.98,
-      enemyRankGeta: 10,
+      enemyRankGeta: 4,
     },
   },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか

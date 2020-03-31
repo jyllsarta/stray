@@ -17,16 +17,16 @@ class BattleCharacter
   def self.new_enemy(rank=0)
     param = (rank ** Constants.item.rank_factor).floor
     parameters = {
-      str: param,
-      dex: param,
-      def: param,
-      agi: param,
+      str: param * 4,
+      dex: param * 4,
+      def: param * 4,
+      agi: param * 4,
     }
     strength = {
-      atk: param * 2,
-      def: param
+      atk: param * 8,
+      def: param * 4
     }
-    hp = param * 3
+    hp = param * 6
     hp_max = hp
     self.new(parameters, strength, hp, hp_max)
   end
