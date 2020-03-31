@@ -82,7 +82,7 @@ export default {
       }
       let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.id) * rootGetters['user/rarityFactor'](this.rarity));
+        return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.base_rank) * rootGetters['user/rarityFactor'](this.rarity));
       };
       return ui;
     },
