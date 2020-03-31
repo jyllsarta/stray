@@ -13,6 +13,11 @@ yarn install --check-files
 echo "# db migrate"
 bundle exec rails db:ridgepole:apply
 
+echo "update masterdata"
+cd masterdata
+git pull
+cd ../
+
 echo "# db seed"
 bundle exec rails db:seed
 
