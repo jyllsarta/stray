@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.integer "base_rank"
-    t.integer "str"
-    t.integer "dex"
-    t.integer "def"
-    t.integer "agi"
-    t.integer "rarity"
+    t.integer "base_rank", default: 0
+    t.integer "str", default: 0
+    t.integer "dex", default: 0
+    t.integer "def", default: 0
+    t.integer "agi", default: 0
+    t.integer "rarity", default: 1
     t.string "flavor_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

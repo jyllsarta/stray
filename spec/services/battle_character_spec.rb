@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe BattleCharacter, type: :model do
   let(:battle_character){ BattleCharacter.new(parameters, strength, hp, hp_max) }
+  let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+  let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
   let(:parameters){ {str: 1, dex: 1, def: 1, agi: 1} }
   let(:strength){ {atk: 2, def: 2} }
   let(:hp){ 100 }

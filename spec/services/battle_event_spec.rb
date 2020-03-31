@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe BattleEvent, type: :model do
   let!(:dungeon){ Dungeon.create }
+  let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+  let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
   let(:user){ User.create }
   let(:event){ BattleEvent.new(rank) }
   let(:rank){1}

@@ -18,5 +18,6 @@
 FactoryBot.define do
   factory :item, class: 'Item' do
     rarity { 1 }
+    base_rank { 0 }
   end
 end
