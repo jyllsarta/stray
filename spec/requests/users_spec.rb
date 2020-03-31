@@ -136,9 +136,7 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    payload: {
                                                        user_id: Integer,
-                                                       items: {
-                                                           "#{item.id}": Hash,
-                                                       },
+                                                       items: Hash,
                                                        status: {
                                                            current_dungeon_depth: Integer,
                                                            current_dungeon_id: Integer,

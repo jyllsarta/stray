@@ -15,6 +15,8 @@ require 'rails_helper'
 
 RSpec.describe User::Character, type: :model do
   let!(:dungeon){ create(:dungeon) }
+  let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+  let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
   let(:user){ User.create }
 
   describe "#set_default" do

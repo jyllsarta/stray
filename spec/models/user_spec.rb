@@ -27,6 +27,9 @@ RSpec.describe User, type: :model do
         expect(user.characters.spica.first.equips.length).to eq(4)
         expect(user.characters.tirol.first.level).to eq(1)
         expect(user.characters.spica.first.level).to eq(1)
+        expect(user.characters.tirol.first.equip_item_ids.compact).to eq([2])
+        expect(user.characters.spica.first.equip_item_ids.compact).to eq([1])
+        expect(user.items.length).to eq(2)
       end
     end
   end
