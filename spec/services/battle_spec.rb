@@ -14,7 +14,7 @@ RSpec.describe Battle, type: :model do
     end
   end
 
-  describe "#execute!, #is_win" do
+  describe "#execute!, #is_win, #turn" do
     subject { battle.execute! }
     context "lose" do
       let(:rank){ 1000 }
@@ -22,6 +22,7 @@ RSpec.describe Battle, type: :model do
         subject
         expect(battle.instance_variable_get("@players").all?(&:dead?)).to be_truthy
         expect(battle.is_win).to be_falsey
+        expect(battle.turn).to_not eq(0)
       end
     end
     context "win" do
@@ -30,6 +31,7 @@ RSpec.describe Battle, type: :model do
         subject
         expect(battle.instance_variable_get("@players").any?(&:alive?)).to be_truthy
         expect(battle.is_win).to be_truthy
+        expect(battle.turn).to_not eq(0)
       end
     end
   end

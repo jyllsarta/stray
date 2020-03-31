@@ -1,4 +1,5 @@
 class BattleEvent < Event
+
   def initialize(rank=0, at=Time.now)
     @at = at
     # バトルイベントの強さは矯正する
@@ -56,6 +57,6 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘が発生した！ スピカ#{damages[0]}, チロル#{damages[1]}ダメージ。"
+    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ！#{@battle.turn}ターン継続し、スピカ#{damages[0]}、チロル#{damages[1]}ダメージ。"
   end
 end

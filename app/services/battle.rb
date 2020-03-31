@@ -1,4 +1,5 @@
 class Battle
+  attr_reader :turn
   class NotYet < StandardError; end
 
   def initialize(user, rank=0)
@@ -6,12 +7,14 @@ class Battle
     @before_character_conditions = @user.characters.map(&:attributes)
     @players = @user.characters.map{|uc| BattleCharacter.new_player(uc)}
     @enemies = lot_enemies(rank)
+    @turn = 0
     @done = false
   end
 
   # シミュレートを回す
   def execute!
     while !extincted?(@players) && !extincted?(@enemies) do
+      @turn += 1
       play_turn!(@enemies, @players)
       play_turn!(@players, @enemies)
     end

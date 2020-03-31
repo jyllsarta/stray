@@ -26,7 +26,7 @@ class BattleCharacter
       atk: param * 8,
       def: param * 4
     }
-    hp = param * 6
+    hp = param * 6 + 1
     hp_max = hp
     self.new(parameters, strength, hp, hp_max)
   end
