@@ -26,7 +26,8 @@ class BattleCharacter
       atk: param * 8,
       def: param * 4
     }
-    hp = param * 6 + 1
+    # 基準火力の2倍程度を確保すればワンパン可能なように設計
+    hp = param * 16 + 1
     hp_max = hp
     self.new(parameters, strength, hp, hp_max)
   end
