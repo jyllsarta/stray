@@ -15,6 +15,11 @@
 class User::Status < ApplicationRecord
   belongs_to :user
   belongs_to :dungeon, foreign_key: :current_dungeon_id
+  has_many :dungeon_progresses, primary_key: :user_id, foreign_key: :user_id
+
+  def current_dungeon_progress
+    dungeon_progresses.find_or_create_by!(dungeon: dungeon)
+  end
 
   def current_dungeon_rank
     dungeon.rank(current_dungeon_depth)

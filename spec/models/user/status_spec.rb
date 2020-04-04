@@ -26,6 +26,16 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#current_dungeon_progress" do
+    subject { status.current_dungeon_progress }
+    it "creates dungeon's progress record" do
+      expect{subject}.to change(user.status.dungeon_progresses, :length).by(1)
+    end
+    it "returns dungeon's progress record" do
+      expect(subject.dungeon_id).to eq(user.status.dungeon.id)
+    end
+  end
+
   describe "#tick_timer!" do
     let(:seconds){ 3600 }
     subject { status.tick_timer!(seconds) }

@@ -22,7 +22,7 @@ class StairEvent < Event
 
   def execute!(user)
     user.status.increment!(:current_dungeon_depth, 1)
-    # TODO: ダンジョン選択の実装時にここでグローバルな進捗を保存する
+    user.status.current_dungeon_progress.dig_to!(user.status.current_dungeon_depth)
   end
 
   def consume_time
