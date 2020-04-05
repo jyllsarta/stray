@@ -25,6 +25,11 @@ class User::Status < ApplicationRecord
     dungeon.rank(current_dungeon_depth)
   end
 
+  def at_boss_floor?
+    # 「その次のフロアを踏んだことがない」ならばそのフロアのボスを倒していない
+    dungeon.is_boss_floor?(current_dungeon_depth) && current_dungeon_progress.unexplored?(current_dungeon_depth + 1)
+  end
+
   def tick_timer!(seconds)
     self.event_updated_at += seconds
     save!

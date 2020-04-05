@@ -7,6 +7,9 @@ class EventPicker
     # 死んでたら復活抽選しかしない
     return ResurrectEvent.new(@user.status.event_updated_at) if @user.characters.all?(&:dead?)
 
+    # ボス階層に到達していたらボス戦を固定抽選する
+    return BossBattleEvent.new(@user.status.event_updated_at) if @user.status.at_boss_floor?
+
     #TODO: 重み付き抽選をする
     rand = SecureRandom.rand(3)
     case rand

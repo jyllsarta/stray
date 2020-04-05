@@ -14,4 +14,8 @@ class Dungeon < ApplicationRecord
   def rank(current_depth)
     [current_depth, self.depth].min / Constants.dungeon.depth_per_rank
   end
+
+  def is_boss_floor?(depth_at)
+    depth_at > 1 && depth_at % Constants.dungeon.boss_floor_frequency == 0
+  end
 end
