@@ -36,6 +36,35 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#at_boss_floor" do
+    subject { status.at_boss_floor? }
+    context "not boss floor" do
+      before do
+        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 1)
+      end
+      it "returns false" do
+        expect(subject).to eq(false)
+      end
+    end
+    context "boss floor" do
+      before do
+        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency)
+      end
+      it "returns true" do
+        expect(subject).to eq(true)
+      end
+
+      context "already reached" do
+        before do
+          status.current_dungeon_progress.update!(max_depth: Constants.dungeon.boss_floor_frequency + 1)
+        end
+        it "returns true" do
+          expect(subject).to eq(false)
+        end
+      end
+    end
+  end
+
   describe "#tick_timer!" do
     let(:seconds){ 3600 }
     subject { status.tick_timer!(seconds) }

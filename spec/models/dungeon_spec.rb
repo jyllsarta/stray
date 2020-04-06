@@ -30,4 +30,27 @@ RSpec.describe Dungeon, type: :model do
       end
     end
   end
+  describe "#is_boss_floor?" do
+    let(:dungeon){ build(:dungeon) }
+    subject { dungeon.is_boss_floor?(depth) }
+
+    context "1" do
+      let(:depth) { 0 }
+      it "returns false" do
+        expect(subject).to eq(false)
+      end
+    end
+    context "constant" do
+      let(:depth) { Constants.dungeon.boss_floor_frequency }
+      it "returns true" do
+        expect(subject).to eq(true)
+      end
+    end
+    context "constant - 1" do
+      let(:depth) { Constants.dungeon.boss_floor_frequency - 1 }
+      it "returns false" do
+        expect(subject).to eq(false)
+      end
+    end
+  end
 end
