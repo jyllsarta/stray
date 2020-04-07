@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Battle, type: :model do
-  let(:battle){ Battle.new(user, rank) }
+  let(:enemies){ [BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank)] }
+  let(:battle){ Battle.new(user, enemies) }
   let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
   let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
   let!(:user){ User.create }

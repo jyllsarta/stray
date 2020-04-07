@@ -14,15 +14,21 @@ RSpec.describe BossBattleEvent, type: :model do
   end
 
   describe "#detail" do
+    before do
+      event.execute!(user)
+    end
     subject { event.detail }
     it "returns formatted hash" do
       expect(subject).to match_json_expression({
-                                                   is_win: Boolean
+                                                   damages: [Integer, Integer]
                                                })
     end
   end
 
   describe "#logs" do
+    before do
+      event.execute!(user)
+    end
     subject { event.logs }
     it "returns formatted logs" do
       expect(subject).to match_json_expression(
@@ -37,6 +43,7 @@ RSpec.describe BossBattleEvent, type: :model do
   describe "#execute!" do
     subject { event.execute!(user) }
     it "does nothing" do
+      # TODO: ちゃんとテストする
       expect(true).to eq(true)
     end
   end

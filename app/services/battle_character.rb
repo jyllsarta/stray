@@ -15,20 +15,20 @@ class BattleCharacter
   end
 
   def self.new_enemy(rank=0)
-    param = (rank ** Constants.item.rank_factor).floor
-    parameters = {
-      str: param * 4,
-      dex: param * 4,
-      def: param * 4,
-      agi: param * 4,
-    }
-    strength = {
-      atk: param * 8,
-      def: param * 4
-    }
+    base = self.base_parameter(rank)
+    parameters = { str: base * 4, dex: base * 4, def: base * 4, agi: base * 4 }
+    strength = { atk: base * 8, def: base * 4 }
     # 基準火力の2倍程度を確保すればワンパン可能なように設計
-    hp = param * 16 + 1
-    hp_max = hp
+    hp = hp_max = base * 16 + 1
+    self.new(parameters, strength, hp, hp_max)
+  end
+
+  # HP多めのボスを生成する
+  def self.new_boss(rank=0)
+    base = self.base_parameter(rank + Constants.event.battle.boss_additional_rank)
+    parameters = { str: base * 4, dex: base * 4, def: base * 4, agi: base * 4 }
+    strength = { atk: base * 8, def: base * 4 }
+    hp = hp_max = base * 240 + 1
     self.new(parameters, strength, hp, hp_max)
   end
 
@@ -50,5 +50,11 @@ class BattleCharacter
 
   def damage!(value)
     @hp = [@hp - value, 0].max
+  end
+
+  private
+
+  def self.base_parameter(rank)
+    (rank ** Constants.item.rank_factor).floor
   end
 end

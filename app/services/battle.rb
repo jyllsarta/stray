@@ -2,11 +2,11 @@ class Battle
   attr_reader :turn
   class NotYet < StandardError; end
 
-  def initialize(user, rank=0)
+  def initialize(user, enemies)
     @user = user
     @before_character_conditions = @user.characters.map(&:attributes)
     @players = @user.characters.map{|uc| BattleCharacter.new_player(uc)}
-    @enemies = lot_enemies(rank)
+    @enemies = enemies
     @turn = 0
     @done = false
   end
@@ -55,11 +55,6 @@ private
     diff_damage = [actor.atk - target.def, 0].max
     ratio_damage = ((target.hp_max.to_f / 100) * (actor.atk.to_f / (target.def.to_f == 0 ? 1 : target.def.to_f) * Constants.event.battle.ratio_damage_factor).ceil).floor
     diff_damage + ratio_damage
-  end
-
-  def lot_enemies(rank)
-    # TODO: 敵のバリエーションを出すタイミングでfix
-    [BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank)]
   end
 
   def extincted?(characters)

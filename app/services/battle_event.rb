@@ -26,7 +26,7 @@ class BattleEvent < Event
   end
 
   def execute!(user)
-    @battle = Battle.new(user, @rank)
+    @battle = Battle.new(user, lot_enemies!(@rank))
     @battle.execute!
     @battle.apply_damages!
     @battle.is_win ? process_win(user) : process_lose(user)
@@ -58,5 +58,10 @@ class BattleEvent < Event
   def log_messages
     damages = @battle.damages
     "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ！#{@battle.turn}ターン継続し、スピカ#{damages[0]}、チロル#{damages[1]}ダメージ。"
+  end
+
+  def lot_enemies!(rank)
+    # TODO 敵にバリエーションを出す
+    [BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank), BattleCharacter.new_enemy(rank)]
   end
 end
