@@ -43,6 +43,7 @@ class BossBattleEvent < Event
   end
 
   def process_lose(user)
+    user.status.decrement!(:current_dungeon_depth, Constants.event.battle.boss_lose_rewind_floor)
     user.status.start_resurrect_timer!
   end
 

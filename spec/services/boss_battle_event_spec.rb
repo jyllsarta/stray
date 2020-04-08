@@ -41,11 +41,43 @@ RSpec.describe BossBattleEvent, type: :model do
   end
 
   describe "#execute!" do
-    subject { event.execute!(user) }
-    it "does nothing" do
-      # TODO: ちゃんとテストする
-      expect(true).to eq(true)
+    before do
+      allow(user.status).to receive(:start_resurrect_timer!)
+      allow_any_instance_of(Battle).to receive(:execute!)
+      allow_any_instance_of(Battle).to receive(:apply_damages!)
+      allow_any_instance_of(Battle).to receive(:is_win).and_return(true)
     end
+    subject { event.execute!(user) }
+    it "Battle.execute!他バトル関連メソッドが一回呼ばれてる" do
+      subject
+      expect(event.instance_variable_get("@battle")).to have_received(:execute!).once
+      expect(event.instance_variable_get("@battle")).to have_received(:apply_damages!).once
+    end
+    context "win" do
+      before do
+        allow_any_instance_of(Battle).to receive(:is_win).and_return(true)
+      end
+      it "復活しない" do
+        subject
+        expect(user.status).to_not have_received(:start_resurrect_timer!)
+      end
+      it "digs floor" do
+        expect{subject}.to change(user.status, :current_dungeon_depth).by(1)
+      end
+    end
+    context "lose" do
+      before do
+        allow_any_instance_of(Battle).to receive(:is_win).and_return(false)
+      end
+      it "復活開始" do
+        subject
+        expect(user.status).to have_received(:start_resurrect_timer!).once
+      end
+      it "bounces floor" do
+        expect{subject}.to change(user.status, :current_dungeon_depth).by(-Constants.event.battle.boss_lose_rewind_floor)
+      end
+    end
+
   end
 
   describe "#consume_time" do
