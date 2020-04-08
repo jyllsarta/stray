@@ -14,8 +14,13 @@ RSpec.describe StairEvent, type: :model do
   end
   describe "#detail" do
     subject { event.detail }
+    before do
+      event.execute!(user)
+    end
     it "returns formatted hash" do
-      expect(subject).to match_json_expression({})
+      expect(subject).to match_json_expression({
+                                                   max_depth_dug: Integer
+                                               })
     end
   end
   describe "#logs" do

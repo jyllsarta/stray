@@ -20,6 +20,9 @@ class UsersController < ApplicationController
     @items = current_user.items.map do |item|
       [item.item_id, item.attributes]
     end.to_h
+    @dungeon_progresses = current_user.status.dungeon_progresses.map do |dp|
+      [dp.dungeon_id, dp.attributes]
+    end.to_h
     @spica_equips = current_user.characters.spica.first.equip_item_ids.compact
     @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
   end
