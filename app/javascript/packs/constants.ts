@@ -42,6 +42,10 @@ const Constants = {
       enemyRankGeta: 4,
     },
   },
+  dungeon: {
+    bossFloorFrequency: 100,
+    bossLoseRewindFloor: 3,
+  },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 3,
   itemsPerPage: 50,

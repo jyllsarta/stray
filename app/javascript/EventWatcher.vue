@@ -41,10 +41,13 @@ export default {
           this.resolveBattleEvent(event);
           break;
         case "stair":
-          this.resolveStairEvent();
+          this.resolveStairEvent(event);
           break;
         case "resurrect":
           this.resolveResurrectEvent(event);
+          break;
+        case "boss_battle":
+          this.resolveBossBattleEvent(event);
           break;
         default:
           console.warn(`undefined event type: ${event.type}`);
@@ -63,14 +66,19 @@ export default {
     resolveBattleEvent(event){
       this.$store.commit("user/applyBattleDamage", event.detail.damages);
     },
-    resolveStairEvent(){
+    resolveStairEvent(event){
       this.$store.commit("user/incrementCurrentDungeonDepth");
+      this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
     },
     resolveResurrectEvent(event){
       console.log(event);
       if(event.detail.completed){
         this.$store.commit("user/resurrect");
       }
+    },
+    resolveBossBattleEvent(event){
+      // 色々更新されちゃうのでもうモデル取り直しちゃお...
+      this.$store.dispatch('user/fetchUserModel');
     },
   },
 }

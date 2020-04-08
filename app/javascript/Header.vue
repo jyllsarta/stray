@@ -19,7 +19,7 @@
       .label
         | 階層
       .content.floor
-        .current(:class="$store.getters['user/isOverFloor'] ? 'over_floor' : ''")
+        .current(:class="floorColorClass")
           | {{$store.state.user.status.current_dungeon_depth}}
         .sep
           | /
@@ -48,6 +48,15 @@ export default {
   },
   store,
   computed: {
+    floorColorClass(){
+      if(this.$store.getters['user/isNearBossFloor']){
+        return "boss_floor"
+      }
+      if(this.$store.getters['user/isOverFloor']){
+        return "over_floor";
+      }
+      return "";
+    }
   },
   methods: {
     tick(){
@@ -118,6 +127,9 @@ export default {
     }
     .over_floor{
       color: $yellow;
+    }
+    .boss_floor{
+      color: $plus;
     }
   }
 }

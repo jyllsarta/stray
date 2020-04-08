@@ -7,6 +7,7 @@ export default {
     // レスポンスそのまま
     user_id: 999999999,
     items: {},
+    dungeon_progresses: {},
     equips: {
       spica: [],
       tirol: [],
@@ -33,6 +34,13 @@ export default {
     isOverFloor(state, getters, rootState, rootGetters){
       const current_dungeon_id = state.status.current_dungeon_id;
       return state.status.current_dungeon_depth >= rootState.masterdata?.dungeons[current_dungeon_id]?.depth;
+    },
+    isNearBossFloor(state, getters, rootState, rootGetters){
+      const current_dungeon_id = state.status.current_dungeon_id;
+      const max_depth = state.dungeon_progresses[current_dungeon_id]?.max_depth || 0;
+      const unexplored = state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor >= max_depth;
+      const around_boss_floor = ((state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor) % Constants.dungeon.bossFloorFrequency) <= Constants.dungeon.bossLoseRewindFloor;
+      return unexplored && around_boss_floor;
     },
     currentStandardParameter: (state, getters) => {
       return getters.rankFactor(state.status.current_dungeon_rank);
@@ -61,6 +69,13 @@ export default {
     },
     incrementCurrentDungeonDepth(state){
       state.status.current_dungeon_depth++;
+    },
+    updateCurrentDungeonProgress(state, payload){
+      if(!state.dungeon_progresses[state.status.current_dungeon_id]){
+        console.log("マスタ読み込み前なので処理を中断します");
+        return;
+      }
+      state.dungeon_progresses[state.status.current_dungeon_id].max_depth = payload;
     },
     applyBattleDamage(state, payload){
       state.characters.spica.hp -= payload[0];
