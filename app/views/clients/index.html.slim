@@ -9,3 +9,13 @@ link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:300|Roboto:
 = stylesheet_link_tag 'stray'
 
 script src="#{webpack_target_path}"
+
+- if Rails.env.development?
+  p
+    | ★素敵なデバッグコマンドたち
+  = form_tag max_event_debug_index_path
+    = hidden_field_tag :user_id, 0, id: nil
+    = submit_tag 'イベント最大チャージ'
+  = form_tag get_all_items_debug_index_path
+    = hidden_field_tag :user_id, 0, id: nil
+    = submit_tag 'アイテム全部ゲット'

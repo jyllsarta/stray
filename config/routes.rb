@@ -27,4 +27,11 @@ Rails.application.routes.draw do
   end
   resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
+
+  if Rails.env.development?
+    resources :debug, only: [] do
+      post :max_event, on: :collection
+      post :get_all_items, on: :collection
+    end
+  end
 end

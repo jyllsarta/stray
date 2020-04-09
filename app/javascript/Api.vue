@@ -13,8 +13,18 @@ export default {
   mounted(){
     // 画面読み込み時など最初に順番を制御して読み込みたいAPI群を制御するコンポーネント
     this.init();
+    this.fillDebugUserId();
   },
   methods: {
+    fillDebugUserId(){
+      if (process.env.NODE_ENV === 'production') {
+        return;
+      }
+      console.log("開発環境なのでデバッグコマンドにuser_idを埋め込みます");
+      document.querySelectorAll("input[type=hidden][name=user_id]").forEach((item) => {
+        item.attributes["value"].value = localStorage.user_id;
+      })
+    },
     isAuthorized(){
       return localStorage.access_token !== ""; 
     },
