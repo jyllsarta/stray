@@ -8,7 +8,7 @@
 
 require "csv"
 
-TABLES = [:items]
+TABLES = [:items, :dungeons]
 
 TABLES.map(&:to_s).each do |table_name|
   clazz = table_name.singularize.camelize.constantize
@@ -24,8 +24,5 @@ TABLES.map(&:to_s).each do |table_name|
   clazz.import(records)
   puts "created #{clazz} (#{clazz.count})"
 end
-
-Dungeon.delete_all
-Dungeon.create(id: 1, name: "翠海の輝浜", depth: 400)
 
 puts "seeded!"
