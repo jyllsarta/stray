@@ -59,8 +59,7 @@ export default {
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];
     },
-  }
-  ,
+  },
   mutations: {
     syncEquipDraft(state, payload){
       ["spica", "tirol"].forEach(characterName=>{
