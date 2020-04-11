@@ -2,11 +2,13 @@
 #
 # Table name: dungeons
 #
-#  id         :integer          not null, primary key
-#  depth      :integer
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id             :integer          not null, primary key
+#  depth          :integer
+#  depth_per_rank :integer
+#  initial_rank   :integer
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 
 require 'rails_helper'
