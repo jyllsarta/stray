@@ -21,14 +21,14 @@ RSpec.describe Dungeon, type: :model do
     context "when current_depth < depth" do
       let(:current_depth) { 50 }
       it "returns depth_per_ranked num" do
-        expect(subject).to eq( 50 / Constants.dungeon.depth_per_rank )
+        expect(subject).to eq( 50 / 10 + 1 )
       end
     end
 
     context "when current_depth >>> depth" do
       let(:current_depth) { 1000000 }
       it "returns depth_per_ranked num" do
-        expect(subject).to eq( dungeon.depth / Constants.dungeon.depth_per_rank )
+        expect(subject).to eq( 100 / 10 + 1 )
       end
     end
   end

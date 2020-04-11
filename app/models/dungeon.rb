@@ -14,7 +14,7 @@
 class Dungeon < ApplicationRecord
   # TODO: 複数ダンジョン実装時にベースランクとランク上昇ペースを定義する
   def rank(current_depth)
-    [current_depth, self.depth].min / Constants.dungeon.depth_per_rank
+    self.initial_rank + ([current_depth, self.depth].min / self.depth_per_rank)
   end
 
   def is_boss_floor?(depth_at)
