@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     get :status
     post :events
     post :resurrect
+    post :switch_dungeon
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end

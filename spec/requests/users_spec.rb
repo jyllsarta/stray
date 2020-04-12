@@ -205,4 +205,48 @@ RSpec.describe "Users", type: :request do
                                            )
     end
   end
+
+  describe "POST /users/:id/switch_dungeon" do
+    include_context("stub_current_user")
+    let(:dungeon){ create(:dungeon) }
+    let(:user){ User.create }
+    let(:do_post) { post user_switch_dungeon_path(user_id: -1)+ ".json", params: params }
+    let(:params) do
+      {
+          dungeon_id: dungeon.id,
+          depth: 1
+      }
+    end
+    subject do
+      do_post
+      response
+    end
+    context "succeeds" do
+      before do
+        allow(user).to receive_message_chain(:status, :switch_dungeon!).and_return(true)
+      end
+      it 'returns nothing' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     success: true
+                                                 }
+                                             )
+      end
+    end
+    context "fails" do
+      before do
+        allow(user).to receive_message_chain(:status, :switch_dungeon!).and_raise(User::Status::CannotSwitchDungeon)
+      end
+      it 'returns error' do
+        expect(subject).to have_http_status(400)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     success: false,
+                                                     message: String
+                                                 }
+                                             )
+      end
+    end
+  end
 end

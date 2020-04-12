@@ -35,4 +35,9 @@ class UsersController < ApplicationController
     @access_token = User.regenerate_token(name: params[:name], password: params[:password])
     @user = User.find_by!(name: params[:name])
   end
+
+  def switch_dungeon
+    current_user.status.switch_dungeon!(params[:dungeon_id], params[:depth])
+    render json: {success: true}, status: :ok
+  end
 end
