@@ -36,7 +36,7 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#at_boss_floor" do
+  describe "#at_boss_floor?" do
     subject { status.at_boss_floor? }
     context "not boss floor" do
       before do
@@ -60,6 +60,72 @@ RSpec.describe User::Status, type: :model do
         end
         it "returns true" do
           expect(subject).to eq(false)
+        end
+      end
+    end
+  end
+
+  describe "#switch_dungeon!" do
+    subject { status.switch_dungeon!(dungeon.id, depth) }
+    context "move to floor 50" do
+      let(:dungeon){ create(:dungeon) }
+      let(:depth){ 50 }
+      context "progress satisfied" do
+        before do
+          status.update!(current_dungeon_id: dungeon.id)
+          status.current_dungeon_progress.update!(max_depth: 100)
+        end
+        it "do switch" do
+          expect{subject}.to change(status, :current_dungeon_depth).to(depth)
+        end
+      end
+    end
+    context "move to floor 150" do
+      let(:dungeon){ create(:dungeon) }
+      let(:depth){ 150 }
+      context "progress satisfied" do
+        before do
+          status.update!(current_dungeon_id: dungeon.id)
+          status.current_dungeon_progress.update!(max_depth: 100)
+        end
+        it "raises error" do
+          expect{subject}.to raise_error(User::Status::CannotSwitchDungeon)
+        end
+      end
+    end
+
+    context "move to new dungeon" do
+      let(:parent_dungeon){ create(:dungeon) }
+      let(:dungeon){ create(:dungeon, parent_dungeon_id: parent_dungeon.id) }
+      context "cleared parent dungeon" do
+        before do
+          status.dungeon_progresses.create(dungeon: parent_dungeon, max_depth: parent_dungeon.depth)
+          status.update!(current_dungeon_depth: 10)
+        end
+        context "depth 1" do
+          let(:depth){ 1 }
+          it "do switch" do
+            subject
+            expect(status.current_dungeon_depth).to eq(depth)
+            expect(status.current_dungeon_id).to eq(dungeon.id)
+          end
+        end
+        context "depth 50" do
+          let(:depth){ 50 }
+          it "raises error" do
+            expect{subject}.to raise_error(User::Status::CannotSwitchDungeon)
+          end
+
+          context "has progress" do
+            before do
+              status.dungeon_progresses.create(dungeon: dungeon, max_depth: 50)
+            end
+            it "do switch" do
+              subject
+              expect(status.current_dungeon_depth).to eq(depth)
+              expect(status.current_dungeon_id).to eq(dungeon.id)
+            end
+          end
         end
       end
     end

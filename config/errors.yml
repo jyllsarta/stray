@@ -22,4 +22,7 @@ User::EmptyPassword:
 User::NotFound:
   status: not_found
   message: ユーザ名かパスワードが違います。
+User::Status::CannotSwitchDungeon:
+  status: bad_request
+  message: ダンジョンIDか、階層指定が不正です。
 

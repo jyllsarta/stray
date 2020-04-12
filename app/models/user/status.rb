@@ -13,6 +13,8 @@
 #
 
 class User::Status < ApplicationRecord
+  class CannotSwitchDungeon < StandardError; end
+
   belongs_to :user
   belongs_to :dungeon, foreign_key: :current_dungeon_id
   has_many :dungeon_progresses, primary_key: :user_id, foreign_key: :user_id
@@ -28,6 +30,14 @@ class User::Status < ApplicationRecord
   def at_boss_floor?
     # 「その次のフロアを踏んだことがない」ならばそのフロアのボスを倒していない
     dungeon.is_boss_floor?(current_dungeon_depth) && current_dungeon_progress.unexplored?(current_dungeon_depth + 1)
+  end
+
+  def switch_dungeon!(dungeon_id, depth)
+    raise CannotSwitchDungeon unless can_switch_dungeon?(dungeon_id, depth)
+
+    self.current_dungeon_id = dungeon_id
+    self.current_dungeon_depth = depth
+    self.save!
   end
 
   def tick_timer!(seconds)
@@ -65,5 +75,18 @@ class User::Status < ApplicationRecord
 
   def resurrect_completed?
     self.resurrect_timer >= Constants.resurrect_time_seconds
+  end
+
+  private
+
+  def can_switch_dungeon?(dungeon_id, depth)
+    dungeon = Dungeon.find(dungeon_id)
+    # dungeon が parent を持つなら、parentがクリア済みでなければならない
+    return false if dungeon.parent.present? && !dungeon.parent.cleared?(user)
+
+    # progress を持っていなかったとしても、1Fには無条件で侵入可能
+    max_depth = user.status.dungeon_progresses.find_by(dungeon_id: dungeon_id)&.max_depth || 1
+
+    depth <= max_depth
   end
 end
