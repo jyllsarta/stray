@@ -13,6 +13,8 @@
         AccountWindow(v-if="$store.state.window.account")
       transition(name="open_window")
         EquipWindow(v-if="$store.state.window.equip")
+      transition(name="open_window")
+        SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon")
       Api(ref="api")
       Timer
       EventWatcher
@@ -32,6 +34,7 @@ import Chat from './Chat'
 import EventIllust from './EventIllust'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
+import SwitchDungeonWindow from './SwitchDungeonWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
 import EventWatcher from "./EventWatcher";
@@ -50,6 +53,7 @@ export default {
     EventIllust,
     AccountWindow,
     EquipWindow,
+    SwitchDungeonWindow,
     Timer,
     EventWatcher,
     MessageForm,

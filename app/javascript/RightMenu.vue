@@ -15,6 +15,11 @@
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )
       | 引き継ぎ設定(仮)
+    .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
+    )
+      | ダンジョン切り替え
 </template>
 
 <script lang="ts">

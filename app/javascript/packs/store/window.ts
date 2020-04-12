@@ -5,6 +5,7 @@ export default {
   state: {
     account: false,
     equip: false,
+    switch_dungeon: false,
   },
   getters: {
   },
