@@ -10,21 +10,13 @@
         | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
       .body
         .dungeon_list_tab
-          .dungeon
+          .dungeon(v-for="dungeon in dungeons")
             .name
-              | 1個めのダンジョン
+              | {{dungeon.name}}
             .progress
-              | 403 / 400F
-          .dungeon
-            .name
-              | 2個めのダンジョン
-            .progress
-              | 1871 / 1200F
-          .dungeon
-            .name
-              | 3個めのダンジョン
-            .progress
-              | 1 / 1600F
+              .current_progress
+                | {{dungeonProgress(dungeon.id)}}
+              |  / {{dungeon.depth}}F
         .control_tab
           .main_image
             img(src="images/events/battle.png")
@@ -62,7 +54,17 @@ export default {
   store,
   mounted(){
   },
+  computed: {
+    dungeons(){
+      const dungeons = Object.values(this.$store.state.masterdata.dungeons);
+      console.log(dungeons)
+      return dungeons;
+    }
+  },
   methods: {
+    dungeonProgress(dungeonId){
+      return this.$store.state.user.dungeon_progresses[dungeonId]?.max_depth || 0;
+    }
   }
 }
 </script>
@@ -91,6 +93,9 @@ export default {
         width: 60%;
       }
       .progress{
+        .current_progress{
+          display: inline-block;
+        }
         display: inline-block;
         width: 40%;
         text-align: right;
