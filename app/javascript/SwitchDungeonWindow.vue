@@ -14,7 +14,7 @@
             .name
               | {{dungeon.name}}
             .progress
-              .current_progress
+              .current_progress(:class="floorColorClass(dungeon.id)")
                 | {{dungeonProgress(dungeon.id)}}
               |  / {{dungeon.depth}}F
         .control_tab
@@ -57,14 +57,22 @@ export default {
   computed: {
     dungeons(){
       const dungeons = Object.values(this.$store.state.masterdata.dungeons);
-      console.log(dungeons)
       return dungeons;
     }
   },
   methods: {
     dungeonProgress(dungeonId){
-      return this.$store.state.user.dungeon_progresses[dungeonId]?.max_depth || 0;
+      return this.$store.state.user.dungeon_progresses[dungeonId]?.max_depth || 1;
+    },
+    floorColorClass(dungeonId){
+      const progress = this.dungeonProgress(dungeonId);
+      const max_depth = this.$store.state.masterdata.dungeons[dungeonId]?.depth || 1;
+      if(progress >= max_depth){
+        return "over_floor";
+      }
+      return "";
     }
+
   }
 }
 </script>
@@ -95,6 +103,9 @@ export default {
       .progress{
         .current_progress{
           display: inline-block;
+        }
+        .over_floor{
+          color: $yellow;
         }
         display: inline-block;
         width: 40%;
