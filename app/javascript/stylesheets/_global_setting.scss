@@ -95,3 +95,10 @@
     transform: scale(1.04);
   }
 }
+
+.hoverable{
+  &:hover{
+    filter: brightness(120%);
+    background-color: $gray3;
+  }
+}

@@ -71,7 +71,7 @@
               .change_order(@click="$store.commit('equip_window/switchItemSortLambda', 1)", @mouseover="$store.commit('guide/updateGuide', 'ソート順を効果値順に切り替えます。')",)
                 | {{$store.state.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
           .item_list
-            .item(
+            .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
@@ -133,7 +133,7 @@
             .around_block
               | 周辺の敵ATK:{{aroundEnemyAtk}}
             .equips
-              .equip.item(
+              .equip.hoverable.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
                 @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
@@ -514,10 +514,6 @@ export default {
           width: 20%;
         }
       }
-      &:hover{
-        filter: brightness(120%);
-        background-color: $gray3;
-      }
     }
 
     .item_list_main{
@@ -651,10 +647,6 @@ export default {
             }
             &:nth-child(4){
               padding-left: 32px;
-            }
-            &:hover{
-              filter: brightness(120%);
-              background-color: $gray3;
             }
           }
         }

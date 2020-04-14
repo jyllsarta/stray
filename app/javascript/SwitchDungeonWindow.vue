@@ -10,7 +10,7 @@
         | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
       .body
         .dungeon_list_tab
-          .dungeon(v-for="dungeon in dungeons")
+          .dungeon.hoverable(v-for="dungeon in dungeons")
             .name
               | {{dungeon.name}}
             .progress
