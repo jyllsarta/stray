@@ -26,11 +26,11 @@
             img(src="images/events/battle.png")
           .controls.window
             .depth_slider
-              input(type="range" orient="vertical")
+              input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="0" max="200")
             .go.button.clickable
               | Go!
             .go_to_floor
-              | 13558F
+              | {{selectingDungeonDepth}}F
             .go_to_floor_label
               | 移動先：
             .top_floor
@@ -54,11 +54,13 @@ export default {
   data: function () {
     return {
       selectingDungeonId: 0,
+      selectingDungeonDepth: 1,
     };
   },
   store,
   mounted(){
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
+    this.selectingDungeonDepth = this.$store.state.user.status.current_dungeon_depth;
   },
   computed: {
     visibleDungeons(){
@@ -166,14 +168,15 @@ export default {
       height: 232px;
       .depth_slider{
         position: absolute;
-        top: $space;
+        top: 0;
         left: 70px;
-        width: 20px;
-        height: 210px;
+        width: 210px;
+        height: 20px;
+        transform-origin: left;
+        transform: rotate(90deg);
         input{
           width: 100%;
           height: 100%;
-          -webkit-appearance: slider-vertical;
         }
       }
       .go{
