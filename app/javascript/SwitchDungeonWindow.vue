@@ -10,7 +10,11 @@
         | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
       .body
         .dungeon_list_tab
-          .dungeon.hoverable(v-for="dungeon in dungeons")
+          .dungeon.hoverable(
+            v-for="dungeon in dungeons"
+            @click="selectDungeon(dungeon.id)"
+            :class="dungeonClass(dungeon.id)"
+            )
             .name
               | {{dungeon.name}}
             .progress
@@ -49,10 +53,12 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      selectingDungeonId: 0,
     };
   },
   store,
   mounted(){
+    this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
   },
   computed: {
     dungeons(){
@@ -61,6 +67,9 @@ export default {
     }
   },
   methods: {
+    selectDungeon(dungeonId){
+      this.selectingDungeonId = dungeonId;
+    },
     dungeonProgress(dungeonId){
       return this.$store.state.user.dungeon_progresses[dungeonId]?.max_depth || 1;
     },
@@ -71,8 +80,13 @@ export default {
         return "over_floor";
       }
       return "";
-    }
-
+    },
+    dungeonClass(dungeonId){
+      if(dungeonId == this.selectingDungeonId){
+        return "selected";
+      }
+      return "not_selected";
+    },
   }
 }
 </script>
@@ -93,7 +107,15 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
+    .selected{
+      background-color: $gray3;
+      border: 1px solid $yellow;
+    }
+    .not_selected{
+      border: 1px solid transparent;
+    }
     .dungeon{
+      margin: $thin_space;
       padding: $space;
       width: 100%;
       .name{
