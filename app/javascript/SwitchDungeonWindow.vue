@@ -27,7 +27,7 @@
           .controls.window
             .depth_slider
               input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="0" max="200")
-            .go.button.clickable
+            .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
               | {{selectingDungeonDepth}}F
@@ -106,6 +106,15 @@ export default {
       }
       return this.$store.state.user.dungeon_progresses[dungeon.parent_dungeon_id]?.max_depth >= this.$store.state.masterdata.dungeons[dungeon.parent_dungeon_id].depth;
     },
+    gotoDungeon(){
+      this.$store.dispatch("user/gotoDungeon", {dungeon_id: this.selectingDungeonId, depth: this.selectingDungeonDepth})
+        .then(()=>{
+          this.$store.dispatch("user/fetchUserModel")
+        })
+        .then(()=>{
+        this.$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})
+      });
+    }
   }
 }
 </script>

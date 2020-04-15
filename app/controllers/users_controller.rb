@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def switch_dungeon
-    current_user.status.switch_dungeon!(params[:dungeon_id], params[:depth])
+    current_user.status.switch_dungeon!(params[:dungeon_id].to_i, params[:depth].to_i)
     render json: {success: true}, status: :ok
   end
 end

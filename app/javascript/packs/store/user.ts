@@ -110,5 +110,21 @@ export default {
           });
       })
     },
+    gotoDungeon ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/switch_dungeon.json`;
+        ax.post(path, payload)
+          .then((results) => {
+            console.log(results);
+            console.log("OK");
+            resolve();
+          })
+          .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
+      })
+    },
   }
 }
