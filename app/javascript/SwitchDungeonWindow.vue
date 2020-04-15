@@ -11,7 +11,7 @@
       .body
         .dungeon_list_tab
           .dungeon.hoverable(
-            v-for="dungeon in dungeons"
+            v-for="dungeon in visibleDungeons"
             @click="selectDungeon(dungeon.id)"
             :class="dungeonClass(dungeon.id)"
             )
@@ -61,6 +61,9 @@ export default {
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
   },
   computed: {
+    visibleDungeons(){
+      return this.dungeons.filter((x)=>this.canSwitchDungeon(x.id))
+    },
     dungeons(){
       const dungeons = Object.values(this.$store.state.masterdata.dungeons);
       return dungeons;
@@ -89,6 +92,17 @@ export default {
         return "selected";
       }
       return "not_selected";
+    },
+    canSwitchDungeon(dungeonId){
+      // 「親ダンジョンをクリアしている」が表示条件
+      const dungeon = this.$store.state.masterdata?.dungeons[dungeonId];
+      if(!dungeon){
+        return false;
+      }
+      if(!dungeon.parent_dungeon_id) {
+        return true;
+      }
+      return this.$store.state.user.dungeon_progresses[dungeon.parent_dungeon_id]?.max_depth >= this.$store.state.masterdata.dungeons[dungeon.parent_dungeon_id].depth;
     },
   }
 }
