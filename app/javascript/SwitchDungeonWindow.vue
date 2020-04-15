@@ -36,12 +36,12 @@
             .top_floor
               | 1F
             .deepest_floor
-              | 1200F
+              | {{selectingDungeon.depth}}F
             .descriptions
               .title
-                | 霧の森
+                | {{selectingDungeon.name}}
               .description
-                | 霊力を帯びた霧の立ち込める森。森の主である巨大な蛇は *絶えず霊力を放出し続けるマジックアイテム* を持ってるとか。大陸踏破に直接は関係ないけど、探索に役立つものを手に入れられるかもしれない。推奨RANK:40
+                | {{selectingDungeon.description}}
 </template>
 
 <script lang="ts">
@@ -64,6 +64,9 @@ export default {
     dungeons(){
       const dungeons = Object.values(this.$store.state.masterdata.dungeons);
       return dungeons;
+    },
+    selectingDungeon(){
+      return this.$store.state.masterdata.dungeons[this.selectingDungeonId] || {};
     }
   },
   methods: {
@@ -205,6 +208,7 @@ export default {
         }
         .description{
           font-size: $font-size-mini;
+          height: 100px;
         }
       }
     }
