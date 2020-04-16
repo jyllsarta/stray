@@ -26,7 +26,7 @@
             img(src="images/events/battle.png")
           .controls.window
             .depth_slider
-              input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="0" max="200")
+              input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="1" :max="currentDungeonMaxDepthCanSwitch" :style="{width: sliderWidthPercent}")
             .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
@@ -36,7 +36,7 @@
             .top_floor
               | 1F
             .deepest_floor
-              | {{selectingDungeon.depth}}F
+              | {{currentDungeonMaxDepth}}F
             .descriptions
               .title
                 | {{selectingDungeon.name}}
@@ -72,7 +72,17 @@ export default {
     },
     selectingDungeon(){
       return this.$store.state.masterdata.dungeons[this.selectingDungeonId] || {};
-    }
+    },
+    currentDungeonMaxDepth(){
+      return Math.max(this.selectingDungeon.depth, this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth)
+    },
+    currentDungeonMaxDepthCanSwitch(){
+      return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth;
+    },
+    sliderWidthPercent(){
+      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.5);
+      return Math.floor(ratio * 100) + "%";
+    },
   },
   methods: {
     selectDungeon(dungeonId){
@@ -187,10 +197,13 @@ export default {
           -webkit-appearance:none;
           width: 100%;
           height: 100%;
-          background-color: $gray3;
+          background: linear-gradient(to right, transparent, $gray3);
+          outline: none;
         }
         input[type=range]::-webkit-slider-thumb{
           -webkit-appearance:none;
+          border-radius: $radius;
+          border-right: 1px solid $gray2;
           background-image: url("/images/ui/direction_tirol.png");
           background-size: contain;
           background-repeat: no-repeat;
