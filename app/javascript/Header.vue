@@ -108,10 +108,10 @@ export default {
     width: 20%;
   }
   .dungeon_name{
-    width: 20%;
+    width: 15%;
   }
   .dungeon_depth{
-    width: 15%;
+    width: 20%;
   }
   .floor{
     .current{
