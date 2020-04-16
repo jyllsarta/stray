@@ -1,5 +1,6 @@
 <template lang="pug">
   .field
+    .background
     .ground
       img.spica(
         :src="spicaImagePath"
@@ -62,12 +63,22 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/constants";
 .field{
+  .background{
+    position: absolute;
+    width: $window-width;
+    height: $window-height;
+    background: url("/images/backgrounds/2/0.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+  }
   .ground{
     position: absolute;
     bottom: 100px + $space * 2;
     height: 200px;
     left: 50%;
     img{
+      image-rendering: crisp-edges;
       position: absolute;
       height: 200px;
     }
