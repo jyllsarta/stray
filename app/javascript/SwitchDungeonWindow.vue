@@ -184,8 +184,19 @@ export default {
         transform-origin: left;
         transform: rotate(90deg);
         input{
+          -webkit-appearance:none;
           width: 100%;
           height: 100%;
+          background-color: $gray3;
+        }
+        input[type=range]::-webkit-slider-thumb{
+          -webkit-appearance:none;
+          background-image: url("/images/ui/direction_tirol.png");
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: bottom;
+          height: 135px;
+          width: 80px;
         }
       }
       .go{
