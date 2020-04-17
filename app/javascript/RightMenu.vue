@@ -59,7 +59,6 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
 .right_menu{
-  height: $window-height - $space * 2;
   width: 200px - $space * 3;
   top: $space;
   right: $space;
@@ -69,7 +68,8 @@ export default {
   .item{
     width: 100%;
     height: 40px;
-    margin-bottom: $thin_space;
+    margin-top: $thin_space / 2;
+    margin-bottom: $thin_space / 2;
     line-height: 100%;
     padding-top: (40px - $font-size-normal) / 2;
     padding-left: $space;

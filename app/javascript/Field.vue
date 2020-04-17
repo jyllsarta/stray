@@ -76,6 +76,7 @@ export default {
     height: $window-height;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: -500px 0;
     image-rendering: pixelated;
   }
   .ground{

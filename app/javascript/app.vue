@@ -7,7 +7,6 @@
       RightMenu
       Status
       Log
-      Chat
       EventIllust
       transition(name="open_window")
         AccountWindow(v-if="$store.state.window.account")
