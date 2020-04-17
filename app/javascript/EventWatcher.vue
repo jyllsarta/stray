@@ -9,6 +9,9 @@ export default {
   data: function () {
     return {};
   },
+  props: {
+    rootRef: Object,
+  },
   store,
   watch: {
     // イベント発生時の処理
@@ -69,6 +72,7 @@ export default {
     resolveStairEvent(event){
       this.$store.commit("user/incrementCurrentDungeonDepth");
       this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
+      this.rootRef.field.reseedScene();
     },
     resolveResurrectEvent(event){
       console.log(event);

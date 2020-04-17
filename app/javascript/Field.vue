@@ -1,13 +1,13 @@
 <template lang="pug">
   .field
     .background.view0(
-      :style="view0Style"
+      :style="viewStyle(0)"
     )
     .background.view1(
-      :style="view1Style"
+      :style="viewStyle(1)"
     )
     .background.view2(
-      :style="view2Style"
+      :style="viewStyle(2)"
     )
     .ground
       img.spica(
@@ -19,10 +19,10 @@
         :style="{transform: 'translateX(' + $store.state.field.position.tirol + 'px) scale('+ $store.state.field.direction.tirol * -1 +', 1)'}"
       )
     .background.view3(
-      :style="view3Style"
+      :style="viewStyle(3)"
     )
     .background.view4(
-      :style="view4Style"
+      :style="viewStyle(4)"
     )
 </template>
 
@@ -32,11 +32,28 @@ import store from './packs/store.ts'
 
 export default {
   data: function () {
-    return {};
+    return {
+      layerStatus: {
+        0: 100,
+        1: 200,
+        2: 300,
+        3: 400,
+        4: 500,
+      },
+      scrollAmount: {
+        0: 0.003,
+        1: 0.005,
+        2: 0.013,
+        3: 0.017,
+        4: 0.030,
+      },
+      maxScrollPosition: 3500,
+    };
   },
   store,
   mounted(){
     this.init();
+    this.reseedScene();
   },
   methods: {
     init(){
@@ -44,6 +61,7 @@ export default {
     },
     update(){
       this.proceedCharacter();
+      this.scroll();
       requestAnimationFrame(this.update);
     },
     proceedCharacter(){
@@ -62,6 +80,26 @@ export default {
         }
       });
     },
+    reseedScene(){
+      // 3500以上は世界の果てが見えちゃう
+      for(let i=0; i<5; ++i){
+        this.layerStatus[i] = Math.floor(Math.random() * (this.maxScrollPosition - 100));
+      }
+    },
+    scroll(){
+      for(let i=0; i<5; ++i){
+        this.layerStatus[i] += this.scrollAmount[i];
+        if(this.layerStatus[i] > this.maxScrollPosition){
+          this.layerStatus[i] = this.maxScrollPosition;
+        }
+      }
+    },
+    viewStyle(viewId){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${viewId}.png")`,
+        backgroundPosition: `-${this.layerStatus[viewId]}px 0`,
+      }
+    },
   },
   computed: {
     spicaImagePath(){
@@ -70,32 +108,6 @@ export default {
     tirolImagePath(){
       return this.$store.getters['user/isAliveCharacter']('tirol') ? "images/ui/tirol.png" : "images/ui/tirol_dead.png";
     },
-    view0Style(){
-      return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/0.png")`
-      }
-    },
-    view1Style(){
-      return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/1.png")`
-      }
-    },
-    view2Style(){
-      return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/2.png")`
-      }
-    },
-    view3Style(){
-      return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/3.png")`
-      }
-    },
-    view4Style(){
-      return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/4.png")`
-      }
-    },
-
   },
 }
 </script>

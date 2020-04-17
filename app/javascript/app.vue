@@ -2,7 +2,7 @@
   #app
     Guide
     .game
-      Field
+      Field(ref="field")
       Header
       RightMenu
       Status
@@ -16,7 +16,7 @@
         SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon")
       Api(ref="api")
       Timer
-      EventWatcher
+      EventWatcher(:root-ref="$refs")
     MessageForm
 </template>
 
