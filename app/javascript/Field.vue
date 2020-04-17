@@ -1,6 +1,8 @@
 <template lang="pug">
   .field
-    .background
+    .background(
+      :style="backgroundImageStyle"
+    )
     .ground
       img.spica(
         :src="spicaImagePath"
@@ -56,6 +58,11 @@ export default {
     tirolImagePath(){
       return this.$store.getters['user/isAliveCharacter']('tirol') ? "images/ui/tirol.png" : "images/ui/tirol_dead.png";
     },
+    backgroundImageStyle(){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/0.png")`
+      }
+    },
   },
 }
 </script>
@@ -67,7 +74,6 @@ export default {
     position: absolute;
     width: $window-width;
     height: $window-height;
-    background: url("/images/backgrounds/2/0.png");
     background-repeat: no-repeat;
     background-size: cover;
     image-rendering: pixelated;
