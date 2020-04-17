@@ -87,6 +87,7 @@ export default {
   methods: {
     selectDungeon(dungeonId){
       this.selectingDungeonId = dungeonId;
+      this.selectingDungeonDepth = this.dungeonProgress(dungeonId);
     },
     dungeonProgress(dungeonId){
       return this.$store.state.user.dungeon_progresses[dungeonId]?.max_depth || 1;
