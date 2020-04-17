@@ -22,7 +22,7 @@
                 | {{dungeonProgress(dungeon.id)}}
               |  / {{dungeon.depth}}F
         .control_tab
-          .main_image(:style="{backgroundImage: `url('images/backgrounds/${selectingDungeonId}/0.png')`}" :key="selectingDungeonId")
+          .main_image(:style="{backgroundImage: `url('images/backgrounds/${selectingDungeonId}/cateneted.png')`}" :key="selectingDungeonId")
           .controls.window
             .depth_slider
               input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="1" :max="currentDungeonMaxDepthCanSwitch" :style="{width: sliderWidthPercent}")

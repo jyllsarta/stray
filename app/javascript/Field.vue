@@ -1,7 +1,13 @@
 <template lang="pug">
   .field
-    .background(
-      :style="backgroundImageStyle"
+    .background.view0(
+      :style="view0Style"
+    )
+    .background.view1(
+      :style="view1Style"
+    )
+    .background.view2(
+      :style="view2Style"
     )
     .ground
       img.spica(
@@ -12,6 +18,12 @@
         :src="tirolImagePath"
         :style="{transform: 'translateX(' + $store.state.field.position.tirol + 'px) scale('+ $store.state.field.direction.tirol * -1 +', 1)'}"
       )
+    .background.view3(
+      :style="view3Style"
+    )
+    .background.view4(
+      :style="view4Style"
+    )
 </template>
 
 <script lang="ts">
@@ -58,11 +70,32 @@ export default {
     tirolImagePath(){
       return this.$store.getters['user/isAliveCharacter']('tirol') ? "images/ui/tirol.png" : "images/ui/tirol_dead.png";
     },
-    backgroundImageStyle(){
+    view0Style(){
       return {
         backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/0.png")`
       }
     },
+    view1Style(){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/1.png")`
+      }
+    },
+    view2Style(){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/2.png")`
+      }
+    },
+    view3Style(){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/3.png")`
+      }
+    },
+    view4Style(){
+      return {
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/4.png")`
+      }
+    },
+
   },
 }
 </script>
@@ -89,6 +122,9 @@ export default {
       position: absolute;
       height: 200px;
     }
+  }
+  .view3{
+    mix-blend-mode: screen;
   }
 }
 </style>
