@@ -22,8 +22,7 @@
                 | {{dungeonProgress(dungeon.id)}}
               |  / {{dungeon.depth}}F
         .control_tab
-          .main_image
-            img(src="images/events/battle.png")
+          .main_image(:style="{backgroundImage: `url('images/backgrounds/${selectingDungeonId}/0.png')`}" :key="selectingDungeonId")
           .controls.window
             .depth_slider
               input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="1" :max="currentDungeonMaxDepthCanSwitch" :style="{width: sliderWidthPercent}")
@@ -38,10 +37,14 @@
             .deepest_floor
               | {{currentDungeonMaxDepth}}F
             .descriptions
-              .title
+              .dungeon_title(:key="selectingDungeon.name")
                 | {{selectingDungeon.name}}
               .description
-                | {{selectingDungeon.description}}
+                span.letter(
+                  v-for="(t, index) in selectingDungeon.description"
+                  :key="t + index"
+                  :style="{animationDelay: (200 + index*2)+'ms'}"
+                  v-text="t")
 </template>
 
 <script lang="ts">
@@ -176,11 +179,13 @@ export default {
   }
   .control_tab{
     .main_image{
-      img{
-        padding: $space;
-        width: 600px;
-        height: 200px;
-      }
+      padding: $space;
+      width: 600px;
+      height: 200px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: -120px 0;
+      image-rendering: pixelated;
     }
     .controls{
       margin-top: $space;
@@ -252,7 +257,7 @@ export default {
         top: $space;
         right: $space;
         width: 70%;
-        .title{
+        .dungeon_title{
           padding-left: $space;
           font-size: $font-size-large;
           border-bottom: 1px solid $gray3;
@@ -263,5 +268,36 @@ export default {
         }
       }
     }
+  }
+  @keyframes vertical-text-in {
+    0% {
+      transform: translate(0, -2px);
+      opacity: 0;
+    }
+  }
+  @keyframes horizontal-text-in {
+    0% {
+      transform: translate(-20px, 0);
+      opacity: 0;
+    }
+  }
+  @keyframes main-image {
+    0% {
+      background-position: 0 0;
+      opacity: 0.5;
+    }
+  }
+  .dungeon_title {
+    min-width: 0.3em;
+    animation: horizontal-text-in .2s cubic-bezier(0,.71,.17,.95) 0s;
+  }
+  .letter {
+    display: inline-block;
+    min-width: 0.3em;
+    font-size: $font-size-mini;
+    animation: vertical-text-in .2s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+  }
+  .main_image {
+    animation: main-image 20s cubic-bezier(0,1.1,0,.98) 0s;
   }
 </style>
