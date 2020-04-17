@@ -1,5 +1,5 @@
 <template lang="pug">
-  .log.window(ref="log")
+  .log.window(ref="log", :class="foldClass" @click="folded = !folded")
     transition-group(name="show-in")
       .item(v-for="log in logs", :key="'' + log.pseudo_id + log.at")
         .at
@@ -15,13 +15,18 @@ import Vue from 'vue'
 
 export default {
   data: function () {
-    return {};
+    return {
+      folded: true,
+    };
   },
   store,
   computed: {
     logs(){
       // TODO: ログ件数の最大値をConstantsで規定する
       return this.$store.state.event.events.map(l=>l.logs).flat();
+    },
+    foldClass(){
+      return this.folded ? "folded" : "opened";
     },
   },
   methods: {
@@ -54,10 +59,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/constants";
-.log{
+.folded{
+  height: 100px;
+}
+.opened{
   height: $window-height - 140px - $space * 4;
+}
+.log{
   width: 300px;
-  bottom: $space;
+  top: 60px + 80px + $space * 3;
   left: $space;
   display: flex;
   flex-direction: column;

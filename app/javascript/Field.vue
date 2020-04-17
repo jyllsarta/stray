@@ -81,7 +81,7 @@ export default {
   }
   .ground{
     position: absolute;
-    bottom: 100px + $space * 2;
+    bottom: 50px + $space * 2;
     height: 200px;
     left: 50%;
     img{
