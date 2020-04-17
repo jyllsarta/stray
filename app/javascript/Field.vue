@@ -95,9 +95,11 @@ export default {
       }
     },
     viewStyle(viewId){
+      const opacity = viewId === 3 ? Math.abs(Math.sin(this.layerStatus[viewId] / 20)) * 0.7 + 0.3 : 1;
       return {
         backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${viewId}.png")`,
         backgroundPosition: `-${this.layerStatus[viewId]}px 0`,
+        opacity: opacity,
       }
     },
   },
