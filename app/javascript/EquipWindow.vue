@@ -636,6 +636,10 @@ export default {
           justify-content: space-around;
           .equip{
             padding: 2px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             &:nth-child(1){
               padding-left: 8px;
             }
