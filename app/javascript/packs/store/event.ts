@@ -15,7 +15,14 @@ export default {
     },
     updateLatestEvents(state, payload) {
       state.next_event_at = payload.next_event_at;
-      state.events = state.events.concat(payload.events).slice(-Constants.log.maxLength);
+      for(let event of payload.events){
+        // 回復ログは最新の一件のみを保存する
+        if(event.type === 'resurrect' && state.events.slice(-1)?.pop()?.type === 'resurrect'){
+          state.events.pop();
+        }
+        state.events = state.events.concat([event]).slice(-Constants.log.maxLength);
+      }
+
     },
     addEventLog(state, payload){
       const manualEvent = {

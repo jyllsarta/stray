@@ -77,7 +77,6 @@ export default {
       }, 2000);
     },
     resolveResurrectEvent(event){
-      console.log(event);
       if(event.detail.completed){
         this.$store.commit("user/resurrect");
       }
