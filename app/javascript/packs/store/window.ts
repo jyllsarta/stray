@@ -6,6 +6,7 @@ export default {
     account: false,
     equip: false,
     switch_dungeon: false,
+    transition_frame: false,
   },
   getters: {
   },

@@ -81,6 +81,13 @@ export default {
       });
     },
     reseedScene(){
+      this.$store.commit('window/updateWindowShowState', {windowName: 'transition_frame', state: true});
+      setTimeout(()=>{
+        this.randomisePosition();
+        this.$store.commit('window/updateWindowShowState', {windowName: 'transition_frame', state: false});
+      }, 1000)
+    },
+    randomisePosition(){
       // 3500以上は世界の果てが見えちゃう
       for(let i=0; i<5; ++i){
         this.layerStatus[i] = Math.floor(Math.random() * (this.maxScrollPosition - 100));

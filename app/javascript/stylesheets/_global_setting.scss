@@ -13,6 +13,7 @@
     position: relative;
     width: $window-width;
     height: $window-height;
+    overflow: hidden;
   }
 
   .open_window-enter-active {

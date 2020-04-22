@@ -14,6 +14,7 @@
         EquipWindow(v-if="$store.state.window.equip")
       transition(name="open_window")
         SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon")
+      TransitionFrame(v-if="$store.state.window.transition_frame")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
@@ -37,6 +38,7 @@ import SwitchDungeonWindow from './SwitchDungeonWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
 import EventWatcher from "./EventWatcher";
+import TransitionFrame from "./TransitionFrame.vue";
 
 export default {
   store,
@@ -53,6 +55,7 @@ export default {
     AccountWindow,
     EquipWindow,
     SwitchDungeonWindow,
+    TransitionFrame,
     Timer,
     EventWatcher,
     MessageForm,

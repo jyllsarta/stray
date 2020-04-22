@@ -72,7 +72,9 @@ export default {
     resolveStairEvent(event){
       this.$store.commit("user/incrementCurrentDungeonDepth");
       this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
-      this.rootRef.field.reseedScene();
+      setTimeout(()=>{
+        this.rootRef.field.reseedScene();
+      }, 2000);
     },
     resolveResurrectEvent(event){
       console.log(event);
