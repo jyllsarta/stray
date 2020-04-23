@@ -41,12 +41,17 @@ export default {
   .backgrounds{
     position: absolute;
     .upper{
+      position: absolute;
+      left: 0px;
       width: $window-width;
       height: $window-height / 2;
       background-color: $background;
       animation: left-out .4s cubic-bezier(.34,.76,.63,.97) 0s;
     }
     .downer{
+      position: absolute;
+      top: $window-height / 2;
+      right: -$window-width;
       width: $window-width;
       height: $window-height / 2;
       background-color: $background;
@@ -94,13 +99,13 @@ export default {
     @keyframes left-out {
       0% {
         opacity: 0.2;
-        transform: translateX(-200px);
+        width: 40%;
       }
     }
     @keyframes right-out {
       0% {
         opacity: 0.2;
-        transform: translateX(200px);
+        width: 40%;
       }
     }
 
