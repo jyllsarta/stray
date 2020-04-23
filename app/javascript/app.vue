@@ -8,13 +8,13 @@
       Status
       Log
       EventIllust
+      TransitionFrame(v-if="$store.state.window.transition_frame")
       transition(name="open_window")
         AccountWindow(v-if="$store.state.window.account")
       transition(name="open_window")
         EquipWindow(v-if="$store.state.window.equip")
       transition(name="open_window")
         SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon")
-      TransitionFrame(v-if="$store.state.window.transition_frame")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
