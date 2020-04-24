@@ -38,7 +38,10 @@ class ItemEvent < Event
   def execute!(user)
     user_item = user.items.find_or_initialize_by(item_id: @item_id)
     @_message = get_message(user_item)
-    # TODO: 金実装時におまけで金を貰えるようにする
+
+    # 最大強化済ならコインが代わりに貰える
+    user.status.add_coin!(coin_amount) if user_item.rank >= Constants.item.default_max_rank
+
     user_item.rank = [user_item.rank + @amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank && user_item.persisted?
     user_item.save!
     @done = true
@@ -49,6 +52,11 @@ class ItemEvent < Event
   end
 
 private
+
+  def coin_amount
+    @rank
+  end
+
   def item
     @_item ||= Item.find(@item_id)
   end
@@ -80,8 +88,7 @@ private
     elsif user_item.rank < Constants.item.default_max_rank
       "#{item.name}を+#{user_item.rank + @amount}に強化した！"
     else
-      # TODO: 金実装時におまけメッセージを定義
-      "#{item.name}を拾った！(すでに最大強化だった...)"
+      "#{item.name}を拾った！(最大強化済だったので#{coin_amount}コインに変換した！)"
     end
   end
 end

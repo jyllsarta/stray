@@ -6,6 +6,7 @@ RSpec.describe ItemEvent, type: :model do
     Item.delete_all
   end
   let(:user){create(:user)}
+  let!(:status){create(:user_status, user: user)}
   let(:event){ ItemEvent.new(rank) }
   let(:rank){1}
   let!(:item1){create(:item, id: 1, rarity: 1)}
@@ -60,13 +61,15 @@ RSpec.describe ItemEvent, type: :model do
           expect(user.items.find(user_item.id).rank).to eq(1)
           subject
           expect(user.items.find(user_item.id).rank).to eq(1 + event.detail[:amount])
+          expect(user.status.coin).to eq(0)
         end
       end
       context "それがすでに最大ランクだったら" do
         let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: Constants.item.default_max_rank)}
-        it "ランクは上昇しない" do
+        it "ランクは上昇せずコインがもらえる" do
           subject
           expect(user.items.find(user_item.id).rank).to eq(Constants.item.default_max_rank)
+          expect(user.status.coin).to eq(rank)
         end
       end
       context "それがすでに最大ランクを超えていても" do
