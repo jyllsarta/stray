@@ -12,11 +12,11 @@
     .ground
       img.spica(
         :src="spicaImagePath"
-        :style="{transform: 'translateX(' + $store.state.field.position.spica + 'px) scale('+ $store.state.field.direction.spica * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + characters.spica.position + 'px) scale('+ spicaDirection +', 1)'}"
       )
       img.tirol(
         :src="tirolImagePath"
-        :style="{transform: 'translateX(' + $store.state.field.position.tirol + 'px) scale('+ $store.state.field.direction.tirol * -1 +', 1)'}"
+        :style="{transform: 'translateX(' + characters.tirol.position + 'px) scale('+ tirolDirection +', 1)'}"
       )
     .background.view3(
       :style="viewStyle(3)"
@@ -48,6 +48,18 @@ export default {
         4: 0.030,
       },
       maxScrollPosition: 3500,
+      characters: {
+        spica: {
+          position: 30,
+          speed: 0,
+          direction: 1,
+        },
+        tirol: {
+          position: -70,
+          speed: 0,
+          direction: 1,
+        },
+      },
     };
   },
   store,
@@ -66,19 +78,31 @@ export default {
     },
     proceedCharacter(){
       ["spica", "tirol"].forEach((name)=>{
-         if(!this.$store.getters['user/isAliveCharacter'](name)){
-           return;
-         }
-        // TODO: スピード制御ロジック
-        // TODO: speedと反射基準点をcontantsから拾う
-        this.$store.commit("field/moveCharacter", {characterName: name, delta: 1});
-        if(this.$store.state.field.position[name] > Constants.window.ground.right){
-          this.$store.commit("field/reflectCharacter", {characterName: name});
+        if(!this.$store.getters['user/isAliveCharacter'](name)){
+          return;
         }
-        if(this.$store.state.field.position[name] < Constants.window.ground.left){
-          this.$store.commit("field/reflectCharacter", {characterName: name});
-        }
+        this.tickSpeed(name);
+        this.characters[name].position += this.characters[name].speed;
       });
+    },
+    tickSpeed(characterName){
+      let speed = this.characters[characterName].speed;
+      speed += (Math.random() - 0.5) * Constants.window.ground.speedDelta;
+
+      // スピードがつきすぎてたら減速
+      if(Math.abs(speed) > 1){
+        speed /= 2;
+      }
+
+      //端に寄りすぎてたら反対側に引っ張る
+      if(this.characters[characterName].position > Constants.window.ground.right){
+        speed -= 1;
+      }
+      if(this.characters[characterName].position < Constants.window.ground.left){
+        speed += 1;
+      }
+
+      this.characters[characterName].speed = speed;
     },
     reseedScene(){
       this.$store.commit('window/updateWindowShowState', {windowName: 'transition_frame', state: true});
@@ -111,6 +135,12 @@ export default {
     },
   },
   computed: {
+    spicaDirection(){
+      return this.characters.spica.speed > 0 ? -1 : 1;
+    },
+    tirolDirection(){
+      return this.characters.tirol.speed > 0 ? -1 : 1;
+    },
     spicaImagePath(){
       return this.$store.getters['user/isAliveCharacter']('spica') ? "images/ui/spica.png" : "images/ui/spica_dead.png";
     },

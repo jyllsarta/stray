@@ -3,7 +3,9 @@ const Constants = {
     ground: {
       left: -200,
       right: 200,
-    }
+      // 1フレームごとに [-delta, delta] の範囲でスピードを加算する
+      speedDelta: 0.05,
+    },
   },
   character: {
     // constanys.yml とそれぞれ重複定義しているので注意...(つらい)
