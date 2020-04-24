@@ -5,6 +5,8 @@ const Constants = {
       right: 200,
       // 1フレームごとに [-delta, delta] の範囲でスピードを加算する
       speedDelta: 0.05,
+      // speed < これ なら静止状態として扱う
+      staticStateThreshold: 0.05,
     },
   },
   character: {

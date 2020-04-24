@@ -12,11 +12,11 @@
     .ground
       img.spica(
         :src="spicaImagePath"
-        :style="{transform: 'translateX(' + characters.spica.position + 'px) scale('+ spicaDirection +', 1)'}"
+        :style="{transform: `translate(${characters.spica.position}px, ${characters.spica.verticalPosition}px) scale(${characters.spica.direction}, 1)`}"
       )
       img.tirol(
         :src="tirolImagePath"
-        :style="{transform: 'translateX(' + characters.tirol.position + 'px) scale('+ tirolDirection +', 1)'}"
+        :style="{transform: `translate(${characters.tirol.position}px, ${characters.tirol.verticalPosition}px) scale(${characters.tirol.direction}, 1)`}"
       )
     .background.view3(
       :style="viewStyle(3)"
@@ -48,16 +48,19 @@ export default {
         4: 0.030,
       },
       maxScrollPosition: 3500,
+      frameCount : 0,
       characters: {
         spica: {
           position: 30,
           speed: 0,
           direction: 1,
+          verticalPosition: 1,
         },
         tirol: {
           position: -70,
           speed: 0,
           direction: 1,
+          verticalPosition: 1,
         },
       },
     };
@@ -74,6 +77,7 @@ export default {
     update(){
       this.proceedCharacter();
       this.scroll();
+      this.frameCount++;
       requestAnimationFrame(this.update);
     },
     proceedCharacter(){
@@ -82,7 +86,12 @@ export default {
           return;
         }
         this.tickSpeed(name);
-        this.characters[name].position += this.characters[name].speed;
+        if(this.characters[name].speed < Constants.window.ground.staticStateThreshold){
+          this.characters[name].verticalPosition = Math.floor(Math.sin(this.frameCount / 20) * 2);
+        }
+        else{
+          this.characters[name].position += this.characters[name].speed;
+        }
       });
     },
     tickSpeed(characterName){
@@ -100,6 +109,14 @@ export default {
       }
       if(this.characters[characterName].position < Constants.window.ground.left){
         speed += 1;
+      }
+
+      // 移動閾値を超えていたらその方向を向かせる
+      if(this.characters[characterName].speed > Constants.window.ground.staticStateThreshold){
+        this.characters[characterName].direction = -1;
+      }
+      if(this.characters[characterName].speed < -Constants.window.ground.staticStateThreshold){
+        this.characters[characterName].direction = 1;
       }
 
       this.characters[characterName].speed = speed;
@@ -135,12 +152,6 @@ export default {
     },
   },
   computed: {
-    spicaDirection(){
-      return this.characters.spica.speed > 0 ? -1 : 1;
-    },
-    tirolDirection(){
-      return this.characters.tirol.speed > 0 ? -1 : 1;
-    },
     spicaImagePath(){
       return this.$store.getters['user/isAliveCharacter']('spica') ? "images/ui/spica.png" : "images/ui/spica_dead.png";
     },
