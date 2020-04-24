@@ -65,6 +65,9 @@ RSpec.describe BattleEvent, type: :model do
       it "gains some exp" do
         expect{subject}.to change(user.characters.first, :exp)
       end
+      it "gets coin" do
+        expect{subject}.to change(user.status, :coin)
+      end
       context "if character dead" do
         before do
           allow(user.characters.first).to receive(:dead?).and_return(true)
@@ -84,6 +87,9 @@ RSpec.describe BattleEvent, type: :model do
       end
       it "no gain exp" do
         expect{subject}.to_not change(user.characters.first, :exp)
+      end
+      it "dont get coin" do
+        expect{subject}.to_not change(user.status, :coin)
       end
     end
   end

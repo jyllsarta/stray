@@ -38,6 +38,10 @@ class BattleEvent < Event
 
   private
 
+  def coin_amount
+    @rank * 3
+  end
+
   def process_win(user)
     exp = Constants.event.battle.base_exp + SecureRandom.rand(0..Constants.event.battle.additional_exp_range)
     user.characters.each do |character|
@@ -45,6 +49,7 @@ class BattleEvent < Event
       multiplier = rank_ratio(@rank, character.level)
       character.gain_exp!(exp * multiplier)
     end
+    user.status.add_coin!(coin_amount)
   end
 
   def process_lose(user)
@@ -57,7 +62,7 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ！#{@battle.turn}ターン継続し、スピカ#{damages[0]}、チロル#{damages[1]}ダメージ。"
+    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{@battle.is_win ? "#{coin_amount}コイン手にいれた！" : ''}"
   end
 
   def lot_enemies!(rank)
