@@ -3,6 +3,7 @@
 # Table name: user_statuses
 #
 #  id                    :integer          not null, primary key
+#  coin                  :integer          default(0), not null
 #  current_dungeon_depth :integer          default(1), not null
 #  event_updated_at      :datetime         default(NULL), not null
 #  resurrect_timer       :integer          default(0), not null

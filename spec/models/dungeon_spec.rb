@@ -5,6 +5,7 @@
 #  id                :integer          not null, primary key
 #  depth             :integer
 #  depth_per_rank    :integer
+#  description       :string
 #  initial_rank      :integer
 #  name              :string
 #  created_at        :datetime         not null

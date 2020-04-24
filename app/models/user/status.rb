@@ -3,13 +3,14 @@
 # Table name: user_statuses
 #
 #  id                    :integer          not null, primary key
-#  user_id               :integer          default(0), not null
-#  event_updated_at      :datetime         default(NULL), not null
-#  current_dungeon_id    :integer          default(1), not null
+#  coin                  :integer          default(0), not null
 #  current_dungeon_depth :integer          default(1), not null
+#  event_updated_at      :datetime         default(NULL), not null
+#  resurrect_timer       :integer          default(0), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  resurrect_timer       :integer          default(0), not null
+#  current_dungeon_id    :integer          default(1), not null
+#  user_id               :integer          default(0), not null
 #
 
 class User::Status < ApplicationRecord
@@ -75,6 +76,14 @@ class User::Status < ApplicationRecord
 
   def resurrect_completed?
     self.resurrect_timer >= Constants.resurrect_time_seconds
+  end
+
+  def add_coin!(amount)
+    self.increment!(:coin, amount)
+  end
+
+  def consume_coin!(amount)
+    self.decrement!(:coin, amount)
   end
 
   private

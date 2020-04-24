@@ -4,5 +4,6 @@ create_table "user_statuses", force: :cascade do |t|
   t.integer :current_dungeon_id, null: false, default: 1
   t.integer :current_dungeon_depth, null: false, default: 1
   t.integer :resurrect_timer, null: false, default: 0
+  t.integer :coin, null: false, default: 0
   t.timestamps
 end

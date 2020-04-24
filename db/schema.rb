@@ -15,17 +15,16 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "dungeons", force: :cascade do |t|
     t.string "name"
     t.integer "depth"
-    t.integer "initial_rank"
-    t.integer "depth_per_rank"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "initial_rank"
+    t.integer "depth_per_rank"
     t.integer "parent_dungeon_id"
     t.string "description"
   end
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.integer "base_rank", default: 0
     t.integer "str", default: 0
     t.integer "dex", default: 0
     t.integer "def", default: 0
@@ -34,6 +33,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "flavor_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "base_rank", default: 0
   end
 
   create_table "messages", force: :cascade do |t|
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "resurrect_timer", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "coin", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -3,6 +3,7 @@
 # Table name: user_statuses
 #
 #  id                    :integer          not null, primary key
+#  coin                  :integer          default(0), not null
 #  current_dungeon_depth :integer          default(1), not null
 #  event_updated_at      :datetime         default(NULL), not null
 #  resurrect_timer       :integer          default(0), not null
@@ -240,6 +241,21 @@ RSpec.describe User::Status, type: :model do
       it "returns false" do
         expect(subject).to be_falsey
       end
+    end
+  end
+
+  describe "#add_coin!" do
+    subject { status.add_coin!(amount) }
+    let(:amount){100}
+    it "increments coin" do
+      expect{subject}.to change(status, :coin).by(amount)
+    end
+  end
+  describe "#consume_coin!" do
+    subject { status.consume_coin!(amount) }
+    let(:amount){100}
+    it "decrements coin" do
+      expect{subject}.to change(status, :coin).by(-amount)
     end
   end
 end
