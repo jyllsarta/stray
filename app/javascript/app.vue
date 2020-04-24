@@ -30,7 +30,6 @@ import Header from './Header'
 import RightMenu from './RightMenu'
 import Log from './Log'
 import Status from './Status'
-import Chat from './Chat'
 import EventIllust from './EventIllust'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
@@ -50,7 +49,6 @@ export default {
     RightMenu,
     Log,
     Status,
-    Chat,
     EventIllust,
     AccountWindow,
     EquipWindow,
