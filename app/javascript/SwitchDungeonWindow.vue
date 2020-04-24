@@ -60,6 +60,9 @@ export default {
       selectingDungeonDepth: 1,
     };
   },
+  props: {
+    rootRef: Object,
+  },
   store,
   mounted(){
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
@@ -123,11 +126,21 @@ export default {
     gotoDungeon(){
       this.$store.dispatch("user/gotoDungeon", {dungeon_id: this.selectingDungeonId, depth: this.selectingDungeonDepth})
         .then(()=>{
-          this.$store.dispatch("user/fetchUserModel")
+          this.rootRef.field.reseedScene();
+          this.$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})
         })
         .then(()=>{
-        this.$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})
-      });
+          // とてもとてもダサいのだけど、400ms待って十分に演出が流れてから背景を更新する
+          // うまくかけていたなら「閉じる」「更新を待つ」「開く」ってできるんだろうけどそれを想定したコードにできなかった...勉強のためにもいつか直したい
+          return new Promise((resolve, reject) => {
+            setTimeout(resolve, 400);
+          });
+        })
+        .then(()=>{
+          this.$store.dispatch("user/fetchUserModel");
+          this.$store.commit("event/addEventLog", {message: `${this.$store.state.masterdata.dungeons[this.selectingDungeonId].name}に移動した！`});
+        }
+      );
     }
   }
 }

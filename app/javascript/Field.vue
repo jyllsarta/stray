@@ -133,6 +133,11 @@ export default {
       for(let i=0; i<5; ++i){
         this.layerStatus[i] = Math.floor(Math.random() * (this.maxScrollPosition - 100));
       }
+      ["spica", "tirol"].forEach((name)=>{
+        const field = Constants.window.ground;
+        const pos = (Math.random() - 0.5) * ( field.right - field.left) + (field.right + field.left);
+        this.characters[name].position = pos;
+      });
     },
     scroll(){
       for(let i=0; i<5; ++i){

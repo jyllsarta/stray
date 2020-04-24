@@ -14,7 +14,7 @@
       transition(name="open_window")
         EquipWindow(v-if="$store.state.window.equip")
       transition(name="open_window")
-        SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon")
+        SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon" :root-ref="$refs")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
