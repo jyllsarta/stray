@@ -16,6 +16,7 @@ export default {
       current_dungeon_id: 1,
       current_dungeon_depth: 1,
       current_dungeon_rank: 1,
+      coin: 0,
     },
     characters: {
       spica: {},

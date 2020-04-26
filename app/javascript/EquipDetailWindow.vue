@@ -6,6 +6,15 @@
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: false})")
         .title
           | 装備詳細
+      .description
+        | #########の詳細画面です。強化ができます。
+      .body
+        .current_coin
+          .icon
+            img(src="/images/ui/coin.png")
+          .amount
+            | {{$store.state.user.status.coin}}
+
 
 </template>
 
@@ -35,4 +44,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
+.description{
+  padding: $space;
+  white-space: pre-wrap;
+  border-bottom: 1px solid $gray3;
+}
+.body{
+  display: flex;
+  .current_coin{
+    display: flex;
+    width: 30%;
+    .icon{
+      img{
+        width: 32px;
+      }
+    }
+    .amount{
+      line-height: 32px;
+      font-size: $font-size-large;
+    }
+  }
+}
+
 </style>
