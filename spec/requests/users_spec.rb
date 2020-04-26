@@ -141,7 +141,8 @@ RSpec.describe "Users", type: :request do
                                                        status: {
                                                            current_dungeon_depth: Integer,
                                                            current_dungeon_id: Integer,
-                                                           current_dungeon_rank: Integer
+                                                           current_dungeon_rank: Integer,
+                                                           coin: Integer,
                                                        },
                                                        characters: {
                                                            spica: Hash,
