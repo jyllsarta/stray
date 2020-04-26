@@ -42,7 +42,6 @@
             .equip(
               v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
-              @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
               :class="[rarityClass(item)]"
             )
               | {{item.name}}
@@ -74,7 +73,6 @@
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
-              @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
               @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
               :class="[{ disabled: isAlreadyEquipped(item) }]"
             )
@@ -116,6 +114,11 @@
               | {{param.toUpperCase()}} {{currentItem ? currentItem.effectValueOf(param) : ''}}
           .flavor_text
             | {{currentItem ? currentItem.flavor_text : "-"}}
+          .open_detail_window.clickable(
+            v-if="currentItem"
+            @click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: true})"
+            )
+            | 詳細
         .main_chara_equips.block
           .label_box
             .label
@@ -136,7 +139,6 @@
               .equip.hoverable.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
-                @mouseleave="$store.commit('equip_window/updateSelectingItemId', 0)"
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
               )
                 .param_area
@@ -149,7 +151,7 @@
                     :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
-                | -
+                | -F
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
                 .param_area
@@ -580,6 +582,12 @@ export default {
       .flavor_text{
         line-height: 115%;
         padding: $thin_space;
+        height: 160px;
+      }
+      .open_detail_window{
+        padding: $thin_space;
+        height: 30px;
+        text-align: center;
       }
     }
 

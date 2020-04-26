@@ -14,6 +14,8 @@
       transition(name="open_window")
         EquipWindow(v-if="$store.state.window.equip")
       transition(name="open_window")
+        EquipDetailWindow(v-if="$store.state.window.equip_detail")
+      transition(name="open_window")
         SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon" :root-ref="$refs")
       Api(ref="api")
       Timer
@@ -33,6 +35,7 @@ import Status from './Status'
 import EventIllust from './EventIllust'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
+import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
@@ -52,6 +55,7 @@ export default {
     EventIllust,
     AccountWindow,
     EquipWindow,
+    EquipDetailWindow,
     SwitchDungeonWindow,
     TransitionFrame,
     Timer,
