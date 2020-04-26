@@ -25,4 +25,11 @@ User::NotFound:
 User::Status::CannotSwitchDungeon:
   status: bad_request
   message: ダンジョンIDか、階層指定が不正です。
+User::Item::InsufficientRank:
+  status: bad_request
+  message: 所持アイテムの最大強化値以上に強化はできません。
+User::Item::InsufficientCoin:
+  status: bad_request
+  message: コインが足りません。
+
 
