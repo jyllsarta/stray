@@ -19,6 +19,7 @@ class User::Status < ApplicationRecord
   belongs_to :user
   belongs_to :dungeon, foreign_key: :current_dungeon_id
   has_many :dungeon_progresses, primary_key: :user_id, foreign_key: :user_id
+  has_many :items, primary_key: :user_id, foreign_key: :user_id
 
   def current_dungeon_progress
     dungeon_progresses.find_or_create_by!(dungeon: dungeon)
@@ -84,6 +85,10 @@ class User::Status < ApplicationRecord
 
   def consume_coin!(amount)
     self.decrement!(:coin, amount)
+  end
+
+  def max_item_rank
+    self.items.order(rank: :desc).first&.rank || 0
   end
 
   private

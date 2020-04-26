@@ -11,6 +11,8 @@
 class User::Item < ApplicationRecord
   belongs_to :user
   belongs_to :item, class_name: "::Item"
+  class InsufficientCoin < StandardError; end
+  class InsufficientRank < StandardError; end
 
   def parameter
     # ActiveRecord のmodel にslice をかけるとキーが文字列化するようなので symbolize_name を通してから処理する
@@ -22,7 +24,25 @@ class User::Item < ApplicationRecord
     end.to_h
   end
 
+  def rank_up!
+    raise InsufficientCoin if user.status.coin < rank_up_cost
+    raise InsufficientRank if max_rank < (rank + 1)
+    ActiveRecord::Base.transaction do
+      # 前後入れ替えると消費額が変わるのちょっと怖い書き方だなって思うけどまあこれで...
+      user.status.decrement!(:coin, rank_up_cost)
+      self.increment!(:rank, 1)
+    end
+  end
+
   private
+
+  def max_rank
+    [user.status.max_item_rank, 10].max
+  end
+
+  def rank_up_cost
+    rank ** 2
+  end
 
   def rank_factor(rank)
     rank ** Constants.item.rank_factor

@@ -258,4 +258,22 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :coin).by(-amount)
     end
   end
+
+  describe "#max_item_rank" do
+    subject { status.max_item_rank }
+    context "without item" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with item" do
+      let(:item){ create(:item) }
+      let!(:user_item){ create(:user_item, user: user, item: item, rank: 123) }
+      let(:item2){ create(:item) }
+      let!(:user_item2){ create(:user_item, user: user, item: item2, rank: 456) }
+      it "returns max rank" do
+        expect(subject).to eq(456)
+      end
+    end
+  end
 end
