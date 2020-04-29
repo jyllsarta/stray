@@ -151,7 +151,7 @@
                     :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
               .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
-                | -F
+                | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
                 .param_area
