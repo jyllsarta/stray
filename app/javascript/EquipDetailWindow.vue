@@ -36,16 +36,15 @@
                 |  TOTAL
               .value
                 | {{rankUpItem().effectValue}}
-                .diff
-                  | ({{rankUpItem().effectValue - item().effectValue}})
+              .diff
+                | ({{diffText(rankUpItem().effectValue - item().effectValue)}})
             .item(v-for="param in ['str', 'dex', 'def', 'agi']" :class="param")
               .label
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(rankUpItem(), param)}}
-                .diff
-                  | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
-
+              .diff
+                | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
         .controls
           .costs
             .line
@@ -158,18 +157,21 @@ export default {
       .item{
         width: 100%;
         .label{
-          width: 45%;
+          padding-left: 6rem;
+          width: 10rem;
           padding-right: $space;
           text-align: right;
           display: inline-block;
         }
         .value{
-          width: 55%;
+          width: 6rem;
           display: inline-block;
-          .diff{
-            display: inline-block;
-            padding-left: $space;
-          }
+          text-align: right;
+        }
+        .diff{
+          width: 4rem;
+          display: inline-block;
+          padding-left: $space;
         }
       }
       .name{
