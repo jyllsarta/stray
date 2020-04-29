@@ -12,75 +12,40 @@
         .amount
           | {{$store.state.user.status.coin}}
       .description
-        | {{item.name}}の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+77315)まで強化できます。
+        | {{item().name}}の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+77315)まで強化できます。
       .body
         .status_area
           .before.parameter_box
             .name
-              | ◆伝説のリズムカーニバル+765983
+              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item_id)}}
             .total.item
               .label
                 |  TOTAL
               .value
-                | 123123123
-            .str.item
+                | {{item().effectValue}}
+            .item(v-for="param in ['str', 'dex', 'def', 'agi']" :class="param")
               .label
-                |  STR
+                |  {{param.toUpperCase()}}
               .value
-                | 123123123
-            .dex.item
-              .label
-                |  DEX
-              .value
-                | 123123123
-            .def.item
-              .label
-                |  DEF
-              .value
-                | 123123123
-            .agi.item
-              .label
-                |  AGI
-              .value
-                | 123123123
+                | {{getEffectValue(item(), param)}}
           .after.parameter_box
             .name
-              | ◆伝説のリズムカーニバル+765984
+              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + 1}}
             .total.item
               .label
                 |  TOTAL
               .value
-                | 123123123
+                | {{rankUpItem().effectValue}}
                 .diff
-                  | (+82828282)
-            .str.item
+                  | ({{rankUpItem().effectValue - item().effectValue}})
+            .item(v-for="param in ['str', 'dex', 'def', 'agi']" :class="param")
               .label
-                |  STR
+                |  {{param.toUpperCase()}}
               .value
-                | 123123123
+                | {{getEffectValue(rankUpItem(), param)}}
                 .diff
-                  | (+82828282)
-            .dex.item
-              .label
-                |  DEX
-              .value
-                | 123123123
-                .diff
-                  | (+82828282)
-            .def.item
-              .label
-                |  DEF
-              .value
-                | 123123123
-                .diff
-                  | (+82828282)
-            .agi.item
-              .label
-                |  AGI
-              .value
-                | 123123123
-                .diff
-                  | (+82828282)
+                  | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
+
         .controls
           .costs
             .line
@@ -121,12 +86,29 @@ export default {
   mounted(){
   },
   computed: {
-    item(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id);
-    },
   },
   methods: {
-
+    item(){
+      return this.$store.getters['equip_window/getUserItem'](this.item_id) || {};
+    },
+    rankUpItem(){
+      return this.$store.getters['equip_window/getUserItem'](this.item_id, 1) || {};
+    },
+    getEffectValue(itemObj, param){
+      if(!itemObj.effectValueOf){
+        return 0;
+      }
+      return itemObj.effectValueOf(param);
+    },
+    diffText(diff){
+      if(diff === 0){
+        return diff;
+      }
+      if(diff > 0){
+        return "+" + diff;
+      }
+      return "-" + diff;
+    },
   },
 }
 </script>

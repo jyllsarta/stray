@@ -76,14 +76,15 @@ export default {
         .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
         .filter(x=>x);
     },
-    getUserItem: (state, getters, rootState, rootGetters) => (itemId) => {
+    getUserItem: (state, getters, rootState, rootGetters) => (itemId, rankDelta=0) => {
       if(!rootState.user.items[itemId] || !rootState.masterdata.items[itemId]){
         return null;
       }
       let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.base_rank) * rootGetters['user/rarityFactor'](this.rarity));
+        return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
       };
+      ui.effectValue = ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
       return ui;
     },
     getItemEffectValue: (state, getters) => (itemId) => {
