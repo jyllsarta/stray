@@ -5,7 +5,7 @@ export default {
   state: {
     account: false,
     equip: false,
-    equip_detail: true,
+    equip_detail: false,
     switch_dungeon: false,
     transition_frame: false,
   },
