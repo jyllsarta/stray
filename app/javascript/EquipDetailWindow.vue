@@ -12,7 +12,7 @@
         .amount
           | {{$store.state.user.status.coin}}
       .description
-        | {{item().name}}の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+77315)まで強化できます。
+        | {{item().name}}の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+{{$store.getters['user/maxItemRank']}})まで強化できます。
       .body
         .status_area
           .before.parameter_box

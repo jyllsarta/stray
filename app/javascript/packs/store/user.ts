@@ -60,6 +60,9 @@ export default {
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];
     },
+    maxItemRank: (state) => {
+      return Object.values(state.items).reduce((max, item)=>(max < item.rank ? item.rank : max), 0);
+    },
   },
   mutations: {
     syncEquipDraft(state, payload){
@@ -89,8 +92,8 @@ export default {
     updateUserModel(state, payload) {
       Object.assign(state, payload);
     },
-    incrementItemRank(state, payload) {
-      state.items[payload.item_id].rank += payload.amount;
+    updateItemRank(state, payload) {
+      state.items[payload.item_id].rank = payload.rank;
     }
   },
   actions: {
