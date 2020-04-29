@@ -17,7 +17,7 @@ class ItemEvent < Event
   def detail
     {
       id: @item_id,
-      amount: @amount  
+      rank: @rank
     }
   end
 
@@ -43,6 +43,7 @@ class ItemEvent < Event
     user.status.add_coin!(coin_amount) if user_item.rank >= Constants.item.default_max_rank
 
     user_item.rank = [user_item.rank + @amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank && user_item.persisted?
+    @rank = user_item.rank
     user_item.save!
     @done = true
   end

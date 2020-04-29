@@ -22,12 +22,15 @@ RSpec.describe ItemEvent, type: :model do
     end
   end
   describe "#detail" do
+    before do
+      event.execute!(user)
+    end
     subject { event.detail }
     it "returns formatted hash" do
       expect(subject).to match_json_expression(
                              {
                                  id: Integer,
-                                 amount: Integer
+                                 rank: Integer
                              }
                          )
     end
@@ -60,7 +63,7 @@ RSpec.describe ItemEvent, type: :model do
         it "そいつのランクがamount分増える" do
           expect(user.items.find(user_item.id).rank).to eq(1)
           subject
-          expect(user.items.find(user_item.id).rank).to eq(1 + event.detail[:amount])
+          expect(user.items.find(user_item.id).rank).to eq(1 + event.instance_variable_get('@amount'))
           expect(user.status.coin).to eq(0)
         end
       end

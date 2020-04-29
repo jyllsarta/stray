@@ -60,7 +60,7 @@ export default {
     },
     resolveItemEvent(event){
       if(this.$store.state.user.items[event.detail.id]){
-        this.$store.commit("user/incrementItemRank", {item_id: event.detail.id, amount: event.detail.amount})
+        this.$store.commit("user/updateItemRank", {item_id: event.detail.id, rank: event.detail.rank})
       }
       else{
         this.$store.dispatch('user/fetchUserModel');
