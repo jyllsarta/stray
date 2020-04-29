@@ -76,13 +76,14 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
-      item_id: 5,
+      item_id: null,
     };
   },
   props: {
   },
   store,
   mounted(){
+    this.item_id = this.$store.state.equip_window.selecting_item_id || 1;
   },
   computed: {
   },
@@ -106,7 +107,8 @@ export default {
       if(diff > 0){
         return "+" + diff;
       }
-      return "-" + diff;
+      // マイナスは元々付いてるので文字列化するだけで良し
+      return "" + diff;
     },
   },
 }
