@@ -12,7 +12,7 @@
         .amount
           | {{$store.state.user.status.coin}}
       .description
-        | #########の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+77315)まで強化できます。
+        | {{item.name}}の詳細画面です。コインを消費して、所持しているアイテムの最大強化値(+77315)まで強化できます。
       .body
         .status_area
           .before.parameter_box
@@ -112,6 +112,7 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      item_id: 5,
     };
   },
   props: {
@@ -120,6 +121,9 @@ export default {
   mounted(){
   },
   computed: {
+    item(){
+      return this.$store.getters['equip_window/getUserItem'](this.item_id);
+    },
   },
   methods: {
 
