@@ -83,10 +83,18 @@
                   | (+82828282)
         .controls
           .costs
-            .current
-              | 所持：123123123
-            .consumes
-              | 消費：3123123
+            .line
+              .label
+                | 所持
+              .coin_icon
+              .value
+                | 123123123
+            .line
+              .label
+                | 消費
+              .coin_icon
+              .value
+                | 98287
           .rank_up.clickable
             | 強化
         .enchantment_area
@@ -193,6 +201,28 @@ export default {
     justify-content: center;
     .costs{
       width: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .line{
+        display: flex;
+        align-items: flex-end;
+        line-height: 100%;
+        div{
+          display: inline-block;
+        }
+        .coin_icon{
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          background-image: url("/images/ui/coin.png");
+          background-size: cover;
+        }
+        .value{
+          text-align: right;
+          width: 6rem;
+        }
+      }
     }
     .rank_up{
       width: 100px;
