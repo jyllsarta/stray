@@ -23,8 +23,8 @@
                 |  TOTAL
               .value
                 | {{item().effectValue}}
-            .item(v-for="param in ['str', 'dex', 'def', 'agi']" :class="param")
-              .label
+            .item(v-for="param in ['str', 'dex', 'def', 'agi']")
+              .label(:class="param")
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(item(), param)}}
@@ -36,14 +36,14 @@
                 |  TOTAL
               .value
                 | {{rankUpItem().effectValue}}
-              .diff
+              .diff(:class="diffClass(rankUpItem().effectValue - item().effectValue)")
                 | ({{diffText(rankUpItem().effectValue - item().effectValue)}})
-            .item(v-for="param in ['str', 'dex', 'def', 'agi']" :class="param")
-              .label
+            .item(v-for="param in ['str', 'dex', 'def', 'agi']")
+              .label(:class="param")
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(rankUpItem(), param)}}
-              .diff
+              .diff(:class="diffClass(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))")
                 | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
         .controls
           .costs
@@ -109,6 +109,15 @@ export default {
       }
       // マイナスは元々付いてるので文字列化するだけで良し
       return "" + diff;
+    },
+    diffClass(diff){
+      if(diff === 0){
+        return "";
+      }
+      if(diff > 0){
+        return "plus";
+      }
+      return "minus";
     },
   },
 }
@@ -178,6 +187,24 @@ export default {
       }
       .name{
         text-align: center;
+      }
+      .str{
+        color: $str;
+      }
+      .dex{
+        color: $dex;
+      }
+      .def{
+        color: $def;
+      }
+      .agi{
+        color: $agi;
+      }
+      .plus{
+        color: $plus;
+      }
+      .minus{
+        color: $minus;
       }
     }
     .before{
