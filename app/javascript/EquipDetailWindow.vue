@@ -59,7 +59,7 @@
               .coin_icon
               .value
                 | {{rankUpCost()}}
-          .rank_up.clickable(@click="executeRankUpItem")
+          .rank_up.clickable(@click="executeRankUpItem", :style="{opacity: canRankUp() ? 1 : 0.5}")
             | 強化
         .enchantment_area
           //ここは実装後に埋めればいいや
@@ -120,11 +120,21 @@ export default {
       return "minus";
     },
     executeRankUpItem(){
+      if(!this.canRankUp()){
+        console.log("強化不能ですね");
+        return;
+      }
       this.$store.dispatch("user/rankUpItem", this.item_id );
     },
     rankUpCost(){
       return Math.pow((this.item().rank + this.item().base_rank) || 0 , 2);
     },
+    canRankUp(){
+      console.log(this.rankUpCost() , this.$store.state.user.status?.coin)
+      console.log(this.$store.getters['user/maxItemRank'] , this.item().rank)
+      return this.rankUpCost() <= this.$store.state.user.status.coin && this.item().rank < this.$store.getters['user/maxItemRank'];
+    },
+
   },
 }
 </script>
