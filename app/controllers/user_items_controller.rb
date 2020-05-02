@@ -1,6 +1,7 @@
 class UserItemsController < ApplicationController
   def rank_up
-    current_user.status.items.find(params[:user_item_id]).rank_up!
-    render json: {success: true}, status: :ok
+    @user = current_user
+    @item = current_user.status.items.find_by!(item_id: params[:user_item_id])
+    @item.rank_up!
   end
 end

@@ -7,7 +7,7 @@ RSpec.describe "User::Item", type: :request do
     let(:user){ User.create }
     let(:item){ create(:item) }
     let!(:user_item){ create(:user_item, user: user, item: item, rank: 3) }
-    let(:do_post) { post user_user_item_rank_up_path(user_id: -1, user_item_id: user_item.id) + ".json", params: params }
+    let(:do_post) { post user_user_item_rank_up_path(user_id: -1, user_item_id: user_item.item_id) + ".json", params: params }
 
     context "sufficient coin" do
       before do
@@ -22,8 +22,16 @@ RSpec.describe "User::Item", type: :request do
         do_post
         response
       end
-      it 'returns events list' do
+
+      it "returns formatted hash" do
         expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     after_coin: Integer,
+                                                     after_rank: Integer,
+                                                     item_id: Integer,
+                                                 }
+                                             )
       end
     end
 

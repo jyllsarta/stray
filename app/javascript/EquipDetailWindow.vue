@@ -59,7 +59,7 @@
               .coin_icon
               .value
                 | 98287
-          .rank_up.clickable
+          .rank_up.clickable(@click="executeRankUpItem")
             | 強化
         .enchantment_area
           //ここは実装後に埋めればいいや
@@ -119,6 +119,9 @@ export default {
       }
       return "minus";
     },
+    executeRankUpItem(){
+      this.$store.dispatch("user/rankUpItem", this.item_id );
+    }
   },
 }
 </script>

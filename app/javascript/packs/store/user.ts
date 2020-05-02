@@ -93,8 +93,13 @@ export default {
       Object.assign(state, payload);
     },
     updateItemRank(state, payload) {
+      console.log(payload);
+      console.log(state.items);
       state.items[payload.item_id].rank = payload.rank;
-    }
+    },
+    updateUserCoin(state, payload) {
+      state.status.coin = payload;
+    },
   },
   actions: {
     fetchUserModel ({ commit }) {
@@ -125,6 +130,26 @@ export default {
             resolve();
           })
           .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
+      })
+    },
+    rankUpItem ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/user_items/${payload}/rank_up.json`;
+        ax.post(path)
+          .then((results) => {
+            console.log("uooo!");
+            console.log(results);
+            console.log("OK");
+            commit("updateUserCoin", results.data.after_coin);
+            commit("updateItemRank", {item_id: results.data.item_id, rank: results.data.after_rank});
+            resolve();
+          })
+          .catch((error) => {
+            console.warn(error);
             console.warn(error.response);
             console.warn("NG");
           });
