@@ -52,13 +52,13 @@
                 | 所持
               .coin_icon
               .value
-                | 123123123
+                | {{$store.state.user.status.coin}}
             .line
               .label
                 | 消費
               .coin_icon
               .value
-                | 98287
+                | {{rankUpCost()}}
           .rank_up.clickable(@click="executeRankUpItem")
             | 強化
         .enchantment_area
@@ -121,7 +121,10 @@ export default {
     },
     executeRankUpItem(){
       this.$store.dispatch("user/rankUpItem", this.item_id );
-    }
+    },
+    rankUpCost(){
+      return Math.pow((this.item().rank + this.item().base_rank) || 0 , 2);
+    },
   },
 }
 </script>

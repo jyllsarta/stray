@@ -41,7 +41,7 @@ class User::Item < ApplicationRecord
   end
 
   def rank_up_cost
-    rank ** 2
+    (rank + item.base_rank) ** 2
   end
 
   def rank_factor(rank)

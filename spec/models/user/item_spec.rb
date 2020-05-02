@@ -53,14 +53,14 @@ RSpec.describe User::Item, type: :model do
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
 
       before do
-        user.status.add_coin!(25)
+        user.status.add_coin!(100)
       end
 
       it "rank up" do
         expect{subject}.to change(user_item, :rank).by(1)
       end
       it "uses coin" do
-        expect{subject}.to change(user.status, :coin).by(-25)
+        expect{subject}.to change(user.status, :coin).by(-100)
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe User::Item, type: :model do
 
     context "about rank" do
       let(:item){ create(:item, base_rank: 10) }
-      let(:user_item){ create(:user_item, user: user, item: item, rank: 29) }
+      let(:user_item){ create(:user_item, user: user, item: item, rank: 19) }
 
       before do
         user.status.add_coin!(1000000)
@@ -87,7 +87,7 @@ RSpec.describe User::Item, type: :model do
 
       context "insufficient" do
         before do
-          allow(user.status).to receive(:max_item_rank).and_return(29)
+          allow(user.status).to receive(:max_item_rank).and_return(19)
         end
 
         it "raises error" do
@@ -97,7 +97,7 @@ RSpec.describe User::Item, type: :model do
 
       context "sufficient" do
         before do
-          allow(user.status).to receive(:max_item_rank).and_return(30)
+          allow(user.status).to receive(:max_item_rank).and_return(20)
         end
         it "rank up" do
           expect{subject}.to change(user_item, :rank).by(1)
