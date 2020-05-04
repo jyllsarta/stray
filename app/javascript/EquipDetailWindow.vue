@@ -28,7 +28,7 @@
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(item(), param)}}
-          .after.parameter_box
+          .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.5}")
             .name
               | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + 1}}
             .total.item
