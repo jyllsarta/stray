@@ -1,6 +1,9 @@
 #!/bin/zsh
 # for production deploy
 
+echo "##### reset hard"
+git reset --hard
+
 echo "##### update repository"
 git pull
 
@@ -15,6 +18,7 @@ RAILS_ENV=production bundle exec rails db:ridgepole:apply
 
 echo "##### db seed"
 cd masterdata/
+git reset --hard
 git pull
 cd ../
 RAILS_ENV=production bundle exec rails db:seed
