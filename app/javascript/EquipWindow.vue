@@ -74,29 +74,29 @@
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               @click="tryAttachEquip(item.id, $store.state.equip_window.main_character_id)"
-              :class="[{ disabled: isAlreadyEquipped(item) }]"
             )
               .param_area
-                .item_name(:class="[rarityClass(item)]")
-                  | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
-                .value
-                  | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+                .param(:class="[{ disabled: isAlreadyEquipped(item) }]")
+                  .item_name(:class="[rarityClass(item)]")
+                    | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+                  .value
+                    | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+                .go_to_detail.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: true})")
+                  | ＊
               .bar_area
                 .bar(
                   v-for="param in ['str', 'dex', 'def', 'agi']"
                   :class="param"
                   :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
-            .item(
-              v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)"
-              :class="[{ disabled: true }]"
-              )
-              .param_area
-                .item_name
-                  | ？？？
-                .value
-                  | -
-              .bar_area
+            .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
+              .param_area(:class="[{ disabled: true }]")
+                .param
+                  .item_name
+                    | ？？？
+                  .value
+                    | -
+                .bar_area
                 .bar(
                   v-for="param in ['str', 'dex', 'def', 'agi']"
                   :class="param"
@@ -509,11 +509,24 @@ export default {
         display: flex;
         flex-direction: row;
         line-height: 110%;
-        .item_name{
-          width: 80%;
+        .param{
+          display: inline-block;
+          width: 90%;
+          .item_name{
+            display: inline-block;
+            width: 77%;
+          }
+          .value{
+            display: inline-block;
+            width: 23%;
+            text-align: right;
+            padding-right: $thin_space;
+          }
         }
-        .value{
-          width: 20%;
+        .go_to_detail{
+          text-align: center;
+          width: 10%;
+          transform: scaleY(1.4);
         }
       }
     }
