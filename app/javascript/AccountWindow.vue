@@ -157,6 +157,7 @@ export default {
     }
     .backup, .restore{
       width: 50%;
+      padding-top: 8%;
       .head{
         text-align: center;
         color: $accent-color;
@@ -194,7 +195,7 @@ export default {
           border-radius: $radius;
         }
         .submit{
-          height: 30px;
+          height: 40px;
           &:hover{
             filter: brightness(110%);
             transform: scale(1.02);
