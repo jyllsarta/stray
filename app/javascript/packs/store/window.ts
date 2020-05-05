@@ -8,6 +8,7 @@ export default {
     equip_detail: false,
     switch_dungeon: false,
     transition_frame: false,
+    loading_frame: true,
   },
   getters: {
   },

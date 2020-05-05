@@ -20,6 +20,7 @@
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
+      LoadingFrame(v-if="$store.state.window.loading_frame")
     MessageForm
 </template>
 
@@ -41,6 +42,7 @@ import Timer from './Timer'
 import MessageForm from './MessageForm'
 import EventWatcher from "./EventWatcher";
 import TransitionFrame from "./TransitionFrame.vue";
+import LoadingFrame from "./LoadingFrame.vue";
 
 export default {
   store,
@@ -58,6 +60,7 @@ export default {
     EquipDetailWindow,
     SwitchDungeonWindow,
     TransitionFrame,
+    LoadingFrame,
     Timer,
     EventWatcher,
     MessageForm,
