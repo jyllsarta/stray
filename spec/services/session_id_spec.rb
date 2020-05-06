@@ -53,4 +53,21 @@ RSpec.describe SessionId, type: :model do
       end
     end
   end
+
+  describe "#verify!" do
+    subject { session_id.verify!(123, Time.new(2020,4,1).to_i) }
+    it "does nothing" do
+      expect{subject}.to_not raise_error
+    end
+
+    context "verify fails" do
+      before do
+        allow(session_id).to receive(:expired?).and_return(true)
+      end
+
+      it "does nothing" do
+        expect{subject}.to raise_error(SessionId::Expired)
+      end
+    end
+  end
 end

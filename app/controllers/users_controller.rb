@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :verify_session, only: :events
+
   def create
     @user = User.create
     @access_token = User::AccessToken.generate(@user)
@@ -39,5 +41,16 @@ class UsersController < ApplicationController
   def switch_dungeon
     current_user.status.switch_dungeon!(params[:dungeon_id].to_i, params[:depth].to_i)
     render json: {success: true}, status: :ok
+  end
+
+  private
+
+  def verify_session
+    request_session_id = request.headers["X-SessionId"]
+    session_started_at = request.headers["X-SessionStartedAt"]
+
+    session_id = SessionId.new(current_user)
+    session_id.verify!(request_session_id, session_started_at)
+    session_id.write(request_session_id, session_started_at)
   end
 end

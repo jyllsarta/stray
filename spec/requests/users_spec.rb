@@ -184,6 +184,30 @@ RSpec.describe "Users", type: :request do
                                                }
                                            )
     end
+
+    context "about session id" do
+      let(:do_post) { post user_events_path(user_id: -1)+ ".json", params: params, headers: headers }
+      let(:headers) { {"X-SessionId": 123, "X-SessionStartedAt": 100} }
+      context "succeeds" do
+        before do
+          SessionId.new(user).write(456, 50)
+        end
+
+        it "returns 200" do
+          expect(subject).to have_http_status(200)
+        end
+      end
+
+      context "fails" do
+        before do
+          SessionId.new(user).write(456, 200)
+        end
+
+        it "returns 200" do
+          expect(subject).to have_http_status(400)
+        end
+      end
+    end
   end
 
   describe "POST /users/:id/resurrect" do

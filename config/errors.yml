@@ -31,5 +31,6 @@ User::Item::InsufficientRank:
 User::Item::InsufficientCoin:
   status: bad_request
   message: コインが足りません。
-
-
+SessionId::Expired:
+  status: bad_request
+  message: 別ウィンドウでゲームが開始されました。
