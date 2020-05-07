@@ -8,7 +8,10 @@ import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
-    return {};
+    return {
+      session_started_at: 0,
+      session_id: 0,
+    };
   },
   mounted(){
     // 画面読み込み時など最初に順番を制御して読み込みたいAPI群を制御するコンポーネント
@@ -35,11 +38,16 @@ export default {
     },
     init(){
       console.log("mounted api system!");
+      this.initializeSession();
       this.fetchMasterData();
       this.loadUserData();
       if(this.isAuthorized()){
         this.fetchLatestEvents();
       }
+    },
+    initializeSession(){
+      this.session_id = Math.floor(Math.random() * 1000000000);
+      this.session_started_at = Math.floor(new Date().getTime() / 1000);
     },
     loadUserData(){
       if(localStorage.access_token){
@@ -74,7 +82,10 @@ export default {
         this.retryFetchLatestEvents();
         return;
       }
-      ax.post(path)
+      ax.post(path,{}, {headers: {
+          "X-SessionId": this.session_id,
+          "X-SessionStartedAt": this.session_started_at,
+        }})
         .then((results) => {
           console.log(results);
           console.log("OK");
@@ -94,7 +105,8 @@ export default {
           console.log("OK");
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
-          ax.defaults.headers = {
+          ax.defaults.
+            headers = {
             "X-AccessToken": localStorage.access_token,
               accept: "application/json",
           } // axios_default_setting を読み込み直す処理を入れるのが理想

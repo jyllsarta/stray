@@ -9,6 +9,7 @@ export default {
     switch_dungeon: false,
     transition_frame: false,
     loading_frame: true,
+    session_expired_frame: false,
   },
   getters: {
   },

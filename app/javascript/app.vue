@@ -20,6 +20,7 @@
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
+      SessionExpiredFrame(v-if="$store.state.window.session_expired_frame")
       LoadingFrame(v-if="$store.state.window.loading_frame")
     MessageForm
 </template>
@@ -43,6 +44,7 @@ import MessageForm from './MessageForm'
 import EventWatcher from "./EventWatcher";
 import TransitionFrame from "./TransitionFrame.vue";
 import LoadingFrame from "./LoadingFrame.vue";
+import SessionExpiredFrame from "./SessionExpiredFrame.vue";
 
 export default {
   store,
@@ -61,6 +63,7 @@ export default {
     SwitchDungeonWindow,
     TransitionFrame,
     LoadingFrame,
+    SessionExpiredFrame,
     Timer,
     EventWatcher,
     MessageForm,
