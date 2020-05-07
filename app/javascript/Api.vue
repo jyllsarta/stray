@@ -94,7 +94,12 @@ export default {
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
-          this.retryFetchLatestEvents();
+          if(error.response.status == 400){
+            this.$store.commit("window/updateWindowShowState", {windowName: "session_expired_frame", state: true});
+          }
+          else{
+            this.retryFetchLatestEvents();
+          }
         });
     },
     signUp(){
