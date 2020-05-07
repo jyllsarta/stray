@@ -34,7 +34,6 @@ export default {
   width: $window-width;
   height: $window-height;
   background-color: $background;
-
   display: flex;
   justify-content: center;
   align-items: center;
