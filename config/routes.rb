@@ -34,8 +34,9 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     resources :debug, only: [] do
-      post :max_event, on: :collection
-      post :get_all_items, on: :collection
+      DebugController.action_methods.to_a.each do |method|
+        post method.to_sym, on: :collection
+      end
     end
   end
 end

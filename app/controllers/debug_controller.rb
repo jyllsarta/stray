@@ -11,11 +11,16 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
-  def current_user
-    User.find(params[:user_id])
+  def set_coin
+    current_user.status.update!(coin: params[:coin])
+    redirect_to clients_path
   end
 
   private
+
+  def current_user
+    User.find(params[:user_id])
+  end
 
   def check_environment
     # ルーティングで引かないようにしているけど、念には念を
