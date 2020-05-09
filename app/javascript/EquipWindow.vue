@@ -52,23 +52,32 @@
           .label
             | アイテム
           .misc
-            .pager
-              .button(@click="changePage(-1)")
-                | ◀
-              .state
-                | ページ {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
-              .button(@click="changePage(1)")
-                | ▶
-            .sort
-              .reverse_order(
-                @click="$store.commit('equip_window/reverseItemSortOrder')"
-                @mouseover="$store.commit('guide/updateGuide', 'クリックで昇順と降順を切り替えます。')",
-              )
-                | [{{$store.state.equip_window.current_sort_order === 1 ? '昇順' : '降順'}}]
-              .change_order(@click="$store.commit('equip_window/switchItemSortLambda', 0)", @mouseover="$store.commit('guide/updateGuide', 'ソート順をID順に切り替えます。')",)
-                | {{$store.state.equip_window.current_sort_id === 0 ? '★' : ''}}ID順
-              .change_order(@click="$store.commit('equip_window/switchItemSortLambda', 1)", @mouseover="$store.commit('guide/updateGuide', 'ソート順を効果値順に切り替えます。')",)
-                | {{$store.state.equip_window.current_sort_id === 1 ? '★' : ''}}効果値順
+            .pager_button(@click="changePage(-1)")
+              | ◀
+            .state
+              | {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
+            .pager_button(@click="changePage(1)")
+              | ▶
+            .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
+              | ID順
+          transition(name="open_window")
+            .select_order.window(v-if="showing_select_order_window")
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
+              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
+                | ID順
           .item_list
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
@@ -210,6 +219,7 @@ export default {
       move_character_handle: 0,
       sub_character_position: 0,
       main_character_position: 0,
+      showing_select_order_window: false,
     };
   },
   store,
@@ -319,7 +329,10 @@ export default {
     defBar(){
       const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'def', true)
       return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    }
+    },
+    toggleSelectOrderWindow(){
+      this.showing_select_order_window = !this.showing_select_order_window;
+    },
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
@@ -535,18 +548,40 @@ export default {
       .misc{
         height: 50px;
         border-bottom: 1px solid $gray3;
-        padding: $space;
         display: flex;
-        .pager{
-          display: flex;
-          padding: $space;
-        }
-        .sort{
-          display: flex;
-          div{
-            padding: $space;
+        width: 200px;
+        padding: $thin_space;
+        align-items: baseline;
+        justify-content: space-around;
+        .pager_button{
+          padding: $thin_space;
+          color: $gray1;
+          font-size: $font-size-large;
+          &:hover{
+            filter: brightness(120%);
+            transform: scale(1.2);
           }
         }
+        .state{
+        }
+      }
+      .order{
+        width: 75px;
+        padding: $space;
+        text-align: center;
+      }
+      .select_order{
+        position: absolute;
+        z-index: 1;
+        padding: $thin_space;
+        background-color: $background_with_opacity;
+        top: 65px;
+        left: 130px;
+        width: 160px;
+        height: 200px;
+        display: flex;
+        flex-wrap: wrap;
+
       }
       .item_list{
         width: 100%;
