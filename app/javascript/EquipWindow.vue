@@ -64,7 +64,7 @@
             .select_order(v-if="showing_select_order_window")
               .close(@click="toggleSelectOrderWindow")
               .in_window.window
-                .order.clickable(v-for="i in [0,1]", @click="onClickChangeSortLambdaButton(i)")
+                .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5]", @click="onClickChangeSortLambdaButton(i)")
                   | {{$store.getters['equip_window/sortLambdas'](i).name}}
           .item_list
             .item.hoverable(
@@ -558,6 +558,8 @@ export default {
         }
       }
       .order{
+        margin: $thin_space;
+        height: $space * 3 + $font-size-normal;
         width: 75px;
         padding: $space;
         text-align: center;
@@ -578,8 +580,7 @@ export default {
           z-index: 1;
           padding: $thin_space;
           background-color: $background_with_opacity;
-          width: 160px;
-          height: 200px;
+          width: 180px;
           display: flex;
           flex-wrap: wrap;
         }

@@ -43,13 +43,33 @@ export default {
       switch(id){
         case 0:
           return {
-            lambda: (a, b) => { return (a.id - b.id) },
+            lambda: (a, b) => { return (b.id - a.id) },
             name: "ID順",
           };
         case 1:
           return {
-            lambda: (a, b) => { return (getters.getItemEffectValue(a.id) - getters.getItemEffectValue(b.id)) },
+            lambda: (a, b) => { return (getters.getItemEffectValue(b.id) - getters.getItemEffectValue(a.id)) },
             name: "総合順",
+          };
+        case 2:
+          return {
+            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('str') - getters.getUserItem(a.id).effectValueOf('str')) },
+            name: "STR順",
+          };
+        case 3:
+          return {
+            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('dex') - getters.getUserItem(a.id).effectValueOf('dex')) },
+            name: "DEX順",
+          };
+        case 4:
+          return {
+            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('def') - getters.getUserItem(a.id).effectValueOf('def')) },
+            name: "DEF順",
+          };
+        case 5:
+          return {
+            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('agi') - getters.getUserItem(a.id).effectValueOf('agi')) },
+            name: "AGI順",
           };
         default:
           console.warn("undefined sort algorithm set");
