@@ -61,9 +61,11 @@
             .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
               | {{$store.getters['equip_window/getCurrentSortName']}}
           transition(name="open_window")
-            .select_order.window(v-if="showing_select_order_window")
-              .order.clickable(v-for="i in [0,1]", @click="onClickChangeSortLambdaButton(i)")
-                | {{$store.getters['equip_window/sortLambdas'](i).name}}
+            .select_order(v-if="showing_select_order_window")
+              .close(@click="toggleSelectOrderWindow")
+              .in_window.window
+                .order.clickable(v-for="i in [0,1]", @click="onClickChangeSortLambdaButton(i)")
+                  | {{$store.getters['equip_window/sortLambdas'](i).name}}
           .item_list
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
@@ -562,16 +564,25 @@ export default {
       }
       .select_order{
         position: absolute;
-        z-index: 1;
-        padding: $thin_space;
-        background-color: $background_with_opacity;
         top: 65px;
         left: 130px;
-        width: 160px;
-        height: 200px;
-        display: flex;
-        flex-wrap: wrap;
-
+        .close{
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .in_window{
+          position: absolute;
+          z-index: 1;
+          padding: $thin_space;
+          background-color: $background_with_opacity;
+          width: 160px;
+          height: 200px;
+          display: flex;
+          flex-wrap: wrap;
+        }
       }
       .item_list{
         width: 100%;
