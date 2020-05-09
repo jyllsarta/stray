@@ -39,17 +39,28 @@ export default {
     getSubCharacterJapaneseName: (state, getters) => {
       return [null, "スピカ", "チロル"][getters.getSubCharacterId];
     },
-    getCurrentSortLambda: (state, getters) => {
-      const order = state.current_sort_order
-      switch(state.current_sort_id){
+    sortLambdas: (state, getters) => (id) => {
+      switch(id){
         case 0:
-          return (a, b) => { return (a.id - b.id) * order };
+          return {
+            lambda: (a, b) => { return (a.id - b.id) },
+            name: "ID順",
+          };
         case 1:
-          return (a, b) => { return (getters.getItemEffectValue(a.id) - getters.getItemEffectValue(b.id)) * order };
+          return {
+            lambda: (a, b) => { return (getters.getItemEffectValue(a.id) - getters.getItemEffectValue(b.id)) },
+            name: "総合順",
+          };
         default:
           console.warn("undefined sort algorithm set");
           return null;
       }
+    },
+    getCurrentSortLambda: (state, getters) => {
+      return getters.sortLambdas(state.current_sort_id).lambda;
+    },
+    getCurrentSortName: (state, getters) => {
+      return getters.sortLambdas(state.current_sort_id).name;
     },
     getUserItemRank: (state, getters, rootState, rootGetters) => (itemId) => {
       return rootState.user?.items[itemId]?.rank || 0;

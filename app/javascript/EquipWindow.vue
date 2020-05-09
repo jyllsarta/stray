@@ -59,25 +59,11 @@
             .pager_button(@click="changePage(1)")
               | ▶
             .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
-              | ID順
+              | {{$store.getters['equip_window/getCurrentSortName']}}
           transition(name="open_window")
             .select_order.window(v-if="showing_select_order_window")
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
-              .order.clickable(@click="$store.commit('equip_window/switchItemSortLambda', 0)")
-                | ID順
+              .order.clickable(v-for="i in [0,1]", @click="onClickChangeSortLambdaButton(i)")
+                | {{$store.getters['equip_window/sortLambdas'](i).name}}
           .item_list
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
@@ -332,6 +318,10 @@ export default {
     },
     toggleSelectOrderWindow(){
       this.showing_select_order_window = !this.showing_select_order_window;
+    },
+    onClickChangeSortLambdaButton(id){
+      this.showing_select_order_window = false;
+      this.$store.commit('equip_window/switchItemSortLambda',  id)
     },
   },
   beforeDestroy(){
