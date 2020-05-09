@@ -541,11 +541,13 @@ export default {
         height: 50px;
         border-bottom: 1px solid $gray3;
         display: flex;
-        width: 200px;
+        width: 400px;
         padding: $thin_space;
         align-items: baseline;
-        justify-content: space-around;
+        justify-content: center;
         .pager_button{
+          text-align: center;
+          width: 70px;
           padding: $thin_space;
           color: $gray1;
           font-size: $font-size-large;
@@ -560,14 +562,14 @@ export default {
       .order{
         margin: $thin_space;
         height: $space * 3 + $font-size-normal;
-        width: 75px;
+        width: 100px;
         padding: $space;
         text-align: center;
       }
       .select_order{
         position: absolute;
         top: 65px;
-        left: 130px;
+        left: 100px;
         .close{
           position: fixed;
           top: 0;
@@ -580,7 +582,7 @@ export default {
           z-index: 1;
           padding: $thin_space;
           background-color: $background_with_opacity;
-          width: 180px;
+          width: 200px + $space * 4;
           display: flex;
           flex-wrap: wrap;
         }
