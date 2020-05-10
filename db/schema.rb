@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
-  create_table "dungeons", force: :cascade do |t|
+  create_table "dungeons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "parent_dungeon_id"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "items", force: :cascade do |t|
+  create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "base_rank", default: 0
     t.integer "str", default: 0
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.string "message"
     t.string "answer"
@@ -44,20 +44,20 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_access_tokens", force: :cascade do |t|
+  create_table "user_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_character_equips", force: :cascade do |t|
+  create_table "user_character_equips", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_character_id", default: 0
     t.integer "user_item_id"
     t.integer "position", default: 0
   end
 
-  create_table "user_characters", force: :cascade do |t|
+  create_table "user_characters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "character_id", default: 0
     t.integer "hp", default: 0
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "exp", default: 0
   end
 
-  create_table "user_dungeon_progresses", force: :cascade do |t|
+  create_table "user_dungeon_progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.bigint "dungeon_id", null: false
     t.integer "max_depth", default: 0, null: false
@@ -75,13 +75,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["dungeon_id"], name: "index_user_dungeon_progresses_on_dungeon_id"
   end
 
-  create_table "user_items", force: :cascade do |t|
+  create_table "user_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "item_id", default: 0
     t.integer "rank", default: 0
   end
 
-  create_table "user_statuses", force: :cascade do |t|
+  create_table "user_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at", null: false
     t.integer "current_dungeon_id", default: 1, null: false
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "password_hash"
     t.datetime "created_at", null: false

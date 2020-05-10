@@ -1,6 +1,9 @@
 PASSWORD_SALT=my_secret_salt
 SECRET_KEY_BASE=my_secret_secret_key
 
+MYSQL_USERNAME=xxxxxxxx
+MYSQL_PASSWORD=xxxxxxxx
+
 TWITTER_CONSUMER_KEY=xxxxxxxxxx
 TWITTER_CONSUMER_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWITTER_ACCESS_KEY=xxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxx
