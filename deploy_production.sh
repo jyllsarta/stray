@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/zsh -xe
 # for production deploy
 
 echo "##### reset hard"
