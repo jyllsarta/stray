@@ -44,7 +44,7 @@
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               :class="[rarityClass(item)]"
             )
-              | {{item.name}}
+              | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
             // 空枠を埋める
             .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
               | -
@@ -501,8 +501,8 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        padding-left: $thin_space;
         .equip{
-          padding: 2px;
           font-size: $font-size-mini;
         }
       }
