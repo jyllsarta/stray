@@ -32,9 +32,10 @@
               input.desc(type="password", v-model="register.password")
             .item
               input.desc.submit.clickable(type="submit", value="登録", @click="registerName")
-            .item(v-if="register.status != 'waiting'")
-              .desc_without_border
-                | {{register.message}}
+            transition(name="show-in")
+              .item(v-if="register.status != 'waiting'")
+                .desc_without_border
+                  | {{register.message}}
           form.restore(onsubmit="return false;")
             .head
               | アカウントを復元(再ログイン)
@@ -51,9 +52,10 @@
               input.desc(type="password", v-model="restore.password")
             .item
               input.desc.submit.clickable(type="submit", value="復元", @click="regenerateToken")
-            .item(v-if="restore.status != 'waiting'")
-              .desc_without_border
-                | {{restore.message}}
+            transition(name="show-in")
+              .item(v-if="restore.status != 'waiting'")
+                .desc_without_border
+                  | {{restore.message}}
 </template>
 
 <script lang="ts">
@@ -203,6 +205,21 @@ export default {
         }
       }
     }
+  }
+
+  .show-in-enter-active {
+    transition: all .3s;
+  }
+  .show-in-leave-active {
+    transition: all .3s;
+  }
+  .show-in-enter{
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  .show-in-leave-to{
+    transform: translateX(10px);
+    opacity: 0;
   }
 }
 </style>
