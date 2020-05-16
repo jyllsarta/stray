@@ -22,7 +22,6 @@ export default {
   store,
   computed: {
     logs(){
-      // TODO: ログ件数の最大値をConstantsで規定する
       return this.$store.state.event.events.map(l=>l.logs).flat();
     },
     foldClass(){
