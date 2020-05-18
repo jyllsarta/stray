@@ -13,7 +13,7 @@
 #  parent_relic_id :integer
 #
 
-class User::Reliic < ApplicationRecord
+class User::Relic < ApplicationRecord
   belongs_to :user
   belongs_to :relic, class_name: "::Relic"
 end
