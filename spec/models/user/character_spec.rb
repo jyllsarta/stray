@@ -2,7 +2,7 @@
 #
 # Table name: user_characters
 #
-#  id           :integer          not null, primary key
+#  id           :bigint           not null, primary key
 #  exp          :integer          default(0)
 #  hp           :integer          default(0)
 #  hp_max       :integer          default(0)

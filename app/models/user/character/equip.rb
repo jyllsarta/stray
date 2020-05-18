@@ -2,10 +2,10 @@
 #
 # Table name: user_character_equips
 #
-#  id                :integer          not null, primary key
+#  id                :bigint           not null, primary key
+#  position          :integer          default(0)
 #  user_character_id :integer          default(0)
 #  user_item_id      :integer
-#  position          :integer          default(0)
 #
 
 class User::Character::Equip < ApplicationRecord

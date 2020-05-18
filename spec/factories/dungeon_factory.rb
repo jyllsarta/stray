@@ -2,12 +2,12 @@
 #
 # Table name: dungeons
 #
-#  id                :integer          not null, primary key
+#  id                :bigint           not null, primary key
 #  depth             :integer
 #  depth_per_rank    :integer
-#  description       :string
+#  description       :string(255)
 #  initial_rank      :integer
-#  name              :string
+#  name              :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  parent_dungeon_id :integer
