@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :items
   has_one :access_tokens
   has_many :characters
+  has_many :relics
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end
