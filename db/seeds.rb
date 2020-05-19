@@ -8,7 +8,7 @@
 
 require "csv"
 
-TABLES = [:items, :dungeons]
+TABLES = [:items, :dungeons, :relics]
 
 TABLES.map(&:to_s).each do |table_name|
   clazz = table_name.singularize.camelize.constantize
