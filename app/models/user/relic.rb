@@ -1,16 +1,10 @@
 # == Schema Information
 #
-# Table name: relics
+# Table name: user_relics
 #
-#  id              :bigint           not null, primary key
-#  cost            :integer          default(0)
-#  description     :string(255)
-#  name            :string(255)
-#  rank            :integer          default(0)
-#  type            :integer          default(0)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  parent_relic_id :integer
+#  id       :bigint           not null, primary key
+#  relic_id :integer          default(0)
+#  user_id  :integer          default(0)
 #
 
 class User::Relic < ApplicationRecord
