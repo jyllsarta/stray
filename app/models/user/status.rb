@@ -7,6 +7,7 @@
 #  current_dungeon_depth :integer          default(1), not null
 #  event_updated_at      :datetime         default(NULL), not null
 #  resurrect_timer       :integer          default(0), not null
+#  star                  :integer          default(0), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
@@ -85,6 +86,14 @@ class User::Status < ApplicationRecord
 
   def consume_coin!(amount)
     self.decrement!(:coin, amount)
+  end
+
+  def add_star!(amount)
+    self.increment!(:star, amount)
+  end
+
+  def consume_star!(amount)
+    self.decrement!(:star, amount)
   end
 
   def max_item_rank
