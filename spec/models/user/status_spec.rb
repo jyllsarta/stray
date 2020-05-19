@@ -260,6 +260,21 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#add_star!" do
+    subject { status.add_star!(amount) }
+    let(:amount){100}
+    it "increments star" do
+      expect{subject}.to change(status, :star).by(amount)
+    end
+  end
+  describe "#consume_coin!" do
+    subject { status.consume_star!(amount) }
+    let(:amount){100}
+    it "decrements star" do
+      expect{subject}.to change(status, :star).by(-amount)
+    end
+  end
+
   describe "#max_item_rank" do
     subject { status.max_item_rank }
     context "without item" do
