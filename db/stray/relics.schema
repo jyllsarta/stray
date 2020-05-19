@@ -1,7 +1,7 @@
 create_table "relics", force: :cascade  do |t|
   t.string :name
   t.string :description
-  t.integer :type, default: 0
+  t.integer :category, default: 0
   t.integer :rank, default: 0
   t.integer :cost, default: 0
   t.integer :parent_relic_id, default: nil
