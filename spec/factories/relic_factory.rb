@@ -13,16 +13,8 @@
 #  parent_relic_id :integer
 #
 
-class Relic < ApplicationRecord
-  class InsufficientStar < StandardError; end
-  class AlreadyObtained < StandardError; end
-
-  def obtain!(user)
-    user.with_lock do
-      raise AlreadyObtained if user.relics.exists?(relic_id: id)
-      raise InsufficientStar if user.status.star < cost
-      user.status.consume_star!(cost)
-      user.relics.create!(relic_id: id)
-    end
+FactoryBot.define do
+  factory :relic, class: 'Relic' do
+    cost { 10 }
   end
 end
