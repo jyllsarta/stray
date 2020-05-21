@@ -17,7 +17,9 @@ require 'rails_helper'
 
 RSpec.describe Relic, type: :model do
   describe "#obtain!" do
-    let(:user){ User.create }
+    let!(:dungeon){ create(:dungeon) }
+    let(:user){ create(:user) }
+    let!(:status){ create(:user_status, user: user) }
     subject { relic.obtain!(user) }
 
     context "succeeds" do
