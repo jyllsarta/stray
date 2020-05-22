@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end
+  resources :relics, only: [:create]
   resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
 
