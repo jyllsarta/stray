@@ -36,8 +36,8 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     resources :debug, only: [] do
-      DebugController.action_methods.to_a.each do |method|
-        post method.to_sym, on: :collection
+      DebugController.action_methods.each do |method|
+        post method, on: :collection
       end
     end
   end
