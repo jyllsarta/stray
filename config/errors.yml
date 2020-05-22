@@ -34,3 +34,9 @@ User::Item::InsufficientCoin:
 SessionId::Expired:
   status: bad_request
   message: 別ウィンドウでゲームが開始されました。
+Relic::InsufficientStar:
+  status: bad_request
+  message: 星のカケラが足りません。
+Relic::AlreadyObtained:
+  status: bad_request
+  message: すでに取得済みです。

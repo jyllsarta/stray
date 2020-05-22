@@ -1,17 +1,25 @@
 # == Route Map
 #
-#                 Prefix Verb URI Pattern                             Controller#Action
-#                clients GET  /clients(.:format)                      clients#index
-#     user_register_name POST /users/:user_id/register_name(.:format) users#register_name
-# regenerate_token_users POST /users/regenerate_token(.:format)       users#regenerate_token
-#            user_status GET  /users/:user_id/status(.:format)        users#status
-#            user_events POST /users/:user_id/events(.:format)        users#events
-#         user_resurrect POST /users/:user_id/resurrect(.:format)     users#resurrect
-#       user_equips_edit POST /users/:user_id/equips/edit(.:format)   equips#edit
-#                  users POST /users(.:format)                        users#create
-#               messages GET  /messages(.:format)                     messages#index
-#                        POST /messages(.:format)                     messages#create
-#             masterdata GET  /masterdata(.:format)                   masterdata#index
+#                    Prefix Verb URI Pattern                                                Controller#Action
+#                      root GET  /                                                          clients#index
+#                   clients GET  /clients(.:format)                                         clients#index
+#    user_user_item_rank_up POST /users/:user_id/user_items/:user_item_id/rank_up(.:format) user_items#rank_up
+#        user_register_name POST /users/:user_id/register_name(.:format)                    users#register_name
+#    regenerate_token_users POST /users/regenerate_token(.:format)                          users#regenerate_token
+#               user_status GET  /users/:user_id/status(.:format)                           users#status
+#               user_events POST /users/:user_id/events(.:format)                           users#events
+#            user_resurrect POST /users/:user_id/resurrect(.:format)                        users#resurrect
+#       user_switch_dungeon POST /users/:user_id/switch_dungeon(.:format)                   users#switch_dungeon
+#          user_equips_edit POST /users/:user_id/equips/edit(.:format)                      equips#edit
+#                     users POST /users(.:format)                                           users#create
+#                    relics POST /relics(.:format)                                          relics#create
+#                  messages GET  /messages(.:format)                                        messages#index
+#                           POST /messages(.:format)                                        messages#create
+#                masterdata GET  /masterdata(.:format)                                      masterdata#index
+#     max_event_debug_index POST /debug/max_event(.:format)                                 debug#max_event
+# get_all_items_debug_index POST /debug/get_all_items(.:format)                             debug#get_all_items
+#      set_coin_debug_index POST /debug/set_coin(.:format)                                  debug#set_coin
+#      set_star_debug_index POST /debug/set_star(.:format)                                  debug#set_star
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -30,13 +38,14 @@ Rails.application.routes.draw do
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end
+  resources :relics, only: [:create]
   resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
 
   if Rails.env.development?
     resources :debug, only: [] do
-      DebugController.action_methods.to_a.each do |method|
-        post method.to_sym, on: :collection
+      DebugController.action_methods.each do |method|
+        post method, on: :collection
       end
     end
   end

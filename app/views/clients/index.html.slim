@@ -38,3 +38,7 @@ script src="#{webpack_target_path}"
     = text_field_tag :coin, 999999999
     = hidden_field_tag :user_id, 0, id: nil
     = submit_tag 'コインをこの値にする'
+  = form_tag set_star_debug_index_path
+    = text_field_tag :star, 99999
+    = hidden_field_tag :user_id, 0, id: nil
+    = submit_tag '星のカケラをこの値にする'

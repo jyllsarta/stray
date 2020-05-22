@@ -16,6 +16,11 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def set_star
+    current_user.status.update!(star: params[:star])
+    redirect_to clients_path
+  end
+  
   private
 
   def current_user
