@@ -5,6 +5,7 @@ export default {
   state: {
     dungeons: {},
     items: {},
+    relics: {},
   },
   getters: {
     getCurrentDungeon: (state, getters, rootState, rootGetters) => {
@@ -16,6 +17,7 @@ export default {
     updateMasterData(state, payload) {
       state.dungeons = payload.masterdata.dungeons;
       state.items = payload.masterdata.items;
+      state.relics = payload.masterdata.relics;
     },
   }
 }
