@@ -1,6 +1,7 @@
 json.payload do
   json.user_id @user.id
   json.items @items
+  json.relics @relics
   json.dungeon_progresses @dungeon_progresses
   json.status @status, :current_dungeon_id, :current_dungeon_depth, :current_dungeon_rank, :coin
   json.characters do

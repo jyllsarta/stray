@@ -137,6 +137,7 @@ RSpec.describe "Users", type: :request do
                                                    payload: {
                                                        user_id: Integer,
                                                        items: Hash,
+                                                       relics: Hash,
                                                        dungeon_progresses: Hash,
                                                        status: {
                                                            current_dungeon_depth: Integer,

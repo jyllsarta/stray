@@ -7,6 +7,7 @@ export default {
     // レスポンスそのまま
     user_id: 999999999,
     items: {},
+    relics: {},
     dungeon_progresses: {},
     equips: {
       spica: [],

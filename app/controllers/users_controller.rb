@@ -22,6 +22,9 @@ class UsersController < ApplicationController
     @items = current_user.items.map do |item|
       [item.item_id, item.attributes]
     end.to_h
+    @relics = current_user.relics.map do |relic|
+      [relic.relic_id, relic.attributes]
+    end.to_h
     @dungeon_progresses = current_user.status.dungeon_progresses.map do |dp|
       [dp.dungeon_id, dp.attributes]
     end.to_h
