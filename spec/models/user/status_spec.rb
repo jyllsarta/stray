@@ -42,7 +42,7 @@ RSpec.describe User::Status, type: :model do
     subject { status.at_boss_floor? }
     context "not boss floor" do
       before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 1)
+        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 2)
       end
       it "returns false" do
         expect(subject).to eq(false)
@@ -50,7 +50,7 @@ RSpec.describe User::Status, type: :model do
     end
     context "boss floor" do
       before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency)
+        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 1)
       end
       it "returns true" do
         expect(subject).to eq(true)

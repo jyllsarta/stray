@@ -44,14 +44,14 @@ RSpec.describe Dungeon, type: :model do
         expect(subject).to eq(false)
       end
     end
-    context "constant" do
-      let(:depth) { Constants.dungeon.boss_floor_frequency }
+    context "constant -1" do
+      let(:depth) { Constants.dungeon.boss_floor_frequency - 1 }
       it "returns true" do
         expect(subject).to eq(true)
       end
     end
-    context "constant - 1" do
-      let(:depth) { Constants.dungeon.boss_floor_frequency - 1 }
+    context "just constant" do
+      let(:depth) { Constants.dungeon.boss_floor_frequency }
       it "returns false" do
         expect(subject).to eq(false)
       end

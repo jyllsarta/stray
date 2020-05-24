@@ -22,7 +22,7 @@ class Dungeon < ApplicationRecord
   end
 
   def is_boss_floor?(depth_at)
-    depth_at > 1 && depth_at % Constants.dungeon.boss_floor_frequency == 0
+    depth_at > 1 && (depth_at + 1) % Constants.dungeon.boss_floor_frequency == 0
   end
 
   def cleared?(user)
