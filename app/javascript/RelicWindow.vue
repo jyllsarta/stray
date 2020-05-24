@@ -135,10 +135,11 @@ export default {
           display: inline-block;
         }
         .icon{
+          margin-left: $space;
           width: 22px;
           height: 22px;
           display: inline-block;
-          background-image: url("/images/ui/coin.png"); // TODO スターのアイコンにする
+          background-image: url("/images/ui/star.png");
           background-size: cover;
         }
         .value{
