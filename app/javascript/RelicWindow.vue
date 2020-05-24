@@ -20,10 +20,14 @@
           .relic_detail
             .title
               .icon
-              .name
+              .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
             .desc
-              | {{selectingRelic.description}}
+              span.letter(
+                v-for="(t, index) in selectingRelic.description"
+                :key="selectingRelic.id + t + index"
+                :style="{animationDelay: (150 + index*3)+'ms'}"
+                v-text="t")
           .star
             .line
               .label
@@ -142,7 +146,7 @@ export default {
           height: 48px;
           background-color: #747487;
         }
-        .name{
+        .relic_name{
           padding-left: $space;
           font-size: $font-size-large;
         }
@@ -244,6 +248,36 @@ export default {
 .relic_7{
   top:120px;
   left: 230px;
+}
+
+
+@keyframes vertical-text-in {
+  0% {
+    transform: translate(0, -2px);
+    opacity: 0;
+  }
+}
+@keyframes horizontal-text-in {
+  0% {
+    transform: translate(-20px, 0);
+    opacity: 0;
+  }
+}
+@keyframes main-image {
+  0% {
+    background-position: 0 0;
+    opacity: 0.5;
+  }
+}
+.relic_name {
+  min-width: 0.3em;
+  animation: horizontal-text-in .3s cubic-bezier(0,.71,.17,.95) 0s;
+}
+.letter {
+  display: inline-block;
+  min-width: 0.3em;
+  font-size: $font-size-mini;
+  animation: vertical-text-in .3s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
 }
 
 </style>
