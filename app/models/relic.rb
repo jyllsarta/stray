@@ -15,11 +15,14 @@
 
 class Relic < ApplicationRecord
   class InsufficientStar < StandardError; end
+  class ParentNotObtained < StandardError; end
   class AlreadyObtained < StandardError; end
+  has_one :parent, class_name: "::Relic", foreign_key: :id, primary_key: :parent_relic_id
 
   def obtain!(user)
     user.with_lock do
       raise AlreadyObtained if user.relics.exists?(relic_id: id)
+      raise ParentNotObtained if parent.present? && user.relics.where(relic_id: parent_relic_id).empty?
       raise InsufficientStar if user.status.star < cost
       user.status.consume_star!(cost)
       user.relics.create!(relic_id: id)
