@@ -3,7 +3,7 @@ json.payload do
   json.items @items
   json.relics @relics
   json.dungeon_progresses @dungeon_progresses
-  json.status @status, :current_dungeon_id, :current_dungeon_depth, :current_dungeon_rank, :coin
+  json.status @status, :current_dungeon_id, :current_dungeon_depth, :current_dungeon_rank, :coin, :star
   json.characters do
     json.spica @user.characters.spica.first.attributes
     json.tirol @user.characters.tirol.first.attributes
