@@ -13,7 +13,7 @@
           .relics
             .relic(
               v-for="relic in $store.state.masterdata.relics"
-              :class="[`relic_${relic.id}`, relicStatus(relic.id)]"
+              :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id)]"
               @click="selectRelic(relic.id)"
               )
         .detail
@@ -65,6 +65,7 @@ export default {
         available: "取得",
       },
       nowRequesting: false,
+      obtainEffectRelicId: 0,
     };
   },
   props: {
@@ -111,12 +112,15 @@ export default {
       this.$store.dispatch("user/obtainRelic", relicId)
         .then(()=>{
             this.nowRequesting = false;
+            this.obtainEffectRelicId = relicId;
             this.$store.dispatch("user/fetchUserModel");
             this.$store.commit("event/addEventLog", {message: `${this.relic(relicId).name}を取得した！`});
           }
         );
+    },
+    obtainRelicClass(relicId){
+      return relicId === this.obtainEffectRelicId ? "obtained" : "";
     }
-
   }
 }
 </script>
@@ -288,6 +292,26 @@ export default {
     opacity: 0.5;
   }
 }
+
+@keyframes obtained {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  91% {
+    transform: scale(4) rotate(5deg);
+    opacity: 0;
+  }
+  92%{
+    transform: scale(0) rotate(-5deg);
+    opacity: 0;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .relic_name {
   min-width: 0.3em;
   animation: horizontal-text-in .3s cubic-bezier(0,.71,.17,.95) 0s;
@@ -297,6 +321,10 @@ export default {
   min-width: 0.3em;
   font-size: $font-size-mini;
   animation: vertical-text-in .3s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+}
+
+.obtained{
+  animation: obtained 1.3s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
 }
 
 </style>
