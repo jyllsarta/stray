@@ -11,15 +11,19 @@
       .body
         .field
           .relics
-            .relic(v-for="relic in $store.state.masterdata.relics" :class="[`relic_${relic.id}`]")
+            .relic(
+              v-for="relic in $store.state.masterdata.relics"
+              :class="[`relic_${relic.id}`]"
+              @click="selectRelic(relic.id)"
+              )
         .detail
           .relic_detail
             .title
               .icon
               .name
-                | スピカクラスチェンジ：ソードマスター
+                | {{selectingRelic.name}}
             .desc
-              | スピカがソードマスターになる。超強くなるよ
+              | {{selectingRelic.description}}
           .star
             .line
               .label
@@ -47,6 +51,7 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      selectingRelicId: 1,
     };
   },
   props: {
@@ -55,8 +60,15 @@ export default {
   mounted(){
   },
   computed: {
+    selectingRelic(){
+      return this.$store.state.masterdata.relics[this.selectingRelicId] || {};
+    }
   },
   methods: {
+    selectRelic(id){
+      this.selectingRelicId = id;
+      console.log(id);
+    },
   }
 }
 </script>
