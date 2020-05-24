@@ -42,7 +42,10 @@
               .value
                 | {{selectingRelic.cost}}
           .button
-            .get(:class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']")
+            .get(
+              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']"
+              @click="obtainRelic(selectingRelicId)"
+              )
               | {{relicLabels[relicStatus(selectingRelicId)]}}
 </template>
 
@@ -60,7 +63,8 @@ export default {
         disabled: "取得不可",
         got: "取得済み",
         available: "取得",
-      }
+      },
+      nowRequesting: false,
     };
   },
   props: {
@@ -97,7 +101,22 @@ export default {
       }
       // 取得可能なら available
       return "available";
+    },
+    obtainRelic(relicId){
+      if(this.relicStatus(relicId) !== "available" || this.nowRequesting){
+        console.log("取得可能レリックでないのでスルーします");
+        return;
+      }
+      this.nowRequesting = true;
+      this.$store.dispatch("user/obtainRelic", relicId)
+        .then(()=>{
+            this.nowRequesting = false;
+            this.$store.dispatch("user/fetchUserModel");
+            this.$store.commit("event/addEventLog", {message: `${this.relic(relicId).name}を取得した！`});
+          }
+        );
     }
+
   }
 }
 </script>
