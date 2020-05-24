@@ -7,6 +7,7 @@ export default {
     equip: false,
     equip_detail: false,
     switch_dungeon: false,
+    relic: false,
     transition_frame: false,
     loading_frame: true,
     session_expired_frame: false,

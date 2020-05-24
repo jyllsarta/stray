@@ -20,6 +20,11 @@
       @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
     )
       | ダンジョン切り替え
+    .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
+    )
+      | 能力解放
 </template>
 
 <script lang="ts">

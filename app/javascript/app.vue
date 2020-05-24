@@ -17,6 +17,8 @@
         EquipDetailWindow(v-if="$store.state.window.equip_detail")
       transition(name="open_window")
         SwitchDungeonWindow(v-if="$store.state.window.switch_dungeon" :root-ref="$refs")
+      transition(name="open_window")
+        RelicWindow(v-if="$store.state.window.relic")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
@@ -39,6 +41,7 @@ import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
+import RelicWindow from './RelicWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
 import EventWatcher from "./EventWatcher";
@@ -61,6 +64,7 @@ export default {
     EquipWindow,
     EquipDetailWindow,
     SwitchDungeonWindow,
+    RelicWindow,
     TransitionFrame,
     LoadingFrame,
     SessionExpiredFrame,
