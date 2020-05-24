@@ -13,7 +13,7 @@
           .relics
             .relic(
               v-for="relic in $store.state.masterdata.relics"
-              :class="[`relic_${relic.id}`]"
+              :class="[`relic_${relic.id}`, relicStatus(relic.id)]"
               @click="selectRelic(relic.id)"
               )
         .detail
@@ -36,10 +36,10 @@
                 | 消費
               .icon
               .value
-                | 9976
+                | {{selectingRelic.cost}}
           .button
-            .get.clickable
-              | 取得
+            .get(:class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']")
+              | {{relicLabels[relicStatus(selectingRelicId)]}}
 </template>
 
 <script lang="ts">
@@ -52,6 +52,11 @@ export default {
   data: function () {
     return {
       selectingRelicId: 1,
+      relicLabels: {
+        disabled: "取得不可",
+        got: "取得済み",
+        available: "取得",
+      }
     };
   },
   props: {
@@ -65,10 +70,30 @@ export default {
     }
   },
   methods: {
+    relic(id){
+      return this.$store.state.masterdata.relics[id] || {};
+    },
     selectRelic(id){
       this.selectingRelicId = id;
       console.log(id);
     },
+    relicStatus(relicId){
+      const relic = this.relic(relicId);
+      // 取得済みなら got
+      if(this.$store.state.user.relics[relicId]){
+        return "got";
+      }
+      // コストが足りないなら disabled
+      if(this.$store.state.user.status.star < relic.cost){
+        return "disabled";
+      }
+      // 親の取得がまだなら disabled
+      if(relic.parent_relic_id && !this.$store.state.user.relics[relic.parent_relic_id]){
+        return "disabled";
+      }
+      // 取得可能なら available
+      return "available";
+    }
   }
 }
 </script>
@@ -91,14 +116,11 @@ export default {
         position: absolute;
         width: 48px;
         height: 48px;
-        background-color: #747487;
+        background-color: #323749;
         &:hover{
           filter: brightness(130%);
         }
       }
-    }
-    .disabled{
-      opacity: 0.6;
     }
   }
   .detail{
@@ -157,7 +179,6 @@ export default {
           width: 6rem;
         }
       }
-
     }
     .button{
       width: 20%;
@@ -169,11 +190,27 @@ export default {
         font-size: $font-size-large;
         line-height: 100%;
         padding-top: (50px - $font-size-large) / 2;
+        border-radius: $radius;
         width: 130px;
         height: 50px;
         text-align: center;
       }
     }
+  }
+
+  // ボタンとレリック共通で使うのでブロック外で定義
+  .available{
+    border: 1px solid $gray1;
+  }
+  .disabled{
+    border: 1px solid $gray2;
+    opacity: 0.6;
+    &:hover{
+      filter: brightness(100%);
+    }
+  }
+  .got{
+    border: 1px solid $yellow;
   }
 }
 
