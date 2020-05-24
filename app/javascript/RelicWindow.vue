@@ -11,9 +11,7 @@
       .body
         .field
           .relics
-            .relic_1.relic
-            .relic_2.relic
-            .relic_3.relic
+            .relic(v-for="relic in $store.state.masterdata.relics" :class="[`relic_${relic.id}`]")
         .detail
           .relic_detail
             .title
@@ -181,6 +179,22 @@ export default {
 .relic_3{
   top: 210px;
   left: 30px;
+}
+.relic_4{
+  top: 30px;
+  left: 130px;
+}
+.relic_5{
+  top: 120px;
+  left: 130px;
+}
+.relic_6{
+  top: 30px;
+  left: 230px;
+}
+.relic_7{
+  top:120px;
+  left: 230px;
 }
 
 </style>
