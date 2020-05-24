@@ -64,6 +64,9 @@ RSpec.describe BossBattleEvent, type: :model do
       it "digs floor" do
         expect{subject}.to change(user.status, :current_dungeon_depth).by(1)
       end
+      it "星のカケラを5粒取得" do
+        expect{subject}.to change(user.status, :star).by(Constants.event.battle.boss_reward_star)
+      end
     end
     context "lose" do
       before do
