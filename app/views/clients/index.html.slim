@@ -42,3 +42,7 @@ script src="#{webpack_target_path}"
     = text_field_tag :star, 99999
     = hidden_field_tag :user_id, 0, id: nil
     = submit_tag '星のカケラをこの値にする'
+  = form_tag set_depth_debug_index_path
+    = text_field_tag :depth, 999
+    = hidden_field_tag :user_id, 0, id: nil
+    = submit_tag 'この階層に強制移動'

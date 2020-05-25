@@ -20,7 +20,12 @@ class DebugController < ApplicationController
     current_user.status.update!(star: params[:star])
     redirect_to clients_path
   end
-  
+
+  def set_depth
+    current_user.status.update!(current_dungeon_depth: params[:depth])
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
