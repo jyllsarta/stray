@@ -293,7 +293,7 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#event_wait_reduction_secondsevent_wait_reduction_seconds" do
+  describe "#event_wait_reduction_seconds" do
     subject { status.event_wait_reduction_seconds }
     context "without relic" do
       it "0" do
