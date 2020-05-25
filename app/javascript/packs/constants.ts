@@ -10,19 +10,31 @@ const Constants = {
     },
   },
   character: {
-    // constanys.yml とそれぞれ重複定義しているので注意...(つらい)
+    // constants.yml とそれぞれ重複定義しているので注意...(つらい)
     defaultParameters: {
-      spica: {
+      rank1: {
         str: 10,
         dex: 10,
         def: 10,
-        agi: 10,  
+        agi: 10,
       },
-      tirol: {
-        str: 10,
-        dex: 10,
-        def: 10,
-        agi: 10,  
+      rank2: {
+        str: 1200,
+        dex: 1200,
+        def: 1200,
+        agi: 1200,
+      },
+      rank3: {
+        str: 7500,
+        dex: 7500,
+        def: 7500,
+        agi: 7500,
+      },
+      rank4: {
+        str: 50000,
+        dex: 50000,
+        def: 50000,
+        agi: 50000,
       },
     },
     expMax: 1000,

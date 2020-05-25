@@ -51,8 +51,12 @@ class User::Character < ApplicationRecord
     self.update!(hp: self.hp_max)
   end
 
+  def rank
+    user.relics.joins(:relic).where(relics: {category: "#{character_id}_rank"}).count + 1
+  end
+
   def parameters
-    default_parameters = Constants.character.default_parameters[character_id].to_h
+    default_parameters = Constants.character.default_parameters["rank_#{rank}"].to_h
     compacted_equips.each_with_object(default_parameters) do |equip, hash|
       hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
     end

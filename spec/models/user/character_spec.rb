@@ -146,8 +146,24 @@ RSpec.describe User::Character, type: :model do
     end
   end
 
+  describe "#rank" do
+    let(:character){ create(:user_character, character_id: "spica" , user: user) }
+    subject { character.rank }
+    it "is 1" do
+      expect(subject).to eq(1)
+    end
+
+    context "has rank relic" do
+      let!(:relic){create(:relic, category: "spica_rank")}
+      let!(:user_relic){create(:user_relic, relic: relic, user: user)}
+      it "is 2" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
+
   describe "#parameters" do
-    let(:character){ create(:user_character, user: user) }
+    let(:character){ create(:user_character, character_id: "spica" , user: user) }
     let!(:item1){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
     let!(:item2){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) }
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
@@ -163,6 +179,19 @@ RSpec.describe User::Character, type: :model do
                                 def: 16, # 3 + 3 + 10(default)
                                 agi: 10, # 0 + 0 + 10(default)
                             })
+    end
+
+    context "has rank relic" do
+      let!(:relic){create(:relic, category: "spica_rank")}
+      let!(:user_relic){create(:user_relic, relic: relic, user: user)}
+      it "grows up with rank" do
+        expect(subject).to eq({
+                                  str: 1202, # 1 + 1 + 1200(rank2)
+                                  dex: 1204, # 2 + 2 + 1200
+                                  def: 1206, # 3 + 3 + 1200
+                                  agi: 1200, # 0 + 0 + 1200
+                              })
+      end
     end
   end
 

@@ -5,8 +5,8 @@ json.payload do
   json.dungeon_progresses @dungeon_progresses
   json.status @status, :current_dungeon_id, :current_dungeon_depth, :current_dungeon_rank, :coin, :star
   json.characters do
-    json.spica @user.characters.spica.first.attributes
-    json.tirol @user.characters.tirol.first.attributes
+    json.spica @user.characters.spica.first.attributes.merge!(rank: @user.characters.spica.first.rank)
+    json.tirol @user.characters.tirol.first.attributes.merge!(rank: @user.characters.tirol.first.rank)
   end
   json.equips do
     json.spica do

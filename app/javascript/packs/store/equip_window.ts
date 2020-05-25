@@ -135,11 +135,12 @@ export default {
     isAlreadyEquippedBySomeone: (state) => (itemId) => {
       return state.draft.spica.concat(state.draft.tirol).includes(itemId)
     },
-    getCharacterParameter: (state, getters) => (characterId, paramName, isCurrent) => {
+    getCharacterParameter: (state, getters, rootState) => (characterId, paramName, isCurrent) => {
       const env = isCurrent ? 'draft' : 'initial';
       const characterName =  [null, "spica", "tirol"][characterId];
-      const equipParameter = state[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0)
-      const defaultParameter = Constants.character.defaultParameters[characterName][paramName];
+      const equipParameter = state[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
+      const characterRank = rootState.user.characters[characterName]?.rank || 1;
+      const defaultParameter = Constants.character.defaultParameters[`rank${characterRank}`][paramName];
       return equipParameter + defaultParameter;
     },
     getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {
