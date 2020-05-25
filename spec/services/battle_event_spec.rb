@@ -94,7 +94,7 @@ RSpec.describe BattleEvent, type: :model do
     end
   end
   describe "#consume_time" do
-    subject { event.consume_time }
+    subject { event.consume_time(user) }
     it "returns default value" do
       expect(subject).to eq(Constants.default_event_interval_seconds)
     end

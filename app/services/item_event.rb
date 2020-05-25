@@ -48,8 +48,8 @@ class ItemEvent < Event
     @done = true
   end
 
-  def consume_time
-    Constants.default_event_interval_seconds
+  def consume_time(user)
+    [Constants.default_event_interval_seconds - user.status.event_wait_reduction_seconds, Constants.minimum_event_interval_seconds].max
   end
 
 private

@@ -31,8 +31,8 @@ class BossBattleEvent < Event
     @battle.is_win ? process_win(user) : process_lose(user)
   end
 
-  def consume_time
-    Constants.default_event_interval_seconds
+  def consume_time(user)
+    Constants.default_event_interval_seconds - user.status.event_wait_reduction_seconds
   end
 
   private

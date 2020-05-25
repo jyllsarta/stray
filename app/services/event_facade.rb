@@ -12,7 +12,7 @@ class EventFacade
       while next_event_available?(user, event)
         events.append(event)
         event.execute!(user)
-        user.status.tick_timer!(event.consume_time)
+        user.status.tick_timer!(event.consume_time(user))
         event = pick_next_event(user)
       end
     end
@@ -26,6 +26,6 @@ class EventFacade
   end
 
   def next_event_available?(user, event)
-    @now - user.status.event_updated_at >= event.consume_time
+    @now - user.status.event_updated_at >= event.consume_time(user)
   end
 end

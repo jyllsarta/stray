@@ -1,4 +1,5 @@
 default_event_interval_seconds: <%= Rails.env.production? ? 20 : 5 %>
+minimum_event_interval_seconds: 4
 max_event_consume_time_seconds: <%= Rails.env.production? ? 7200 : 2000 %>
 resurrect_time_seconds: <%= Rails.env.production? ? 600 : 25 %>
 

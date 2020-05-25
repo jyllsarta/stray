@@ -105,9 +105,18 @@ RSpec.describe ItemEvent, type: :model do
     end
   end
   describe "#consume_time" do
-    subject { event.consume_time }
+    subject { event.consume_time(user) }
     it "returns default value" do
       expect(subject).to eq(Constants.default_event_interval_seconds)
+    end
+
+    context "has relic" do
+      before do
+        allow(user.status).to receive(:event_wait_reduction_seconds).and_return(5)
+      end
+      it "returns minimum value" do # テスト環境なので5 → 4 で下限に到達
+        expect(subject).to eq(4)
+      end
     end
   end
 end

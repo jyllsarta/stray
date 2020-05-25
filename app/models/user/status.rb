@@ -100,6 +100,11 @@ class User::Status < ApplicationRecord
     self.items.order(rank: :desc).first&.rank || 0
   end
 
+  def event_wait_reduction_seconds
+    # イベント短縮レリックいっこにつき2秒短縮
+    user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
+  end
+
   private
 
   def can_switch_dungeon?(dungeon_id, depth)

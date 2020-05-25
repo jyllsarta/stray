@@ -292,4 +292,20 @@ RSpec.describe User::Status, type: :model do
       end
     end
   end
+
+  describe "#event_wait_reduction_secondsevent_wait_reduction_seconds" do
+    subject { status.event_wait_reduction_seconds }
+    context "without relic" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :event_time) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      it "returns max rank" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
 end
