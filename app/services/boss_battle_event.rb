@@ -49,10 +49,6 @@ class BossBattleEvent < Event
     user.status.start_resurrect_timer!
   end
 
-  def rank_ratio(enemy_rank, character_rank)
-    [(enemy_rank - character_rank) / 2, 1].max
-  end
-
   def log_messages
     @battle.is_win ? win_log : lose_log
   end
