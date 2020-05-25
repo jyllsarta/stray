@@ -41,7 +41,7 @@ export default {
       const current_dungeon_id = state.status.current_dungeon_id;
       const max_depth = state.dungeon_progresses[current_dungeon_id]?.max_depth || 0;
       const unexplored = state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor >= max_depth;
-      const around_boss_floor = ((state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor) % Constants.dungeon.bossFloorFrequency) <= Constants.dungeon.bossLoseRewindFloor;
+      const around_boss_floor = ((state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor) % Constants.dungeon.bossFloorFrequency) < Constants.dungeon.bossLoseRewindFloor;
       return unexplored && around_boss_floor;
     },
     currentStandardParameter: (state, getters) => {
