@@ -106,9 +106,15 @@
             | {{currentItem ? currentItem.name : "-"}}
           .parameters
             .parameter
-              | TOTAL {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
+              .index
+                | TOTAL
+              .value
+                | {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
             .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
-              | {{param.toUpperCase()}} {{currentItem ? currentItem.effectValueOf(param) : ''}}
+              .index(:class="param")
+                | {{param.toUpperCase()}}
+              .value
+                | {{currentItem ? currentItem.effectValueOf(param) : ''}}
           .flavor_text
             | {{currentItem ? currentItem.flavor_text : "-"}}
           .open_detail_window.clickable(
@@ -617,27 +623,37 @@ export default {
     .detail{
       font-size: $font-size-mini;
       .item_name{
-        padding: $thin_space;
-        height: 50px;
+        margin: $thin_space;
+        height: 46px;
+        border-bottom: 1px solid $gray3;
       }
       .parameters{
-        padding: $thin_space;
+        margin: $thin_space;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        height: 100px;
+        height: 96px;
+        border-bottom: 1px solid $gray3;
         .parameter{
           width: 100%;
           text-align: right;
+          .index{
+            display: inline-block;
+            width: 30%;
+          }
+          .value{
+            display: inline-block;
+            width: 70%;
+          }
         }
       }
       .flavor_text{
         line-height: 115%;
-        padding: $thin_space;
-        height: 160px;
+        margin: $thin_space;
+        height: 152px;
       }
       .open_detail_window{
-        padding: $thin_space;
+        margin: $thin_space;
         height: 30px;
         text-align: center;
       }
