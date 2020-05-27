@@ -25,6 +25,11 @@
       @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
     )
       | 能力解放
+    .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'battle', state: true})"
+    )
+      | 強敵戦
 </template>
 
 <script lang="ts">
