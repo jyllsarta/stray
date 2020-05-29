@@ -54,7 +54,7 @@ RSpec.describe EventFacade, type: :model do
       end
       it "picks max event counts" do
         max_event_count = Constants.max_event_consume_time_seconds / Constants.default_event_interval_seconds
-        expect(subject.length).to eq(max_event_count)
+        expect(subject.length).to eq(max_event_count + 1) # 最大チャージ数 + キャリブレイベント一つ
         expect(event).to have_received(:execute!).exactly(max_event_count).times
       end
     end

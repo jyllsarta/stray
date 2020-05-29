@@ -7,7 +7,7 @@ class EventFacade
     events = []
     ActiveRecord::Base.transaction do
       user.lock!
-      user.status.calibrate_event_updated_at(@now)
+      calibrate_event = needs_calibrate?(user) ? CalibrateEvent.new(Time.now, user.status.current_dungeon_rank).execute!(user) : nil
       event = pick_next_event(user)
       while next_event_available?(user, event)
         events.append(event)
@@ -15,11 +15,17 @@ class EventFacade
         user.status.tick_timer!(event.consume_time(user))
         event = pick_next_event(user)
       end
+      events.push(calibrate_event) if calibrate_event.present?
     end
     events
   end
 
   private
+
+
+  def needs_calibrate?(user)
+    user.status.event_remain_time(Time.now) > Constants.max_event_consume_time_seconds
+  end
 
   def pick_next_event(user)
     EventPicker.new(user).pick!

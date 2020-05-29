@@ -175,6 +175,20 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "event_remain_time" do
+    subject { status.event_remain_time(Time.parse(time)) }
+    let(:time){"2020/01/01 13:00:00+0000"}
+
+    context "max_charge_time > absent time" do
+      before do
+        status.update!(event_updated_at: Time.parse(time) - 100.seconds)
+      end
+      it "returns 100" do
+        expect(subject).to eq(100)
+      end
+    end
+  end
+
   describe "#manual_resurrect!" do
     let!(:character){ create(:user_character, user: user, hp: 1) }
     subject { user.status.manual_resurrect! }

@@ -57,6 +57,10 @@ class User::Status < ApplicationRecord
     save!
   end
 
+  def event_remain_time(time)
+    time - self.event_updated_at
+  end
+
   def manual_resurrect!
     ActiveRecord::Base.transaction do
       user.characters.map(&:resurrect!)
