@@ -33,6 +33,9 @@ export default {
   },
   methods: {
     showEventIllust(event){
+      if(event.type === 'calibrate'){
+        return;
+      }
       this.$store.commit("event_illust/showEventIllust", event.type);
     },
     processEvent(event){
@@ -51,6 +54,10 @@ export default {
           break;
         case "boss_battle":
           this.resolveBossBattleEvent(event);
+          break;
+        case "calibrate":
+          event.logs[0].pseudo_id = Math.floor(Math.random() * 1000000000);
+          console.log("pass!"); // ログにだけ流れればそれでOK
           break;
         default:
           console.warn(`undefined event type: ${event.type}`);
