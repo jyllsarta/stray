@@ -1,5 +1,7 @@
-module.exports = class Enemy{
-    constructor() {
-        this.hp = 101;
+let Character = require("./character");
+
+module.exports = class Enemy extends Character {
+    constructor(hp) {
+        super(hp);
     }
 };

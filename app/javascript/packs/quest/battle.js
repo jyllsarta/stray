@@ -6,6 +6,18 @@ module.exports = class Battle{
     }
 
     execute(){
-        console.log(this.player.hp >= this.enemy.hp);
+        while(!this.isGameEnd()){
+            this.player.hp -= 20;
+            this.enemy.hp -= 20;
+            console.log("player:" + this.player.hp);
+            console.log("enemy:" + this.enemy.hp);
+        }
+        console.log("isWin:" + (this.player.hp > 0));
+    }
+
+    // 以下privateのつもり
+
+    isGameEnd(){
+        return !this.player.isAlive() || !this.enemy.isAlive();
     }
 };
