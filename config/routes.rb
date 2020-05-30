@@ -42,6 +42,11 @@ Rails.application.routes.draw do
   resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
 
+  resources :enemies, only: [] do
+    post :engage
+    post :showdown
+  end
+
   if Rails.env.development?
     resources :debug, only: [] do
       DebugController.action_methods.each do |method|
