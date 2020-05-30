@@ -16,13 +16,16 @@ class QuestBattle
   def showdown!(operation_history)
     cache = Cache.new(@user)
     raise NoCache unless cache.exist?
-    # TODO ここで検証を行う
-    # is_win = Open3.capture2("node なんとか", stdin_data: content)
+    result = JSON.parse(Open3.capture2(node_command)[0].chomp)
     cache.delete
-    true # 検証を無視して一旦必ず勝利したていで値を返す
+    result["isWin"]
   end
 
   private
+
+  def node_command
+    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s}"
+  end
 
   def random_seed
     SecureRandom.rand(1..999_999_999)

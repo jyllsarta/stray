@@ -28,6 +28,17 @@ RSpec.describe QuestBattle, type: :model do
     subject { quest_battle.showdown!(history) }
     let(:history){ [] }
 
+    let(:node_response) do
+      {
+          isWin: true,
+          isDraw: false
+      }.to_json
+    end
+
+    before do
+      allow(Open3).to receive(:capture2).and_return([node_response, 0])
+    end
+
     context "with no cache" do
       it "raises error" do
         expect{subject}.to raise_error QuestBattle::NoCache
