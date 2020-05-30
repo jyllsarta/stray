@@ -8,7 +8,7 @@ export default {
     equip_detail: false,
     switch_dungeon: false,
     relic: false,
-    battle: false,
+    battle: true,
     transition_frame: false,
     loading_frame: true,
     session_expired_frame: false,
