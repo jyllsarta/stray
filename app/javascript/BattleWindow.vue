@@ -23,16 +23,36 @@ export default {
   data: function () {
     return {
       battle: null,
+      input: null,
     };
   },
   store,
   mounted(){
-    this.battle = new BattleFactory().getBattle();
+    this.getEnvironment();
   },
   methods: {
     startBattle(){
+      if(!this.input){
+        console.warn("まだエンゲージしてない");
+        return;
+      }
+      this.battle = new BattleFactory(this.input).getBattle();
       this.battle.execute();
-    }
+      console.log(`isWin: ${this.battle.isWin()}`);
+    },
+    getEnvironment(){
+      const path = `/enemies/-1/engage.json`;
+      ax.post(path)
+        .then((results) => {
+          console.log(results);
+          console.log("OK");
+          this.input = results.data;
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+        });
+    },
   }
 }
 </script>

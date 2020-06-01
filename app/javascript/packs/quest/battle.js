@@ -1,16 +1,16 @@
 let SeededRandom = require("./seeded_random");
 
 module.exports = class Battle{
-    constructor(player, enemy, history){
+    constructor(player, enemy, seed, history){
         this.player = player;
         this.enemy = enemy;
-        this.dice = new SeededRandom(243);
+        this.dice = new SeededRandom(seed);
     }
 
     execute(){
         while(!this.isGameEnd()){
             this.player.hp -= this.dice.randInt(0, 50);
-            this.enemy.hp -= this.dice.randInt(0, 10);
+            this.enemy.hp -= this.dice.randInt(0, 50);
         }
     }
 

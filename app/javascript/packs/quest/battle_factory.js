@@ -3,11 +3,13 @@ let Player = require("./player");
 let Enemy = require("./enemy");
 
 module.exports = class BattleFactory{
-    constructor() {
-        this.battle = new Battle(new Player(300), new Enemy(50), null);
+    constructor(input) {
+        this.player = new Player(input.playerHp);
+        this.enemy = new Enemy(input.enemyHp);
+        this.seed = input.seed;
     }
 
     getBattle(){
-        return this.battle;
+        return new Battle(this.player, this.enemy, this.seed);
     }
 };
