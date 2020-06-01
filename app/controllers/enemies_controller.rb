@@ -1,6 +1,11 @@
 class EnemiesController < ApplicationController
   def engage
-    render json: {success: true}, status: :ok
+    json = {
+        playerHp: 300,
+        enemyHp: 50,
+        seed: 234
+    }.to_json
+    render json: json, status: :ok
   end
   def showdown
     render json: {success: true}, status: :ok
