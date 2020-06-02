@@ -7,7 +7,7 @@ class EnemiesController < ApplicationController
 
   def showdown
     quest = QuestBattle.new(current_user)
-    quest.showdown!([])
-    render json: {success: true}, status: :ok
+    result = quest.showdown!([])
+    render json: {success: true, isWin: result}, status: :ok
   end
 end

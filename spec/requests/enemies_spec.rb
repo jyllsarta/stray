@@ -52,7 +52,8 @@ RSpec.describe "Enemies", type: :request do
         expect(subject).to have_http_status(200)
         expect(JSON.parse(response.body)).to match_json_expression(
                                                  {
-                                                     success: Boolean
+                                                     success: Boolean,
+                                                     isWin: Boolean,
                                                  }
                                              )
       end
