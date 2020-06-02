@@ -13,6 +13,10 @@ RSpec.describe "Enemies", type: :request do
       do_post
       response
     end
+
+    before do
+      Rails.cache.delete("quest:#{user.id}")
+    end
     context "succeeds" do
       it 'succeeds' do
         expect(subject).to have_http_status(200)
@@ -27,13 +31,18 @@ RSpec.describe "Enemies", type: :request do
     end
   end
 
-  describe "POST /enemies/:id/engage" do
+  describe "POST /enemies/:id/showdown" do
     include_context("stub_current_user")
     let(:user){ User.create }
     let(:do_post) { post enemy_showdown_path(enemy_id: -1)}
     let(:params) do
       {}
     end
+
+    before do
+      QuestBattle.new(user).engage!
+    end
+
     subject do
       do_post
       response

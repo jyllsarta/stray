@@ -4,13 +4,13 @@ class QuestBattle
 
   def initialize(user)
     @user = user
+    @seed = random_seed
   end
 
   def engage!
     cache = Cache.new(@user)
     raise DuplicateEngage if cache.exist?
-    seed = random_seed
-    cache.write(content(seed))
+    cache.write(content)
   end
 
   def showdown!(operation_history)
@@ -21,20 +21,22 @@ class QuestBattle
     result["isWin"]
   end
 
+  def content
+    {
+        seed: @seed,
+        playerHp: 300,
+        enemyHp: 50,
+    }.to_json
+  end
+
   private
 
   def node_command
-    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s}"
+    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{content}'"
   end
 
   def random_seed
     SecureRandom.rand(1..999_999_999)
-  end
-
-  def content(seed)
-    {
-        seed: seed
-    }.to_json
   end
 
   class Cache
