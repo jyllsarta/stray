@@ -7,8 +7,12 @@
         .title
           | バトル！
       .body
-        .start.clickable(@click="startBattle")
-          | 戦闘開始
+        .start.clickable(@click="postEngage")
+          | エンゲージ
+        .start.clickable(@click="localBattle")
+          | ローカルで戦闘してみる
+        .start.clickable(@click="postShowdown")
+          | ショウダウン
 </template>
 
 <script lang="ts">
@@ -28,19 +32,18 @@ export default {
   },
   store,
   mounted(){
-    this.getEnvironment();
   },
   methods: {
-    startBattle(){
+    localBattle(){
       if(!this.input){
         console.warn("まだエンゲージしてない");
         return;
       }
       this.battle = new BattleFactory(this.input).getBattle();
       this.battle.execute();
-      console.log(`isWin: ${this.battle.isWin()}`);
+      console.log(`ローカルでの戦闘結果： isWin: ${this.battle.isWin()}`);
     },
-    getEnvironment(){
+    postEngage(){
       const path = `/enemies/-1/engage.json`;
       ax.post(path)
         .then((results) => {
@@ -53,6 +56,19 @@ export default {
           console.warn("NG");
         });
     },
+    postShowdown(){
+      const path = `/enemies/-1/showdown.json`;
+      ax.post(path)
+        .then((results) => {
+          console.log(results);
+          console.log("OK");
+          console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+        });
+    }
   }
 }
 </script>
