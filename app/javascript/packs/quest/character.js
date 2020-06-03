@@ -1,6 +1,7 @@
 module.exports = class Character{
-    constructor(hp) {
+    constructor(hp, deck) {
         this.hp = hp;
+        this.deck = deck;
     }
 
     isAlive(){

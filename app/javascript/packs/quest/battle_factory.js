@@ -4,8 +4,8 @@ let Enemy = require("./enemy");
 
 module.exports = class BattleFactory{
     constructor(input) {
-        this.player = new Player(input.playerHp);
-        this.enemy = new Enemy(input.enemyHp);
+        this.player = new Player(input.playerHp, []);
+        this.enemy = new Enemy(input.enemyHp, []);
         this.seed = input.seed;
     }
 
