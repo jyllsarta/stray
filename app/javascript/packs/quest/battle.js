@@ -9,8 +9,10 @@ module.exports = class Battle{
 
     execute(){
         while(!this.isGameEnd()){
-            this.player.hp -= this.dice.randInt(0, 50);
-            this.enemy.hp -= this.dice.randInt(0, 50);
+            this.player.hp -= this.enemy.atk();
+            this.enemy.hp -= this.player.atk();
+            this.player.draw();
+            this.enemy.draw();
         }
     }
 
