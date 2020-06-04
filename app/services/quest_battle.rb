@@ -26,10 +26,82 @@ class QuestBattle
         seed: @seed,
         playerHp: 300,
         enemyHp: 50,
+        playerCards: player_cards,
+        enemyCards: enemy_cards,
     }.to_json
   end
 
   private
+
+  def player_cards
+    [
+        {
+            str: 10,
+            dex: 20,
+            def: 30,
+            agi: 40,
+        },
+        {
+            str: 10,
+            dex: 20,
+            def: 30,
+            agi: 40,
+        },
+        {
+            str: 10,
+            dex: 20,
+            def: 30,
+            agi: 40,
+        },
+        {
+            str: 10,
+            dex: 20,
+            def: 30,
+            agi: 40,
+        },
+        {
+            str: 10,
+            dex: 20,
+            def: 30,
+            agi: 40,
+        }
+    ]
+  end
+
+  def enemy_cards
+    [
+        {
+            str: 40,
+            dex: 40,
+            def: 40,
+            agi: 40,
+        },
+        {
+            str: 40,
+            dex: 40,
+            def: 40,
+            agi: 40,
+        },
+        {
+            str: 40,
+            dex: 40,
+            def: 40,
+            agi: 40,
+        },
+        {
+            str: 40,
+            dex: 40,
+            def: 40,
+            agi: 40,
+        },
+        {
+            str: 40,
+            dex: 40,
+            def: 40,
+            agi: 40,
+        }
+    ]
+  end
 
   def node_command
     "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{content}'"
