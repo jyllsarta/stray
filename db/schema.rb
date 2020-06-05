@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "user_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
-    t.datetime "event_updated_at", null: false
+    t.datetime "event_updated_at"
     t.integer "current_dungeon_id", default: 1, null: false
     t.integer "current_dungeon_depth", default: 1, null: false
     t.integer "resurrect_timer", default: 0, null: false
