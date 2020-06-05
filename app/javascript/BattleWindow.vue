@@ -13,6 +13,13 @@
           | ローカルで戦闘してみる
         .start.clickable(@click="postShowdown")
           | ショウダウン
+      .player_hp
+        | PlayerHp : {{playerHp}}
+      .enemy_hp
+        | EnemyHp : {{enemyHp}}
+      .hands
+        .hand.clickable(v-for="hand in playerHands")
+          | {{hand.name}} / {{hand.atk()}}
 </template>
 
 <script lang="ts">
@@ -26,12 +33,23 @@ import BattleFactory from "./packs/quest/battle_factory"
 export default {
   data: function () {
     return {
-      battle: null,
+      battle: {},
       input: null,
     };
   },
   store,
   mounted(){
+  },
+  computed: {
+    playerHp(){
+      return this.battle?.player?.hp || 0;
+    },
+    enemyHp(){
+      return this.battle?.enemy?.hp || 0;
+    },
+    playerHands(){
+      return this.battle?.player?.deck?.cards || [];
+    }
   },
   methods: {
     localBattle(){
@@ -77,9 +95,15 @@ export default {
 @import "stylesheets/global_setting";
   .body{
     .start{
-      width: 100px;
+      width: 300px;
       height: 30px;
       text-align: center;
+    }
+    .hands{
+      display: flex;
+      .hand{
+        padding: $space;
+      }
     }
   }
 </style>
