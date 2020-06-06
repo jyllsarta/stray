@@ -9,7 +9,7 @@
       .body
         .start.clickable(@click="postEngage")
           | エンゲージ
-        .start.clickable(@click="localBattle")
+        .start.clickable(@click="localBattleStart")
           | ローカルで戦闘してみる
         .start.clickable(@click="postShowdown")
           | ショウダウン
@@ -18,8 +18,10 @@
       .enemy_hp
         | EnemyHp : {{enemyHp}}
       .hands
-        .hand.clickable(v-for="hand in playerHands")
-          | {{hand.name}} / {{hand.atk()}}
+        .hand.clickable(v-for="hand in playerHands" @click="playTurn(hand.id)")
+          | {{hand.name}} / {{hand.atk()}} / {{hand.id}}
+      .history
+        | {{battle.operationHistory}}
 </template>
 
 <script lang="ts">
@@ -52,14 +54,20 @@ export default {
     }
   },
   methods: {
-    localBattle(){
+    localBattleStart(){
       if(!this.input){
         console.warn("まだエンゲージしてない");
         return;
       }
       this.battle = new BattleFactory(this.input).getBattle();
-      this.battle.execute();
-      console.log(`ローカルでの戦闘結果： isWin: ${this.battle.isWin()}`);
+    },
+    playTurn(choice){
+      console.log(choice);
+      this.battle.playTurn(choice);
+      if(this.battle.isGameEnd()){
+        console.log("決着！ショーダウン!");
+        this.postShowdown();
+      }
     },
     postEngage(){
       const path = `/enemies/-1/engage.json`;
@@ -76,7 +84,10 @@ export default {
     },
     postShowdown(){
       const path = `/enemies/-1/showdown.json`;
-      ax.post(path)
+      const params = {
+        operation_history: this.battle.operationHistory
+      };
+      ax.post(path, params)
         .then((results) => {
           console.log(results);
           console.log("OK");

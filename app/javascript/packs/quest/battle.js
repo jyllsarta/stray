@@ -1,19 +1,18 @@
 let SeededRandom = require("./seeded_random");
 
 module.exports = class Battle{
-    constructor(player, enemy, seed, history){
+    constructor(player, enemy, seed) {
         this.player = player;
         this.enemy = enemy;
         this.dice = new SeededRandom(seed);
+        this.operationHistory = [];
     }
 
-    execute(){
-        while(!this.isGameEnd()){
-            this.player.hp -= this.enemy.atk();
-            this.enemy.hp -= this.player.atk();
-            this.player.draw();
-            this.enemy.draw();
-        }
+    playTurn(playerChoice){
+        this.operationHistory.push(playerChoice);
+        this.player.hp -= this.enemy.atk();
+        this.enemy.hp -= this.player.deck.findCard(playerChoice).atk();
+        this.enemy.draw();
     }
 
     outcome(){

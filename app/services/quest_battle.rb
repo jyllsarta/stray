@@ -9,13 +9,17 @@ class QuestBattle
 
   def engage!
     cache = Cache.new(@user)
-    raise DuplicateEngage if cache.exist?
+    if cache.exist?
+      cache.delete
+      raise DuplicateEngage
+    end
     cache.write(content)
   end
 
   def showdown!(operation_history)
     cache = Cache.new(@user)
     raise NoCache unless cache.exist?
+    @operation_history = operation_history
     result = JSON.parse(Open3.capture2(node_command)[0].chomp)
     cache.delete
     result["isWin"]
@@ -36,33 +40,38 @@ class QuestBattle
   def player_cards
     [
         {
+            id: 1,
             str: 10,
+            dex: 0,
+            def: 0,
+            agi: 0,
+        },
+        {
+            id: 2,
+            str: 0,
+            dex: 20,
+            def: 30,
+            agi: 0,
+        },
+        {
+            id: 3,
+            str: 0,
             dex: 20,
             def: 30,
             agi: 40,
         },
         {
+            id: 4,
             str: 10,
             dex: 20,
-            def: 30,
-            agi: 40,
+            def: 0,
+            agi: 0,
         },
         {
+            id: 5,
             str: 10,
             dex: 20,
-            def: 30,
-            agi: 40,
-        },
-        {
-            str: 10,
-            dex: 20,
-            def: 30,
-            agi: 40,
-        },
-        {
-            str: 10,
-            dex: 20,
-            def: 30,
+            def: 0,
             agi: 40,
         }
     ]
@@ -71,30 +80,35 @@ class QuestBattle
   def enemy_cards
     [
         {
+            id: 1,
             str: 40,
             dex: 40,
             def: 40,
             agi: 40,
         },
         {
+            id: 2,
             str: 40,
             dex: 40,
             def: 40,
             agi: 40,
         },
         {
+            id: 3,
             str: 40,
             dex: 40,
             def: 40,
             agi: 40,
         },
         {
+            id: 4,
             str: 40,
             dex: 40,
             def: 40,
             agi: 40,
         },
         {
+            id: 5,
             str: 40,
             dex: 40,
             def: 40,
@@ -104,7 +118,7 @@ class QuestBattle
   end
 
   def node_command
-    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{content}'"
+    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{content}' '#{@operation_history}'"
   end
 
   def random_seed

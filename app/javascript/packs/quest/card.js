@@ -1,5 +1,6 @@
 module.exports = class Card {
-    constructor(name, str, dex, def, agi) {
+    constructor(id, name, str, dex, def, agi) {
+        this.id = id;
         this.name = name;
         this.str = str;
         this.dex = dex;
