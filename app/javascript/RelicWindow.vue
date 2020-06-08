@@ -16,6 +16,7 @@
               :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id)]"
               @click="selectRelic(relic.id)"
               )
+              img.icon(:src="`/images/icons/${relic.id}.gif`")
         .detail
           .relic_detail
             .title
@@ -141,11 +142,16 @@ export default {
       position: absolute;
       .relic{
         position: absolute;
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
         background-color: #323749;
         &:hover{
           filter: brightness(130%);
+        }
+        .icon{
+          width: 48px;
+          height: 48px;
+          image-rendering: pixelated;
         }
       }
     }
