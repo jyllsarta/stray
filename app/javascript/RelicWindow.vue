@@ -13,14 +13,14 @@
           .relics
             .relic(
               v-for="relic in $store.state.masterdata.relics"
-              :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id)]"
+              :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
               @click="selectRelic(relic.id)"
               )
               img.icon(:src="`/images/icons/${relic.id}.gif`")
         .detail
           .relic_detail
             .title
-              .icon
+              img.icon(:src="`/images/icons/${selectingRelic.id}.gif`")
               .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
             .desc
@@ -121,6 +121,9 @@ export default {
     },
     obtainRelicClass(relicId){
       return relicId === this.obtainEffectRelicId ? "obtained" : "";
+    },
+    selectingRelicClass(relicId){
+      return relicId === this.selectingRelicId ? "selecting" : "";
     }
   }
 }
@@ -146,7 +149,7 @@ export default {
         height: 50px;
         background-color: #323749;
         &:hover{
-          filter: brightness(130%);
+          filter: brightness(150%);
         }
         .icon{
           width: 48px;
@@ -173,7 +176,7 @@ export default {
         .icon{
           width: 48px;
           height: 48px;
-          background-color: #747487;
+          image-rendering: pixelated;
         }
         .relic_name{
           padding-left: $space;
@@ -244,6 +247,9 @@ export default {
   }
   .got{
     border: 1px solid $yellow;
+  }
+  .selecting{
+    filter: brightness(150%);
   }
 }
 
