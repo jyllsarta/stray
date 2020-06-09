@@ -13,15 +13,18 @@
           | ローカルで戦闘してみる
         .start.clickable(@click="postShowdown")
           | ショウダウン
-      .player_hp
-        | PlayerHp : {{playerHp}}
-      .enemy_hp
-        | EnemyHp : {{enemyHp}}
-      .hands
-        .hand.clickable(v-for="hand in playerHands" @click="playTurn(hand.id)")
-          | {{hand.name}} / {{hand.atk()}} / {{hand.id}}
-      .history
-        | {{battle.operationHistory}}
+        .player_hp
+          | PlayerHp : {{playerHp}}
+        .enemy_hp
+          | EnemyHp : {{enemyHp}}
+        .hands
+          .hand(v-for="hand in playerHands" @click="battle.selectCard(hand.id)" :class="[selectingClass(hand.id)]")
+            | {{hand.name}} / {{hand.atk()}} / {{hand.id}}
+        .history
+          | operationHistory: {{battle.operationHistory}}
+        .history
+          | selectingCardIds: {{battle.selectingCardIds}}
+
 </template>
 
 <script lang="ts">
@@ -61,6 +64,7 @@ export default {
       }
       this.battle = new BattleFactory(this.input).getBattle();
     },
+
     playTurn(choice){
       console.log(choice);
       this.battle.playTurn(choice);
@@ -69,6 +73,11 @@ export default {
         this.postShowdown();
       }
     },
+
+    selectingClass(cardId){
+      return this.battle.selectingCardIds.includes(cardId) ? "selecting" : "";
+    },
+
     postEngage(){
       const path = `/enemies/-1/engage.json`;
       ax.post(path)
@@ -82,6 +91,7 @@ export default {
           console.warn("NG");
         });
     },
+
     postShowdown(){
       const path = `/enemies/-1/showdown.json`;
       const params = {
@@ -113,7 +123,11 @@ export default {
     .hands{
       display: flex;
       .hand{
+        margin: $thin_space;
         padding: $space;
+      }
+      .selecting{
+        background-color: $gray2;
       }
     }
   }

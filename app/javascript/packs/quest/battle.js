@@ -6,6 +6,16 @@ module.exports = class Battle{
         this.enemy = enemy;
         this.dice = new SeededRandom(seed);
         this.operationHistory = [];
+        this.selectingCardIds = [];
+    }
+
+    selectCard(cardId){
+        if(this.selectingCardIds.includes(cardId)){
+            this.selectingCardIds = this.selectingCardIds.filter(n => n !== cardId);
+        }
+        else{
+            this.selectingCardIds.push(cardId);
+        }
     }
 
     playTurn(playerChoice){
