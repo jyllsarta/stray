@@ -19,7 +19,7 @@
           | EnemyHp : {{enemyHp}}
         .hands
           .hand(v-for="hand in playerHands" @click="battle.selectCard(hand.id)" :class="[selectingClass(hand.id)]")
-            | {{hand.name}} / {{hand.atk()}} / {{hand.id}}
+            | {{hand.id}} / 名:{{hand.name}} / p:{{hand.power()}} / t:{{hand.tech()}}
         .history
           | operationHistory: {{battle.operationHistory}}
         .selecting_cards
