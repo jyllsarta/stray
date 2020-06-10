@@ -8,6 +8,14 @@ module.exports = class Card {
         this.agi = agi;
     }
 
+    power(){
+        return this.str + this.def;
+    }
+
+    tech(){
+        return this.dex + this.agi;
+    }
+
     atk(){
         return this.str + this.dex + this.def + this.agi;
     }

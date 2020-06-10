@@ -22,9 +22,12 @@
             | {{hand.name}} / {{hand.atk()}} / {{hand.id}}
         .history
           | operationHistory: {{battle.operationHistory}}
-        .history
+        .selecting_cards
           | selectingCardIds: {{battle.selectingCardIds}}
-
+        .current_power
+          | currentPower: {{playerPower}}
+        .current_tech
+          | currentTech: {{playerTech}}
 </template>
 
 <script lang="ts">
@@ -54,7 +57,13 @@ export default {
     },
     playerHands(){
       return this.battle?.player?.deck?.cards || [];
-    }
+    },
+    playerPower(){
+      return this.battle.player?.powerAt(this.battle.selectingCardIds);
+    },
+    playerTech(){
+      return this.battle.player?.techAt(this.battle.selectingCardIds);
+    },
   },
   methods: {
     localBattleStart(){
