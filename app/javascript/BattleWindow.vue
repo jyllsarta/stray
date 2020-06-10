@@ -34,6 +34,8 @@
           | enemyCurrentPower: {{enemyPower}}
         .enemy_current_tech
           | enemyCurrentTech: {{enemyTech}}
+        .play_turn.clickable(@click="playTurn")
+          | Decide!
 </template>
 
 <script lang="ts">
@@ -86,9 +88,8 @@ export default {
       this.battle = new BattleFactory(this.input).getBattle();
     },
 
-    playTurn(choice){
-      console.log(choice);
-      this.battle.playTurn(choice);
+    playTurn(){
+      this.battle.playTurn();
       if(this.battle.isGameEnd()){
         console.log("決着！ショーダウン!");
         this.postShowdown();

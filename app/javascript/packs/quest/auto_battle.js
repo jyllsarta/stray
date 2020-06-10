@@ -6,7 +6,8 @@ const operationHistory = JSON.parse(process.argv[3]);
 const battle = new BattleFactory(input).getBattle();
 
 while(!battle.isGameEnd()){
-  battle.playTurn(operationHistory.shift());
+  battle.selectingCardIds = operationHistory.shift();
+  battle.playTurn();
 }
 
 console.log(JSON.stringify(battle.outcome()));

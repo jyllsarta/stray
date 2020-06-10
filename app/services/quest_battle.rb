@@ -28,8 +28,8 @@ class QuestBattle
   def content
     {
         seed: @seed,
-        playerHp: 300,
-        enemyHp: 50,
+        playerHp: 5,
+        enemyHp: 5,
         playerCards: player_cards,
         enemyCards: enemy_cards,
     }.to_json
