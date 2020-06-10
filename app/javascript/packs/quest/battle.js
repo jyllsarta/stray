@@ -7,6 +7,7 @@ module.exports = class Battle{
         this.dice = new SeededRandom(seed);
         this.operationHistory = [];
         this.selectingCardIds = [];
+        this.enemyCardIds = [1,2,3];
     }
 
     selectCard(cardId){

@@ -28,6 +28,12 @@
           | currentPower: {{playerPower}}
         .current_tech
           | currentTech: {{playerTech}}
+        .enemy_selecting_cards
+          | selectingCardIds: {{battle.enemyCardIds}}
+        .enemy_current_power
+          | enemyCurrentPower: {{enemyPower}}
+        .enemy_current_tech
+          | enemyCurrentTech: {{enemyTech}}
 </template>
 
 <script lang="ts">
@@ -63,6 +69,12 @@ export default {
     },
     playerTech(){
       return this.battle.player?.techAt(this.battle.selectingCardIds);
+    },
+    enemyPower(){
+      return this.battle.enemy?.powerAt(this.battle.enemyCardIds);
+    },
+    enemyTech(){
+      return this.battle.enemy?.techAt(this.battle.enemyCardIds);
     },
   },
   methods: {
