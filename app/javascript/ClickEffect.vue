@@ -2,10 +2,10 @@
   .effects
     .effect(v-for="effect in effects", :key="effect.id")
       .light(:style="{left: effect.light.x, top: effect.light.y}")
-      .flicker(:style="{left: effect.flickers[0].x, top: effect.flickers[0].y, transform: `rotate(${effect.flickers[0].rot}deg)`}")
-      .flicker(:style="{left: effect.flickers[1].x, top: effect.flickers[1].y, transform: `rotate(${effect.flickers[1].rot}deg)`}")
-      .flicker(:style="{left: effect.flickers[2].x, top: effect.flickers[2].y, transform: `rotate(${effect.flickers[2].rot}deg)`}")
-      .flicker(:style="{left: effect.flickers[3].x, top: effect.flickers[3].y, transform: `rotate(${effect.flickers[3].rot}deg)`}")
+      .flicker(:style="{left: effect.flickers[0].x, top: effect.flickers[0].y, transform: `rotate(${effect.flickers[0].rot}deg)`, backgroundColor: colors[effect.flickers[0].colorId]}")
+      .flicker(:style="{left: effect.flickers[1].x, top: effect.flickers[1].y, transform: `rotate(${effect.flickers[1].rot}deg)`, backgroundColor: colors[effect.flickers[1].colorId]}")
+      .flicker(:style="{left: effect.flickers[2].x, top: effect.flickers[2].y, transform: `rotate(${effect.flickers[2].rot}deg)`, backgroundColor: colors[effect.flickers[2].colorId]}")
+      .flicker(:style="{left: effect.flickers[3].x, top: effect.flickers[3].y, transform: `rotate(${effect.flickers[3].rot}deg)`, backgroundColor: colors[effect.flickers[3].colorId]}")
 </template>
 
 <script lang="ts">
@@ -16,6 +16,7 @@ export default {
   data: function () {
     return {
       effects: [],
+      colors: ["#d3e4ff", "#ddffef", "#fffef2", "#f1f6ff", "#def1ff", "#f5ffe8"],
     };
   },
   mounted(){
@@ -46,6 +47,7 @@ export default {
       return {
         x: baseX + (Math.random() - 0.5) * 30 - 2.5,
         y: baseY + (Math.random() - 0.5) * 30 - 7.5,
+        colorId: Math.floor(Math.random() * this.colors.length),
         rot: Math.random() * 360,
       }
     },
@@ -70,7 +72,7 @@ export default {
       height: 15px;
       isolation: isolate;
       mix-blend-mode: screen;
-      background-color: #def1ff;
+      background-color: #effcff;
       opacity: 0;
     }
     .light{
@@ -107,10 +109,10 @@ export default {
 
   @keyframes light-up {
     0% {
-      opacity: 0.4;
+      opacity: 0.2;
     }
     30% {
-      opacity: 0.6;
+      opacity: 0.8;
     }
     100% {
       opacity: 0;
