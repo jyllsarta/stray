@@ -94,8 +94,6 @@ export default {
       Object.assign(state, payload);
     },
     updateItemRank(state, payload) {
-      console.log(payload);
-      console.log(state.items);
       state.items[payload.item_id].rank = payload.rank;
     },
     updateUserCoin(state, payload) {
@@ -109,8 +107,6 @@ export default {
         const path = `/users/${user_id}/status.json`;
         ax.get(path)
           .then((results) => {
-            console.log(results);
-            console.log("OK");
             commit("updateUserModel", results.data.payload);
             resolve();
           })

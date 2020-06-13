@@ -52,7 +52,6 @@ export default {
       }
     },
     removeOldEffect(){
-      console.log(`${this.effects.length} -> ${this.effects.filter((x)=>(new Date().getTime() - x.createdAt < 800)).length}`)
       this.effects = this.effects.filter((x)=>(new Date().getTime() - x.createdAt < 1800));
     }
   }
