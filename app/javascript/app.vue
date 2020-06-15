@@ -26,6 +26,7 @@
       EventWatcher(:root-ref="$refs")
       SessionExpiredFrame(v-if="$store.state.window.session_expired_frame")
       LoadingFrame(v-if="$store.state.window.loading_frame")
+      ClickEffect
     MessageForm
 </template>
 
@@ -51,6 +52,7 @@ import EventWatcher from "./EventWatcher";
 import TransitionFrame from "./TransitionFrame.vue";
 import LoadingFrame from "./LoadingFrame.vue";
 import SessionExpiredFrame from "./SessionExpiredFrame.vue";
+import ClickEffect from "./ClickEffect.vue";
 
 export default {
   store,
@@ -75,6 +77,7 @@ export default {
     Timer,
     EventWatcher,
     MessageForm,
+    ClickEffect,
   },
 }
 </script>

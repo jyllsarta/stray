@@ -87,8 +87,6 @@ export default {
           "X-SessionStartedAt": this.session_started_at,
         }})
         .then((results) => {
-          console.log(results);
-          console.log("OK");
           this.$store.commit("event/updateLatestEvents", results.data);
         })
         .catch((error) => {
