@@ -64,7 +64,7 @@ export default {
       return this.battle?.enemy?.hp || 0;
     },
     playerHands(){
-      return this.battle?.player?.deck?.cards || [];
+      return this.battle?.player?.deck?.currentHands() || [];
     },
     playerPower(){
       return this.battle.player?.powerAt(this.battle.selectingCardIds);

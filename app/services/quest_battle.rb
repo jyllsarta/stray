@@ -73,6 +73,48 @@ class QuestBattle
             dex: 20,
             def: 0,
             agi: 40,
+        },
+        {
+            id: 6,
+            str: 0,
+            dex: 0,
+            def: 0,
+            agi: 40,
+        },
+        {
+            id: 7,
+            str: 0,
+            dex: 0,
+            def: 0,
+            agi: 0,
+        },
+        {
+            id: 8,
+            str: 10,
+            dex: 0,
+            def: 0,
+            agi: 0,
+        },
+        {
+            id: 9,
+            str: 0,
+            dex: 20,
+            def: 0,
+            agi: 0,
+        },
+        {
+            id: 10,
+            str: 100,
+            dex: 0,
+            def: 0,
+            agi: 40,
+        },
+        {
+            id: 11,
+            str: 0,
+            dex: 0,
+            def: 0,
+            agi: 0,
         }
     ]
   end

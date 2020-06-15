@@ -50,6 +50,7 @@ module.exports = class Battle{
             this.enemy.hp -= 0;
         }
 
+        this.player.deck.consumeCards(this.selectingCardIds);
         this.selectingCardIds = [];
     }
 
