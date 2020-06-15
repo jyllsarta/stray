@@ -34,7 +34,7 @@
           | enemyCurrentPower: {{enemyPower}}
         .enemy_current_tech
           | enemyCurrentTech: {{enemyTech}}
-        .play_turn.clickable(@click="playTurn")
+        .play_turn(@click="playTurn" :class="decideButtonClass")
           | Decide!
 </template>
 
@@ -78,6 +78,14 @@ export default {
     enemyTech(){
       return this.battle.enemy?.techAt(this.battle.enemyCardIds);
     },
+
+    isDecidable(){
+      return this.battle.selectingCardIds?.length === 3;
+    },
+
+    decideButtonClass(){
+      return this.isDecidable ? "clickable" : "";
+    }
   },
   methods: {
     localBattleStart(){
@@ -89,6 +97,10 @@ export default {
     },
 
     playTurn(){
+      if(!this.isDecidable){
+        console.log("ちゃんと3まいきっかり選んで");
+        return;
+      }
       this.battle.playTurn();
       if(this.battle.isGameEnd()){
         console.log("決着！ショーダウン!");

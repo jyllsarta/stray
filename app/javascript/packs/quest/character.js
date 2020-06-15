@@ -2,7 +2,6 @@ module.exports = class Character{
     constructor(hp, deck) {
         this.hp = hp;
         this.deck = deck;
-        this.index = 0; // インデックスをどこでもつかは本実装時に再検討したほうがいいかも
     }
 
     isAlive(){

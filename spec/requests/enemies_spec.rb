@@ -39,12 +39,13 @@ RSpec.describe "Enemies", type: :request do
     let(:do_post) { post enemy_showdown_path(enemy_id: -1), params: params }
     let(:params) do
       {
-          operation_history: "[[1],[1],[1],[1],[1]]" # 仮で合法なOperationHistoryの例を投げておく
+          operation_history: "[]"
       }
     end
 
     before do
       QuestBattle.new(user).engage!
+      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return(true)
     end
 
     subject do

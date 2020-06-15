@@ -20,6 +20,7 @@ module.exports = class Battle{
     }
 
     playTurn(){
+        this.validateSelectingCardIds();
         this.operationHistory.push(this.selectingCardIds);
 
         const powerMeetResult = this.powerMeetResult();
@@ -62,6 +63,16 @@ module.exports = class Battle{
     }
 
     // 以下privateのつもり
+
+    validateSelectingCardIds(){
+        const uniqueCardIds = this.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);
+        if(uniqueCardIds.length !== 3){
+            console.error("selecting cards number is not exactly three");
+        }
+        if(!uniqueCardIds.every((x)=>this.player.deck.handCardIds)){
+            console.error("using hand that player do not have");
+        }
+    }
 
     powerMeetResult(category){
         if(this.player.powerAt(this.selectingCardIds) > this.enemy.powerAt(this.enemyCardIds)){
