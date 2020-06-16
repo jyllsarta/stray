@@ -4,7 +4,6 @@ class QuestBattle
 
   def initialize(user)
     @user = user
-    @seed = random_seed
   end
 
   def engage!
@@ -13,6 +12,7 @@ class QuestBattle
       cache.delete
       raise DuplicateEngage
     end
+    @seed = random_seed
     cache.write(content)
   end
 
@@ -20,9 +20,9 @@ class QuestBattle
     cache = Cache.new(@user)
     raise NoCache unless cache.exist?
     @operation_history = operation_history
-    result = JSON.parse(Open3.capture2(node_command)[0].chomp)
+    result = JSON.parse(Open3.capture2(node_command(cache.read, operation_history))[0].chomp)
     cache.delete
-    result["isWin"]
+    result
   end
 
   def content
@@ -124,7 +124,7 @@ class QuestBattle
         {
             id: 1,
             str: 10,
-            dex: 10,
+            dex: 0,
             def: 10,
             agi: 10,
         },
@@ -132,12 +132,12 @@ class QuestBattle
             id: 2,
             str: 10,
             dex: 10,
-            def: 10,
+            def: 0,
             agi: 10,
         },
         {
             id: 3,
-            str: 10,
+            str: 0,
             dex: 10,
             def: 10,
             agi: 10,
@@ -147,20 +147,41 @@ class QuestBattle
             str: 10,
             dex: 10,
             def: 10,
-            agi: 10,
+            agi: 0,
         },
         {
             id: 5,
             str: 10,
-            dex: 10,
-            def: 10,
+            dex: 0,
+            def: 0,
             agi: 10,
-        }
+        },
+        {
+            id: 6,
+            str: 20,
+            dex: 20,
+            def: 20,
+            agi: 20,
+        },
+        {
+            id: 7,
+            str: 30,
+            dex: 30,
+            def: 0,
+            agi: 0,
+        },
+        {
+            id: 8,
+            str: 0,
+            dex: 0,
+            def: 40,
+            agi: 40,
+        },
     ]
   end
 
-  def node_command
-    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{content}' '#{@operation_history}'"
+  def node_command(cache, operation_history)
+    "node #{Rails.root.join("app/javascript/packs/quest/auto_battle.js").to_s} '#{cache}' '#{operation_history}'"
   end
 
   def random_seed
@@ -185,9 +206,7 @@ class QuestBattle
     end
 
     def read
-      JSON.parse(Rails.cache.read(key))
-    rescue TypeError
-      nil
+      Rails.cache.read(key)
     end
 
     def key

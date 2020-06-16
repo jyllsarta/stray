@@ -104,6 +104,8 @@ export default {
       this.battle.playTurn();
       if(this.battle.isGameEnd()){
         console.log("決着！ショーダウン!");
+        console.log(this.input.seed);
+        console.log(this.battle.battleLog);
         this.postShowdown();
       }
     },

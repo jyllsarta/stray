@@ -7,7 +7,10 @@ class EnemiesController < ApplicationController
 
   def showdown
     quest = QuestBattle.new(current_user)
+
     result = quest.showdown!(params[:operation_history])
-    render json: {success: true, isWin: result}, status: :ok
+    pp result unless Rails.env.test?
+
+    render json: {success: true, isWin: result["isWin"]}, status: :ok
   end
 end

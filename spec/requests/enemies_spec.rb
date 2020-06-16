@@ -45,7 +45,7 @@ RSpec.describe "Enemies", type: :request do
 
     before do
       QuestBattle.new(user).engage!
-      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return(true)
+      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return({'isWin'=>true})
     end
 
     subject do

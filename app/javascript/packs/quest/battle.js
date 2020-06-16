@@ -2,10 +2,12 @@ let SeededRandom = require("./seeded_random");
 
 module.exports = class Battle{
     constructor(player, enemy, seed) {
+        this.seed = seed;
         this.dice = new SeededRandom(seed);
         this.player = player;
         this.enemy = enemy;
 
+        // デッキ回りの初期化はバトルがやるの違うのかもなと思いつつも、一旦ここ意外に役割を持たせるとそれはそれで歪むので別の需要が出てくるまで待つ
         this.player.deck.setSeededDice(this.dice);
         this.enemy.deck.setSeededDice(this.dice);
 
@@ -17,7 +19,11 @@ module.exports = class Battle{
 
         this.operationHistory = [];
         this.selectingCardIds = [];
-        this.enemyCardIds = [1,2,3];
+        this.enemyCardIds = [];
+
+        this.battleLog = [];
+
+        this.pickEnemyCards();
     }
 
     selectCard(cardId){
@@ -61,19 +67,32 @@ module.exports = class Battle{
             this.enemy.hp -= 0;
         }
 
+        this.battleLog.push([powerMeetResult, techMeetResult]);
+
         this.player.deck.consumeCards(this.selectingCardIds);
+        this.enemy.deck.consumeCards(this.enemyCardIds);
         this.selectingCardIds = [];
         this.player.deck.fillDraw();
+
+        this.enemyCardIds = [];
+        this.enemy.deck.fillDraw();
+        this.pickEnemyCards();
     }
 
     outcome(){
         return {
             isWin: this.isWin(),
             isDraw: this.isDraw(),
+            log: this.battleLog,
+            seed: this.seed,
         }
     }
 
     // 以下privateのつもり
+
+    pickEnemyCards(){
+        this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 3);
+    }
 
     validateSelectingCardIds(){
         const uniqueCardIds = this.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);

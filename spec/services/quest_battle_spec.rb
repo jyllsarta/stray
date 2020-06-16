@@ -49,8 +49,8 @@ RSpec.describe QuestBattle, type: :model do
       before do
         quest_battle.engage!
       end
-      it "returns true with no error" do
-        expect(subject).to eq(true)
+      it "returns object with no error" do
+        expect(subject).to eq(JSON.parse(node_response))
       end
     end
   end
