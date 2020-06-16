@@ -27,11 +27,4 @@ module.exports = class Character{
         }
         return cards.map((c)=>c.tech()).reduce((a,b)=>(a+b));
     }
-
-    draw(){
-        this.index++;
-        if(this.index >= this.deck.cards.length){
-            this.index = 0;
-        }
-    }
 };
