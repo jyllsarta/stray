@@ -64,6 +64,7 @@ export default {
   }
   .effect{
     position: fixed;
+    pointer-events: none;
     .flicker{
       position: fixed;
       animation: swing-in .8s cubic-bezier(.88,.32,.72,.47) 0s;
