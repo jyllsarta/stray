@@ -109,4 +109,24 @@ RSpec.describe User::Item, type: :model do
       end
     end
   end
+
+  describe "full_name" do
+    let(:user){ create(:user) }
+    let(:item){ create(:item, str: 201, dex: 104, def: 13, agi: 185, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
+    let(:subject){ user_item.full_name }
+
+    context "no rank" do
+      let(:user_item){ build(:user_item, user: user, item: item, rank: 0) }
+      it "returns name with no plus" do
+        expect(subject).to eq("★博麗の巫女装束")
+      end
+    end
+
+    context "no rank" do
+      let(:user_item){ build(:user_item, user: user, item: item, rank: 1) }
+      it "returns name with no plus" do
+        expect(subject).to eq("★博麗の巫女装束+1")
+      end
+    end
+  end
 end

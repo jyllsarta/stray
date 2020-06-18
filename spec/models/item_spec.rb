@@ -18,4 +18,23 @@
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
+  describe "#rarity_icon" do
+    subject { item.rarity_icon }
+    context "valid rarity" do
+      let(:item){ build :item , rarity: 5}
+
+      it "returns string" do
+        expect(subject.class).to eq(String)
+      end
+    end
+
+    context "invalid rarity" do
+      # しれっと境界値テストにしちゃう(本当は別々に書いた方がいい)
+      let(:item){ build :item , rarity: 6}
+
+      it "raises" do
+        expect{ subject }.to raise_error(NotImplementedError)
+      end
+    end
+  end
 end

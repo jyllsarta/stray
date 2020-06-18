@@ -34,6 +34,10 @@ class User::Item < ApplicationRecord
     end
   end
 
+  def full_name
+    "#{item.rarity_icon}#{item.name}#{rank > 0 ? '+' + rank.to_s : ''}"
+  end
+
   private
 
   def max_rank

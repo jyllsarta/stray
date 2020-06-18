@@ -20,7 +20,7 @@ module.exports = class BattleFactory{
     makeDeck(cardsArray){
         let cards = [];
         for(let card of cardsArray){
-            cards.push(new Card(card.id, `id: ${card.id}`, card.str, card.dex, card.def, card.agi));
+            cards.push(new Card(card.id, card.name, card.str, card.dex, card.def, card.agi));
         }
         return new Deck(cards);
     }

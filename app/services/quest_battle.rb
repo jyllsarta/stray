@@ -37,86 +37,25 @@ class QuestBattle
 
   private
 
+  # TODO: エネミーごとに適当なファクターを定義
+  def denomination_factor
+    100
+  end
+
+  def card(id, user_item)
+    denominated_parameter = user_item.parameter.transform_values{ |v| v / denomination_factor }
+    {
+        id: id,
+        name: user_item.full_name
+    }.merge(denominated_parameter)
+  end
+
   def player_cards
-    [
-        {
-            id: 1,
-            str: 10,
-            dex: 0,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 2,
-            str: 0,
-            dex: 20,
-            def: 30,
-            agi: 0,
-        },
-        {
-            id: 3,
-            str: 0,
-            dex: 20,
-            def: 30,
-            agi: 40,
-        },
-        {
-            id: 4,
-            str: 10,
-            dex: 20,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 5,
-            str: 10,
-            dex: 20,
-            def: 0,
-            agi: 40,
-        },
-        {
-            id: 6,
-            str: 0,
-            dex: 0,
-            def: 0,
-            agi: 40,
-        },
-        {
-            id: 7,
-            str: 0,
-            dex: 0,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 8,
-            str: 10,
-            dex: 0,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 9,
-            str: 0,
-            dex: 20,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 10,
-            str: 100,
-            dex: 0,
-            def: 0,
-            agi: 40,
-        },
-        {
-            id: 11,
-            str: 0,
-            dex: 0,
-            def: 0,
-            agi: 0,
-        }
-    ]
+    # ユーザ装備の配列を2ペアつくってそれをまとめてデッキにぽい
+    # TODO: 装備欄を埋めずにいると有利になってしまうので空枠を許さないようにする or 埋めた方が得になる設計にする
+    result = []
+    (@user.characters.map(&:equips).flatten.map(&:user_item) * 2).compact.each_with_index { |v, i| result.push(card(i + 1, v))}
+    result
   end
 
   def enemy_cards
