@@ -7,6 +7,8 @@ class QuestBattle
   end
 
   def engage!
+    ActiveRecord::Associations::Preloader.new.preload( @user, {characters: {equips: {user_item: [:item]}}})
+
     cache = Cache.new(@user)
     if cache.exist?
       cache.delete
