@@ -31,7 +31,8 @@ class QuestBattle
     {
         seed: @seed,
         playerHp: 5,
-        enemyHp: 5,
+        enemyName: enemy.name,
+        enemyHp: enemy.hp,
         playerCards: player_cards,
         enemyCards: enemy_cards,
     }.to_json
@@ -39,9 +40,12 @@ class QuestBattle
 
   private
 
-  # TODO: エネミーごとに適当なファクターを定義
+  def enemy
+    @enemy ||= Enemy.last
+  end
+
   def denomination_factor
-    100
+    enemy.denomination_factor
   end
 
   def card(id, user_item)

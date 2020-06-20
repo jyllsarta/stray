@@ -13,8 +13,10 @@
           | ローカルで戦闘してみる
         .start.clickable(@click="postShowdown")
           | ショウダウン
+        .enemy_name
+            | EnemyName : {{enemyName}}
         .player_hp
-          | PlayerHp : {{playerHp}}
+            | PlayerHp : {{playerHp}}
         .enemy_hp
           | EnemyHp : {{enemyHp}}
         .hands
@@ -57,6 +59,9 @@ export default {
   mounted(){
   },
   computed: {
+    enemyName(){
+      return this.battle?.enemy?.name || "-";
+    },
     playerHp(){
       return this.battle?.player?.hp || 0;
     },

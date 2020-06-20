@@ -4,6 +4,7 @@ require 'json_expressions/rspec'
 RSpec.describe "Enemies", type: :request do
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
+    let!(:enemy ) { create(:enemy)}
     let(:user){ User.create }
     let(:do_post) { post enemy_engage_path(enemy_id: -1)}
     let(:params) do
@@ -23,6 +24,7 @@ RSpec.describe "Enemies", type: :request do
         expect(JSON.parse(response.body)).to match_json_expression(
                                                  {
                                                      playerHp: Integer,
+                                                     enemyName: String,
                                                      enemyHp: Integer,
                                                      playerCards: Array,
                                                      enemyCards: Array,

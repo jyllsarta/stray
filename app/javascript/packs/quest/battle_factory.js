@@ -6,8 +6,8 @@ let Card = require("./card");
 
 module.exports = class BattleFactory{
     constructor(input) {
-        this.player = new Player(input.playerHp, this.makeDeck(input.playerCards));
-        this.enemy = new Enemy(input.enemyHp, this.makeDeck(input.enemyCards));
+        this.player = new Player("プレイヤー", input.playerHp, this.makeDeck(input.playerCards));
+        this.enemy = new Enemy(input.enemyName, input.enemyHp, this.makeDeck(input.enemyCards));
         this.seed = input.seed;
     }
 

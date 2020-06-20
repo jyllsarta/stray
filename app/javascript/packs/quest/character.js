@@ -1,5 +1,6 @@
 module.exports = class Character{
-    constructor(hp, deck) {
+    constructor(name, hp, deck) {
+        this.name = name;
         this.hp = hp;
         this.deck = deck;
     }
