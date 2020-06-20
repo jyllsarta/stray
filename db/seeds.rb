@@ -8,9 +8,9 @@
 
 require "csv"
 
-TABLES = [:items, :dungeons, :relics]
+tables = Dir.entries("#{ENV['MASTERDATA_PATH']}").select{|filename| filename.ends_with?(".csv")}.map{|filename| filename.sub('.csv', '')}
 
-TABLES.map(&:to_s).each do |table_name|
+tables.map(&:to_s).each do |table_name|
   clazz = table_name.singularize.camelize.constantize
   clazz.delete_all
   accepted_attributes = clazz.new.attributes.keys.map(&:to_sym)
