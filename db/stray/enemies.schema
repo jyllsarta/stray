@@ -1,0 +1,5 @@
+create_table "enemies", force: :cascade  do |t|
+  t.string :name
+  t.integer :hp, default: 0
+  t.timestamps
+end
