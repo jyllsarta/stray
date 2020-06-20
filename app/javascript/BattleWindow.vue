@@ -1,43 +1,17 @@
 <template lang="pug">
   .menu
-    .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'battle', state: false})")
     .window.content
-      .title_area
-        .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'battle', state: false})")
-        .title
-          | バトル！
-      .body
-        .start.clickable(@click="postEngage")
-          | エンゲージ
-        .start.clickable(@click="localBattleStart")
-          | ローカルで戦闘してみる
-        .start.clickable(@click="postShowdown")
-          | ショウダウン
-        .enemy_name
-            | EnemyName : {{enemyName}}
-        .player_hp
-            | PlayerHp : {{playerHp}}
-        .enemy_hp
-          | EnemyHp : {{enemyHp}}
-        .hands
-          .hand(v-for="hand in playerHands" @click="battle.selectCard(hand.id)" :class="[selectingClass(hand.id)]")
-            | {{hand.id}} / 名:{{hand.name}} / p:{{hand.power()}} / t:{{hand.tech()}}
-        .history
-          | operationHistory: {{battle.operationHistory}}
-        .selecting_cards
-          | selectingCardIds: {{battle.selectingCardIds}}
-        .current_power
-          | currentPower: {{playerPower}}
-        .current_tech
-          | currentTech: {{playerTech}}
-        .enemy_selecting_cards
-          | selectingCardIds: {{battle.enemyCardIds}}
-        .enemy_current_power
-          | enemyCurrentPower: {{enemyPower}}
-        .enemy_current_tech
-          | enemyCurrentTech: {{enemyTech}}
-        .play_turn(@click="playTurn" :class="decideButtonClass")
-          | Decide!
+      .player_character
+      .enemy_character
+      .player_hands
+      .enemy_hands
+      .player_selecting_cards
+      .enemy_selecting_cards
+      .current_strength
+      .player_status
+      .enemy_status
+      .player_magic_list
+      .enemy_magic_list
 </template>
 
 <script lang="ts">
@@ -88,9 +62,6 @@ export default {
       return this.battle.selectingCardIds?.length === 3;
     },
 
-    decideButtonClass(){
-      return this.isDecidable ? "clickable" : "";
-    }
   },
   methods: {
     localBattleStart(){
@@ -113,10 +84,6 @@ export default {
         console.log(this.battle.battleLog);
         this.postShowdown();
       }
-    },
-
-    selectingClass(cardId){
-      return this.battle.selectingCardIds.includes(cardId) ? "selecting" : "";
     },
 
     postEngage(){
@@ -155,21 +122,84 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
-  .body{
-    .start{
-      width: 300px;
-      height: 30px;
-      text-align: center;
-    }
-    .hands{
-      display: flex;
-      .hand{
-        margin: $thin_space;
-        padding: $space;
-      }
-      .selecting{
-        background-color: $gray2;
-      }
-    }
-  }
+* {
+  outline: 1px solid #79f850;
+}
+.player_character{
+  position: absolute;
+  top: $space;
+  left: 250px;
+  width: 200px;
+  height: 200px;
+}
+.enemy_character{
+  position: absolute;
+  top: $space;
+  right: 250px;
+  width: 200px;
+  height: 200px;
+}
+.player_hands{
+  position: absolute;
+  top: 80px;
+  left: $space;
+  width: 200px;
+  height: 310px;
+}
+.enemy_hands{
+  position: absolute;
+  top: 80px;
+  right: $space;
+  width: 200px;
+  height: 310px;
+}
+.player_selecting_cards{
+  position: absolute;
+  top: 220px;
+  left: 230px;
+  width: 170px;
+  height: 150px;
+}
+.enemy_selecting_cards{
+  position: absolute;
+  top: 220px;
+  right: 230px;
+  width: 170px;
+  height: 150px;
+}
+.current_strength{
+  position: absolute;
+  top: 240px;
+  left: 420px;
+  width: 150px;
+  height: 120px;
+}
+.player_status{
+  position: absolute;
+  top: 400px;
+  left: 20px;
+  width: 470px;
+  height: 50px;
+}
+.enemy_status{
+  position: absolute;
+  top: 400px;
+  right: 20px;
+  width: 470px;
+  height: 50px;
+}
+.player_magic_list{
+  position: absolute;
+  top: 460px;
+  left: $space;
+  width: 470px;
+  height: 60px;
+}
+.enemy_magic_list{
+  position: absolute;
+  top: 460px;
+  right: $space;
+  width: 470px;
+  height: 60px;
+}
 </style>
