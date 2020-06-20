@@ -16,10 +16,13 @@
 #                  messages GET  /messages(.:format)                                        messages#index
 #                           POST /messages(.:format)                                        messages#create
 #                masterdata GET  /masterdata(.:format)                                      masterdata#index
+#              enemy_engage POST /enemies/:enemy_id/engage(.:format)                        enemies#engage
+#            enemy_showdown POST /enemies/:enemy_id/showdown(.:format)                      enemies#showdown
+#      set_star_debug_index POST /debug/set_star(.:format)                                  debug#set_star
+#     set_depth_debug_index POST /debug/set_depth(.:format)                                 debug#set_depth
 #     max_event_debug_index POST /debug/max_event(.:format)                                 debug#max_event
 # get_all_items_debug_index POST /debug/get_all_items(.:format)                             debug#get_all_items
 #      set_coin_debug_index POST /debug/set_coin(.:format)                                  debug#set_coin
-#      set_star_debug_index POST /debug/set_star(.:format)                                  debug#set_star
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

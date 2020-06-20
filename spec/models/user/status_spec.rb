@@ -5,7 +5,7 @@
 #  id                    :bigint           not null, primary key
 #  coin                  :integer          default(0), not null
 #  current_dungeon_depth :integer          default(1), not null
-#  event_updated_at      :datetime         default(NULL), not null
+#  event_updated_at      :datetime
 #  resurrect_timer       :integer          default(0), not null
 #  star                  :integer          default(0), not null
 #  created_at            :datetime         not null

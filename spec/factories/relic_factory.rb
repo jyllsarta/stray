@@ -3,7 +3,7 @@
 # Table name: relics
 #
 #  id              :bigint           not null, primary key
-#  category        :integer          default(0)
+#  category        :integer          default(NULL)
 #  cost            :integer          default(0)
 #  description     :string(255)
 #  name            :string(255)
