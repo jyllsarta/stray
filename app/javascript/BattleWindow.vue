@@ -90,7 +90,7 @@
       .enemy_hands.hands
         .hand
           .name
-            | ◆原初の炎
+            | ◆つつく
           .value
             .power.value
               | 194
@@ -100,7 +100,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆のびる
           .value
             .power.value
               | 194
@@ -110,7 +110,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆爪
           .value
             .power.value
               | 194
@@ -120,7 +120,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆マシンガンα
           .value
             .power.value
               | 194
@@ -130,7 +130,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆召喚魔法
           .value
             .power.value
               | 194
@@ -140,7 +140,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆レーザービーム
           .value
             .power.value
               | 194
@@ -150,7 +150,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆ソードブレイカー
           .value
             .power.value
               | 194
@@ -160,7 +160,7 @@
               | 885
         .hand
           .name
-            | ◆原初の炎
+            | ◆ミラーミラー
           .value
             .power.value
               | 194
@@ -247,8 +247,22 @@
             | 999
           .tech
             | 999
-      .player_status
-      .enemy_status
+      .player_status.status
+        .hp
+          | 4
+        .mp
+          | 100
+        .bars
+          .hp_bar
+          .mp_bar
+      .enemy_status.status
+        .hp
+          | 18
+        .mp
+          | 100
+        .bars
+          .hp_bar
+          .mp_bar
       .player_magic_list
       .enemy_magic_list
 </template>
@@ -422,7 +436,7 @@ export default {
   .hand{
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        padding-left: $i * 4px;
+        padding-left: $i * 6px;
       }
     }
   }
@@ -436,7 +450,7 @@ export default {
     }
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        padding-right: $i * 4px;
+        padding-right: $i * 6px;
       }
     }
   }
@@ -461,6 +475,56 @@ export default {
     }
   }
 }
+
+.status{
+  .hp{
+    position: absolute;
+    top: -35px;
+    font-size: 40px;
+  }
+  .mp{
+    position: absolute;
+    top: 20px;
+    font-size: $font-size-normal;
+  }
+  .bars{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    .hp_bar{
+      width: 400px;
+      height: 4px;
+      background-color: #FCD99A;
+    }
+    .mp_bar{
+      width: 250px;
+      height: 4px;
+      background-color: #c5b4fc;
+    }
+  }
+}
+
+.player_status{
+  .hp, .mp{
+    right: 10px;
+  }
+  .bars{
+    align-items: flex-end;
+  }
+}
+
+.enemy_status{
+  .hp, .mp{
+    left: 10px;
+  }
+  .bars{
+    align-items: flex-start;
+  }
+}
+
+
 
 // -- -- --
 
@@ -493,14 +557,14 @@ export default {
 }
 .player_hands{
   position: absolute;
-  top: 80px;
+  top: 40px;
   left: $space;
   width: 220px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
-  top: 80px;
+  top: 40px;
   right: $space;
   width: 220px;
   height: 310px;
@@ -522,34 +586,34 @@ export default {
 .current_strength{
   position: absolute;
   top: 280px;
-  left: 420px;
+  left: calc( #{$window-width / 2} - 75px );
   width: 150px;
   height: 80px;
 }
 .player_status{
   position: absolute;
-  top: 400px;
+  top: 420px;
   left: 20px;
   width: 470px;
   height: 50px;
 }
 .enemy_status{
   position: absolute;
-  top: 400px;
+  top: 420px;
   right: 20px;
   width: 470px;
   height: 50px;
 }
 .player_magic_list{
   position: absolute;
-  top: 460px;
+  top: 480px;
   left: $space;
   width: 470px;
   height: 60px;
 }
 .enemy_magic_list{
   position: absolute;
-  top: 460px;
+  top: 480px;
   right: $space;
   width: 470px;
   height: 60px;
