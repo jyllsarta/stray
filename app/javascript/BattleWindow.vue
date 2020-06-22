@@ -1,13 +1,174 @@
 <template lang="pug">
   .menu
-    .window.content
+    .full_covered_window
       .player_character
         img.tirol(src="/images/battle/tirol.png")
         img.spica(src="/images/battle/spica.png")
       .enemy_character
         img.enemy(src="/images/battle/enemy.png")
-      .player_hands
-      .enemy_hands
+      .player_hands.hands
+        .hand
+          .name
+            | ◆エリクシールハーフ
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆藻
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆がんもどき
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆竹馬
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆スリセルのロザリオ
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+      .enemy_hands.hands
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+
       .player_selecting_cards
       .enemy_selecting_cards
       .current_strength
@@ -126,7 +287,7 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
 * {
-  outline: 1px solid #79f850;
+  //outline: 1px solid #79f850;
 }
 
 // -- -- --
@@ -156,12 +317,70 @@ export default {
   }
 }
 
+.hands{
+  display: flex;
+  flex-direction: column;
+  .hand {
+    padding: 2px;
+    .value {
+      display: flex;
+      width: 100%;
+      .sep {
+        display: inline-block;
+        width: 1em;
+        text-align: center;
+      }
+      .value {
+        display: inline-block;
+        width: 2.5em;
+        text-align: right;
+      }
+    }
+    background-color: $background;
+    &:hover {
+      filter: brightness(130%);
+    }
+  }
+}
+
+.player_hands{
+  .hand{
+    @for $i from 1 through 8 {
+      &:nth-child(#{$i}){
+        padding-left: $i * 4px;
+      }
+    }
+  }
+}
+
+.enemy_hands{
+  text-align: right;
+  .hand{
+    .value{
+      justify-content: flex-end;
+    }
+    @for $i from 1 through 8 {
+      &:nth-child(#{$i}){
+        padding-right: $i * 4px;
+      }
+    }
+  }
+}
 
 // -- -- --
 
 // ウィンドウ位置定義
 
 // -- -- --
+
+.full_covered_window{
+  position: absolute;
+  width: $window-width;
+  height: $window-height;
+  background-color: $background;
+  opacity: 1;
+  padding: $space;
+}
 
 .player_character{
   position: absolute;
@@ -181,14 +400,14 @@ export default {
   position: absolute;
   top: 80px;
   left: $space;
-  width: 200px;
+  width: 220px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
   top: 80px;
   right: $space;
-  width: 200px;
+  width: 220px;
   height: 310px;
 }
 .player_selecting_cards{
