@@ -2,7 +2,10 @@
   .menu
     .window.content
       .player_character
+        img.tirol(src="/images/battle/tirol.png")
+        img.spica(src="/images/battle/spica.png")
       .enemy_character
+        img.enemy(src="/images/battle/enemy.png")
       .player_hands
       .enemy_hands
       .player_selecting_cards
@@ -125,6 +128,41 @@ export default {
 * {
   outline: 1px solid #79f850;
 }
+
+// -- -- --
+
+// スタイル定義
+
+// -- -- --
+
+.player_character{
+  .spica{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+  }
+  .tirol{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    left: -50px;
+  }
+}
+
+.enemy_character{
+  .enemy{
+    width: 200px;
+    height: 200px;
+  }
+}
+
+
+// -- -- --
+
+// ウィンドウ位置定義
+
+// -- -- --
+
 .player_character{
   position: absolute;
   top: $space;
