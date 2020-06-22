@@ -169,8 +169,68 @@
             .tech.value
               | 885
 
-      .player_selecting_cards
-      .enemy_selecting_cards
+      .player_selecting_cards.hands
+        .hand
+          .name
+            | ◆エリクシールハーフ
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆藻
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+      .enemy_selecting_cards.hands
+        .hand
+          .name
+            | ◆エリクシールハーフ
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆藻
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
+        .hand
+          .name
+            | ◆原初の炎
+          .value
+            .power.value
+              | 194
+            .sep
+              | /
+            .tech.value
+              | 885
       .current_strength
       .player_status
       .enemy_status
