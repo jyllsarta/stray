@@ -232,6 +232,21 @@
             .tech.value
               | 885
       .current_strength
+        .player.strength
+          .power
+            | 999
+          .tech
+            | 999
+        .sep
+          .power
+            | Pow
+          .tech
+            | Tec
+        .enemy.strength
+          .power
+            | 999
+          .tech
+            | 999
       .player_status
       .enemy_status
       .player_magic_list
@@ -427,6 +442,26 @@ export default {
   }
 }
 
+.current_strength{
+  display: flex;
+  height: 100%;
+  .strength{
+    width: 35%;
+    .power, .tech{
+      text-align: center;
+      height: 50%;
+      font-size: $font-size-large;
+    }
+  }
+  .sep{
+    width: 30%;
+    .power, .tech{
+      text-align: center;
+      height: 50%;
+    }
+  }
+}
+
 // -- -- --
 
 // ウィンドウ位置定義
@@ -486,10 +521,10 @@ export default {
 }
 .current_strength{
   position: absolute;
-  top: 240px;
+  top: 280px;
   left: 420px;
   width: 150px;
-  height: 120px;
+  height: 80px;
 }
 .player_status{
   position: absolute;
