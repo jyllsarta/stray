@@ -263,8 +263,58 @@
         .bars
           .hp_bar
           .mp_bar
-      .player_magic_list
-      .enemy_magic_list
+      .player_magic_list.magic_list
+        .magic
+          .name
+            | プロテクト
+          .cost
+            | 40∞
+        .magic
+          .name
+            | 雷撃
+          .cost
+            | 70∞
+        .magic
+          .name
+            | 必殺 -桜花-
+          .cost
+            | 100
+        .magic
+          .name
+            | 霊撃
+          .cost
+            | 100
+        .magic
+          .name
+            | 応急治療
+          .cost
+            | 40
+      .enemy_magic_list.magic_list
+        .magic
+          .name
+            | 粘液
+          .cost
+            | 40
+        .magic
+          .name
+            | 自然治癒
+          .cost
+            | 70∞
+        .magic
+          .name
+            | 弱電撃
+          .cost
+            | 30∞
+        .magic
+          .name
+            | 崩壊
+          .cost
+            | 80
+        .magic
+          .name
+            | 大　壊　滅
+          .cost
+            | 100∞
 </template>
 
 <script lang="ts">
@@ -524,7 +574,31 @@ export default {
   }
 }
 
+.magic_list{
+  display: flex;
+  .magic{
+    margin: $thin_space / 2;
+    padding: $thin_space / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid $gray3;
+    border-radius: $radius;
+    width: 90px;
+    height: 60px;
+    .name, .cost{
+      text-align: center;
+    }
+  }
+}
 
+.player_magic_list{
+  justify-content: flex-start;
+}
+
+.enemy_magic_list{
+  justify-content: flex-end;
+}
 
 // -- -- --
 
@@ -608,14 +682,14 @@ export default {
   position: absolute;
   top: 480px;
   left: $space;
-  width: 470px;
-  height: 60px;
+  width: 500px;
+  height: 65px;
 }
 .enemy_magic_list{
   position: absolute;
   top: 480px;
   right: $space;
-  width: 470px;
-  height: 60px;
+  width: 500px;
+  height: 65px;
 }
 </style>
