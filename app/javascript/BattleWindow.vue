@@ -437,13 +437,13 @@ export default {
 
 .player_character{
   .spica{
-    width: 200px;
-    height: 200px;
+    width: 256px;
+    height: 256px;
     position: absolute;
   }
   .tirol{
-    width: 200px;
-    height: 200px;
+    width: 256px;
+    height: 256px;
     position: absolute;
     left: -50px;
   }
@@ -451,8 +451,8 @@ export default {
 
 .enemy_character{
   .enemy{
-    width: 200px;
-    height: 200px;
+    width: 256px;
+    height: 256px;
   }
 }
 
@@ -617,17 +617,17 @@ export default {
 
 .player_character{
   position: absolute;
-  top: $space;
-  left: 250px;
-  width: 200px;
-  height: 200px;
+  top: 0;
+  left: 230px;
+  width: 256px;
+  height: 256px;
 }
 .enemy_character{
   position: absolute;
-  top: $space;
-  right: 250px;
-  width: 200px;
-  height: 200px;
+  top: 0;
+  right: 230px;
+  width: 256px;
+  height: 256px;
 }
 .player_hands{
   position: absolute;
@@ -645,15 +645,15 @@ export default {
 }
 .player_selecting_cards{
   position: absolute;
-  top: 220px;
-  left: 230px;
+  top: 260px;
+  left: 250px;
   width: 170px;
   height: 150px;
 }
 .enemy_selecting_cards{
   position: absolute;
-  top: 220px;
-  right: 230px;
+  top: 260px;
+  right: 250px;
   width: 170px;
   height: 150px;
 }
