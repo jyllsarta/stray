@@ -1,242 +1,65 @@
 <template lang="pug">
   .menu
     .full_covered_window
+      .engage.clickable(@click="postEngage")
+        | エンゲージ
+      .start.clickable(@click="localBattleStart")
+        | ローカルで戦闘してみる
       .player_character
         img.tirol(src="/images/battle/tirol.png")
         img.spica(src="/images/battle/spica.png")
       .enemy_character
         img.enemy(src="/images/battle/enemy.png")
       .player_hands.hands
-        .hand
+        .hand(v-for="card in playerHands"  @click="battle.selectCard(card.id)")
           .name
-            | ◆エリクシールハーフ
+            | {{card.name}}
           .value
             .power.value
-              | 194
+              | {{card.power()}}
             .sep
               | /
             .tech.value
-              | 885
-        .hand
-          .name
-            | ◆藻
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆原初の炎
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆がんもどき
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆原初の炎
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆竹馬
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆スリセルのロザリオ
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆原初の炎
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
+              | {{card.tech()}}
       .enemy_hands.hands
-        .hand
+        .hand(v-for="card in enemyHands")
           .name
-            | ◆つつく
+            | {{card.name}}
           .value
             .power.value
-              | 194
+              | {{card.power()}}
             .sep
               | /
             .tech.value
-              | 885
-        .hand
-          .name
-            | ◆のびる
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆爪
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆マシンガンα
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆召喚魔法
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆レーザービーム
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆ソードブレイカー
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆ミラーミラー
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-
+              | {{card.tech()}}
       .player_selecting_cards.hands
-        .hand
+        .hand(v-for="card in playerSelectingCards" @click="battle.selectCard(card.id)")
           .name
-            | ◆エリクシールハーフ
+            | {{card.name}}
           .value
             .power.value
-              | 194
+              | {{card.power()}}
             .sep
               | /
             .tech.value
-              | 885
-        .hand
-          .name
-            | ◆藻
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆原初の炎
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
+              | {{card.tech()}}
       .enemy_selecting_cards.hands
-        .hand
+        .hand(v-for="card in enemySelectingCards")
           .name
-            | ◆エリクシールハーフ
+            | {{card.name}}
           .value
             .power.value
-              | 194
+              | {{card.power()}}
             .sep
               | /
             .tech.value
-              | 885
-        .hand
-          .name
-            | ◆藻
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
-        .hand
-          .name
-            | ◆原初の炎
-          .value
-            .power.value
-              | 194
-            .sep
-              | /
-            .tech.value
-              | 885
+              | {{card.tech()}}
       .current_strength
         .player.strength
           .power
-            | 999
+            | {{playerPower}}
           .tech
-            | 999
+            | {{playerTech}}
         .sep
           .power
             | Pow
@@ -244,12 +67,12 @@
             | Tec
         .enemy.strength
           .power
-            | 999
+            | {{enemyPower}}
           .tech
-            | 999
+            | {{enemyTech}}
       .player_status.status
         .hp
-          | 4
+          | {{playerHp}}
         .mp
           | 100
         .bars
@@ -257,7 +80,7 @@
           .mp_bar
       .enemy_status.status
         .hp
-          | 18
+          | {{enemyHp}}
         .mp
           | 100
         .bars
@@ -348,6 +171,15 @@ export default {
     playerHands(){
       return this.battle?.player?.deck?.currentHands() || [];
     },
+    enemyHands(){
+      return this.battle?.enemy?.deck?.currentHands() || [];
+    },
+    playerSelectingCards(){
+      return this.battle.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
+    },
+    enemySelectingCards(){
+      return this.battle.enemyCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
+    },
     playerPower(){
       return this.battle.player?.powerAt(this.battle.selectingCardIds);
     },
@@ -427,6 +259,14 @@ export default {
 @import "stylesheets/global_setting";
 * {
   //outline: 1px solid #79f850;
+}
+
+.engage, .start{
+  position: relative;
+  z-index: 100;
+  width: 200px;
+  height: 50px;
+  left: 600px;
 }
 
 // -- -- --
