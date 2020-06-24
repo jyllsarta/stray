@@ -11,4 +11,5 @@
 #
 
 class Enemy < ApplicationRecord
+  has_many :enemy_cards
 end

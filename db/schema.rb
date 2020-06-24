@@ -12,6 +12,16 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
+  create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "str", default: 0
+    t.integer "dex", default: 0
+    t.integer "def", default: 0
+    t.integer "agi", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "dungeons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -29,6 +39,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "denomination_factor", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "enemy_cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "enemy_id"
+    t.bigint "card_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_enemy_cards_on_card_id"
+    t.index ["enemy_id"], name: "index_enemy_cards_on_enemy_id"
   end
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

@@ -1,0 +1,8 @@
+create_table "cards", force: :cascade  do |t|
+  t.string :name
+  t.integer :str, default: 0
+  t.integer :dex, default: 0
+  t.integer :def, default: 0
+  t.integer :agi, default: 0
+  t.timestamps
+end

@@ -1,18 +1,13 @@
 # == Schema Information
 #
-# Table name: items
+# Table name: enemies
 #
-#  id          :bigint           not null, primary key
-#  agi         :integer          default(0)
-#  base_rank   :integer          default(0)
-#  def         :integer          default(0)
-#  dex         :integer          default(0)
-#  flavor_text :string(255)
-#  name        :string(255)
-#  rarity      :integer          default(1)
-#  str         :integer          default(0)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                  :bigint           not null, primary key
+#  denomination_factor :integer          default(1)
+#  hp                  :integer          default(0)
+#  name                :string(255)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 FactoryBot.define do

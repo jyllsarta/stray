@@ -1,0 +1,5 @@
+create_table "enemy_cards", force: :cascade  do |t|
+  t.belongs_to :enemy
+  t.belongs_to :card
+  t.timestamps
+end
