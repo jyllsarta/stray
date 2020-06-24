@@ -54,6 +54,8 @@
               | /
             .tech.value
               | {{card.tech()}}
+      .decide(@click="playTurn()" :class="decideButtonClass")
+        | Decide!
       .current_strength
         .player.strength
           .power
@@ -196,7 +198,9 @@ export default {
     isDecidable(){
       return this.battle.selectingCardIds?.length === 3;
     },
-
+    decideButtonClass(){
+      return this.isDecidable ? "clickable" : "";
+    }
   },
   methods: {
     localBattleStart(){
@@ -396,6 +400,11 @@ export default {
   }
 }
 
+.decide{
+  text-align: center;
+  padding-top: (35px - $font-size-normal) / 2;
+}
+
 .player_status{
   .hp, .mp{
     right: 10px;
@@ -499,10 +508,17 @@ export default {
 }
 .current_strength{
   position: absolute;
-  top: 280px;
+  top: 260px;
   left: calc( #{$window-width / 2} - 75px );
   width: 150px;
   height: 80px;
+}
+.decide{
+  position: absolute;
+  top: 330px;
+  left: calc( #{$window-width / 2} - 75px );
+  width: 150px;
+  height: 40px;
 }
 .player_status{
   position: absolute;
