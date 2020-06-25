@@ -5,6 +5,7 @@ RSpec.describe QuestBattle, type: :model do
   let!(:dungeon){ Dungeon.create }
   let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
   let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
+  let!(:enemy){ create(:enemy, :with_card) unless Enemy.exists? }
   let(:user){ User.create }
 
   describe "#engage!" do

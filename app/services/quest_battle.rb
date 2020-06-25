@@ -65,64 +65,8 @@ class QuestBattle
   end
 
   def enemy_cards
-    [
-        {
-            id: 1,
-            str: 10,
-            dex: 0,
-            def: 10,
-            agi: 10,
-        },
-        {
-            id: 2,
-            str: 10,
-            dex: 10,
-            def: 0,
-            agi: 10,
-        },
-        {
-            id: 3,
-            str: 0,
-            dex: 10,
-            def: 10,
-            agi: 10,
-        },
-        {
-            id: 4,
-            str: 10,
-            dex: 10,
-            def: 10,
-            agi: 0,
-        },
-        {
-            id: 5,
-            str: 10,
-            dex: 0,
-            def: 0,
-            agi: 10,
-        },
-        {
-            id: 6,
-            str: 20,
-            dex: 20,
-            def: 20,
-            agi: 20,
-        },
-        {
-            id: 7,
-            str: 30,
-            dex: 30,
-            def: 0,
-            agi: 0,
-        },
-        {
-            id: 8,
-            str: 0,
-            dex: 0,
-            def: 40,
-            agi: 40,
-        },
-    ]
+    ActiveRecord::Associations::Preloader.new.preload( enemy, {enemy_cards: [:card]})
+    enemy.enemy_cards.map(&:card).map(&:attributes).map{|x| x.slice('name', 'str', 'dex', 'def', 'agi')}.each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)

@@ -15,5 +15,13 @@ FactoryBot.define do
     name { "ゴーレム" }
     hp { 5 }
     denomination_factor { 1 }
+
+    trait :with_card do
+      after(:create) do |enemy|
+        4.times do
+          enemy.enemy_cards << FactoryBot.create(:enemy_card, :with_card, enemy: enemy)
+        end
+      end
+    end
   end
 end
