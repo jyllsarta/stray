@@ -27,7 +27,7 @@
       | 能力解放
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'battle', state: true})"
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: true})"
     )
       | 強敵戦
 </template>
@@ -36,7 +36,6 @@
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import ax from "./packs/axios_default_setting.ts";
-
 
 export default {
   data: function () {

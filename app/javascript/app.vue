@@ -20,6 +20,8 @@
       transition(name="open_window")
         RelicWindow(v-if="$store.state.window.relic")
       transition(name="open_window")
+        BattlePrepareWindow(v-if="$store.state.window.battle_prepare")
+      transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
       Api(ref="api")
       Timer
@@ -45,6 +47,7 @@ import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
 import RelicWindow from './RelicWindow'
+import BattlePrepareWindow from './BattlePrepareWindow'
 import BattleWindow from './BattleWindow'
 import Timer from './Timer'
 import MessageForm from './MessageForm'
@@ -70,6 +73,7 @@ export default {
     EquipDetailWindow,
     SwitchDungeonWindow,
     RelicWindow,
+    BattlePrepareWindow,
     BattleWindow,
     TransitionFrame,
     LoadingFrame,
