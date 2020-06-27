@@ -9,6 +9,14 @@
       .description
         | 強敵と戦います。
       .body
+        .characters
+          img.tirol(src="/images/battle/tirol.png")
+          img.spica(src="/images/battle/spica.png")
+        .player_magic_list
+          MagicList(:isPlayer="true")
+        .enemy_magic_list
+          MagicList(:isPlayer="false")
+
 </template>
 
 <script lang="ts">
@@ -16,8 +24,12 @@
   import store from './packs/store.ts'
   import axios from 'axios'
   import ax from "./packs/axios_default_setting.ts";
+  import MagicList from "./MagicList.vue";
 
   export default {
+    components: {
+      MagicList
+    },
     data: function () {
       return {
       };
@@ -40,5 +52,36 @@
     border-bottom: 1px solid $gray3;
   }
   .body {
+    .characters{
+      position: absolute;
+      bottom: $space + 70px;
+      left: $space;
+      .spica{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 256px;
+        height: 256px;
+      }
+      .tirol{
+        position: absolute;
+        bottom: 0;
+        left: -50px;
+        width: 256px;
+        height: 256px;
+      }
+    }
+
+    .player_magic_list{
+      position: absolute;
+      bottom: $thin_space;
+      left: $thin_space;
+    }
+    .enemy_magic_list{
+      position: absolute;
+      bottom: $thin_space;
+      right: $thin_space;
+    }
   }
+
 </style>

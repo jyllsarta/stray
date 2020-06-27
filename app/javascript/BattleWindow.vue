@@ -464,14 +464,14 @@ export default {
 }
 .player_magic_list{
   position: absolute;
-  top: 480px;
+  bottom: $space;
   left: $space;
   width: 500px;
   height: 65px;
 }
 .enemy_magic_list{
   position: absolute;
-  top: 480px;
+  bottom: $space;
   right: $space;
   width: 500px;
   height: 65px;

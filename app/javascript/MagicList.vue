@@ -85,25 +85,4 @@ export default {
 .enemy_magic_list{
   justify-content: flex-end;
 }
-
-// -- -- --
-
-// ウィンドウ位置定義
-
-// -- -- --
-
-.player_magic_list{
-  position: absolute;
-  top: 480px;
-  left: $space;
-  width: 500px;
-  height: 65px;
-}
-.enemy_magic_list{
-  position: absolute;
-  top: 480px;
-  right: $space;
-  width: 500px;
-  height: 65px;
-}
 </style>
