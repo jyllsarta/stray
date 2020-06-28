@@ -82,6 +82,12 @@
           .mp_bar
       MagicList(:isPlayer="true")
       MagicList(:isPlayer="false")
+      transition(name="open_window")
+        .result_popup(v-if="finished")
+          .done.clickable(@click="endGame()")
+            | OK
+          img.result_image(:src="`/images/battle/outcome/${outcome}.png`")
+
 </template>
 
 <script lang="ts">
@@ -103,6 +109,8 @@ export default {
     return {
       battle: {},
       input: null,
+      finished: false,
+      outcome: "",
     };
   },
   store,
@@ -200,13 +208,27 @@ export default {
           console.log(results);
           console.log("OK");
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
+          this.finished = true;
+          if(results.data.isDraw){
+            this.outcome = "draw";
+          }
+          else if(results.data.isWin){
+            this.outcome = "win";
+          }
+          else{
+            this.outcome = "lose";
+          }
         })
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
         });
-    }
-  }
+    },
+    endGame(){
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false})
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false})
+    },
+  },
 }
 </script>
 
@@ -347,6 +369,26 @@ export default {
   }
   .bars{
     align-items: flex-start;
+  }
+}
+
+.result_popup{
+  position: absolute;
+  width: 800px;
+  top: 50px;
+  left: ($window-width - 800px) / 2;
+  .result_image{
+    width: 100%;
+  }
+  .done{
+    position: absolute;
+    bottom: 80px;
+    left: calc((100% - 150px) / 2);
+    width: 150px;
+    height: 50px;
+    padding-top: (50px - $font-size-normal) / 2;
+    line-height: 100%;
+    text-align: center;
   }
 }
 
