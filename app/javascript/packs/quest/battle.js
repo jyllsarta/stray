@@ -29,10 +29,12 @@ module.exports = class Battle{
     selectCard(cardId){
         if(this.selectingCardIds.includes(cardId)){
             this.selectingCardIds = this.selectingCardIds.filter(n => n !== cardId);
+            return;
         }
-        else{
-            this.selectingCardIds.push(cardId);
+        if(this.selectingCardIds.length === 3){
+            return;
         }
+        this.selectingCardIds.push(cardId);
     }
 
     playTurn(){
