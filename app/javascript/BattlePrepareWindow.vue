@@ -22,6 +22,11 @@
           :cards="dummyDeck"
           :right-side="true"
         )
+        .enemy_list
+        .status_area
+        .player_rank
+        .open_magic_window
+        .switch_deck_type
         .player_magic_list
           MagicList(:isPlayer="true")
         .enemy_magic_list
@@ -72,6 +77,11 @@
 
 <style lang="scss" scoped>
   @import "stylesheets/global_setting";
+
+  *{
+    outline: 1px solid #79f850;
+  }
+
   .description{
     padding: $space;
     white-space: pre-wrap;
@@ -96,17 +106,6 @@
         width: 256px;
         height: 256px;
       }
-    }
-
-    .player_magic_list{
-      position: absolute;
-      bottom: $thin_space;
-      left: $thin_space;
-    }
-    .enemy_magic_list{
-      position: absolute;
-      bottom: $thin_space;
-      right: $thin_space;
     }
 
     .enemy_character{
@@ -137,6 +136,57 @@
       outline: 1px solid #79f850;
     }
 
+    .enemy_list{
+      position: absolute;
+      right: $space;
+      top: 100px;
+      width: 200px;
+      height: 200px;
+    }
+
+    .status_area{
+      position: absolute;
+      left: calc((100% - 250px) / 2);
+      top: 300px;
+      width: 250px;
+      height: 100px;
+    }
+
+    .player_rank{
+      position: absolute;
+      left: $space;
+      top: 100px;
+      width: 200px;
+      height: 100px;
+    }
+
+    .open_magic_window{
+      position: absolute;
+      left: 270px;
+      bottom: 75px;
+      width: 100px;
+      height: 40px;
+    }
+
+    .switch_deck_type{
+      position: absolute;
+      left: 370px;
+      top: 100px;
+      width: 70px;
+      height: 30px;
+    }
+
+    .player_magic_list{
+      position: absolute;
+      bottom: $thin_space;
+      left: $thin_space;
+    }
+    .enemy_magic_list{
+      position: absolute;
+      bottom: $thin_space;
+      right: $thin_space;
+    }
+
     .battle_start{
       position: absolute;
       bottom: 80px;
@@ -147,5 +197,7 @@
       line-height: 100%;
       text-align: center;
     }
+
+
   }
 </style>
