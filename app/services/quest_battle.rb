@@ -1,6 +1,5 @@
 class QuestBattle
   class NoCache < StandardError; end
-  class DuplicateEngage < StandardError; end
 
   def initialize(user)
     @user = user
@@ -11,8 +10,8 @@ class QuestBattle
 
     cache = Cache.new(@user)
     if cache.exist?
+      # 多重エンゲージはかつて例外対象としていたが、リロード時とかに余計な例外を吐くだけだったので黙ってキャッシュ削除でいいことにした
       cache.delete
-      raise DuplicateEngage
     end
     @seed = random_seed
     cache.write(content)

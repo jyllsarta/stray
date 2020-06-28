@@ -14,15 +14,6 @@ RSpec.describe QuestBattle, type: :model do
       subject
       expect(Rails.cache.read("quest:#{user.id}")).to_not be_nil
     end
-
-    context "duplicates" do
-      before do
-        quest_battle.engage! # 事前に一回キャッシュを積む
-      end
-      it "raises error" do
-        expect{subject}.to raise_error QuestBattle::DuplicateEngage
-      end
-    end
   end
 
   describe "#showdown!" do
