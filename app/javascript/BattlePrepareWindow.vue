@@ -14,6 +14,14 @@
           img.spica(src="/images/battle/spica.png")
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
+        CardList.player_deck(
+          :cards="dummyDeck"
+          :right-side="false"
+        )
+        CardList.enemy_deck(
+          :cards="dummyDeck"
+          :right-side="true"
+        )
         .player_magic_list
           MagicList(:isPlayer="true")
         .enemy_magic_list
@@ -28,10 +36,13 @@
   import axios from 'axios'
   import ax from "./packs/axios_default_setting.ts";
   import MagicList from "./MagicList.vue";
+  import CardList from "./CardList.vue";
+  import Card from "./packs/quest/card";
 
   export default {
     components: {
-      MagicList
+      MagicList,
+      CardList,
     },
     data: function () {
       return {
@@ -42,6 +53,13 @@
     mounted(){
     },
     computed: {
+      dummyDeck(){
+          const deck=[]
+        for(let i=0;i<7;++i){
+            deck.push(new Card(i, "test", 1, 2, 3, 4,));
+        }
+        return deck;
+      }
     },
     methods: {
       startBattle(){
@@ -99,6 +117,24 @@
         width: 256px;
         height: 256px;
       }
+    }
+
+    .player_deck{
+      position: absolute;
+      left: 200px;
+      top: 100px;
+      width: 220px;
+      height: 310px;
+      outline: 1px solid #79f850;
+    }
+
+    .enemy_deck{
+      position: absolute;
+      right: 200px;
+      top: 100px;
+      width: 220px;
+      height: 310px;
+      outline: 1px solid #79f850;
     }
 
     .battle_start{
