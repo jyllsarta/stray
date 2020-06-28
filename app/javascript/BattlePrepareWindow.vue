@@ -12,6 +12,8 @@
         .characters
           img.tirol(src="/images/battle/tirol.png")
           img.spica(src="/images/battle/spica.png")
+        .enemy_character
+          img.enemy(src="/images/battle/enemy.png")
         .player_magic_list
           MagicList(:isPlayer="true")
         .enemy_magic_list
@@ -81,6 +83,16 @@
       position: absolute;
       bottom: $thin_space;
       right: $thin_space;
+    }
+    
+    .enemy_character{
+      position: absolute;
+      bottom: $space + 70px;
+      right: $space;
+      .enemy{
+        width: 256px;
+        height: 256px;
+      }
     }
   }
 
