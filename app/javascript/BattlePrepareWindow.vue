@@ -84,7 +84,7 @@
       bottom: $thin_space;
       right: $thin_space;
     }
-    
+
     .enemy_character{
       position: absolute;
       bottom: $space + 70px;
@@ -95,5 +95,4 @@
       }
     }
   }
-
 </style>
