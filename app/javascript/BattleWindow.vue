@@ -1,10 +1,6 @@
 <template lang="pug">
   .menu
     .full_covered_window
-      .engage.clickable(@click="postEngage")
-        | エンゲージ
-      .start.clickable(@click="localBattleStart")
-        | ローカルで戦闘してみる
       .player_character
         img.tirol(src="/images/battle/tirol.png")
         img.spica(src="/images/battle/spica.png")
@@ -111,6 +107,7 @@ export default {
   },
   store,
   mounted(){
+    this.postEngage();
   },
   computed: {
     enemyName(){
@@ -178,12 +175,14 @@ export default {
     },
 
     postEngage(){
-      const path = `/enemies/-1/engage.json`;
+      const enemyId = this.$store.state.battle.enemy_id;
+      const path = `/enemies/${enemyId}/engage.json`;
       ax.post(path)
         .then((results) => {
           console.log(results);
           console.log("OK");
           this.input = results.data;
+          this.localBattleStart();
         })
         .catch((error) => {
           console.warn(error.response);

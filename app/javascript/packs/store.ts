@@ -10,6 +10,7 @@ import equip_window from "./store/equip_window.ts";
 import masterdata from "./store/masterdata.ts"
 import event from "./store/event.ts"
 import user from "./store/user.ts"
+import battle from "./store/battle.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -29,6 +30,7 @@ const store = new Vuex.Store({
     masterdata: masterdata,
     event: event,
     user: user,
+    battle: battle,
   }
 });
 export default store;

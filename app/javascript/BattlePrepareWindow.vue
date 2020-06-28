@@ -18,7 +18,8 @@
           MagicList(:isPlayer="true")
         .enemy_magic_list
           MagicList(:isPlayer="false")
-
+        .battle_start.clickable(@click="startBattle")
+          | 戦闘開始
 </template>
 
 <script lang="ts">
@@ -34,6 +35,7 @@
     },
     data: function () {
       return {
+        selectingEnemyId: 1,
       };
     },
     store,
@@ -42,6 +44,10 @@
     computed: {
     },
     methods: {
+      startBattle(){
+        this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
+      }
     },
   }
 </script>
@@ -93,6 +99,17 @@
         width: 256px;
         height: 256px;
       }
+    }
+
+    .battle_start{
+      position: absolute;
+      bottom: 80px;
+      left: calc((100% - 150px) / 2);
+      width: 150px;
+      height: 50px;
+      padding-top: (50px - $font-size-normal) / 2;
+      line-height: 100%;
+      text-align: center;
     }
   }
 </style>
