@@ -6,46 +6,24 @@
         img.spica(src="/images/battle/spica.png")
       .enemy_character
         img.enemy(src="/images/battle/enemy.png")
-      .player_hands.hands
-        .hand(
-          v-for="card in playerHands"
-          @click="battle.selectCard(card.id)"
-          )
-          Card(
-            :name="card.name",
-            :power="card.power()",
-            :tech="card.tech()",
-            :key="card.id",
-            )
-      .enemy_hands.hands
-        Card(
-          v-for="card in enemyHands",
-          :name="card.name",
-          :power="card.power()",
-          :tech="card.tech()",
-          :rightSide="true"
-          :key="card.id",
-        )
-      .player_selecting_cards.hands
-        .hand(
-          v-for="card in playerSelectingCards"
-          @click="battle.selectCard(card.id)"
-          )
-          Card(
-            @click="battle.selectCard(card.id)",
-            :name="card.name",
-            :power="card.power()",
-            :tech="card.tech()",
-            :key="card.id",
-          )
-      .enemy_selecting_cards.hands
-        Card(
-          v-for="card in enemySelectingCards",
-          :name="card.name",
-          :power="card.power()",
-          :tech="card.tech()",
-          :key="card.id",
-        )
+      CardList.player_hands(
+        :cards="playerHands"
+        :right-side="false"
+        @onClick="selectCard"
+      )
+      CardList.enemy_hands(
+        :cards="enemyHands"
+        :right-side="true"
+      )
+      CardList.player_selecting_cards(
+        :cards="playerSelectingCards"
+        :right-side="false"
+        @onClick="selectCard"
+      )
+      CardList.enemy_selecting_cards(
+        :cards="enemySelectingCards"
+        :right-side="true"
+      )
       .decide(@click="playTurn()" :class="decideButtonClass")
         | Decide!
       .current_strength
@@ -97,13 +75,13 @@ import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
 import MagicList from "./MagicList.vue";
-import Card from "./Card.vue";
+import CardList from "./CardList.vue";
 
 
 export default {
   components: {
     MagicList,
-    Card
+    CardList,
   },
   data: function () {
     return {
@@ -166,6 +144,10 @@ export default {
         return;
       }
       this.battle = new BattleFactory(this.input).getBattle();
+    },
+
+    selectCard(cardId){
+      this.battle?.selectCard(cardId);
     },
 
     playTurn(){
@@ -270,32 +252,6 @@ export default {
   .enemy{
     width: 256px;
     height: 256px;
-  }
-}
-
-.hands{
-  display: flex;
-  flex-direction: column;
-}
-
-.player_hands{
-  .hand{
-    @for $i from 1 through 8 {
-      &:nth-child(#{$i}){
-        padding-left: $i * 6px;
-      }
-    }
-  }
-}
-
-.enemy_hands{
-  text-align: right;
-  .hand{
-    @for $i from 1 through 8 {
-      &:nth-child(#{$i}){
-        padding-right: $i * 6px;
-      }
-    }
   }
 }
 

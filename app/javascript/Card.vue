@@ -1,5 +1,5 @@
 <template lang="pug">
-.hand
+.hand(@click="onClick")
   .name
     | {{name}}
   .value(:class="rightSide ? 'right_side' : ''")
@@ -14,11 +14,17 @@
 <script lang="ts">
 export default {
   props: {
+      id: Number,
       name: String,
       power: Number,
       tech: Number,
       rightSide: Boolean,
   },
+  methods: {
+    onClick(){
+      this.$emit('onClick', this.id);
+    }
+  }
 }
 </script>
 
