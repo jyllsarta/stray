@@ -26,7 +26,12 @@
         .status_area
         .player_rank
         .open_magic_window
+          | 魔法選択
         .switch_deck_type
+          .class_cards
+            | クラスカード
+          .equip_cards.active
+            | 装備
         .player_magic_list
           MagicList(:isPlayer="true")
         .enemy_magic_list
@@ -79,7 +84,7 @@
   @import "stylesheets/global_setting";
 
   *{
-    outline: 1px solid #79f850;
+    //outline: 1px solid #79f850;
   }
 
   .description{
@@ -121,19 +126,17 @@
     .player_deck{
       position: absolute;
       left: 200px;
-      top: 100px;
+      top: 120px;
       width: 220px;
       height: 310px;
-      outline: 1px solid #79f850;
     }
 
     .enemy_deck{
       position: absolute;
       right: 200px;
-      top: 100px;
+      top: 120px;
       width: 220px;
       height: 310px;
-      outline: 1px solid #79f850;
     }
 
     .enemy_list{
@@ -162,18 +165,35 @@
 
     .open_magic_window{
       position: absolute;
-      left: 270px;
+      left: 230px;
       bottom: 75px;
-      width: 100px;
-      height: 40px;
+      width: 170px;
+      height: 35px;
+      border-radius: $radius;
+      padding-top: ((35px - $font-size-normal) / 2);
+      text-align: center;
+      border: 1px solid $gray3;
+      line-height: 100%;
     }
 
     .switch_deck_type{
       position: absolute;
-      left: 370px;
-      top: 100px;
-      width: 70px;
-      height: 30px;
+      left: 180px;
+      top: 90px;
+      width: 240px;
+      height: 28px;
+      display: flex;
+      .class_cards, .equip_cards{
+        border-radius: $radius;
+        width: 120px;
+        height: 100%;
+        padding: 2px;
+        text-align: center;
+        border: 1px solid $gray3;
+      }
+      .active{
+        background-color: $gray3;
+      }
     }
 
     .player_magic_list{
