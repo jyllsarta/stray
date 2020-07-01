@@ -103,3 +103,10 @@
     background-color: $gray3;
   }
 }
+
+@mixin centering($height){
+  height: $height;
+  padding-top: (($height - $font-size-normal) / 2);
+  line-height: 100%;
+  text-align: center;
+}

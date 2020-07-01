@@ -23,6 +23,41 @@
           :right-side="true"
         )
         .enemy_list
+          .enemy.clickable
+            .name
+              | スライム
+            .rank
+              | 30
+          .enemy.clickable
+            .name
+              | なんか別の
+            .rank
+              | 40
+          .enemy.clickable
+            .name
+              | 騎士
+            .rank
+              | 99
+          .enemy.clickable
+            .name
+              | 騎士
+            .rank
+              | 99
+          .enemy.clickable
+            .name
+              | 騎士
+            .rank
+              | 99
+          .enemy.clickable
+            .name
+              | 騎士
+            .rank
+              | 99
+          .enemy.clickable
+            .name
+              | 騎士
+            .rank
+              | 99
         .status_area
         .player_rank
         .open_magic_window
@@ -64,7 +99,7 @@
     },
     computed: {
       dummyDeck(){
-          const deck=[]
+          const deck=[];
         for(let i=0;i<7;++i){
             deck.push(new Card(i, "test", 1, 2, 3, 4,));
         }
@@ -125,7 +160,7 @@
 
     .player_deck{
       position: absolute;
-      left: 200px;
+      left: 220px;
       top: 120px;
       width: 220px;
       height: 310px;
@@ -133,7 +168,7 @@
 
     .enemy_deck{
       position: absolute;
-      right: 200px;
+      right: 220px;
       top: 120px;
       width: 220px;
       height: 310px;
@@ -145,6 +180,20 @@
       top: 100px;
       width: 200px;
       height: 200px;
+      overflow: scroll;
+      .enemy{
+        @include centering($height: 30px);
+        margin: 2px;
+        width: calc(100% - 15px);
+        .name, .rank{
+          display: inline-block;
+          text-align: left;
+          width: calc(100% - 2.5em);
+        }
+        .rank{
+          width: 2em;
+        }
+      }
     }
 
     .status_area{
@@ -168,12 +217,9 @@
       left: 230px;
       bottom: 75px;
       width: 170px;
-      height: 35px;
       border-radius: $radius;
-      padding-top: ((35px - $font-size-normal) / 2);
-      text-align: center;
+      @include centering($height: 35px);
       border: 1px solid $gray3;
-      line-height: 100%;
     }
 
     .switch_deck_type{
@@ -212,12 +258,7 @@
       bottom: 80px;
       left: calc((100% - 150px) / 2);
       width: 150px;
-      height: 50px;
-      padding-top: (50px - $font-size-normal) / 2;
-      line-height: 100%;
-      text-align: center;
+      @include centering($height: 50px);
     }
-
-
   }
 </style>
