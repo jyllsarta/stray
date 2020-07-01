@@ -60,6 +60,10 @@
               | 99
         .status_area
         .player_rank
+          .desc
+            | 平均装備ランク：
+          .rank
+            | 231
         .open_magic_window
           | 魔法選択
         .switch_deck_type
@@ -208,8 +212,13 @@
       position: absolute;
       left: $space;
       top: 100px;
-      width: 200px;
+      width: 140px;
       height: 100px;
+      .rank{
+        font-size: $font-size-large;
+        width: 100%;
+        text-align: right;
+      }
     }
 
     .open_magic_window{
