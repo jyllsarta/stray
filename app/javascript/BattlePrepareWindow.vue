@@ -59,6 +59,41 @@
             .rank
               | 99
         .status_area
+          .status
+            .player
+              | 1219
+            .label
+              | 平均IR
+            .enemy
+              | 9974
+          .status
+            .player
+              | 1
+            .label
+              | 力威力
+            .enemy
+              | 1
+          .status
+            .player
+              | 1
+            .label
+              | 技威力
+            .enemy
+              | 1
+          .status
+            .player
+              | 1
+            .label
+              | SP威力
+            .enemy
+              | 1
+          .status
+            .player
+              | 5
+            .label
+              | HP
+            .enemy
+              | 14
         .player_rank
           .desc
             | 平均装備ランク：
@@ -202,10 +237,24 @@
 
     .status_area{
       position: absolute;
-      left: calc((100% - 250px) / 2);
-      top: 300px;
-      width: 250px;
+      left: calc((100% - 180px) / 2);
+      top: 200px;
+      width: 180px;
       height: 100px;
+      .status{
+        padding: $thin_space;
+        width: 100%;
+        display: flex;
+        text-align: center;
+        align-items: baseline;
+        .player, .enemy{
+          width: 35%;
+          font-size: $font-size-large;
+        }
+        .label{
+          width: 30%;
+        }
+      }
     }
 
     .player_rank{
@@ -213,7 +262,7 @@
       left: $space;
       top: 100px;
       width: 140px;
-      height: 100px;
+      height: 60px;
       .rank{
         font-size: $font-size-large;
         width: 100%;
