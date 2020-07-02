@@ -2,6 +2,43 @@ require 'rails_helper'
 require 'json_expressions/rspec'
 
 RSpec.describe "Enemies", type: :request do
+
+  describe "POST /enemies/" do
+    include_context("stub_current_user")
+    let!(:enemy ) { create(:enemy)}
+    let(:user){ create(:user) }
+    let(:do_get) { get enemies_path + ".json" }
+    let(:params) do
+      {}
+    end
+    subject do
+      do_get
+      response
+    end
+
+    context "succeeds" do
+      it 'succeeds' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     enemies: Array,
+                                                 }
+                                             )
+      end
+      it 'succeeds' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)&.[]('enemies')&.first).to match_json_expression(
+                                                 {
+                                                     id: Integer,
+                                                     name: String,
+                                                     hp: Integer,
+                                                     denomination_factor: Integer,
+                                                 }
+                                             )
+      end
+    end
+  end
+
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
     let!(:enemy ) { create(:enemy)}

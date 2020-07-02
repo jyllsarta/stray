@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   resources :messages, only: [:index, :create]
   resources :masterdata, only: [:index]
 
-  resources :enemies, only: [] do
+  resources :enemies, only: [:index] do
     post :engage
     post :showdown
   end

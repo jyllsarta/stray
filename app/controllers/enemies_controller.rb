@@ -1,4 +1,8 @@
 class EnemiesController < ApplicationController
+  def index
+    @enemies = Enemy.all
+  end
+
   def engage
     quest = QuestBattle.new(current_user)
     quest.engage!
