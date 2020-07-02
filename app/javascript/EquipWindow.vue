@@ -66,7 +66,7 @@
               .in_window.window
                 .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5]", @click="onClickChangeSortLambdaButton(i)")
                   | {{$store.getters['equip_window/sortLambdas'](i).name}}
-          .item_list
+          .item_list.scrollable
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
@@ -599,21 +599,6 @@ export default {
         flex-direction: column;
         height: calc(100% - 50px - #{$font-size-normal});
         padding: $thin_space;
-        overflow-y: scroll;
-        &::-webkit-scrollbar{
-          width: 10px;
-        }
-        &::-webkit-scrollbar-track{
-          background: transparent;
-          border: none;
-          border-radius: $radius;
-          box-shadow: inset 0 0 2px #777;
-        }
-        &::-webkit-scrollbar-thumb{
-          background: $gray2;
-          border-radius: $radius;
-          box-shadow: none;
-        }
       }
     }
     .disabled{

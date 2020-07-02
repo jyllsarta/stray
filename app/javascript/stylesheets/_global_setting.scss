@@ -110,3 +110,21 @@
   line-height: 100%;
   text-align: center;
 }
+
+.scrollable{
+  overflow-y: scroll;
+  &::-webkit-scrollbar{
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track{
+    background: transparent;
+    border: none;
+    border-radius: $radius;
+    box-shadow: inset 0 0 2px #777;
+  }
+  &::-webkit-scrollbar-thumb{
+    background: $gray2;
+    border-radius: $radius;
+    box-shadow: none;
+  }
+}

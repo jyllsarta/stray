@@ -22,7 +22,7 @@
           :cards="dummyDeck"
           :right-side="true"
         )
-        .enemy_list
+        .enemy_list.scrollable
           .enemy.clickable
             .name
               | スライム
@@ -219,7 +219,6 @@
       top: 100px;
       width: 200px;
       height: 200px;
-      overflow: scroll;
       .enemy{
         @include centering($height: 30px);
         margin: 2px;
