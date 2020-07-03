@@ -11,6 +11,38 @@
 require 'rails_helper'
 
 RSpec.describe User::Item, type: :model do
+
+  describe "#to_card" do
+    let(:user){ create(:user) }
+    subject { user_item.to_card }
+
+    context "ベース検証" do
+      let(:item){ create(:item, str: 100, dex: 100, def: 200, agi: 0, rarity: 1, name: "ぴよ") }
+      let(:user_item){ create(:user_item, user: user, item: item) }
+
+      it "returns parameter for card" do
+        expect(subject).to eq({
+                                  name: "ぴよ",
+                                  power: 7,
+                                  tech: 2
+                              })
+      end
+    end
+
+    context "高レアリティアイテム" do
+      let(:item){ create(:item, str: 100, dex: 100, def: 200, agi: 0, rarity: 5, name: "ぴよ") }
+      let(:user_item){ create(:user_item, user: user, item: item) }
+
+      it "returns parameter for card" do
+        expect(subject).to eq({
+                                  name: "ぴよ",
+                                  power: 16,
+                                  tech: 5
+                              })
+      end
+    end
+  end
+
   describe "#parameter" do
     let(:user){ create(:user) }
     subject { user_item.parameter }

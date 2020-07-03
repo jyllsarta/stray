@@ -32,7 +32,7 @@ class QuestBattle
         playerHp: 5,
         enemyName: enemy.name,
         enemyHp: enemy.hp,
-        playerCards: player_cards,
+        playerCards: DeckBuilder.new(@user).deck,
         enemyCards: enemy_cards,
     }.to_json
   end
@@ -41,19 +41,6 @@ class QuestBattle
 
   def enemy
     @enemy ||= Enemy.last
-  end
-
-  def denomination_factor
-    enemy.denomination_factor
-  end
-
-  def player_cards
-    # ユーザ装備の配列を2ペアつくってそれをまとめてデッキにぽい
-    # TODO: 装備欄を埋めずにいると有利になってしまうので空枠を許さないようにする or 埋めた方が得になる設計にする
-    # → ブランクカードはそのまま 0/0 で埋めればいいじゃん
-    result = []
-    (@user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:to_card) * 2).compact.each_with_index { |v, i| result.push(v.merge(id: i+1))}
-    result
   end
 
   def enemy_cards

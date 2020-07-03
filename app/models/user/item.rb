@@ -17,8 +17,8 @@ class User::Item < ApplicationRecord
   def to_card
     param = self.parameter
     {
-        power: (param[:def] + param[:str]) / 2,
-        tech: (param[:dex] + param[:agi]) / 2,
+        power: ((item.def + item.str) * rarity_factor(item.rarity) / 40).floor,
+        tech: ((item.dex + item.agi) * rarity_factor(item.rarity) / 40).floor,
         name: self.item.name,
     }
   end
