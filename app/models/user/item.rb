@@ -14,6 +14,15 @@ class User::Item < ApplicationRecord
   class InsufficientCoin < StandardError; end
   class InsufficientRank < StandardError; end
 
+  def to_card
+    param = self.parameter
+    {
+        power: (param[:def] + param[:str]) / 2,
+        tech: (param[:dex] + param[:agi]) / 2,
+        name: self.item.name,
+    }
+  end
+
   def parameter
     # ActiveRecord のmodel にslice をかけるとキーが文字列化するようなので symbolize_name を通してから処理する
     item.slice(:str, :dex, :def, :agi).map{|k,v| [k.to_sym, v] }.to_h.map do |name, value|

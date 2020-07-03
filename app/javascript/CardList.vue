@@ -4,8 +4,8 @@
       v-for="card in cards",
       :id="card.id",
       :name="card.name",
-      :power="card.power()",
-      :tech="card.tech()",
+      :power="card.power",
+      :tech="card.tech",
       :rightSide="rightSide"
       :key="card.id",
       @onClick="$emit('onClick', card.id)"

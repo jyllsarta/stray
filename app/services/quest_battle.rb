@@ -47,25 +47,18 @@ class QuestBattle
     enemy.denomination_factor
   end
 
-  def card(id, user_item)
-    denominated_parameter = user_item.parameter.transform_values{ |v| v / denomination_factor }
-    {
-        id: id,
-        name: user_item.full_name
-    }.merge(denominated_parameter)
-  end
-
   def player_cards
     # ユーザ装備の配列を2ペアつくってそれをまとめてデッキにぽい
     # TODO: 装備欄を埋めずにいると有利になってしまうので空枠を許さないようにする or 埋めた方が得になる設計にする
+    # → ブランクカードはそのまま 0/0 で埋めればいいじゃん
     result = []
-    (@user.characters.map(&:equips).flatten.map(&:user_item) * 2).compact.each_with_index { |v, i| result.push(card(i + 1, v))}
+    (@user.characters.map(&:equips).flatten.map(&:user_item).map(&:to_card) * 2).compact.each_with_index { |v, i| result.push(v.merge(id: i+1))}
     result
   end
 
   def enemy_cards
     ActiveRecord::Associations::Preloader.new.preload( enemy, {enemy_cards: [:card]})
-    enemy.enemy_cards.map(&:card).map(&:attributes).map{|x| x.slice('name', 'str', 'dex', 'def', 'agi')}.each_with_index{|x, i| x.merge!(id: i+1)}
+    enemy.enemy_cards.map(&:card).map(&:attributes).map{|x| x.slice('name', 'power', 'tech')}.each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)

@@ -18,7 +18,7 @@ module.exports = class Character{
         if(cards.length === 0){
             return 0;
         }
-        return cards.map((c)=>c.power()).reduce((a,b)=>(a+b));
+        return cards.map((c)=>c.power).reduce((a,b)=>(a+b));
     }
 
     techAt(cardIds){
@@ -26,6 +26,6 @@ module.exports = class Character{
         if(cards.length === 0){
             return 0;
         }
-        return cards.map((c)=>c.tech()).reduce((a,b)=>(a+b));
+        return cards.map((c)=>c.tech).reduce((a,b)=>(a+b));
     }
 };
