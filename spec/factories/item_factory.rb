@@ -17,6 +17,7 @@
 
 FactoryBot.define do
   factory :item, class: 'Item' do
+    name { "あいてむ" }
     rarity { 1 }
     base_rank { 0 }
   end

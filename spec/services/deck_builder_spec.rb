@@ -25,14 +25,22 @@ RSpec.describe DeckBuilder, type: :model do
 
     it "returns this" do
       expect(subject).to eq([
-                                {:power=>5, :tech=>5, :name=>nil, :id=>1},
-                                {:power=>2, :tech=>2, :name=>nil, :id=>2},
-                                {:power=>2, :tech=>2, :name=>nil, :id=>3},
-                                {:power=>11, :tech=>11, :name=>nil, :id=>4},
-                                {:power=>5, :tech=>5, :name=>nil, :id=>5},
-                                {:power=>2, :tech=>2, :name=>nil, :id=>6},
-                                {:power=>2, :tech=>2, :name=>nil, :id=>7},
-                                {:power=>11, :tech=>11, :name=>nil, :id=>8}
+                                {:id=>1, :name=>"あいてむ", :power=>5, :tech=>5},
+                                {:id=>2, :name=>"あいてむ", :power=>2, :tech=>2},
+                                {:id=>3, :name=>"あいてむ", :power=>2, :tech=>2},
+                                {:id=>4, :name=>"あいてむ", :power=>11, :tech=>11},
+                                {:id=>5, :name=>"あいてむ", :power=>5, :tech=>5},
+                                {:id=>6, :name=>"あいてむ", :power=>2, :tech=>2},
+                                {:id=>7, :name=>"あいてむ", :power=>2, :tech=>2},
+                                {:id=>8, :name=>"あいてむ", :power=>11, :tech=>11},
+                                {:id=>9, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>10, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>11, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>12, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>13, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>14, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>15, :name=>"休憩", :power=>0, :tech=>0},
+                                {:id=>16, :name=>"休憩", :power=>0, :tech=>0}
                             ])
     end
   end

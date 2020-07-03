@@ -4,11 +4,21 @@ class DeckBuilder
   end
 
   def deck
-    # ユーザ装備の配列を2ペアつくってそれをまとめてデッキにぽい
-    # TODO: 装備欄を埋めずにいると有利になってしまうので空枠を許さないようにする or 埋めた方が得になる設計にする
-    # → ブランクカードはそのまま 0/0 で埋めればいいじゃん
     result = []
     (@user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:to_card) * 2).compact.each_with_index { |v, i| result.push(v.merge(id: i+1))}
+    while result.length < 16 do
+      result.push(blank_card.merge(id: result.length + 1))
+    end
     result
+  end
+
+  private
+
+  def blank_card
+    {
+        name: "休憩",
+        power: 0,
+        tech: 0,
+    }
   end
 end
