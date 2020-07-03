@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     post :register_name # ユーザ名の登録
     post :regenerate_token, on: :collection # アクセストークンの再取得
     get :status
+    get :deck
     post :events
     post :resurrect
     post :switch_dungeon

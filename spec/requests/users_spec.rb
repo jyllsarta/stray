@@ -160,6 +160,38 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id/deck" do
+    include_context("stub_current_user")
+    let(:user){ User.create }
+    let(:do_get) { get user_deck_path(user_id: user.id) + ".json" }
+    subject do
+      do_get
+      response
+    end
+    it 'succeeds' do
+      subject
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   deck: Array
+                                               }
+                                           )
+    end
+
+    it 'deck is valid format' do
+      subject
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)&.[]('deck')&.first).to match_json_expression(
+                                               {
+                                                   id: Integer,
+                                                   name: String,
+                                                   power: Integer,
+                                                   tech: Integer,
+                                               }
+                                           )
+    end
+  end
+
   describe "POST /users/:id/events" do
     include_context("stub_current_user")
     let(:user){ User.create }

@@ -32,6 +32,10 @@ class UsersController < ApplicationController
     @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
   end
 
+  def deck
+    @deck = DeckBuilder.new(current_user).deck
+  end
+
   def register_name
     current_user.register_name(name: params[:name], password: params[:password])
   end
