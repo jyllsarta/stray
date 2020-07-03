@@ -1,3 +1,3 @@
 json.enemies do
-  json.array! @enemies, :id, :name, :hp, :denomination_factor
+  json.array! @enemies, :id, :name, :hp, :rank
 end

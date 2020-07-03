@@ -3,14 +3,18 @@ require 'json_expressions/rspec'
 
 RSpec.describe "Enemies", type: :request do
 
-  describe "POST /enemies/" do
+  describe "GET /enemies/" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy)}
-    let(:user){ create(:user) }
+    let!(:enemy ) { create(:enemy) }
+    let!(:dungeon){ create(:dungeon) }
+    let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+    let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
+    let!(:user){ User.create }
     let(:do_get) { get enemies_path + ".json" }
     let(:params) do
       {}
     end
+
     subject do
       do_get
       response
@@ -32,7 +36,7 @@ RSpec.describe "Enemies", type: :request do
                                                      id: Integer,
                                                      name: String,
                                                      hp: Integer,
-                                                     denomination_factor: Integer,
+                                                     rank: Integer,
                                                  }
                                              )
       end

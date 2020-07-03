@@ -14,7 +14,7 @@ FactoryBot.define do
   factory :enemy, class: 'Enemy' do
     name { "ゴーレム" }
     hp { 5 }
-    denomination_factor { 1 }
+    rank { 1 }
 
     trait :with_card do
       after(:create) do |enemy|
