@@ -11,11 +11,11 @@
 #
 
 class Card < ApplicationRecord
-  def to_card
+  def to_card(multiplier=1)
     {
         name: name,
-        power: power,
-        tech: tech,
+        power: [(power * multiplier).floor, Constants.card.max_parameter].min,
+        tech: [(tech * multiplier).floor, Constants.card.max_parameter].min,
     }
   end
 end

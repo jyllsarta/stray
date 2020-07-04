@@ -44,8 +44,7 @@ class QuestBattle
   end
 
   def enemy_cards
-    ActiveRecord::Associations::Preloader.new.preload( enemy, {enemy_cards: [:card]})
-    enemy.enemy_cards.map(&:card).map(&:attributes).map{|x| x.slice('name', 'power', 'tech')}.each_with_index{|x, i| x.merge!(id: i+1)}
+    enemy.cards(@user.status.average_item_rank).map(&:attributes).map{|x| x.slice('name', 'power', 'tech')}.each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)

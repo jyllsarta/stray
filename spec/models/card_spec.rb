@@ -24,5 +24,27 @@ RSpec.describe Card, type: :model do
                                 tech: 2
                             })
     end
+
+    context "with mul" do
+      subject { card.to_card(5) }
+      it "returns parameter for card" do
+        expect(subject).to eq({
+                                  name: "ぴよ",
+                                  power: 35,
+                                  tech: 10
+                              })
+      end
+    end
+
+    context "with huge mul" do
+      subject { card.to_card(1000000) }
+      it "returns parameter for card" do
+        expect(subject).to eq({
+                                  name: "ぴよ",
+                                  power: 99,
+                                  tech: 99
+                              })
+      end
+    end
   end
 end

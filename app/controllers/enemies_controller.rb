@@ -1,5 +1,6 @@
 class EnemiesController < ApplicationController
   def index
+    @user = current_user
     @enemies = Enemy.all.preload(enemy_cards: [:card])
   end
 

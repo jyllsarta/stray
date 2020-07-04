@@ -13,7 +13,16 @@
 class Enemy < ApplicationRecord
   has_many :enemy_cards
 
-  def cards
-    enemy_cards.map(&:card).map(&:to_card)
+  def cards(player_rank)
+    preload_associations!
+    player_rank = 1 if player_rank.zero? # avoid ZeroDivisionError
+    rank_ratio = [1, rank / player_rank.to_f].max
+    enemy_cards.map(&:card).map{|card| card.to_card(rank_ratio)}
+  end
+
+  private
+
+  def preload_associations!
+    ActiveRecord::Associations::Preloader.new.preload( self, {enemy_cards: [:card]})
   end
 end
