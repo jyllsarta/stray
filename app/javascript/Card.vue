@@ -30,10 +30,11 @@ export default {
 
 <style lang="scss" scoped>
 .hand {
-  padding: 2px;
+  padding: 1px;
   .value {
     display: flex;
     width: 100%;
+    line-height: 100%;
     .sep {
       display: inline-block;
       width: 1em;

@@ -15,15 +15,15 @@
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
         CardList.player_deck(
-          :cards="dummyDeck"
+          :cards="enemyDeck"
           :right-side="false"
         )
         CardList.enemy_deck(
-          :cards="dummyDeck"
+          :cards="enemyDeck"
           :right-side="true"
         )
         .enemy_list.scrollable
-          .enemy.clickable(v-for="enemy in enemyList")
+          .enemy.clickable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)")
             .name
               | {{enemy.name}}
             .rank
@@ -63,7 +63,7 @@
             .label
               | HP
             .enemy
-              | 14
+              | {{currentEnemy.hp}}
         .player_rank
           .desc
             | 平均装備ランク：
@@ -111,13 +111,23 @@
     computed: {
       dummyDeck(){
           const deck=[];
-        for(let i=0;i<7;++i){
-            deck.push(new Card(i, "test", 1, 2, 3, 4,));
+        for(let i=0;i<8;++i){
+            deck.push(new Card(i, "test", 1, 2));
         }
         return deck;
+      },
+      currentEnemy(){
+          return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
+      },
+      enemyDeck(){
+          return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
       }
     },
     methods: {
+        selectEnemy(id){
+            this.selectingEnemyId = id;
+        },
+
         fetchEnemyList(){
             const path = `/enemies.json`;
             ax.get(path)
@@ -151,6 +161,7 @@
     white-space: pre-wrap;
     border-bottom: 1px solid $gray3;
   }
+
   .body {
     .characters{
       position: absolute;
@@ -185,17 +196,17 @@
     .player_deck{
       position: absolute;
       left: 220px;
-      top: 120px;
+      top: 90px;
       width: 220px;
-      height: 310px;
+      height: 360px;
     }
 
     .enemy_deck{
       position: absolute;
       right: 220px;
-      top: 120px;
+      top: 90px;
       width: 220px;
-      height: 310px;
+      height: 360px;
     }
 
     .enemy_list{
@@ -260,21 +271,20 @@
       bottom: 75px;
       width: 170px;
       border-radius: $radius;
-      @include centering($height: 35px);
+      @include centering($height: 30px);
       border: 1px solid $gray3;
     }
 
     .switch_deck_type{
       position: absolute;
-      left: 180px;
-      top: 90px;
-      width: 240px;
-      height: 28px;
-      display: flex;
+      left: $space;
+      top: 155px;
+      width: 140px;
+      height: 56px;
       .class_cards, .equip_cards{
         border-radius: $radius;
-        width: 120px;
-        height: 100%;
+        width: 140px;
+        height: 28px;
         padding: 2px;
         text-align: center;
         border: 1px solid $gray3;
