@@ -31,11 +31,11 @@
         .status_area
           .status
             .player
-              | 1219
+              | {{averageItemRank}}
             .label
               | 平均IR
             .enemy
-              | 9974
+              | {{currentEnemy.rank}}
           .status
             .player
               | 1
@@ -68,7 +68,7 @@
           .desc
             | 平均装備ランク：
           .rank
-            | 231
+            | {{averageItemRank}}
         .open_magic_window
           | 魔法選択
         .switch_deck_type
@@ -103,6 +103,7 @@
               selectingEnemyId: 1,
               enemyList: [],
               playerDeckResponse: [],
+              averageItemRank: 0,
           };
       },
       store,
@@ -149,6 +150,7 @@
                       console.log(results);
                       console.log("OK");
                       this.playerDeckResponse = results.data.deck;
+                      this.averageItemRank = results.data.average_item_rank;
                   })
                   .catch((error) => {
                       console.warn(error.response);
