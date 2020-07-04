@@ -23,41 +23,11 @@
           :right-side="true"
         )
         .enemy_list.scrollable
-          .enemy.clickable
+          .enemy.clickable(v-for="enemy in enemyList")
             .name
-              | スライム
+              | {{enemy.name}}
             .rank
-              | 30
-          .enemy.clickable
-            .name
-              | なんか別の
-            .rank
-              | 40
-          .enemy.clickable
-            .name
-              | 騎士
-            .rank
-              | 99
-          .enemy.clickable
-            .name
-              | 騎士
-            .rank
-              | 99
-          .enemy.clickable
-            .name
-              | 騎士
-            .rank
-              | 99
-          .enemy.clickable
-            .name
-              | 騎士
-            .rank
-              | 99
-          .enemy.clickable
-            .name
-              | 騎士
-            .rank
-              | 99
+              | {{enemy.rank}}
         .status_area
           .status
             .player
@@ -131,10 +101,12 @@
     data: function () {
       return {
         selectingEnemyId: 1,
+        enemyList: [],
       };
     },
     store,
     mounted(){
+        this.fetchEnemyList();
     },
     computed: {
       dummyDeck(){
@@ -146,9 +118,22 @@
       }
     },
     methods: {
+        fetchEnemyList(){
+            const path = `/enemies.json`;
+            ax.get(path)
+                .then((results) => {
+                    console.log(results);
+                    console.log("OK");
+                    this.enemyList = results.data.enemies;
+                })
+                .catch((error) => {
+                    console.warn(error.response);
+                    console.warn("NG");
+                });
+        },
       startBattle(){
-        this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
+          this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
+          this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
       }
     },
   }
