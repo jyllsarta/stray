@@ -15,7 +15,7 @@
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
         CardList.player_deck(
-          :cards="enemyDeck"
+          :cards="playerDeck"
           :right-side="false"
         )
         CardList.enemy_deck(
@@ -94,58 +94,73 @@
   import Card from "./packs/quest/card";
 
   export default {
-    components: {
-      MagicList,
-      CardList,
-    },
-    data: function () {
-      return {
-        selectingEnemyId: 1,
-        enemyList: [],
-      };
-    },
-    store,
-    mounted(){
-        this.fetchEnemyList();
-    },
-    computed: {
-      dummyDeck(){
-          const deck=[];
-        for(let i=0;i<8;++i){
-            deck.push(new Card(i, "test", 1, 2));
-        }
-        return deck;
+      components: {
+          MagicList,
+          CardList,
       },
-      currentEnemy(){
-          return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
+      data: function () {
+          return {
+              selectingEnemyId: 1,
+              enemyList: [],
+              playerDeckResponse: [],
+          };
       },
-      enemyDeck(){
-          return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
-      }
-    },
-    methods: {
-        selectEnemy(id){
-            this.selectingEnemyId = id;
-        },
+      store,
+      mounted(){
+          this.fetchEnemyList();
+          this.fetchPlayerDeck();
+      },
+      computed: {
+          currentEnemy(){
+              return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
+          },
+          enemyDeck(){
+              return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
+          },
+          playerDeck(){
+              // TODO: 8枚スライスはクラスカードの概念導入時に外す
+              return this.playerDeckResponse?.map((x)=>new Card(x.id, x.name, x.power, x.tech)).slice(0, 8);
+          }
+      },
+      methods: {
+          selectEnemy(id){
+              this.selectingEnemyId = id;
+          },
 
-        fetchEnemyList(){
-            const path = `/enemies.json`;
-            ax.get(path)
-                .then((results) => {
-                    console.log(results);
-                    console.log("OK");
-                    this.enemyList = results.data.enemies;
-                })
-                .catch((error) => {
-                    console.warn(error.response);
-                    console.warn("NG");
-                });
-        },
-      startBattle(){
-          this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
-          this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
-      }
-    },
+          fetchEnemyList(){
+              const path = `/enemies.json`;
+              ax.get(path)
+                  .then((results) => {
+                      console.log(results);
+                      console.log("OK");
+                      this.enemyList = results.data.enemies;
+                  })
+                  .catch((error) => {
+                      console.warn(error.response);
+                      console.warn("NG");
+                  });
+          },
+
+          fetchPlayerDeck(){
+              const user_id = localStorage.user_id;
+              const path = `/users/${user_id}/deck.json`;
+              ax.get(path)
+                  .then((results) => {
+                      console.log(results);
+                      console.log("OK");
+                      this.playerDeckResponse = results.data.deck;
+                  })
+                  .catch((error) => {
+                      console.warn(error.response);
+                      console.warn("NG");
+                  });
+          },
+
+          startBattle(){
+              this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
+              this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
+          }
+      },
   }
 </script>
 
