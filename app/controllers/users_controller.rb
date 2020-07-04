@@ -33,6 +33,7 @@ class UsersController < ApplicationController
   end
 
   def deck
+    @user = current_user
     @deck = DeckBuilder.new(current_user).deck
   end
 

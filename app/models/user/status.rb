@@ -109,7 +109,16 @@ class User::Status < ApplicationRecord
     user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
+  def average_item_rank
+    preload_item_associations!
+    user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:item_rank).sum / (Constants.equip.max_count * 2)
+  end
+
   private
+
+  def preload_item_associations!
+    ActiveRecord::Associations::Preloader.new.preload( user, {characters: {equips: {user_item: [:item]}}})
+  end
 
   def can_switch_dungeon?(dungeon_id, depth)
     dungeon = Dungeon.find(dungeon_id)

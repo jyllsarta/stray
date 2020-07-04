@@ -31,7 +31,7 @@ class User < ApplicationRecord
       user.characters.create!(character_id: User::Character.character_ids[:spica])
       user.characters.create!(character_id: User::Character.character_ids[:tirol])
       user.characters.each do |character|
-        (1..4).each do |i|
+        (1..Constants.equip.max_count).each do |i|
           character.equips.create!(position: i)
         end
         character.update!(level: 1)

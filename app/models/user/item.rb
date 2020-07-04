@@ -28,9 +28,13 @@ class User::Item < ApplicationRecord
     item.slice(:str, :dex, :def, :agi).map{|k,v| [k.to_sym, v] }.to_h.map do |name, value|
       # クライアントだとこう
       # Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.id) * rootGetters['user/rarityFactor'](this.rarity));
-      param = (value.to_f / 100 * rank_factor(item.base_rank + rank) * rarity_factor(item.rarity)).floor
+      param = (value.to_f / 100 * rank_factor(item_rank) * rarity_factor(item.rarity)).floor
       [name, param]
     end.to_h
+  end
+
+  def item_rank
+    item.base_rank + rank
   end
 
   def rank_up!

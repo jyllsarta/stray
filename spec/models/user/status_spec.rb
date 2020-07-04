@@ -322,4 +322,20 @@ RSpec.describe User::Status, type: :model do
       end
     end
   end
+
+  describe "#average_item_rank" do
+    let!(:dungeon){ create(:dungeon) }
+    let!(:item1){ create(:item, str: 100, def: 100, dex: 100, agi: 100) }
+    let!(:item2){ create(:item, str:   0, def: 100, dex:   0, agi: 100, base_rank: 8) }
+    let!(:user_item1){ create(:user_item, user: user, item: item1, rank: 16) }
+    let!(:user_item2){ create(:user_item, user: user, item: item2, rank: 8) }
+    let!(:equip1){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item1)}
+    let!(:equip2){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item2)}
+    let(:user){ User.create }
+
+    subject { user.status.average_item_rank }
+    it "4" do
+      expect(subject).to eq(4)
+    end
+  end
 end

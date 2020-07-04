@@ -173,7 +173,8 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match_json_expression(
                                                {
-                                                   deck: Array
+                                                   deck: Array,
+                                                   average_item_rank: Integer,
                                                }
                                            )
     end
