@@ -1,6 +1,6 @@
 class EnemiesController < ApplicationController
   def index
-    @enemies = Enemy.all
+    @enemies = Enemy.all.preload(enemy_cards: [:card])
   end
 
   def engage

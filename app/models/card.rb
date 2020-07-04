@@ -11,5 +11,11 @@
 #
 
 class Card < ApplicationRecord
-  
+  def to_card
+    {
+        name: name,
+        power: power,
+        tech: tech,
+    }
+  end
 end

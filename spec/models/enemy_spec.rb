@@ -13,4 +13,17 @@
 require 'rails_helper'
 
 RSpec.describe Enemy, type: :model do
+  describe "#cards" do
+    let(:enemy){ create(:enemy, :with_card) }
+    subject { enemy.cards }
+
+    it "returns cards" do
+      expect(subject).to eq([
+                                {:name=>"粘液", :power=>0, :tech=>0},
+                                {:name=>"粘液", :power=>0, :tech=>0},
+                                {:name=>"粘液", :power=>0, :tech=>0},
+                                {:name=>"粘液", :power=>0, :tech=>0}
+                            ])
+    end
+  end
 end

@@ -37,6 +37,7 @@ RSpec.describe "Enemies", type: :request do
                                                      name: String,
                                                      hp: Integer,
                                                      rank: Integer,
+                                                     cards: Array,
                                                  }
                                              )
       end

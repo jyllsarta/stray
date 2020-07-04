@@ -12,4 +12,8 @@
 
 class Enemy < ApplicationRecord
   has_many :enemy_cards
+
+  def cards
+    enemy_cards.map(&:card).map(&:to_card)
+  end
 end
