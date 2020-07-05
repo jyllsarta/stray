@@ -16,6 +16,6 @@ class EnemiesController < ApplicationController
     result = quest.showdown!(params[:operation_history])
     pp result unless Rails.env.test?
 
-    render json: {success: true, isWin: result["isWin"]}, status: :ok
+    render json: {success: true, isWin: result["isWin"], isDraw: result["isDraw"]}, status: :ok
   end
 end

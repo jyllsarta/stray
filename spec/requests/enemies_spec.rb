@@ -92,7 +92,7 @@ RSpec.describe "Enemies", type: :request do
 
     before do
       QuestBattle.new(user).engage!(enemy.id)
-      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return({'isWin'=>true})
+      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return({'isWin'=>true, 'isDraw'=>false})
     end
 
     subject do
@@ -106,6 +106,7 @@ RSpec.describe "Enemies", type: :request do
                                                  {
                                                      success: Boolean,
                                                      isWin: Boolean,
+                                                     isDraw: Boolean,
                                                  }
                                              )
       end
