@@ -6,7 +6,7 @@ class EnemiesController < ApplicationController
 
   def engage
     quest = QuestBattle.new(current_user)
-    quest.engage!
+    quest.engage!(params[:enemy_id])
     render json: quest.content, status: :ok
   end
 

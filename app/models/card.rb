@@ -11,6 +11,7 @@
 #
 
 class Card < ApplicationRecord
+  # NOTE: これ以上機能が実装される場合、 BattleCard クラスとして独立させること
   def to_card(multiplier=1)
     {
         name: name,

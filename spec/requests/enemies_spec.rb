@@ -12,7 +12,9 @@ RSpec.describe "Enemies", type: :request do
     let!(:user){ User.create }
     let(:do_get) { get enemies_path + ".json" }
     let(:params) do
-      {}
+      {
+          enemy_id: enemy.id
+      }
     end
 
     subject do
@@ -46,9 +48,9 @@ RSpec.describe "Enemies", type: :request do
 
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy)}
+    let!(:enemy ) { create(:enemy) }
     let(:user){ User.create }
-    let(:do_post) { post enemy_engage_path(enemy_id: -1)}
+    let(:do_post) { post enemy_engage_path(enemy_id: enemy.id)}
     let(:params) do
       {}
     end
@@ -80,7 +82,8 @@ RSpec.describe "Enemies", type: :request do
   describe "POST /enemies/:id/showdown" do
     include_context("stub_current_user")
     let(:user){ User.create }
-    let(:do_post) { post enemy_showdown_path(enemy_id: -1), params: params }
+    let!(:enemy ) { create(:enemy) }
+    let(:do_post) { post enemy_showdown_path(enemy_id: enemy.id), params: params }
     let(:params) do
       {
           operation_history: "[]"
@@ -88,7 +91,7 @@ RSpec.describe "Enemies", type: :request do
     end
 
     before do
-      QuestBattle.new(user).engage!
+      QuestBattle.new(user).engage!(enemy.id)
       allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return({'isWin'=>true})
     end
 

@@ -5,11 +5,11 @@ RSpec.describe QuestBattle, type: :model do
   let!(:dungeon){ Dungeon.create }
   let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
   let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
-  let!(:enemy){ create(:enemy, :with_card) unless Enemy.exists? }
+  let!(:enemy){ create(:enemy, :with_card) }
   let(:user){ User.create }
 
   describe "#engage!" do
-    subject { quest_battle.engage! }
+    subject { quest_battle.engage!(enemy.id) }
     it "sets random cache" do
       subject
       expect(Rails.cache.read("quest:#{user.id}")).to_not be_nil
@@ -18,6 +18,7 @@ RSpec.describe QuestBattle, type: :model do
 
   describe "#showdown!" do
     subject { quest_battle.showdown!(history) }
+    let!(:enemy ) { create(:enemy)}
     let(:history){ [] }
 
     let(:node_response) do
@@ -39,7 +40,7 @@ RSpec.describe QuestBattle, type: :model do
 
     context "with cache" do
       before do
-        quest_battle.engage!
+        quest_battle.engage!(enemy.id)
       end
       it "returns object with no error" do
         expect(subject).to eq(JSON.parse(node_response))

@@ -167,7 +167,10 @@ export default {
     postEngage(){
       const enemyId = this.$store.state.battle.enemy_id;
       const path = `/enemies/${enemyId}/engage.json`;
-      ax.post(path)
+      const params = {
+        enemy_id: enemyId
+      };
+      ax.post(path, params)
         .then((results) => {
           console.log(results);
           console.log("OK");

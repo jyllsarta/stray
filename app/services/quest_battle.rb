@@ -5,8 +5,10 @@ class QuestBattle
     @user = user
   end
 
-  def engage!
+  def engage!(enemy_id)
     ActiveRecord::Associations::Preloader.new.preload( @user, {characters: {equips: {user_item: [:item]}}})
+
+    @enemy = Enemy.find(enemy_id)
 
     cache = Cache.new(@user)
     if cache.exist?
@@ -30,8 +32,8 @@ class QuestBattle
     {
         seed: @seed,
         playerHp: 5,
-        enemyName: enemy.name,
-        enemyHp: enemy.hp,
+        enemyName: @enemy.name,
+        enemyHp: @enemy.hp,
         playerCards: DeckBuilder.new(@user).deck,
         enemyCards: enemy_cards,
     }.to_json
@@ -39,12 +41,8 @@ class QuestBattle
 
   private
 
-  def enemy
-    @enemy ||= Enemy.last
-  end
-
   def enemy_cards
-    enemy.cards(@user.status.average_item_rank).map(&:attributes).map{|x| x.slice('name', 'power', 'tech')}.each_with_index{|x, i| x.merge!(id: i+1)}
+    @enemy.cards(@user.status.average_item_rank).each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)
