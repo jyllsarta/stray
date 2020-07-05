@@ -1,0 +1,7 @@
+create_table "class_cards", force: :cascade  do |t|
+  t.integer :character_id
+  t.integer :rank
+  t.integer :order
+  t.belongs_to :card
+  t.timestamps
+end
