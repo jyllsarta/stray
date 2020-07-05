@@ -17,5 +17,8 @@
 
 FactoryBot.define do
   factory :class_card, class: 'ClassCard' do
+    trait :with_card do
+      association :card, factory: :card, strategy: :create
+    end
   end
 end

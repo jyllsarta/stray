@@ -17,4 +17,5 @@
 
 class ClassCard < ApplicationRecord
   belongs_to :card
+  scope :on_class, ->(character_id, rank){ where(character_id: character_id, rank: rank).order(order: :asc).group(:character_id, :rank, :order) }
 end
