@@ -14,15 +14,19 @@ end
 namespace :twitter do
   task post_success: :environment do
     emoji = random_success_emoji
-    TwitterAPI.post("[BUILD PASSED] #{emoji}#{random_success_message} #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
+    TwitterAPI.post("[BUILD PASSED] #{emoji}#{random_success_message} '#{commit_message}' #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
   end
 
   task post_fail: :environment do
     emoji = random_fail_emoji
-    TwitterAPI.post("#{ENV['TWITTER_USERNAME']} [BUILD FAILED] #{emoji}#{random_fail_message} #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
+    TwitterAPI.post("#{ENV['TWITTER_USERNAME']} [BUILD FAILED] #{emoji}#{random_fail_message} '#{commit_message}' #{ENV['CIRCLECI_PROJECT_URL']}#{ENV['CIRCLE_BUILD_NUM']}")
   end
 
   private
+
+  def commit_message
+    `git log -n 1 --oneline --pretty=format:"%s"`
+  end
 
   def random_success_message
     [
