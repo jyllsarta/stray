@@ -15,7 +15,7 @@
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
         CardList.player_deck(
-          :cards="playerDeck"
+          :cards="currentPlayerCards"
           :right-side="false"
         )
         CardList.enemy_deck(
@@ -72,9 +72,9 @@
         .open_magic_window
           | 魔法選択
         .switch_deck_type
-          .class_cards
+          .class_cards(@click="showsClassCards = true", :class="showsClassCards ? 'active' : ''")
             | クラスカード
-          .equip_cards.active
+          .equip_cards(@click="showsClassCards = false", :class="showsClassCards ? '' : 'active'")
             | 装備
         .player_magic_list
           MagicList(:isPlayer="true")
@@ -101,8 +101,11 @@
       data: function () {
           return {
               selectingEnemyId: 1,
+              showsClassCards: false,
+
               enemyList: [],
-              playerDeckResponse: [],
+              classCardsResponse: [],
+              itemCardsResponse: [],
               averageItemRank: 0,
           };
       },
@@ -118,9 +121,9 @@
           enemyDeck(){
               return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
           },
-          playerDeck(){
-              // TODO: 8枚スライスはクラスカードの概念導入時に外す
-              return this.playerDeckResponse?.map((x)=>new Card(x.id, x.name, x.power, x.tech)).slice(0, 8);
+          currentPlayerCards(){
+              const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
+              return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
           }
       },
       methods: {
@@ -149,7 +152,8 @@
                   .then((results) => {
                       console.log(results);
                       console.log("OK");
-                      this.playerDeckResponse = results.data.deck;
+                      this.classCardsResponse = results.data.class_cards;
+                      this.itemCardsResponse = results.data.item_cards;
                       this.averageItemRank = results.data.average_item_rank;
                   })
                   .catch((error) => {

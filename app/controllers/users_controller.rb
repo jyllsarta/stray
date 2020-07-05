@@ -34,7 +34,8 @@ class UsersController < ApplicationController
 
   def deck
     @user = current_user
-    @deck = DeckBuilder.new(current_user).deck
+    @class_cards = DeckBuilder.new(current_user).class_cards
+    @item_cards = DeckBuilder.new(current_user).item_cards
   end
 
   def register_name

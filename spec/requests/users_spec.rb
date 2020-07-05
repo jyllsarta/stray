@@ -173,7 +173,8 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match_json_expression(
                                                {
-                                                   deck: Array,
+                                                   class_cards: Array,
+                                                   item_cards: Array,
                                                    average_item_rank: Integer,
                                                }
                                            )
@@ -182,7 +183,7 @@ RSpec.describe "Users", type: :request do
     it 'deck is valid format' do
       subject
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)&.[]('deck')&.first).to match_json_expression(
+      expect(JSON.parse(response.body)&.[]('item_cards')&.first).to match_json_expression(
                                                {
                                                    id: Integer,
                                                    name: String,
