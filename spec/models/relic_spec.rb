@@ -84,4 +84,38 @@ RSpec.describe Relic, type: :model do
       end
     end
   end
+
+  describe "#obtain!" do
+    let!(:dungeon){ create(:dungeon) }
+    let(:user){ create(:user) }
+    let!(:status){ create(:user_status, user: user) }
+    let(:relic){ create(:relic, category: :tirol_rank) }
+    let!(:user_relic){ create(:user_relic, user: user, relic: relic)}
+    subject { Relic.rank_for(user, category) }
+
+    context "category tirol rank" do
+      let(:category){ :tirol_rank }
+      it "1" do
+        expect(subject).to eq(1)
+      end
+    end
+
+    context "has many" do
+      let(:relic2){ create(:relic, category: :tirol_rank) }
+      let(:relic3){ create(:relic, category: :tirol_rank) }
+      let!(:user_relic2){ create(:user_relic, user: user, relic: relic2)}
+      let!(:user_relic3){ create(:user_relic, user: user, relic: relic3)}
+      let(:category){ :tirol_rank }
+      it "3" do
+        expect(subject).to eq(3)
+      end
+    end
+
+    context "category another" do
+      let(:category){ :event_time }
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+  end
 end

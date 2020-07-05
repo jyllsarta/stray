@@ -29,4 +29,8 @@ class Relic < ApplicationRecord
       user.relics.create!(relic_id: id)
     end
   end
+
+  def self.rank_for(user, category)
+    User::Relic.where(user: user, relic_id: Relic.where(category: self.categories[category])).count
+  end
 end

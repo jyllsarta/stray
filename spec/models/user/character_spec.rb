@@ -182,7 +182,7 @@ RSpec.describe User::Character, type: :model do
     end
 
     context "has rank relic" do
-      let!(:relic){create(:relic, category: "spica_rank")}
+      let!(:relic){create(:relic, category: :spica_rank)}
       let!(:user_relic){create(:user_relic, relic: relic, user: user)}
       it "grows up with rank" do
         expect(subject).to eq({

@@ -52,7 +52,7 @@ class User::Character < ApplicationRecord
   end
 
   def rank
-    user.relics.joins(:relic).where(relics: {category: "#{character_id}_rank"}).count + 1
+    Relic.rank_for(user, "#{character_id}_rank".to_sym) + 1
   end
 
   def parameters
