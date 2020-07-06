@@ -38,38 +38,65 @@ module.exports = class Battle{
     }
 
     playTurn(){
-        this.validateSelectingCardIds();
-        this.operationHistory.push(this.selectingCardIds);
+        this.onTurnStart();
+        this.invokePlayerMagic();
+        this.invokeEnemyMagic();
+        this.invokePowerAttack();
+        this.invokeTechAttack();
+        this.invokeSPAttack();
+        this.onTurnEnd();
+    }
 
-        const powerMeetResult = this.powerMeetResult();
-        const techMeetResult = this.techMeetResult();
+    invokePlayerMagic(){
+        // 魔法実装したら魔法のExecuteがはいる
+    }
 
-        const winCount = [powerMeetResult, techMeetResult].filter((x)=>x==="win").length;
-        const drawCount = [powerMeetResult, techMeetResult].filter((x)=>x==="draw").length;
+    invokeEnemyMagic(){
+        // 魔法実装したら魔法のExecuteがはいる
+    }
 
-        // ここどう書くとわかりやすくなるかなあ
-        if(winCount === 2){
-            this.player.hp -= 0;
-            this.enemy.hp -= 3;
-        }
-        if(winCount === 1 && drawCount === 1){
-            this.player.hp -= 0;
+    invokePowerAttack(){
+        const result = this.powerMeetResult();
+        if(result === "win"){
             this.enemy.hp -= 1;
         }
-        if(winCount === 1 && drawCount === 0){
+        else if(result === "lose"){
             this.player.hp -= 1;
+        }
+        else{
+            // nop
+        }
+    }
+
+    invokeTechAttack(){
+        const result = this.techMeetResult();
+        if(result === "win"){
             this.enemy.hp -= 1;
         }
-        if(winCount === 0 && drawCount === 1){
+        else if(result === "lose"){
             this.player.hp -= 1;
-            this.enemy.hp -= 0;
         }
-        if(winCount === 0 && drawCount === 0){
-            this.player.hp -= 3;
-            this.enemy.hp -= 0;
+        else{
+            // nop
         }
+    }
 
-        this.battleLog.push([powerMeetResult, techMeetResult]);
+    invokeSPAttack(){
+        const powerResult = this.powerMeetResult();
+        const techResult = this.techMeetResult();
+        if(powerResult === "win" && techResult === "win"){
+            this.enemy.hp -= 1;
+        }
+        else if(powerResult === "lose" && techResult === "lose"){
+            this.player.hp -= 1;
+        }
+        else{
+            // nop
+        }
+    }
+
+    onTurnEnd(){
+        this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
 
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
@@ -91,6 +118,11 @@ module.exports = class Battle{
     }
 
     // 以下privateのつもり
+
+    onTurnStart(){
+        this.validateSelectingCardIds();
+        this.operationHistory.push(this.selectingCardIds);
+    }
 
     pickEnemyCards(){
         this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 3);

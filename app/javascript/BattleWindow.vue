@@ -155,7 +155,70 @@ export default {
         console.log("ちゃんと3まいきっかり選んで");
         return;
       }
-      this.battle.playTurn();
+
+      this.battle.onTurnStart();
+
+      Promise.resolve()
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout( ()=>{
+              this.battle.invokePlayerMagic();
+              resolve();
+            }, 10);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.battle.invokeEnemyMagic();
+              resolve();
+            }, 100);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.battle.invokePowerAttack();
+              resolve();
+            }, 200);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.battle.invokeTechAttack();
+              resolve();
+            }, 200);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.battle.invokeSPAttack();
+              resolve();
+            }, 200);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.battle.onTurnEnd();
+              resolve();
+            }, 10);
+          });
+        })
+        .then(()=>{
+          return new Promise((resolve) => {
+            setTimeout(()=>{
+              this.checkGameEnd();
+              resolve();
+            }, 10);
+          });
+        });
+
+    },
+
+    checkGameEnd(){
       if(this.battle.isGameEnd()){
         console.log("決着！ショーダウン!");
         console.log(this.input.seed);
