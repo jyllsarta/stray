@@ -151,6 +151,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "relic_id", default: 0
   end
 
+  create_table "user_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "skill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["skill_id"], name: "index_user_skills_on_skill_id"
+    t.index ["user_id"], name: "index_user_skills_on_user_id"
+  end
+
   create_table "user_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.datetime "event_updated_at"
