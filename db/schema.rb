@@ -95,12 +95,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "description"
     t.boolean "reusable", default: false, null: false
     t.boolean "is_defence", default: false, null: false
+    t.integer "cost", default: 0, null: false
     t.string "effect1_category"
     t.boolean "effect1_to_self"
     t.integer "effect1_value"
     t.string "effect2_category"
     t.boolean "effect2_to_self"
     t.integer "effect2_value"
+    t.string "effect3_category"
+    t.boolean "effect3_to_self"
+    t.integer "effect3_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
