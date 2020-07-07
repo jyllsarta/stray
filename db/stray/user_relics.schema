@@ -1,4 +1,5 @@
 create_table "user_relics", force: :cascade  do |t|
   t.integer :user_id, default: 0
   t.integer :relic_id, default: 0
+  t.timestamps
 end

@@ -5,4 +5,5 @@ create_table "user_characters", force: :cascade  do |t|
   t.integer :hp_max, default: 0
   t.integer :level, default: 0
   t.integer :exp, default: 0
+  t.timestamps
 end

@@ -7,6 +7,8 @@
 #  hp           :integer          default(0)
 #  hp_max       :integer          default(0)
 #  level        :integer          default(0)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #  character_id :integer          default(NULL)
 #  user_id      :integer          default(0)
 #

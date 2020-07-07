@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "user_character_id", default: 0
     t.integer "user_item_id"
     t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_characters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -129,6 +131,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "hp_max", default: 0
     t.integer "level", default: 0
     t.integer "exp", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_dungeon_progresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -144,11 +148,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "user_id", default: 0
     t.integer "item_id", default: 0
     t.integer "rank", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_relics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "relic_id", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
