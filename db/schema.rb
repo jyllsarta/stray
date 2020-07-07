@@ -90,6 +90,21 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.boolean "reusable", default: false, null: false
+    t.boolean "is_defence", default: false, null: false
+    t.string "effect1_category"
+    t.boolean "effect1_to_self"
+    t.integer "effect1_value"
+    t.string "effect2_category"
+    t.boolean "effect2_to_self"
+    t.integer "effect2_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.string "token"

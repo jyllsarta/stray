@@ -1,0 +1,16 @@
+create_table "skills", force: :cascade  do |t|
+  t.string :name             , null: false
+  t.string :description
+  t.boolean :reusable        , null: false, default: false
+  t.boolean :is_defence      , null: false, default: false
+  t.string  :effect1_category
+  t.boolean :effect1_to_self
+  t.integer :effect1_value
+  t.string  :effect2_category
+  t.boolean :effect2_to_self
+  t.integer :effect2_value
+  t.string  :effect2_category
+  t.boolean :effect2_to_self
+  t.integer :effect2_value
+  t.timestamps
+end
