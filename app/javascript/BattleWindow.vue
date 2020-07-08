@@ -26,6 +26,11 @@
       )
       .decide(@click="playTurn()" :class="decideButtonClass")
         | Decide!
+      .skill_name(:key="skillName")
+        .pre
+        .text
+          | {{skillName}}
+        .after
       .current_strength
         .player.strength
           .power
@@ -89,6 +94,7 @@ export default {
       input: null,
       finished: false,
       outcome: "",
+      skillName: "",
     };
   },
   store,
@@ -163,6 +169,7 @@ export default {
           return new Promise((resolve) => {
             setTimeout( ()=>{
               this.battle.invokePlayerMagic();
+              this.skillName = "プレイヤー魔法";
               resolve();
             }, 10);
           });
@@ -171,6 +178,7 @@ export default {
           return new Promise((resolve) => {
             setTimeout(()=>{
               this.battle.invokeEnemyMagic();
+              this.skillName = "敵魔法";
               resolve();
             }, 100);
           });
@@ -179,24 +187,27 @@ export default {
           return new Promise((resolve) => {
             setTimeout(()=>{
               this.battle.invokePowerAttack();
+              this.skillName = "力判定！";
               resolve();
-            }, 200);
+            }, 500);
           });
         })
         .then(()=>{
           return new Promise((resolve) => {
             setTimeout(()=>{
               this.battle.invokeTechAttack();
+              this.skillName = "技判定！";
               resolve();
-            }, 200);
+            }, 500);
           });
         })
         .then(()=>{
           return new Promise((resolve) => {
             setTimeout(()=>{
               this.battle.invokeSPAttack();
+              this.skillName = "SPアタック！";
               resolve();
-            }, 200);
+            }, 500);
           });
         })
         .then(()=>{
@@ -215,7 +226,6 @@ export default {
             }, 10);
           });
         });
-
     },
 
     checkGameEnd(){
@@ -414,6 +424,45 @@ export default {
   }
 }
 
+@keyframes skill-name {
+  0% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+  10% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  93% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.skill_name {
+  text-align: center;
+  animation: skill-name 1s cubic-bezier(.17,.67,.83,.67) 0s;
+  height: 100%;
+  display: flex;
+  opacity: 0;
+  .pre, .after{
+    width: 20px;
+    height: 100%;
+  }
+  .pre{
+    background: linear-gradient(to right, $gray3 0%, transparent 100%);
+  }
+  .after{
+    background: linear-gradient(to left, $gray3 0%, transparent 100%);
+  }
+  .text{
+    flex: 1;
+    height: 100%;
+  }
+}
+
 // -- -- --
 
 // ウィンドウ位置定義
@@ -470,6 +519,13 @@ export default {
   right: 250px;
   width: 170px;
   height: 150px;
+}
+.skill_name{
+  position: absolute;
+  top: 20px;
+  left: calc( #{$window-width / 2} - 75px );
+  width: 150px;
+  height: 20px;
 }
 .current_strength{
   position: absolute;
