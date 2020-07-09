@@ -79,6 +79,15 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "relic_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "relic_id"
+    t.bigint "skill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["relic_id"], name: "index_relic_skills_on_relic_id"
+    t.index ["skill_id"], name: "index_relic_skills_on_skill_id"
+  end
+
   create_table "relics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -162,7 +171,7 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "skill_id"
-    t.boolean "is_equipped"
+    t.boolean "is_equipped", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["skill_id"], name: "index_user_skills_on_skill_id"
