@@ -24,4 +24,28 @@
 require 'rails_helper'
 
 RSpec.describe Skill, type: :model do
+  let(:user){ create(:user) }
+
+  subject do
+    skill.learn!(user)
+  end
+
+  describe "#learn!" do
+    let(:skill){ create(:skill) }
+
+    context "unlearned" do
+      it "can get" do
+        expect{subject}.to change(user.skills, :length).by(1)
+      end
+    end
+
+    context "already learned" do
+      before do
+        user.skills.create!(skill: skill)
+      end
+      it "cannot get" do
+        expect{subject}.to raise_error(Skill::AlreadyLearned)
+      end
+    end
+  end
 end

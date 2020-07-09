@@ -22,4 +22,11 @@
 #
 
 class Skill < ApplicationRecord
+  class AlreadyLearned < StandardError; end
+
+  def learn!(user)
+    raise AlreadyLearned if user.skills.exists?(skill: self)
+
+    user.skills.create!(skill: self)
+  end
 end

@@ -23,5 +23,6 @@
 
 FactoryBot.define do
   factory :skill, class: 'Skill' do
+    name { "ファイア" }
   end
 end
