@@ -281,8 +281,24 @@ export default {
   left: 230px;
 }
 .relic_7{
-  top:120px;
+  top: 120px;
   left: 230px;
+}
+.relic_8{
+  top: 30px;
+  left: 330px;
+}
+.relic_9{
+  top: 100px;
+  left: 330px;
+}
+.relic_10{
+  top: 170px;
+  left: 330px;
+}
+.relic_11{
+  top: 240px;
+  left: 330px;
 }
 
 
