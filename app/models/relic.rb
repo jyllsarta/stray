@@ -18,7 +18,8 @@ class Relic < ApplicationRecord
   class ParentNotObtained < StandardError; end
   class AlreadyObtained < StandardError; end
   has_one :parent, class_name: "::Relic", foreign_key: :id, primary_key: :parent_relic_id
-  enum category: { event_time: 1, spica_rank: 2, tirol_rank: 3 }
+  has_one :relic_skill
+  enum category: { event_time: 1, spica_rank: 2, tirol_rank: 3, skill: 4 }
 
   def obtain!(user)
     user.with_lock do
@@ -27,10 +28,21 @@ class Relic < ApplicationRecord
       raise InsufficientStar if user.status.star < cost
       user.status.consume_star!(cost)
       user.relics.create!(relic_id: id)
+      learn_associated_skill!(user)
     end
   end
 
   def self.rank_for(user, category)
     User::Relic.where(user: user, relic_id: Relic.where(category: self.categories[category])).count
+  end
+
+  private
+
+  def learn_associated_skill!(user)
+    skill&.learn!(user)
+  end
+
+  def skill
+    relic_skill&.skill
   end
 end

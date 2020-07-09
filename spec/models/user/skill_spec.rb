@@ -3,7 +3,7 @@
 # Table name: user_skills
 #
 #  id          :bigint           not null, primary key
-#  is_equipped :boolean
+#  is_equipped :boolean          default(FALSE)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  skill_id    :bigint

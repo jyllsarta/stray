@@ -37,6 +37,25 @@ RSpec.describe Relic, type: :model do
       it "gets" do
         expect{subject}.to change(user.relics, :count).by(1)
       end
+
+      context "about associated skills" do
+        context "if associated" do
+          let!(:skill){ create(:skill) }
+          let!(:relic_skill){ create(:relic_skill, relic: relic, skill: skill) }
+
+          it "also gets skill" do
+            expect{subject}.to change(user.skills, :count).by(1)
+          end
+        end
+
+        context "if NOT associated" do
+          let!(:skill){ create(:skill) }
+
+          it "also gets skill" do
+            expect{subject}.to_not change(user.skills, :count)
+          end
+        end
+      end
     end
 
     context "insufficient star" do
@@ -85,7 +104,7 @@ RSpec.describe Relic, type: :model do
     end
   end
 
-  describe "#obtain!" do
+  describe "#rank_for!" do
     let!(:dungeon){ create(:dungeon) }
     let(:user){ create(:user) }
     let!(:status){ create(:user_status, user: user) }

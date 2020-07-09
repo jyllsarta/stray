@@ -15,6 +15,6 @@
 #
 
 class RelicSkill < ApplicationRecord
-  has_one :relic
-  has_one :skill
+  belongs_to :relic
+  belongs_to :skill
 end

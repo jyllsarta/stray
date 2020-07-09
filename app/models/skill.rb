@@ -25,6 +25,7 @@ class Skill < ApplicationRecord
   class AlreadyLearned < StandardError; end
 
   def learn!(user)
+    # このraiseやめてしれっと空振りするほうが賢い可能性ある
     raise AlreadyLearned if user.skills.exists?(skill: self)
 
     user.skills.create!(skill: self)
