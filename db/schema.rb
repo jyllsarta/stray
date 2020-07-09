@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "skill_id"
+    t.boolean "is_equipped"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["skill_id"], name: "index_user_skills_on_skill_id"

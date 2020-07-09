@@ -1,5 +1,6 @@
 create_table "user_skills", force: :cascade  do |t|
   t.belongs_to :user
   t.belongs_to :skill
+  t.boolean :is_equipped
   t.timestamps
 end
