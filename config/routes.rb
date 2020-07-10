@@ -51,6 +51,10 @@ Rails.application.routes.draw do
     post :showdown
   end
 
+  resources :skills, only: [:index] do
+    post :equip
+  end
+
   if Rails.env.development?
     resources :debug, only: [] do
       DebugController.action_methods.each do |method|
