@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   end
 
   resources :skills, only: [:index] do
-    post :equip
+    post :equip, on: :collection
   end
 
   if Rails.env.development?

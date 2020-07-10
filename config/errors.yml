@@ -40,3 +40,7 @@ Relic::InsufficientStar:
 Relic::AlreadyObtained:
   status: bad_request
   message: すでに取得済みです。
+User::Skill::TooManySkill:
+  status: bad_request
+  message: 不正なスキル指定です。
+

@@ -18,4 +18,14 @@
 class User::Skill < ApplicationRecord
   belongs_to :user
   belongs_to :skill, class_name: "::Skill"
+  scope :equipped, ->{ where(is_equipped: true) }
+  class TooManySkill < StandardError; end
+
+  def self.equip_skill!(user, skill_ids)
+    raise TooManySkill if skill_ids.length > Constants.skill.max_equip_count
+    user.with_lock do
+      user.skills.equipped.update_all(is_equipped: false)
+      user.skills.where(skill_id: skill_ids).update_all(is_equipped: true)
+    end
+  end
 end

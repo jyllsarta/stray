@@ -17,5 +17,8 @@
 
 FactoryBot.define do
   factory :user_skill, class: 'User::Skill' do
+    trait :with_skill do
+      association :skill, factory: :skill, strategy: :create
+    end
   end
 end

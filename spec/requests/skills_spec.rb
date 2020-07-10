@@ -48,4 +48,41 @@ RSpec.describe "Skill", type: :request do
       end
     end
   end
+
+  describe "POST /skills/equip" do
+    include_context("stub_current_user")
+    let(:user){ create(:user) }
+    let!(:skill){ create(:skill) }
+    let!(:user_skill){ create(:user_skill, user: user, skill: skill) }
+    let(:do_post) { post equip_skills_path, params: params}
+    let(:params) do
+      {
+          skill_ids: [user_skill.id]
+      }
+    end
+    subject do
+      do_post
+      response
+    end
+    context "succeeds" do
+      it 'succeeds' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     success: Boolean
+                                                 }
+                                             )
+      end
+    end
+    context "bad request" do
+      let(:params) do
+        {
+            skill_ids: [user_skill.id, 1, 1, 1, 1, 1, 1]
+        }
+      end
+      it 'fails' do
+        expect(subject).to have_http_status(400)
+      end
+    end
+  end
 end
