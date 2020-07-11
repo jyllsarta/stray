@@ -26,6 +26,13 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def learn_all_user_skills
+    Skill.where(for_player: true).each do |skill|
+      skill.learn!(current_user) unless current_user.skills.exists?(skill: skill)
+    end
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
