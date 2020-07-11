@@ -114,7 +114,7 @@
                       console.log(results);
                       console.log("OK");
                       this.playerSkills = results.data.skills;
-
+                      this.selectingSkillIds = this.playerSkills.filter((x)=>x.is_equipped).map((x)=>x.id);
                   })
                   .catch((error) => {
                       console.warn(error.response);
