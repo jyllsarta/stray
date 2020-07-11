@@ -1,0 +1,6 @@
+create_table "enemy_skills", force: :cascade  do |t|
+  t.belongs_to :enemy
+  t.belongs_to :skill
+  t.integer :order
+  t.timestamps
+end

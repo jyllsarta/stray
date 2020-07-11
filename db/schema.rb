@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["enemy_id"], name: "index_enemy_cards_on_enemy_id"
   end
 
+  create_table "enemy_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "enemy_id"
+    t.bigint "skill_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["enemy_id"], name: "index_enemy_skills_on_enemy_id"
+    t.index ["skill_id"], name: "index_enemy_skills_on_skill_id"
+  end
+
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "base_rank", default: 0
