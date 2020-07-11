@@ -76,9 +76,9 @@
             | クラスカード
           .equip_cards(@click="showsClassCards = false", :class="showsClassCards ? '' : 'active'")
             | 装備
-        .player_magic_list
-          SkillList(:isPlayer="true")
-        .enemy_magic_list
+        .player_skill_list
+          SkillList(:isPlayer="true", :skills="$store.state.skill.skills.filter((x)=>x.is_equipped)")
+        .enemy_skill_list
           SkillList(:isPlayer="false")
         .battle_start.clickable(@click="startBattle")
           | 戦闘開始
@@ -102,7 +102,6 @@
           return {
               selectingEnemyId: 1,
               showsClassCards: false,
-
               enemyList: [],
               classCardsResponse: [],
               itemCardsResponse: [],
@@ -113,6 +112,7 @@
       mounted(){
           this.fetchEnemyList();
           this.fetchPlayerDeck();
+          this.fetchPlayerSkills();
       },
       computed: {
           currentEnemy(){
@@ -144,7 +144,20 @@
                       console.warn("NG");
                   });
           },
-
+          fetchPlayerSkills(){
+              const path = `/skills.json`;
+              ax.get(path)
+                  .then((results) => {
+                      console.log(results);
+                      console.log("OK");
+                      this.$store.commit("skill/setPlayerSkills", results.data.skills);
+                      this.selectingSkillIds = this.$store.state.skill.skills.filter((x)=>x.is_equipped).map((x)=>x.id);
+                  })
+                  .catch((error) => {
+                      console.warn(error.response);
+                      console.warn("NG");
+                  });
+          },
           fetchPlayerDeck(){
               const user_id = localStorage.user_id;
               const path = `/users/${user_id}/deck.json`;
@@ -314,12 +327,12 @@
       }
     }
 
-    .player_magic_list{
+    .player_skill_list{
       position: absolute;
       bottom: $thin_space;
       left: $thin_space;
     }
-    .enemy_magic_list{
+    .enemy_skill_list{
       position: absolute;
       bottom: $thin_space;
       right: $thin_space;

@@ -42,7 +42,6 @@
                   |
               .descri
                 | {{pointingSkill.description}}
-
         .decide_area
           .decide.clickable(@click="decide")
             | 確定して閉じる
@@ -66,7 +65,6 @@
       },
       data: function () {
           return {
-              playerSkills: [],
               selectingSkillIds: [],
               pointingSkillId: 0,
           };
@@ -77,10 +75,10 @@
       store,
       computed: {
           selectedSkills(){
-              return this.playerSkills.filter((x)=>this.selectingSkillIds.includes(x.id));
+              return this.$store.state.skill.skills.filter((x)=>this.selectingSkillIds.includes(x.id));
           },
           remainingSkills(){
-              return this.playerSkills.filter((x)=>!this.selectingSkillIds.includes(x.id));
+              return this.$store.state.skill.skills.filter((x)=>!this.selectingSkillIds.includes(x.id));
           },
           pointingSkill(){
               const stub = {
@@ -90,7 +88,7 @@
                   description: "",
                   is_defence: "false",
               };
-              return this.playerSkills.find((x)=>x.id===this.pointingSkillId) || stub;
+              return this.$store.state.skill.skills.find((x)=>x.id===this.pointingSkillId) || stub;
           }
       },
       methods: {
@@ -113,8 +111,8 @@
                   .then((results) => {
                       console.log(results);
                       console.log("OK");
-                      this.playerSkills = results.data.skills;
-                      this.selectingSkillIds = this.playerSkills.filter((x)=>x.is_equipped).map((x)=>x.id);
+                      this.$store.commit("skill/setPlayerSkills", results.data.skills);
+                      this.selectingSkillIds = this.$store.state.skill.skills.filter((x)=>x.is_equipped).map((x)=>x.id);
                   })
                   .catch((error) => {
                       console.warn(error.response);
@@ -130,6 +128,7 @@
                   .then((results) => {
                       console.log(results);
                       console.log("OK");
+                      this.fetchPlayerSkills(); // 編集結果を再読み込み、ひっじょーに無駄が多いけど、一旦これで
                       this.$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: false});
                   })
                   .catch((error) => {
