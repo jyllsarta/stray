@@ -300,6 +300,14 @@ export default {
   top: 240px;
   left: 330px;
 }
+.relic_12{
+  top: 30px;
+  left: 430px;
+}
+.relic_13{
+  top: 100px;
+  left: 430px;
+}
 
 
 @keyframes vertical-text-in {

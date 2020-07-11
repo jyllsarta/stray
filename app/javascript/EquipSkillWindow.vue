@@ -37,7 +37,7 @@
                   | {{pointingSkill.reusable ? '∞' : '1'}}
               .detail(v-if="pointingSkill.is_defence===true")
                 .key
-                  | 防御札
+                  | 防御スキル
                 .value
                   |
               .descri
