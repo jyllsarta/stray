@@ -28,22 +28,22 @@ RSpec.describe "Skill", type: :request do
         expect(subject).to have_http_status(200)
         expect(JSON.parse(response.body)&.[]('skills')&.first).to match_json_expression(
                                                                       {
-                                                                          "id"=>Integer,
-                                                                          "name"=>String,
-                                                                          "description"=>nil,
-                                                                          "reusable"=>Boolean,
-                                                                          "is_defence"=>Boolean,
-                                                                          "cost"=>Integer,
-                                                                          "effect1_category"=>nil,
-                                                                          "effect1_to_self"=>nil,
-                                                                          "effect1_value"=>nil,
-                                                                          "effect2_category"=>nil,
-                                                                          "effect2_to_self"=>nil,
-                                                                          "effect2_value"=>nil,
-                                                                          "effect3_category"=>nil,
-                                                                          "effect3_to_self"=>nil,
-                                                                          "effect3_value"=>nil,
-                                                                          "is_equipped"=>Boolean
+                                                                          id: Integer,
+                                                                          name: String,
+                                                                          description: String,
+                                                                          reusable: Boolean,
+                                                                          is_defence: Boolean,
+                                                                          cost: Integer,
+                                                                          effect1_category: String,
+                                                                          effect1_to_self: Boolean,
+                                                                          effect1_value: Integer,
+                                                                          effect2_category: String,
+                                                                          effect2_to_self: Boolean,
+                                                                          effect2_value: Integer,
+                                                                          effect3_category: String,
+                                                                          effect3_to_self: Boolean,
+                                                                          effect3_value: Integer,
+                                                                          is_equipped: Boolean
                                                                       })
       end
     end

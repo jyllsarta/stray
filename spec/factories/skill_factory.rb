@@ -24,5 +24,15 @@
 FactoryBot.define do
   factory :skill, class: 'Skill' do
     name { "ファイア" }
+    description { "基本の魔法" }
+    effect1_category { "Damage" }
+    effect1_to_self { false }
+    effect1_value { 1 }
+    effect2_category { "AddShield" }
+    effect2_to_self { true }
+    effect2_value { 1 }
+    effect3_category { "AddMp" }
+    effect3_to_self { true }
+    effect3_value { 5 }
   end
 end
