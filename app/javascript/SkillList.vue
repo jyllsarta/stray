@@ -1,10 +1,10 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" )
+    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)" )
       .name
-        | プロテクト
+        | {{skill.name}}
       .cost
-        | 40∞
+        | {{skill.cost}}
 </template>
 
 <script lang="ts">
