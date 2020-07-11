@@ -79,7 +79,7 @@
         .player_skill_list
           SkillList(:isPlayer="true", :skills="$store.state.skill.skills.filter((x)=>x.is_equipped)")
         .enemy_skill_list
-          SkillList(:isPlayer="false")
+          SkillList(:isPlayer="false", :skills="currentEnemy.skills")
         .battle_start.clickable(@click="startBattle")
           | 戦闘開始
 </template>
