@@ -77,9 +77,9 @@
           .equip_cards(@click="showsClassCards = false", :class="showsClassCards ? '' : 'active'")
             | 装備
         .player_magic_list
-          MagicList(:isPlayer="true")
+          SkillList(:isPlayer="true")
         .enemy_magic_list
-          MagicList(:isPlayer="false")
+          SkillList(:isPlayer="false")
         .battle_start.clickable(@click="startBattle")
           | 戦闘開始
 </template>
@@ -89,13 +89,13 @@
   import store from './packs/store.ts'
   import axios from 'axios'
   import ax from "./packs/axios_default_setting.ts";
-  import MagicList from "./MagicList.vue";
+  import SkillList from "./SkillList.vue";
   import CardList from "./CardList.vue";
   import Card from "./packs/quest/card";
 
   export default {
       components: {
-          MagicList,
+          SkillList,
           CardList,
       },
       data: function () {

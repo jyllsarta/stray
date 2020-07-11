@@ -63,8 +63,8 @@
         .bars
           .hp_bar
           .mp_bar
-      MagicList(:isPlayer="true")
-      MagicList(:isPlayer="false")
+      SkillList(:isPlayer="true")
+      SkillList(:isPlayer="false")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -79,13 +79,13 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
-import MagicList from "./MagicList.vue";
+import SkillList from "./SkillList.vue";
 import CardList from "./CardList.vue";
 
 
 export default {
   components: {
-    MagicList,
+    SkillList,
     CardList,
   },
   data: function () {

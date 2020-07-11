@@ -1,30 +1,10 @@
 <template lang="pug">
-  .magic_list(:class="sideClass")
-    .magic
+  .skill_list(:class="sideClass")
+    .skill(v-for="skill in skills" )
       .name
         | プロテクト
       .cost
         | 40∞
-    .magic
-      .name
-        | 雷撃
-      .cost
-        | 70∞
-    .magic
-      .name
-        | 必殺 -桜花-
-      .cost
-        | 100
-    .magic
-      .name
-        | 霊撃
-      .cost
-        | 100
-    .magic
-      .name
-        | 応急治療
-      .cost
-        | 40
 </template>
 
 <script lang="ts">
@@ -34,7 +14,6 @@ import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
 
-
 export default {
   data: function () {
     return {
@@ -43,13 +22,14 @@ export default {
   },
   props: {
     isPlayer: Boolean,
+    skills: Array,
   },
   store,
   mounted(){
   },
   computed: {
     sideClass(){
-      return this.isPlayer ? "player_magic_list" : "enemy_magic_list";
+      return this.isPlayer ? "player_skill_list" : "enemy_skill_list";
     }
   },
   methods: {
@@ -60,9 +40,9 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
 
-.magic_list{
+.skill_list{
   display: flex;
-  .magic{
+  .skill{
     margin: $thin_space / 2;
     padding: $thin_space / 2;
     display: flex;
@@ -78,11 +58,11 @@ export default {
   }
 }
 
-.player_magic_list{
+.player_skill_list{
   justify-content: flex-start;
 }
 
-.enemy_magic_list{
+.enemy_skill_list{
   justify-content: flex-end;
 }
 </style>

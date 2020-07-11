@@ -10,6 +10,7 @@ export default {
     relic: false,
     battle: false,
     battle_prepare: true,
+    equip_skill: true,
     transition_frame: false,
     loading_frame: true,
     session_expired_frame: false,
