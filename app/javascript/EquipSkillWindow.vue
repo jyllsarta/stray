@@ -14,12 +14,35 @@
             .head
               | 所持スキル
             .all_skills.skills
-              SkillList(:isPlayer="true", :skills="remainingSkills", @onClick="selectSkill")
+              SkillList(:isPlayer="true", :skills="remainingSkills", @onClick="selectSkill", @onPoint="pointSkill")
             .head
               | 装備中のスキル
             .selected_skills.skills
-              SkillList(:isPlayer="true", :skills="selectedSkills", @onClick="selectSkill")
+              SkillList(:isPlayer="true", :skills="selectedSkills", @onClick="selectSkill", @onPoint="pointSkill")
           .detail_area
+            .head
+              | スキル詳細
+            .name
+              | {{pointingSkill.name}}
+            .details
+              .detail
+                .key
+                  | コスト
+                .value
+                  | {{pointingSkill.cost}}
+              .detail
+                .key
+                  | 使用回数
+                .value
+                  | {{pointingSkill.reusable ? '∞' : '1'}}
+              .detail(v-if="pointingSkill.is_defence===true")
+                .key
+                  | 防御札
+                .value
+                  |
+              .descri
+                | {{pointingSkill.description}}
+
         .decide_area
           .decide.clickable(@click="decide")
             | 確定して閉じる
@@ -45,6 +68,7 @@
           return {
               playerSkills: [],
               selectingSkillIds: [],
+              pointingSkillId: 0,
           };
       },
       mounted(){
@@ -58,6 +82,16 @@
           remainingSkills(){
               return this.playerSkills.filter((x)=>!this.selectingSkillIds.includes(x.id));
           },
+          pointingSkill(){
+              const stub = {
+                  name: "-",
+                  cost: "-",
+                  reusable: false,
+                  description: "",
+                  is_defence: "false",
+              };
+              return this.playerSkills.find((x)=>x.id===this.pointingSkillId) || stub;
+          }
       },
       methods: {
           selectSkill(id){
@@ -69,6 +103,9 @@
                   return;
               }
               this.selectingSkillIds.push(id);
+          },
+          pointSkill(id){
+            this.pointingSkillId = id;
           },
           fetchPlayerSkills(){
               const path = `/skills.json`;
@@ -122,7 +159,7 @@
       padding: $space;
       display: flex;
       .skill_select_area {
-        width: 70%;
+        width: 80%;
         .head{
           border-bottom: 1px solid $gray3;
           width: 100%;
@@ -133,8 +170,35 @@
         }
       }
       .detail_area{
-        width: 30%;
+        width: 20%;
         height: 350px;
+        padding-left: $space;
+        .head{
+          border-bottom: 1px solid $gray3;
+          width: 100%;
+          margin-bottom: $space;
+        }
+        .name{
+          font-size: $font-size-large;
+        }
+        .details{
+          .detail{
+            display: flex;
+            align-items: baseline;
+            padding: $space;
+            .key{
+              text-align: right;
+              width: 50%;
+            }
+            .value{
+              padding-left: $space;
+              width: 50%;
+            }
+          }
+        }
+        .descri{
+          padding: $thin_space;
+        }
       }
     }
     .decide_area{

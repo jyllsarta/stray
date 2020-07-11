@@ -69,8 +69,8 @@
             | 平均装備ランク：
           .rank
             | {{averageItemRank}}
-        .open_magic_window
-          | 魔法選択
+        .open_skill_window.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: true})")
+          | スキル選択
         .switch_deck_type
           .class_cards(@click="showsClassCards = true", :class="showsClassCards ? 'active' : ''")
             | クラスカード
@@ -286,14 +286,13 @@
       }
     }
 
-    .open_magic_window{
+    .open_skill_window{
       position: absolute;
       left: 230px;
       bottom: 75px;
       width: 170px;
       border-radius: $radius;
       @include centering($height: 30px);
-      border: 1px solid $gray3;
     }
 
     .switch_deck_type{
