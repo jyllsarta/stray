@@ -7,7 +7,7 @@ json.enemies do
     json.cards enemy.cards(@user.status.average_item_rank)
     json.skills do
       json.array! enemy.enemy_skills do |enemy_skill|
-        enemy_skill.skill.attributes.except('created_at', 'updated_at').keys.each do |attribute|
+        enemy_skill.skill.attributes.except('created_at', 'updated_at', 'for_player').keys.each do |attribute|
           json.extract! enemy_skill.skill, attribute
         end
       end
