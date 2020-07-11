@@ -9,5 +9,8 @@ class MasterdataController < ApplicationController
     @relics = Relic.all.map do |relic|
       [relic.id, relic.attributes]
     end.to_h
+    @skills = Skill.all.map do |skill|
+      [skill.id, skill.attributes]
+    end.to_h
   end
 end

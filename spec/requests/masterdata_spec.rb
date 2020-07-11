@@ -16,6 +16,7 @@ RSpec.describe "Masterdata", type: :request do
                                                        items: Hash,
                                                        dungeons: Hash,
                                                        relics: Hash,
+                                                       skills: Hash,
                                                    }
                                                }
                                            )
