@@ -76,6 +76,7 @@ export default {
       });
     },
     fetchLatestEvents(){
+      return;
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/events.json`;
       if(!user_id){

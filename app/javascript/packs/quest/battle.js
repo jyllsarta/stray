@@ -1,9 +1,11 @@
 let SeededRandom = require("./seeded_random");
+let SkillResolver = require("./skill_resolver");
 
 module.exports = class Battle{
     constructor(player, enemy, seed) {
         this.seed = seed;
         this.dice = new SeededRandom(seed);
+        this.skillResolver = new SkillResolver(this);
         this.player = player;
         this.enemy = enemy;
 
@@ -19,6 +21,7 @@ module.exports = class Battle{
 
         this.operationHistory = [];
         this.selectingCardIds = [];
+        this.selectingSkillId = null;
         this.enemyCardIds = [];
 
         this.battleLog = [];
@@ -37,6 +40,14 @@ module.exports = class Battle{
         this.selectingCardIds.push(cardId);
     }
 
+    selectSkill(skillId){
+        if(this.selectingSkillId === skillId){
+            this.selectingSkillId = null;
+            return;
+        }
+        this.selectingSkillId = skillId;
+    }
+
     playTurn(){
         this.onTurnStart();
         this.invokePlayerMagic();
@@ -48,7 +59,10 @@ module.exports = class Battle{
     }
 
     invokePlayerMagic(){
-        // 魔法実装したら魔法のExecuteがはいる
+        const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
+        for(let effect of effects){
+            this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value);
+        }
     }
 
     invokeEnemyMagic(){
@@ -101,6 +115,7 @@ module.exports = class Battle{
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
         this.selectingCardIds = [];
+        this.selectingSkillId = null;
         this.player.deck.fillDraw();
 
         this.enemyCardIds = [];
@@ -121,7 +136,7 @@ module.exports = class Battle{
 
     onTurnStart(){
         this.validateSelectingCardIds();
-        this.operationHistory.push(this.selectingCardIds);
+        this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
     }
 
     pickEnemyCards(){

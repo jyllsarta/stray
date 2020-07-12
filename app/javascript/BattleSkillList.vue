@@ -1,6 +1,6 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)")
+    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)", :class="skillClass(skill)")
       .name
         | {{skill.name}}
       .cost
@@ -13,16 +13,17 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
+import Battle from "./packs/quest/battle"
 
 export default {
   data: function () {
     return {
-
     };
   },
   props: {
     isPlayer: Boolean,
     skills: Array,
+    battle: Object,
   },
   store,
   mounted(){
@@ -33,6 +34,9 @@ export default {
     }
   },
   methods: {
+    skillClass(skill){
+      return this.battle.selectingSkillId == skill.id ? 'selected' : '';
+    }
   },
 }
 </script>
@@ -55,13 +59,13 @@ export default {
     .name, .cost{
       text-align: center;
     }
-    .selected{
-      background-color: $gray3;
-      border: 1px solid $yellow;
-    }
-    .disabled{
-      opacity: 0.5;
-    }
+  }
+  .selected{
+    background-color: $gray3;
+    border: 1px solid $yellow;
+  }
+  .disabled{
+    opacity: 0.5;
   }
 }
 

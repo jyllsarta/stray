@@ -22,8 +22,7 @@ class QuestBattle
   def showdown!(operation_history)
     cache = Cache.new(@user)
     raise NoCache unless cache.exist?
-    @operation_history = operation_history
-    result = JSON.parse(Open3.capture2(node_command(cache.read, operation_history))[0].chomp)
+    result = JSON.parse(Open3.capture2(node_command(cache.read, operation_history.to_json))[0].chomp)
     cache.delete
     result
   end

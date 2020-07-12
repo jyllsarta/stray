@@ -63,8 +63,8 @@
         .bars
           .hp_bar
           .mp_bar
-      SkillList(:isPlayer="true", :skills="playerSkills")
-      SkillList(:isPlayer="false", :skills="enemySkills")
+      BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
+      BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -79,13 +79,13 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
-import SkillList from "./SkillList.vue";
+import BattleSkillList from "./BattleSkillList.vue";
 import CardList from "./CardList.vue";
 
 
 export default {
   components: {
-    SkillList,
+    BattleSkillList,
     CardList,
   },
   data: function () {
@@ -158,11 +158,15 @@ export default {
       this.battle = new BattleFactory(this.input).getBattle();
     },
 
-    selectCard(cardId){
-      this.battle?.selectCard(cardId);
-    },
+      selectCard(cardId){
+          this.battle?.selectCard(cardId);
+      },
 
-    playTurn(){
+      selectSkill(skillId){
+          this.battle?.selectSkill(skillId);
+      },
+
+      playTurn(){
       if(!this.isDecidable){
         console.log("ちゃんと3まいきっかり選んで");
         return;
