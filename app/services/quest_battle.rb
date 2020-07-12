@@ -35,9 +35,9 @@ class QuestBattle
         enemyName: @enemy.name,
         enemyHp: @enemy.hp,
         playerCards: DeckBuilder.new(@user).deck,
-        playerSkills: @user.skills.equipped.map(&:to_battle_skill),
+        playerSkills: @user.skills.equipped.map(&:skill).map(&:to_battle_skill),
         enemyCards: enemy_cards,
-        enemySkills: @enemy.enemy_skills.map(&:to_battle_skill),
+        enemySkills: @enemy.enemy_skills.map(&:skill).map(&:to_battle_skill),
     }.to_json
   end
 

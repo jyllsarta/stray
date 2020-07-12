@@ -63,8 +63,8 @@
         .bars
           .hp_bar
           .mp_bar
-      SkillList(:isPlayer="true")
-      SkillList(:isPlayer="false")
+      SkillList(:isPlayer="true", :skills="playerSkills")
+      SkillList(:isPlayer="false", :skills="enemySkills")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -134,6 +134,12 @@ export default {
     },
     enemyTech(){
       return this.battle.enemy?.techAt(this.battle.enemyCardIds);
+    },
+    playerSkills(){
+        return this.battle.player?.skills;
+    },
+    enemySkills(){
+        return this.battle.enemy?.skills;
     },
 
     isDecidable(){
@@ -249,6 +255,10 @@ export default {
           console.log("OK");
           this.input = results.data;
           this.localBattleStart();
+          // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
+          if (process.env.NODE_ENV !== 'production') {
+            window.battle = this.battle;
+          }
         })
         .catch((error) => {
           console.warn(error.response);
@@ -555,14 +565,14 @@ export default {
   width: 470px;
   height: 50px;
 }
-.player_magic_list{
+.player_skill_list{
   position: absolute;
   bottom: $space;
   left: $space;
   width: 500px;
   height: 65px;
 }
-.enemy_magic_list{
+.enemy_skill_list{
   position: absolute;
   bottom: $space;
   right: $space;
