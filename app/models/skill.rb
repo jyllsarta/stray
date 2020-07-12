@@ -30,4 +30,8 @@ class Skill < ApplicationRecord
 
     user.skills.create!(skill: self)
   end
+
+  def to_battle_skill
+    self.attributes.except('created_at', 'updated_at', 'for_player')
+  end
 end

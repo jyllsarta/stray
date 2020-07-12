@@ -109,7 +109,9 @@ RSpec.describe "Enemies", type: :request do
                                                      enemyName: String,
                                                      enemyHp: Integer,
                                                      playerCards: Array,
+                                                     playerSkills: Array,
                                                      enemyCards: Array,
+                                                     enemySkills: Array,
                                                      seed: Integer,
                                                  }
                                              )
