@@ -69,7 +69,8 @@ module.exports = class Battle{
             return;
         }
         if(!this.canUseSkill(this.selectingSkillId)){
-            console.warn(`不正なスキル指定です！ id:${this.selectingSkillId}`)
+            console.warn(`不正なスキル指定です！ id:${this.selectingSkillId}`);
+            return;
         }
         const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
         for(let effect of effects){
@@ -82,7 +83,8 @@ module.exports = class Battle{
             return;
         }
         if(!this.canEnemyUseSkill(this.enemySelectingSkillId)){
-            console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`)
+            console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`);
+            return;
         }
         const effects = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId).effects;
         for(let effect of effects){
@@ -146,6 +148,8 @@ module.exports = class Battle{
 
     onTurnEnd(){
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
+        this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
+        this.enemyOperationHistory.push({cards: this.enemyCardIds, skill: this.enemySelectingSkillId});
 
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
@@ -187,6 +191,7 @@ module.exports = class Battle{
 
     canEnemyUseSkill(skillId){
         const skill = this.enemy.skills.find((x)=>x.id===skillId);
+
         // MPが足りてないとダメ
         if (this.enemy.mp < skill.cost ){
             return false;
@@ -200,8 +205,6 @@ module.exports = class Battle{
 
     onTurnStart(){
         this.validateSelectingCardIds();
-        this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
-        this.enemyOperationHistory.push({cards: this.enemyCardIds, skill: this.enemySelectingSkillId});
     }
 
     pickEnemyCards(){

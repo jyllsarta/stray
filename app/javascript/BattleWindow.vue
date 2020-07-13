@@ -164,15 +164,15 @@ export default {
       this.battle = new BattleFactory(this.input).getBattle();
     },
 
-      selectCard(cardId){
-          this.battle?.selectCard(cardId);
-      },
+    selectCard(cardId){
+        this.battle?.selectCard(cardId);
+    },
 
-      selectSkill(skillId){
-          this.battle?.selectSkill(skillId);
-      },
+    selectSkill(skillId){
+        this.battle?.selectSkill(skillId);
+    },
 
-      playTurn(){
+    playTurn(){
       if(!this.isDecidable){
         console.log("ちゃんと3まいきっかり選んで");
         return;
@@ -187,7 +187,7 @@ export default {
               this.battle.invokePlayerMagic();
               this.skillName = "プレイヤー魔法";
               resolve();
-            }, 10);
+            }, 800);
           });
         })
         .then(()=>{
@@ -196,7 +196,7 @@ export default {
               this.battle.invokeEnemyMagic();
               this.skillName = "敵魔法";
               resolve();
-            }, 100);
+            }, 800);
           });
         })
         .then(()=>{
