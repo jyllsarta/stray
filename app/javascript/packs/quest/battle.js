@@ -72,10 +72,12 @@ module.exports = class Battle{
             console.warn(`不正なスキル指定です！ id:${this.selectingSkillId}`);
             return;
         }
-        const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
+        const skill = this.player.skills.find((x)=>x.id===this.selectingSkillId);
+        const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value);
         }
+        this.player.useMp(skill.cost);
     }
 
     invokeEnemyMagic(){
@@ -86,10 +88,12 @@ module.exports = class Battle{
             console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`);
             return;
         }
-        const effects = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId).effects;
+        const skill = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId);
+        const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value);
         }
+        this.enemy.useMp(skill.cost);
     }
 
     invokePowerAttack(){
