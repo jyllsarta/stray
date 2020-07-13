@@ -51,7 +51,7 @@
         .hp
           | {{playerHp}}
         .mp
-          | 100
+          | {{playerMp}}
         .bars
           .hp_bar
           .mp_bar
@@ -59,7 +59,7 @@
         .hp
           | {{enemyHp}}
         .mp
-          | 100
+          | {{enemyMp}}
         .bars
           .hp_bar
           .mp_bar
@@ -110,6 +110,12 @@ export default {
     },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
+    },
+    playerMp(){
+      return this.battle?.player?.mp || 0;
+    },
+    enemyMp(){
+      return this.battle?.enemy?.mp || 0;
     },
     playerHands(){
       return this.battle?.player?.deck?.currentHands() || [];

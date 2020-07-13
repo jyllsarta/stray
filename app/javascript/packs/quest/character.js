@@ -2,6 +2,7 @@ module.exports = class Character{
     constructor(name, hp, deck, skills) {
         this.name = name;
         this.hp = hp;
+        this.mp = 0;
         this.deck = deck;
         this.skills = skills;
     }
@@ -12,6 +13,24 @@ module.exports = class Character{
 
     atk(){
         return this.deck.cards[this.index].atk();
+    }
+
+    hasMp(value){
+        return this.mp >= value
+    }
+
+    useMp(value){
+        this.mp -= value;
+    }
+
+    addMp(value){
+        if(this.mp > 100){
+            return;
+        }
+        this.mp += value;
+        if(this.mp > 100){
+            this.mp = 100;
+        }
     }
 
     powerAt(cardIds){

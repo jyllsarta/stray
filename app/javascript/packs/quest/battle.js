@@ -59,6 +59,9 @@ module.exports = class Battle{
     }
 
     invokePlayerMagic(){
+        if(this.selectingSkillId === null){
+            return;
+        }
         const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value);
@@ -73,12 +76,17 @@ module.exports = class Battle{
         const result = this.powerMeetResult();
         if(result === "win"){
             this.enemy.hp -= 1;
+            this.player.addMp(5);
+            this.enemy.addMp(10);
         }
         else if(result === "lose"){
             this.player.hp -= 1;
+            this.player.addMp(10);
+            this.enemy.addMp(5);
         }
         else{
-            // nop
+            this.player.addMp(40);
+            this.enemy.addMp(0);
         }
     }
 
@@ -86,12 +94,17 @@ module.exports = class Battle{
         const result = this.techMeetResult();
         if(result === "win"){
             this.enemy.hp -= 1;
+            this.player.addMp(5);
+            this.enemy.addMp(10);
         }
         else if(result === "lose"){
             this.player.hp -= 1;
+            this.player.addMp(10);
+            this.enemy.addMp(5);
         }
         else{
-            // nop
+            this.player.addMp(40);
+            this.enemy.addMp(0);
         }
     }
 
@@ -100,9 +113,13 @@ module.exports = class Battle{
         const techResult = this.techMeetResult();
         if(powerResult === "win" && techResult === "win"){
             this.enemy.hp -= 1;
+            this.player.addMp(0);
+            this.enemy.addMp(20);
         }
         else if(powerResult === "lose" && techResult === "lose"){
             this.player.hp -= 1;
+            this.player.addMp(20);
+            this.enemy.addMp(0);
         }
         else{
             // nop
