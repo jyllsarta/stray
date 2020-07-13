@@ -1,6 +1,6 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)", :class="skillClass(skill)")
+    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)", :class="skillClass(skill.id)")
       .name
         | {{skill.name}}
       .cost
@@ -34,21 +34,25 @@ export default {
     }
   },
   methods: {
-    skillClass(skill){
-      if(!this.canUseSkill(skill)){
+    skillClass(skillId) {
+      if (this.isPlayer) {
+        return this.skillClassPlayer(skillId);
+      } else {
+        return this.skillClassEnemy(skillId);
+      }
+    },
+    skillClassPlayer(skillId){
+      if(!this.battle.canUseSkill(skillId)){
         return 'disabled';
       }
-      return this.battle.selectingSkillId == skill.id ? 'selected' : '';
+      return this.battle.selectingSkillId == skillId ? 'selected' : '';
     },
-    canUseSkill(skill){
-      if(this.isPlayer){
-        return this.battle.canUseSkill(skill.id);
+    skillClassEnemy(skillId){
+      if(!this.battle.canEnemyUseSkill(skillId)){
+        return 'disabled';
       }
-      else{
-        // TODO: 敵のスキル使用ロジック実装時にいい具合にする
-        return true;
-      }
-    }
+      return this.battle.enemySelectingSkillId == skillId ? 'selected' : '';
+    },
   },
 }
 </script>

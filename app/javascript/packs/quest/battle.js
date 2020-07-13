@@ -20,13 +20,16 @@ module.exports = class Battle{
         this.enemy.deck.fillDraw();
 
         this.operationHistory = [];
+        this.enemyOperationHistory = [];
         this.selectingCardIds = [];
         this.selectingSkillId = null;
+        this.enemySelectingSkillId = null;
         this.enemyCardIds = [];
 
         this.battleLog = [];
 
         this.pickEnemyCards();
+        this.pickEnemySkill();
     }
 
     selectCard(cardId){
@@ -66,7 +69,7 @@ module.exports = class Battle{
             return;
         }
         if(!this.canUseSkill(this.selectingSkillId)){
-            console.warn(`不正なスキル指定です！${this.selectingSkillId}`)
+            console.warn(`不正なスキル指定です！ id:${this.selectingSkillId}`)
         }
         const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
         for(let effect of effects){
@@ -75,7 +78,16 @@ module.exports = class Battle{
     }
 
     invokeEnemyMagic(){
-        // 魔法実装したら魔法のExecuteがはいる
+        if(this.enemySelectingSkillId === null){
+            return;
+        }
+        if(!this.canEnemyUseSkill(this.enemySelectingSkillId)){
+            console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`)
+        }
+        const effects = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId).effects;
+        for(let effect of effects){
+            this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value);
+        }
     }
 
     invokePowerAttack(){
@@ -142,8 +154,10 @@ module.exports = class Battle{
         this.player.deck.fillDraw();
 
         this.enemyCardIds = [];
+        this.enemySelectingSkillId = null;
         this.enemy.deck.fillDraw();
         this.pickEnemyCards();
+        this.pickEnemySkill();
     }
 
     outcome(){
@@ -157,6 +171,7 @@ module.exports = class Battle{
 
     // 以下privateのつもり
 
+    // こうして条件を書いていくと operationHistory は character の持つべきロジックだった感がある
     canUseSkill(skillId){
         const skill = this.player.skills.find((x)=>x.id===skillId);
         // MPが足りてないとダメ
@@ -170,13 +185,35 @@ module.exports = class Battle{
         return true;
     }
 
+    canEnemyUseSkill(skillId){
+        const skill = this.enemy.skills.find((x)=>x.id===skillId);
+        // MPが足りてないとダメ
+        if (this.enemy.mp < skill.cost ){
+            return false;
+        }
+        // reusable = false のスキルは一回使ってたらダメ
+        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skill).includes(skillId)){
+            return false;
+        }
+        return true;
+    }
+
     onTurnStart(){
         this.validateSelectingCardIds();
         this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
+        this.enemyOperationHistory.push({cards: this.enemyCardIds, skill: this.enemySelectingSkillId});
     }
 
     pickEnemyCards(){
         this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 3);
+    }
+
+    pickEnemySkill(){
+        for(let skill of this.enemy.skills){
+            if(this.canEnemyUseSkill(skill.id)){
+                this.enemySelectingSkillId = skill.id;
+            }
+        }
     }
 
     validateSelectingCardIds(){
