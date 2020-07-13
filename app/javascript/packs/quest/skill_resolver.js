@@ -15,13 +15,8 @@ module.exports = class SkillResolver {
             target = this.battle.player;
         }
 
-        switch( category ){
-            case "Damage":
-                this.resolveDamage(actor, target, to_self, value);
-                return;
-            default:
-                console.warn(`Undefined Skill Category: ${category}`);
-        }
+        // 曲芸みたいなことしてんなという自覚はある
+        this[`resolve${category}`](actor, target, to_self, value);
     }
 
     // private
@@ -32,6 +27,24 @@ module.exports = class SkillResolver {
         }
         else{
             target.hp -= value;
+        }
+    }
+
+    resolveAddHp(actor, target, to_self, value){
+        if(to_self){
+            actor.hp += value;
+        }
+        else{
+            target.hp += value;
+        }
+    }
+
+    resolveAddMp(actor, target, to_self, value){
+        if(to_self){
+            actor.addMp(value);
+        }
+        else{
+            target.addMp(value);
         }
     }
 };
