@@ -41,6 +41,9 @@ module.exports = class Battle{
     }
 
     selectSkill(skillId){
+        if(!this.canUseSkill(skillId)){
+            return;
+        }
         if(this.selectingSkillId === skillId){
             this.selectingSkillId = null;
             return;
@@ -61,6 +64,9 @@ module.exports = class Battle{
     invokePlayerMagic(){
         if(this.selectingSkillId === null){
             return;
+        }
+        if(!this.canUseSkill(this.selectingSkillId)){
+            console.warn(`不正なスキル指定です！${this.selectingSkillId}`)
         }
         const effects = this.player.skills.find((x)=>x.id===this.selectingSkillId).effects;
         for(let effect of effects){
@@ -150,6 +156,19 @@ module.exports = class Battle{
     }
 
     // 以下privateのつもり
+
+    canUseSkill(skillId){
+        const skill = this.player.skills.find((x)=>x.id===skillId);
+        // MPが足りてないとダメ
+        if (this.player.mp < skill.cost ){
+            return false;
+        }
+        // reusable = false のスキルは一回使ってたらダメ
+        if ( !skill.reusable && this.operationHistory.map((x)=>x.skill).includes(skillId)){
+            return false;
+        }
+        return true;
+    }
 
     onTurnStart(){
         this.validateSelectingCardIds();

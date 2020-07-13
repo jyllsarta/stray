@@ -35,7 +35,19 @@ export default {
   },
   methods: {
     skillClass(skill){
+      if(!this.canUseSkill(skill)){
+        return 'disabled';
+      }
       return this.battle.selectingSkillId == skill.id ? 'selected' : '';
+    },
+    canUseSkill(skill){
+      if(this.isPlayer){
+        return this.battle.canUseSkill(skill.id);
+      }
+      else{
+        // TODO: 敵のスキル使用ロジック実装時にいい具合にする
+        return true;
+      }
     }
   },
 }
