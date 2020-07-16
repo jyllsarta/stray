@@ -53,7 +53,7 @@
         .mp
           | {{playerMp}}
         .bars
-          .hp_bar
+          .hp_bar(:style="{width: 400 * playerHpRatio}")
           .mp_bar
       .enemy_status.status
         .hp
@@ -61,7 +61,7 @@
         .mp
           | {{enemyMp}}
         .bars
-          .hp_bar
+          .hp_bar(:style="{width: 400 * enemyHpRatio}")
           .mp_bar
       BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
@@ -110,6 +110,12 @@ export default {
     },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
+    },
+    playerHpRatio(){
+      return this.battle?.player?.hpRatio()  || 0;
+    },
+    enemyHpRatio(){
+      return this.battle?.enemy?.hpRatio() || 0;
     },
     playerMp(){
       return this.battle?.player?.mp || 0;
