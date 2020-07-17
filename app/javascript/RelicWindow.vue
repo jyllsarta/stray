@@ -16,11 +16,11 @@
               :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
               @click="selectRelic(relic.id)"
               )
-              img.icon(:src="`/images/icons/${relic.id}.gif`")
+              img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
         .detail
           .relic_detail
             .title
-              img.icon(:src="`/images/icons/${selectingRelic.id}.gif`")
+              img.icon(:src="`/images/icons/relic/${selectingRelic.id}.gif`")
               .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
             .desc
@@ -59,7 +59,7 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
-      selectingRelicId: 1,
+      selectingRelicId: 10001,
       relicLabels: {
         disabled: "取得不可",
         got: "取得済み",
@@ -255,59 +255,78 @@ export default {
 
 
 // 各レリックの場所定義
-// 置き方を私が決めたいので、flexではなく全部absoluteでゴリ押す
-.relic_1{
-  top: 30px;
-  left: 30px;
+// 置き方を自由に決めたいので、flexではなく全部absoluteでゴリ押す
+
+// イベント短縮
+.relic_10001{
+  top:   30px;
+  left:  30px;
 }
-.relic_2{
-  top: 120px;
-  left: 30px;
+.relic_10002{
+  top:  120px;
+  left:  30px;
 }
-.relic_3{
-  top: 210px;
-  left: 30px;
+.relic_10003{
+  top:  210px;
+  left:  30px;
 }
-.relic_4{
-  top: 30px;
-  left: 130px;
+
+.relic_20001{
+  top:   30px;
+  left: 110px;
 }
-.relic_5{
-  top: 120px;
-  left: 130px;
+
+.relic_20002{
+  top:  130px;
+  left: 110px;
 }
-.relic_6{
-  top: 30px;
-  left: 230px;
-}
-.relic_7{
-  top: 120px;
-  left: 230px;
-}
-.relic_8{
-  top: 30px;
+
+.relic_30001{
+  top:   30px;
   left: 330px;
 }
-.relic_9{
-  top: 100px;
+
+.relic_30002{
+  top:  130px;
   left: 330px;
 }
-.relic_10{
-  top: 170px;
-  left: 330px;
+
+// スピカスキル
+.relic_2000101{
+  top:   60px;
+  left: 170px;
 }
-.relic_11{
-  top: 240px;
-  left: 330px;
+.relic_2000102{
+  top:   60px;
+  left: 240px;
 }
-.relic_12{
-  top: 30px;
-  left: 430px;
+.relic_2000103{
+  top:  160px;
+  left: 170px;
 }
-.relic_13{
-  top: 100px;
-  left: 430px;
+.relic_2000104{
+  top:  160px;
+  left: 240px;
 }
+
+// チロルスキル
+.relic_2000201{
+  top:   60px;
+  left: 390px;
+}
+.relic_2000202{
+  top:   60px;
+  left: 460px;
+}
+.relic_2000203{
+  top:  160px;
+  left: 390px;
+}
+.relic_2000204{
+  top:  160px;
+  left: 460px;
+}
+
 
 
 @keyframes vertical-text-in {
