@@ -1,10 +1,13 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
     .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)")
-      .name
-        | {{skill.name}}
-      .cost
-        | {{skill.cost}}
+      .upper
+        img.icon(:src="iconImagePath(skill.id)")
+        .cost
+          | {{skill.cost}}
+      .downer
+        .name
+          | {{skill.name}}
 </template>
 
 <script lang="ts">
@@ -33,6 +36,12 @@ export default {
     }
   },
   methods: {
+    iconImagePath(skillId){
+      if(!this.$store.state.masterdata.skills){
+        return "/images/icons/skill/default.gif";
+      }
+      return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId].icon_image_path}`;
+    }
   },
 }
 </script>
@@ -52,8 +61,22 @@ export default {
     border-radius: $radius;
     width: 90px;
     height: 60px;
-    .name, .cost{
+    .upper{
       text-align: center;
+      .icon{
+        width: 24px;
+        height: 24px;
+        margin-right: 5px;
+        display: inline-block;
+      }
+      .cost{
+        display: inline-block;
+      }
+    }
+    .downer{
+      .name{
+        text-align: center;
+      }
     }
     .selected{
       background-color: $gray3;
