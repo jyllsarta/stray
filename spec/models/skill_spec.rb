@@ -26,11 +26,11 @@ require 'rails_helper'
 RSpec.describe Skill, type: :model do
   let(:user){ create(:user) }
 
-  subject do
-    skill.learn!(user)
-  end
-
   describe "#learn!" do
+    subject do
+      skill.learn!(user)
+    end
+
     let(:skill){ create(:skill) }
 
     context "unlearned" do
@@ -45,6 +45,37 @@ RSpec.describe Skill, type: :model do
       end
       it "cannot get" do
         expect{subject}.to raise_error(Skill::AlreadyLearned)
+      end
+    end
+  end
+
+  describe "#to_battle_skill" do
+    let(:skill){ create(:skill) }
+    subject do
+      skill.to_battle_skill
+    end
+
+
+    context "unlearned" do
+      it "can get" do
+        expect(subject).to match_json_expression(
+                               {
+                                   "cost"=>0,
+                                   "description"=>"基本の魔法",
+                                   "effect1_category"=>"Damage",
+                                   "effect1_to_self"=>false,
+                                   "effect1_value"=>1,
+                                   "effect2_category" => "AddShield",
+                                   "effect2_to_self" => true,
+                                   "effect2_value" => 1,
+                                   "effect3_category" => "AddMp",
+                                   "effect3_to_self" => true,
+                                   "effect3_value" => 5,
+                                   "id"=>Integer,
+                                   "is_defence"=>false,
+                                   "name"=>"ファイア",
+                                   "reusable"=>false
+                               })  # 適当なので、モデル変更などでわずらわしくなったタイミングでちゃんと書き直す
       end
     end
   end

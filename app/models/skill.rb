@@ -32,6 +32,6 @@ class Skill < ApplicationRecord
   end
 
   def to_battle_skill
-    self.attributes.except('created_at', 'updated_at', 'for_player')
+    self.attributes.except('created_at', 'updated_at', 'for_player', 'icon_image_path')
   end
 end

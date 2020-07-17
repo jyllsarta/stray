@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
+    t.string "icon_image_path"
     t.boolean "for_player", default: true, null: false
     t.boolean "reusable", default: false, null: false
     t.boolean "is_defence", default: false, null: false
