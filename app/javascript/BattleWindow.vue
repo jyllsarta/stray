@@ -4,8 +4,10 @@
       .player_character
         img.tirol(src="/images/battle/tirol.png")
         img.spica(src="/images/battle/spica.png")
+        img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
         img.enemy(src="/images/battle/enemy.png")
+        img.enemy_barrier(v-if="enemyShield > 0" src="/images/battle/barrier.png")
       CardList.player_hands(
         :cards="playerHands"
         :right-side="false"
@@ -207,7 +209,7 @@ export default {
               this.battle.invokePlayerMagic();
               this.skillName = "プレイヤー魔法";
               resolve();
-            }, 800);
+            }, 0);
           });
         })
         .then(()=>{
@@ -362,12 +364,25 @@ export default {
     position: absolute;
     left: -50px;
   }
+  .player_barrier{
+    width: 256px;
+    height: 256px;
+    position: absolute;
+    left: 50px;
+  }
 }
 
 .enemy_character{
   .enemy{
     width: 256px;
     height: 256px;
+  }
+  .enemy_barrier{
+    width: 256px;
+    height: 256px;
+    position: absolute;
+    left: -50px;
+    transform: scale(-1,1);
   }
 }
 

@@ -55,7 +55,18 @@ module.exports = class Character{
     }
 
     damage(value){
-        // TODO シールド減算処理
+        if(this.tempBuffs.shield > 0){
+            // 防ぎきれたならシールドがダメージ値だけ減る
+            if(this.tempBuffs.shield >= value){
+                this.tempBuffs.shield -= value;
+                value = 0;
+            }
+            // 防ぎきれないならダメージ値がシールド値だけ減る
+            else{
+                value -= this.tempBuffs.shield;
+                this.tempBuffs.shield = 0;
+            }
+        }
         this.hp -= value;
     }
 
