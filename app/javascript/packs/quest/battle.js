@@ -166,6 +166,9 @@ module.exports = class Battle{
         this.enemy.deck.fillDraw();
         this.pickEnemyCards();
         this.pickEnemySkill();
+
+        this.player.resetTempBuffs();
+        this.enemy.resetTempBuffs();
     }
 
     outcome(){
