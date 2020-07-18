@@ -75,7 +75,7 @@ module.exports = class Battle{
         const skill = this.player.skills.find((x)=>x.id===this.selectingSkillId);
         const effects = skill.effects;
         for(let effect of effects){
-            this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value);
+            this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
         this.player.useMp(skill.cost);
     }
@@ -91,7 +91,7 @@ module.exports = class Battle{
         const skill = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId);
         const effects = skill.effects;
         for(let effect of effects){
-            this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value);
+            this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
         this.enemy.useMp(skill.cost);
     }

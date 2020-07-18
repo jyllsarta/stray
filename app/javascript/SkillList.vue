@@ -1,6 +1,6 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="$emit('onPoint', skill.id)")
+    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="onPoint(skill.id)")
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost
@@ -36,11 +36,15 @@ export default {
     }
   },
   methods: {
+    onPoint(skillId){
+      this.$emit('onPoint', skillId);
+      this.$store.commit('guide/updateGuide', this.$store.state.masterdata.skills[skillId]?.description);
+    },
     iconImagePath(skillId){
-      if(!this.$store.state.masterdata.skills){
+      if(!this.$store.state.masterdata?.skills[skillId]){
         return "/images/icons/skill/default.gif";
       }
-      return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId].icon_image_path}`;
+      return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId]?.icon_image_path}`;
     }
   },
 }

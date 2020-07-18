@@ -3,7 +3,7 @@ module.exports = class SkillResolver {
         this.battle = battle;
     }
 
-    resolveSkillEffect(player_side, category, to_self, value) {
+    resolveSkillEffect(player_side, category, to_self, value, isDefenceSkill) {
         let actor;
         let target;
         if(player_side){
@@ -15,6 +15,10 @@ module.exports = class SkillResolver {
             target = this.battle.player;
         }
 
+        if(isDefenceSkill){
+            actor.tempBuffs.usedDefenceSkill = true;
+        }
+
         // 曲芸みたいなことしてんなという自覚はある
         this[`resolve${category}`](actor, target, to_self, value);
     }
@@ -22,7 +26,7 @@ module.exports = class SkillResolver {
     // private
 
     resolveDamage(actor, target, to_self, value){
-        const main = to_self ? target : actor; // 基本相手に作用するので、mainはtarget
+        const main = to_self ? actor : target;
         main.damage(value);
     }
 
@@ -54,5 +58,25 @@ module.exports = class SkillResolver {
     resolveAddTechDamage(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.tempBuffs.techDamage += value;
+    }
+
+    resolveAddPower(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.power += value;
+    }
+
+    resolveAddTech(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.tech += value;
+    }
+
+    resolveAlterPower(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.powerAlterTo = value;
+    }
+
+    resolveAlterTech(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.techAlterTo = value;
     }
 };

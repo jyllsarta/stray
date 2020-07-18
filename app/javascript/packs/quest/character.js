@@ -33,6 +33,9 @@ module.exports = class Character{
     }
 
     addMp(value){
+        if(this.tempBuffs.usedDefenceSkill){
+            return; // 防御スキルを使ったターンはMPが回復しない
+        }
         if(this.mp > 100){
             return;
         }
@@ -51,9 +54,12 @@ module.exports = class Character{
             shield: 0,
             power: 0,
             tech: 0,
+            powerAlterTo: null,
+            techAlterTo: null,
             powerDamage: 0,
             techDamage: 0,
-            specialDamage: 0
+            specialDamage: 0,
+            usedDefenceSkill: false,
         };
     }
 
@@ -74,18 +80,26 @@ module.exports = class Character{
     }
 
     powerAt(cardIds){
+        if(this.tempBuffs.powerAlterTo !== null){
+            return this.tempBuffs.powerAlterTo;
+        }
+
         const cards = cardIds.map((id)=>this.deck.findCard(id));
         if(cards.length === 0){
             return 0;
         }
-        return cards.map((c)=>c.power).reduce((a,b)=>(a+b));
+        return cards.map((c)=>c.power).reduce((a,b)=>(a+b)) + this.tempBuffs.power;
     }
 
     techAt(cardIds){
+        if(this.tempBuffs.techAlterTo !== null){
+            return this.tempBuffs.techAlterTo;
+        }
+
         const cards = cardIds.map((id)=>this.deck.findCard(id));
         if(cards.length === 0){
             return 0;
         }
-        return cards.map((c)=>c.tech).reduce((a,b)=>(a+b));
+        return cards.map((c)=>c.tech).reduce((a,b)=>(a+b)) + this.tempBuffs.power;
     }
 };
