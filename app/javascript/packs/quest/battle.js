@@ -99,12 +99,12 @@ module.exports = class Battle{
     invokePowerAttack(){
         const result = this.powerMeetResult();
         if(result === "win"){
-            this.enemy.damage(1);
+            this.enemy.damage(this.player.damageAt("power"));
             this.player.addMp(5);
             this.enemy.addMp(10);
         }
         else if(result === "lose"){
-            this.player.damage(1);
+            this.player.damage(this.enemy.damageAt("power"));
             this.player.addMp(10);
             this.enemy.addMp(5);
         }
@@ -117,12 +117,12 @@ module.exports = class Battle{
     invokeTechAttack(){
         const result = this.techMeetResult();
         if(result === "win"){
-            this.enemy.damage(1);
+            this.enemy.damage(this.player.damageAt("tech"));
             this.player.addMp(5);
             this.enemy.addMp(10);
         }
         else if(result === "lose"){
-            this.player.damage(1);
+            this.player.damage(this.enemy.damageAt("tech"));
             this.player.addMp(10);
             this.enemy.addMp(5);
         }
@@ -136,12 +136,12 @@ module.exports = class Battle{
         const powerResult = this.powerMeetResult();
         const techResult = this.techMeetResult();
         if(powerResult === "win" && techResult === "win"){
-            this.enemy.damage(1);
+            this.enemy.damage(this.player.damageAt("special"));
             this.player.addMp(0);
             this.enemy.addMp(20);
         }
         else if(powerResult === "lose" && techResult === "lose"){
-            this.player.damage(1);
+            this.player.damage(this.enemy.damageAt("special"));
             this.player.addMp(20);
             this.enemy.addMp(0);
         }

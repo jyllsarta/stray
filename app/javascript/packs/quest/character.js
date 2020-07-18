@@ -16,8 +16,8 @@ module.exports = class Character{
         return this.hp > 0;
     }
 
-    atk(){
-        return this.deck.cards[this.index].atk();
+    damageAt(type){
+        return this[type] + this.tempBuffs[`${type}Damage`];
     }
 
     hpRatio(){
