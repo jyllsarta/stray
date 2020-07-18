@@ -1,8 +1,11 @@
 module.exports = class Character{
-    constructor(name, hp, deck, skills) {
+    constructor(name, hp, power, tech, special, deck, skills) {
         this.name = name;
         this.hp = hp;
         this.hp_max = hp;
+        this.power = power;
+        this.tech = tech;
+        this.special = special;
         this.mp = 0;
         this.deck = deck;
         this.skills = skills;

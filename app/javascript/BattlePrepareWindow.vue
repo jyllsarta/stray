@@ -42,21 +42,21 @@
             .label
               | 力威力
             .enemy
-              | 1
+              | {{currentEnemy.power}}
           .status
             .player
               | 1
             .label
               | 技威力
             .enemy
-              | 1
+              | {{currentEnemy.tech}}
           .status
             .player
               | 1
             .label
               | SP威力
             .enemy
-              | 1
+              | {{currentEnemy.special}}
           .status
             .player
               | 5
