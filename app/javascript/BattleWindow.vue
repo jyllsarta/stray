@@ -48,6 +48,10 @@
           .tech
             | {{enemyTech}}
       .player_status.status
+        .shield(v-if="playerShield > 0")
+          img.icon(src="/images/icons/misc/shield.gif")
+          .value
+            | {{playerShield}}
         .hp
           | {{playerHp}}
         .mp
@@ -56,6 +60,10 @@
           .hp_bar(:style="{width: 400 * playerHpRatio}")
           .mp_bar
       .enemy_status.status
+        .shield(v-if="enemyShield > 0")
+          img.icon(src="/images/icons/misc/shield.gif")
+          .value
+            | {{enemyShield}}
         .hp
           | {{enemyHp}}
         .mp
@@ -110,6 +118,12 @@ export default {
     },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
+    },
+    playerShield(){
+      return this.battle?.player?.tempBuffs?.shield || 0;
+    },
+    enemyShield(){
+      return this.battle?.enemy?.tempBuffs?.shield || 0;
     },
     playerHpRatio(){
       return this.battle?.player?.hpRatio()  || 0;
@@ -413,6 +427,15 @@ export default {
 }
 
 .player_status{
+  .shield{
+    position: absolute;
+    top: -55px;
+    right: 30px;
+    .icon, .value{
+      display: inline-block;
+      font-size: $font-size-large;
+    }
+  }
   .hp, .mp{
     right: 10px;
   }
@@ -422,6 +445,15 @@ export default {
 }
 
 .enemy_status{
+  .shield{
+    position: absolute;
+    top: -55px;
+    left: 30px;
+    .icon, .value{
+      font-size: $font-size-large;
+      display: inline-block;
+    }
+  }
   .hp, .mp{
     left: 10px;
   }
