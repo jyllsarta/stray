@@ -14,6 +14,8 @@
 #  effect3_category :string(255)
 #  effect3_to_self  :boolean
 #  effect3_value    :integer
+#  for_player       :boolean          default(TRUE), not null
+#  icon_image_path  :string(255)
 #  is_defence       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null

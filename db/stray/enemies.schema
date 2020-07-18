@@ -1,6 +1,9 @@
 create_table "enemies", force: :cascade  do |t|
   t.string :name
   t.integer :hp, default: 0
+  t.integer :power, default: 0
+  t.integer :tech, default: 0
+  t.integer :special, default: 0
   t.integer :rank, default: 1
   t.timestamps
 end

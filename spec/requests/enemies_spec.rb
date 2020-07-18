@@ -36,6 +36,9 @@ RSpec.describe "Enemies", type: :request do
                                                      id: Integer,
                                                      name: String,
                                                      hp: Integer,
+                                                     power: Integer,
+                                                     tech: Integer,
+                                                     special: Integer,
                                                      rank: Integer,
                                                      cards: [
                                                          {
@@ -106,8 +109,14 @@ RSpec.describe "Enemies", type: :request do
         expect(JSON.parse(response.body)).to match_json_expression(
                                                  {
                                                      playerHp: Integer,
+                                                     playerPower: Integer,
+                                                     playerTech: Integer,
+                                                     playerSpecial: Integer,
                                                      enemyName: String,
                                                      enemyHp: Integer,
+                                                     enemyPower: Integer,
+                                                     enemyTech: Integer,
+                                                     enemySpecial: Integer,
                                                      playerCards: Array,
                                                      playerSkills: Array,
                                                      enemyCards: Array,

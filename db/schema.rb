@@ -44,6 +44,9 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "hp", default: 0
+    t.integer "power", default: 0
+    t.integer "tech", default: 0
+    t.integer "special", default: 0
     t.integer "rank", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

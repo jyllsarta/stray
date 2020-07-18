@@ -3,6 +3,9 @@ json.enemies do
     json.id enemy.id
     json.name enemy.name
     json.hp enemy.hp
+    json.power enemy.power
+    json.tech enemy.tech
+    json.special enemy.special
     json.rank enemy.rank
     json.cards enemy.cards(@user.status.average_item_rank)
     json.skills do

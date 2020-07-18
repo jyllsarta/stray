@@ -5,7 +5,10 @@
 #  id         :bigint           not null, primary key
 #  hp         :integer          default(0)
 #  name       :string(255)
+#  power      :integer          default(0)
 #  rank       :integer          default(1)
+#  special    :integer          default(0)
+#  tech       :integer          default(0)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
