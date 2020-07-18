@@ -22,47 +22,37 @@ module.exports = class SkillResolver {
     // private
 
     resolveDamage(actor, target, to_self, value){
-        if(to_self){
-            actor.hp -= value;
-        }
-        else{
-            target.hp -= value;
-        }
+        const main = to_self ? target : actor; // 基本相手に作用するので、mainはtarget
+        main.damage(value);
     }
 
     resolveAddHp(actor, target, to_self, value){
-        if(to_self){
-            actor.hp += value;
-        }
-        else{
-            target.hp += value;
-        }
+        const main = to_self ? actor : target;
+        main.hp += value;
     }
 
     resolveAddMp(actor, target, to_self, value){
-        if(to_self){
-            actor.addMp(value);
-        }
-        else{
-            target.addMp(value);
-        }
-    }
-
-    resolveAddMp(actor, target, to_self, value){
-        if(to_self){
-            actor.addMp(value);
-        }
-        else{
-            target.addMp(value);
-        }
+        const main = to_self ? actor : target;
+        main.addMp(value);
     }
 
     resolveAddShield(actor, target, to_self, value){
-        if(to_self){
-            actor.addShield(value);
-        }
-        else{
-            target.addShield(value);
-        }
+        const main = to_self ? actor : target;
+        main.addShield(value);
+    }
+
+    resolveAddSpDamage(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.specialDamage += value;
+    }
+
+    resolveAddPowerDamage(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.powerDamage += value;
+    }
+
+    resolveAddTechDamage(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.techDamage += value;
     }
 };
