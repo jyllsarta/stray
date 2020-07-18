@@ -6,6 +6,7 @@ module.exports = class Character{
         this.mp = 0;
         this.deck = deck;
         this.skills = skills;
+        this.resetTempBuffs();
     }
 
     isAlive(){
@@ -36,6 +37,26 @@ module.exports = class Character{
         if(this.mp > 100){
             this.mp = 100;
         }
+    }
+
+    addShield(value){
+        this.tempBuffs.shield += value;
+    }
+
+    resetTempBuffs(){
+        this.tempBuffs = {
+            shield: 0,
+            power: 0,
+            tech: 0,
+            powerDamage: 0,
+            techDamage: 0,
+            specialDamage: 0
+        };
+    }
+
+    damage(value){
+        // TODO シールド減算処理
+        this.hp -= value;
     }
 
     powerAt(cardIds){

@@ -47,4 +47,22 @@ module.exports = class SkillResolver {
             target.addMp(value);
         }
     }
+
+    resolveAddMp(actor, target, to_self, value){
+        if(to_self){
+            actor.addMp(value);
+        }
+        else{
+            target.addMp(value);
+        }
+    }
+
+    resolveAddShield(actor, target, to_self, value){
+        if(to_self){
+            actor.addShield(value);
+        }
+        else{
+            target.addShield(value);
+        }
+    }
 };
