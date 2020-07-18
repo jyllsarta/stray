@@ -40,9 +40,9 @@ class QuestBattle
         enemyTech: @enemy.tech,
         enemySpecial: @enemy.special,
         playerCards: DeckBuilder.new(@user).deck,
-        playerSkills: @user.skills.equipped.map(&:skill).map(&:to_battle_skill),
+        playerSkills: @user.skills.order(skill_id: :asc).equipped.map(&:skill).map(&:to_battle_skill),
         enemyCards: enemy_cards,
-        enemySkills: @enemy.enemy_skills.map(&:skill).map(&:to_battle_skill),
+        enemySkills: @enemy.enemy_skills.order(order: :asc).map(&:skill).map(&:to_battle_skill),
     }.to_json
   end
 
