@@ -227,7 +227,7 @@ export default {
     },
 
     isDecidable(){
-      return this.battle.selectingCardIds?.length === 3;
+      return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
       return this.isDecidable ? "clickable" : "";

@@ -9,6 +9,8 @@ module.exports = class Battle{
         this.player = player;
         this.enemy = enemy;
 
+        this.turnInProgress = false;
+
         // デッキ回りの初期化はバトルがやるの違うのかもなと思いつつも、一旦ここ意外に役割を持たせるとそれはそれで歪むので別の需要が出てくるまで待つ
         this.player.deck.setSeededDice(this.dice);
         this.enemy.deck.setSeededDice(this.dice);
@@ -33,6 +35,9 @@ module.exports = class Battle{
     }
 
     selectCard(cardId){
+        if(this.turnInProgress){
+            return;
+        }
         if(this.selectingCardIds.includes(cardId)){
             this.selectingCardIds = this.selectingCardIds.filter(n => n !== cardId);
             return;
@@ -44,6 +49,9 @@ module.exports = class Battle{
     }
 
     selectSkill(skillId){
+        if(this.turnInProgress){
+            return;
+        }
         if(!this.canUseSkill(skillId)){
             return;
         }
@@ -169,6 +177,7 @@ module.exports = class Battle{
 
         this.player.resetTempBuffs();
         this.enemy.resetTempBuffs();
+        this.turnInProgress = false;
     }
 
     outcome(){
@@ -211,6 +220,7 @@ module.exports = class Battle{
     }
 
     onTurnStart(){
+        this.turnInProgress = true;
         this.validateSelectingCardIds();
     }
 
