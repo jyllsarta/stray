@@ -58,13 +58,13 @@ export default {
       if(!this.battle.canUseSkill(skillId)){
         return 'disabled';
       }
-      return this.battle.selectingSkillId == skillId ? 'selected' : '';
+      return this.battle.selectingSkillId == skillId ? 'selected' : 'available';
     },
     skillClassEnemy(skillId){
       if(!this.battle.canEnemyUseSkill(skillId)){
         return 'disabled';
       }
-      return this.battle.enemySelectingSkillId == skillId ? 'selected' : '';
+      return this.battle.enemySelectingSkillId == skillId ? 'selected' : 'available';
     },
     iconImagePath(skillId){
       if(!this.$store.state.masterdata.skills){
@@ -120,6 +120,15 @@ export default {
   }
   .disabled{
     opacity: 0.5;
+  }
+  .available{
+    background-color: $gray3-opacity;
+  }
+  .selected, .available{
+    &:hover{
+      border: 1px solid $yellow;
+      transform: scale(1.1);
+    }
   }
 }
 

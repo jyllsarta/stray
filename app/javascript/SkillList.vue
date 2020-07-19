@@ -1,6 +1,6 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="onPoint(skill.id)")
+    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="onPoint(skill.id)" :class="clickable ? 'clickable' : ''")
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost
@@ -28,6 +28,7 @@ export default {
   props: {
     isPlayer: Boolean,
     skills: Array,
+    clickable: Boolean,
   },
   store,
   mounted(){
@@ -95,6 +96,11 @@ export default {
     .disabled{
       opacity: 0.5;
     }
+  }
+  .clickable{
+    // ↑の .skill についてるborderがグローバルセッティングの .clickable についている border を打ち消してしまう
+    // 今回は .clickable の方に勝ってほしいのでここで再定義する(ダサい...)
+    border: 1px solid $gray1;
   }
 }
 

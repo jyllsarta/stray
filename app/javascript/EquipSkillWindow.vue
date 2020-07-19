@@ -14,11 +14,11 @@
             .head
               | 所持スキル
             .all_skills.skills
-              SkillList(:isPlayer="true", :skills="remainingSkills", @onClick="selectSkill", @onPoint="pointSkill")
+              SkillList(:isPlayer="true", :skills="remainingSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
             .head
               | 装備中のスキル
             .selected_skills.skills
-              SkillList(:isPlayer="true", :skills="selectedSkills", @onClick="selectSkill", @onPoint="pointSkill")
+              SkillList(:isPlayer="true", :skills="selectedSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
           .detail_area
             .head
               | スキル詳細
