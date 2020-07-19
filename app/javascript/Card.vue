@@ -1,8 +1,8 @@
 <template lang="pug">
-.hand(@click="onClick")
+.hand(@click="onClick" :class="rightSide ? 'right_side' : 'left_side'")
   .name
     | {{name}}
-  .value(:class="rightSide ? 'right_side' : ''")
+  .value
     .power.value
       | {{power}}
     .sep
@@ -33,7 +33,6 @@ export default {
 .hand {
   padding: 4px 4px 4px 10px;
   height: 38px;
-  background: linear-gradient(80deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
   width: 150px;
   margin-bottom: 2px;
   .name{
@@ -54,11 +53,15 @@ export default {
       text-align: right;
     }
   }
-  .right_side{
-  }
   &:hover {
     filter: brightness(130%);
     transform: scale(1.1);
   }
+}
+.left_side{
+  background: linear-gradient(80deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
+}
+.right_side{
+  background: linear-gradient(100deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
 }
 </style>

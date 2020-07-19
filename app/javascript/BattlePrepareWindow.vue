@@ -229,17 +229,17 @@
 
     .player_deck{
       position: absolute;
-      left: 220px;
+      left: 205px;
       top: 100px;
-      width: 188px;
+      width: 198px;
       height: 330px;
     }
 
     .enemy_deck{
       position: absolute;
-      right: 220px;
+      right: 205px;
       top: 100px;
-      width: 188px;
+      width: 198px;
       height: 330px;
     }
 

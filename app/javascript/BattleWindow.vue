@@ -633,28 +633,28 @@ export default {
   position: absolute;
   top: 40px;
   left: $space;
-  width: 180px;
+  width: 198px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
   top: 40px;
   right: $space;
-  width: 180px;
+  width: 198px;
   height: 310px;
 }
 .player_selecting_cards{
   position: absolute;
   top: 260px;
   left: 250px;
-  width: 170px;
+  width: 198px;
   height: 150px;
 }
 .enemy_selecting_cards{
   position: absolute;
   top: 260px;
   right: 250px;
-  width: 170px;
+  width: 198px;
   height: 150px;
 }
 .skill_name{
