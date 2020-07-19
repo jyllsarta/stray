@@ -61,6 +61,8 @@
         .bars
           Slider(:width="400", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
           Slider(:width="250", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+        .damage_parameters
+          DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
       .enemy_status.status
         .shield(v-if="enemyShield > 0")
           img.icon(src="/images/icons/misc/shield.gif")
@@ -73,6 +75,8 @@
         .bars
           Slider(:width="400", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
           Slider(:width="250", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+        .damage_parameters
+          DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
       BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       transition(name="open_window")
@@ -92,6 +96,7 @@ import BattleFactory from "./packs/quest/battle_factory"
 import BattleSkillList from "./BattleSkillList.vue";
 import CardList from "./CardList.vue";
 import Slider from "./Slider.vue";
+import DamageParameters from "./DamageParameters.vue";
 
 
 export default {
@@ -99,6 +104,7 @@ export default {
     BattleSkillList,
     CardList,
     Slider,
+    DamageParameters
   },
   data: function () {
     return {
@@ -174,14 +180,50 @@ export default {
     enemyPower(){
       return this.battle.enemy?.powerAt(this.battle.enemyCardIds);
     },
+    playerPowerDamage(){
+        return this.battle.player?.damageAt("power");
+    },
+    playerTechDamage(){
+        return this.battle.player?.damageAt("tech");
+    },
+    playerSpecialDamage(){
+        return this.battle.player?.damageAt("special");
+    },
+    playerBasicPowerDamage(){
+        return this.battle.player?.power;
+    },
+    playerBasicTechDamage(){
+        return this.battle.player?.tech;
+    },
+    playerBasicSpecialDamage(){
+        return this.battle.player?.special;
+    },
+    enemyPowerDamage(){
+      return this.battle.enemy?.damageAt("power");
+    },
+    enemyTechDamage(){
+      return this.battle.enemy?.damageAt("tech");
+    },
+    enemySpecialDamage(){
+      return this.battle.enemy?.damageAt("special");
+    },
+    enemyBasicPowerDamage(){
+      return this.battle.enemy?.power;
+    },
+    enemyBasicTechDamage(){
+      return this.battle.enemy?.tech;
+    },
+    enemyBasicSpecialDamage(){
+      return this.battle.enemy?.special;
+    },
     enemyTech(){
       return this.battle.enemy?.techAt(this.battle.enemyCardIds);
     },
     playerSkills(){
-        return this.battle.player?.skills;
+      return this.battle.player?.skills;
     },
     enemySkills(){
-        return this.battle.enemy?.skills;
+      return this.battle.enemy?.skills;
     },
 
     isDecidable(){
@@ -461,6 +503,11 @@ export default {
   .bars{
     align-items: flex-end;
   }
+  .damage_parameters{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+  }
 }
 
 .enemy_status{
@@ -478,6 +525,9 @@ export default {
   }
   .bars{
     align-items: flex-start;
+  }
+  .damage_parameters{
+    width: 100%;
   }
 }
 
