@@ -9,6 +9,8 @@
         img.icon(:src="iconImagePath(skill.id)")
         .cost
           | {{skill.cost}}
+        .infinite
+          | {{skill.reusable ? '∞' : ''}}
       .downer
         .name
           | {{skill.name}}
@@ -94,10 +96,14 @@ export default {
       .icon{
         width: 24px;
         height: 24px;
-        margin-right: 5px;
+        margin-right: 2px;
         display: inline-block;
       }
       .cost{
+        display: inline-block;
+        margin-right: 2px;
+      }
+      .infinite{
         display: inline-block;
       }
     }
