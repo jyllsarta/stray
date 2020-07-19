@@ -39,18 +39,18 @@ export default {
   .hand{
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        padding-left: $i * 6px;
+        margin-left: $i * 6px;
+        margin-right: 48px - $i * 6px;
       }
     }
   }
 }
 
 .right{
-  text-align: right;
   .hand{
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        padding-right: $i * 6px;
+        margin-left: 48px - $i * 6px;
       }
     }
   }

@@ -633,14 +633,14 @@ export default {
   position: absolute;
   top: 40px;
   left: $space;
-  width: 220px;
+  width: 180px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
   top: 40px;
   right: $space;
-  width: 220px;
+  width: 180px;
   height: 310px;
 }
 .player_selecting_cards{

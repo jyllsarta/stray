@@ -29,8 +29,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "stylesheets/global_setting";
 .hand {
-  padding: 1px;
+  padding: 4px 4px 4px 10px;
+  height: 38px;
+  background: linear-gradient(80deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
+  width: 150px;
+  margin-bottom: 2px;
+  .name{
+    line-height: 100%;
+  }
   .value {
     display: flex;
     width: 100%;
@@ -47,10 +55,10 @@ export default {
     }
   }
   .right_side{
-    justify-content: flex-end;
   }
   &:hover {
     filter: brightness(130%);
+    transform: scale(1.1);
   }
 }
 </style>
