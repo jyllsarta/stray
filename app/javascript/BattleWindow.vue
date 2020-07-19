@@ -2,8 +2,10 @@
   .menu
     .full_covered_window
       .player_character
-        img.tirol(src="/images/battle/tirol.png")
-        img.spica(src="/images/battle/spica.png")
+        .tirol
+          BattleCharacter(:character-name="'tirol'" :images="{normal: 'normal', magic:'magic', default: 'default'}", :status="tirolStatus" )
+        .spica
+          BattleCharacter(:character-name="'spica'" :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}", :status="spicaStatus")
         img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
         img.enemy(src="/images/battle/enemy.png")
@@ -97,6 +99,7 @@ import BattleSkillList from "./BattleSkillList.vue";
 import CardList from "./CardList.vue";
 import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
+import BattleCharacter from "./BattleCharacter.vue";
 
 
 export default {
@@ -104,7 +107,8 @@ export default {
     BattleSkillList,
     CardList,
     Slider,
-    DamageParameters
+    DamageParameters,
+    BattleCharacter,
   },
   data: function () {
     return {
@@ -225,7 +229,12 @@ export default {
     enemySkills(){
       return this.battle.enemy?.skills;
     },
-
+    spicaStatus(){
+      return this.battle?.characterStatus?.spica || 'normal';
+    },
+    tirolStatus(){
+      return this.battle?.characterStatus?.tirol || 'normal';
+    },
     isDecidable(){
       return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
     },
@@ -413,6 +422,7 @@ export default {
     width: 256px;
     height: 256px;
     position: absolute;
+    left: 100px;
   }
   .tirol{
     width: 256px;

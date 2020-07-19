@@ -11,6 +11,8 @@ module.exports = class Battle{
 
         this.turnInProgress = false;
 
+        this.resetCharacterStatus();
+
         // デッキ回りの初期化はバトルがやるの違うのかもなと思いつつも、一旦ここ意外に役割を持たせるとそれはそれで歪むので別の需要が出てくるまで待つ
         this.player.deck.setSeededDice(this.dice);
         this.enemy.deck.setSeededDice(this.dice);
@@ -86,9 +88,11 @@ module.exports = class Battle{
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
         this.player.useMp(skill.cost);
+        this.characterStatus.tirol = 'magic';
     }
 
     invokeEnemyMagic(){
+        this.resetCharacterStatus();
         if(this.enemySelectingSkillId === null){
             return;
         }
@@ -110,15 +114,18 @@ module.exports = class Battle{
             this.enemy.damage(this.player.damageAt("power"));
             this.player.addMp(5);
             this.enemy.addMp(10);
+            this.characterStatus.spica = 'attack';
         }
         else if(result === "lose"){
             this.player.damage(this.enemy.damageAt("power"));
             this.player.addMp(10);
             this.enemy.addMp(5);
+            this.characterStatus.spica = 'lose';
         }
         else{
             this.player.addMp(40);
             this.enemy.addMp(0);
+            this.characterStatus.spica = 'draw';
         }
     }
 
@@ -128,15 +135,18 @@ module.exports = class Battle{
             this.enemy.damage(this.player.damageAt("tech"));
             this.player.addMp(5);
             this.enemy.addMp(10);
+            this.characterStatus.spica = 'attack';
         }
         else if(result === "lose"){
             this.player.damage(this.enemy.damageAt("tech"));
             this.player.addMp(10);
             this.enemy.addMp(5);
+            this.characterStatus.spica = 'lose';
         }
         else{
             this.player.addMp(40);
             this.enemy.addMp(0);
+            this.characterStatus.spica = 'draw';
         }
     }
 
@@ -147,11 +157,13 @@ module.exports = class Battle{
             this.enemy.damage(this.player.damageAt("special"));
             this.player.addMp(0);
             this.enemy.addMp(20);
+            this.characterStatus.spica = 'attack';
         }
         else if(powerResult === "lose" && techResult === "lose"){
             this.player.damage(this.enemy.damageAt("special"));
             this.player.addMp(20);
             this.enemy.addMp(0);
+            this.characterStatus.spica = 'lose';
         }
         else{
             // nop
@@ -159,6 +171,7 @@ module.exports = class Battle{
     }
 
     onTurnEnd(){
+        this.resetCharacterStatus();
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
         this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
         this.enemyOperationHistory.push({cards: this.enemyCardIds, skill: this.enemySelectingSkillId});
@@ -278,5 +291,12 @@ module.exports = class Battle{
 
     isGameEnd(){
         return !this.player.isAlive() || !this.enemy.isAlive();
+    }
+
+    resetCharacterStatus(){
+        this.characterStatus = {
+            spica: 'normal',
+            tirol: 'normal'
+        };
     }
 };
