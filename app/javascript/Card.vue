@@ -56,6 +56,8 @@ export default {
   &:hover {
     filter: brightness(130%);
     transform: scale(1.1);
+    border-top: 1px solid $gray1;
+    border-bottom: 1px solid $gray1;
   }
 }
 .left_side{
