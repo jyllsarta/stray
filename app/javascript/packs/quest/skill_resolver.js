@@ -32,7 +32,7 @@ module.exports = class SkillResolver {
 
     resolveAddHp(actor, target, to_self, value){
         const main = to_self ? actor : target;
-        main.hp += value;
+        main.addHp(value);
     }
 
     resolveAddMp(actor, target, to_self, value){

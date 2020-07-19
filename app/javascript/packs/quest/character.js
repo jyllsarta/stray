@@ -45,6 +45,16 @@ module.exports = class Character{
         }
     }
 
+    addHp(value){
+        if(this.hp > this.hp_max){
+            return;
+        }
+        this.hp += value;
+        if(this.hp > this.hp_max){
+            this.hp = this.hp_max;
+        }
+    }
+
     addShield(value){
         this.tempBuffs.shield += value;
     }
