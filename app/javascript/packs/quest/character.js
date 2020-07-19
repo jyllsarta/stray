@@ -7,6 +7,7 @@ module.exports = class Character{
         this.tech = tech;
         this.special = special;
         this.mp = 0;
+        this.mp_max = 100;
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
@@ -19,6 +20,17 @@ module.exports = class Character{
     damageAt(type){
         return this[type] + this.tempBuffs[`${type}Damage`];
     }
+
+    addHp(value){
+        if(this.hp > this.hp_max){
+            return;
+        }
+        this.hp += value;
+        if(this.hp > this.hp_max){
+            this.hp = this.hp_max;
+        }
+    }
+
 
     hpRatio(){
         return this.hp / this.hp_max;
@@ -45,14 +57,8 @@ module.exports = class Character{
         }
     }
 
-    addHp(value){
-        if(this.hp > this.hp_max){
-            return;
-        }
-        this.hp += value;
-        if(this.hp > this.hp_max){
-            this.hp = this.hp_max;
-        }
+    mpRatio(){
+        return this.mp / this.mp_max;
     }
 
     addShield(value){

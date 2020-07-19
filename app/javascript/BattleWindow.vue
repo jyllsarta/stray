@@ -59,8 +59,8 @@
         .mp
           | {{playerMp}}
         .bars
-          .hp_bar(:style="{width: 400 * playerHpRatio}")
-          .mp_bar
+          Slider(:width="400", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
       .enemy_status.status
         .shield(v-if="enemyShield > 0")
           img.icon(src="/images/icons/misc/shield.gif")
@@ -71,8 +71,8 @@
         .mp
           | {{enemyMp}}
         .bars
-          .hp_bar(:style="{width: 400 * enemyHpRatio}")
-          .mp_bar
+          Slider(:width="400", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
       BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       transition(name="open_window")
@@ -91,12 +91,14 @@ import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
 import BattleSkillList from "./BattleSkillList.vue";
 import CardList from "./CardList.vue";
+import Slider from "./Slider.vue";
 
 
 export default {
   components: {
     BattleSkillList,
     CardList,
+    Slider,
   },
   data: function () {
     return {
@@ -105,6 +107,12 @@ export default {
       finished: false,
       outcome: "",
       skillName: "",
+      colors: {
+        hpColor: "rgba(255,192,145,0.99)",
+        hpBlankColor: "rgba(255,192,145,0.22)",
+        mpColor: "rgba(145,229,255,0.99)",
+        mpBlankColor: "rgba(145,229,255,0.22)",
+      }
     };
   },
   store,
@@ -132,6 +140,12 @@ export default {
     },
     enemyHpRatio(){
       return this.battle?.enemy?.hpRatio() || 0;
+    },
+    playerMpRatio(){
+        return this.battle?.player?.mpRatio() || 0;
+    },
+    enemyMpRatio(){
+        return this.battle?.enemy?.mpRatio() || 0;
     },
     playerMp(){
       return this.battle?.player?.mp || 0;
@@ -423,16 +437,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    .hp_bar{
-      width: 400px;
-      height: 4px;
-      background-color: #FCD99A;
-    }
-    .mp_bar{
-      width: 250px;
-      height: 4px;
-      background-color: #c5b4fc;
-    }
   }
 }
 
