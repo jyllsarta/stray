@@ -45,7 +45,7 @@ export default {
   methods: {
     onPoint(skillId){
       this.$emit('onPoint', skillId);
-      this.$store.commit('guide/updateGuide', this.$store.state.masterdata.skills[skillId]?.description);
+      this.$store.commit('guide/updateGuide', `${this.$store.state.masterdata.skills[skillId]?.name}：${this.$store.state.masterdata.skills[skillId]?.description}`);
     },
     skillClass(skillId) {
       if (this.isPlayer) {
