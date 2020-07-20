@@ -10,8 +10,8 @@
         | 強敵と戦います。
       .body
         .characters
-          img.tirol(src="/images/battle/tirol.png")
-          img.spica(src="/images/battle/spica.png")
+          img.tirol(src="/images/battle/tirol/normal.png")
+          img.spica(src="/images/battle/spica/normal.png")
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
         CardList.player_deck(
