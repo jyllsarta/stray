@@ -61,6 +61,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["enemy_id"], name: "index_enemy_cards_on_enemy_id"
   end
 
+  create_table "enemy_rewards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "enemy_id", null: false
+    t.string "giftable_type", null: false
+    t.integer "giftable_id"
+    t.integer "amount", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["enemy_id"], name: "index_enemy_rewards_on_enemy_id"
+  end
+
   create_table "enemy_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "enemy_id"
     t.bigint "skill_id"

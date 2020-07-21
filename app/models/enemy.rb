@@ -16,6 +16,7 @@
 class Enemy < ApplicationRecord
   has_many :enemy_cards
   has_many :enemy_skills
+  has_many :enemy_rewards
 
   def cards(player_rank)
     preload_associations!
