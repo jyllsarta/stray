@@ -1,7 +1,7 @@
 class EnemiesController < ApplicationController
   def index
     @user = current_user
-    @enemies = Enemy.all.preload(enemy_cards: [:card], enemy_skills: [:skill])
+    @enemies = Enemy.all.preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
   end
 
   def engage
@@ -19,3 +19,4 @@ class EnemiesController < ApplicationController
     render json: {success: true, isWin: result["isWin"], isDraw: result["isDraw"]}, status: :ok
   end
 end
+

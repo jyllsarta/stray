@@ -17,5 +17,8 @@
 
 FactoryBot.define do
   factory :enemy_reward, class: 'EnemyReward' do
+    giftable_type { 'Coin' }
+    giftable_id { 1 }
+    amount { 100 }
   end
 end

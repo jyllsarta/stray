@@ -15,5 +15,10 @@ json.enemies do
         end
       end
     end
+    json.rewards do
+      json.array! enemy.enemy_rewards do |reward|
+        json.extract! reward, :giftable_type, :giftable_id, :amount
+      end
+    end
   end
 end

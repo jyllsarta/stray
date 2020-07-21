@@ -5,7 +5,7 @@ RSpec.describe "Enemies", type: :request do
 
   describe "GET /enemies/" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy, :with_card, :with_skill) }
+    let!(:enemy ) { create(:enemy, :with_card, :with_skill, :with_reward) }
     let!(:dungeon){ create(:dungeon) }
     let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
     let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
@@ -63,7 +63,7 @@ RSpec.describe "Enemies", type: :request do
                                                          }
                                                      ],
                                                      skills: [
-                                                         {
+                                                          {
                                                              id: Integer,
                                                              name: String,
                                                              description: String,
@@ -81,6 +81,13 @@ RSpec.describe "Enemies", type: :request do
                                                              effect3_value: Integer,
                                                          }
                                                      ],
+                                                     rewards: [
+                                                         {
+                                                             giftable_type: String,
+                                                             giftable_id: Integer,
+                                                             amount: Integer
+                                                         }
+                                                     ]
                                                  }
                                              )
       end

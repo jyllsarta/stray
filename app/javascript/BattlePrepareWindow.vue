@@ -14,6 +14,12 @@
           img.spica(src="/images/battle/spica/normal.png")
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
+        .enemy_reward
+          .descri
+            | 撃破報酬：
+          img.icon(:src="`/images/ui/${currentEnemyRewardType}.png`")
+          .count
+            | × {{ currentEnemyReward.amount }}
         CardList.player_deck(
           :cards="currentPlayerCards"
           :right-side="false"
@@ -117,6 +123,15 @@
       computed: {
           currentEnemy(){
               return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
+          },
+          currentEnemyReward(){
+              if(!this.currentEnemy?.rewards){
+                  return {};
+              }
+              return this.currentEnemy?.rewards[0];
+          },
+          currentEnemyRewardType(){
+              return this.currentEnemyReward?.giftable_type?.toLowerCase() || 'coin';
           },
           enemyDeck(){
               return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
@@ -224,6 +239,24 @@
       .enemy{
         width: 256px;
         height: 256px;
+      }
+    }
+
+    .enemy_reward{
+      position: absolute;
+      bottom: $space + 70px;
+      right: $space;
+      width: 200px;
+      height: 40px;
+      background-color: $background_with_opacity;
+      border-radius: $radius;
+      padding: $thin_space;
+      .descri, .icon, .count{
+        display: inline-block;
+      }
+      .icon{
+        width: $font-size-normal;
+        height: $font-size-normal;
       }
     }
 

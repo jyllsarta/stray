@@ -31,5 +31,10 @@ FactoryBot.define do
         enemy.enemy_skills << FactoryBot.create(:enemy_skill, :with_skill, enemy: enemy)
       end
     end
+    trait :with_reward do
+      after(:create) do |enemy|
+        enemy.enemy_rewards << FactoryBot.create(:enemy_reward, enemy: enemy)
+      end
+    end
   end
 end
