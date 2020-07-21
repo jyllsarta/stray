@@ -119,6 +119,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerPower: Integer,
                                                      playerTech: Integer,
                                                      playerSpecial: Integer,
+                                                     enemyId: Integer,
                                                      enemyName: String,
                                                      enemyHp: Integer,
                                                      enemyPower: Integer,
@@ -138,7 +139,7 @@ RSpec.describe "Enemies", type: :request do
   describe "POST /enemies/:id/showdown" do
     include_context("stub_current_user")
     let(:user){ User.create }
-    let!(:enemy ) { create(:enemy) }
+    let!(:enemy ) { create(:enemy, :with_reward) }
     let(:do_post) { post enemy_showdown_path(enemy_id: enemy.id), params: params }
     let(:params) do
       {
@@ -148,7 +149,7 @@ RSpec.describe "Enemies", type: :request do
 
     before do
       QuestBattle.new(user).engage!(enemy.id)
-      allow_any_instance_of(QuestBattle).to receive(:showdown!).and_return({'isWin'=>true, 'isDraw'=>false})
+      allow_any_instance_of(QuestBattle).to receive(:capture_result).and_return({'isWin'=>true, 'isDraw'=>false})
     end
 
     subject do
@@ -163,6 +164,13 @@ RSpec.describe "Enemies", type: :request do
                                                      success: Boolean,
                                                      isWin: Boolean,
                                                      isDraw: Boolean,
+                                                     rewards: [
+                                                         {
+                                                             giftable_type: String,
+                                                             giftable_id: Integer,
+                                                             amount: Integer
+                                                         }
+                                                     ],
                                                  }
                                              )
       end

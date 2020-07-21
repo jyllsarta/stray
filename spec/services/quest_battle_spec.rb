@@ -42,8 +42,73 @@ RSpec.describe QuestBattle, type: :model do
       before do
         quest_battle.engage!(enemy.id)
       end
-      it "returns object with no error" do
-        expect(subject).to eq(JSON.parse(node_response))
+      it "no error" do
+        expect{ subject }.to_not raise_error
+      end
+    end
+
+    context "reward" do
+      let!(:enemy_reward){ create(:enemy_reward, enemy: enemy, giftable_type: 'Coin', amount: 123) }
+      before do
+        quest_battle.engage!(enemy.id)
+      end
+      it "gives reward" do
+        expect{subject}.to change(user.status.reload, :coin).by(123)
+      end
+
+      context "lose" do
+        let(:node_response) do
+          {
+              isWin: false,
+              isDraw: false
+          }.to_json
+        end
+        it "not gives reward" do
+          expect{subject}.to_not change(user.status.reload, :coin)
+        end
+      end
+
+      context "draw" do
+        let(:node_response) do
+          {
+              isWin: false,
+              isDraw: true
+          }.to_json
+        end
+        it "not gives reward" do
+          expect{subject}.to_not change(user.status.reload, :coin)
+        end
+      end
+    end
+  end
+
+  describe "#result" do
+    subject { quest_battle.result }
+    let!(:enemy ) { create(:enemy)}
+    let(:history){ [] }
+
+    let(:node_response) do
+      {
+          isWin: true,
+          isDraw: false
+      }.to_json
+    end
+
+    before do
+      allow(Open3).to receive(:capture2).and_return([node_response, 0])
+      quest_battle.engage!(enemy.id)
+      quest_battle.showdown!(history)
+    end
+
+    context "is well prepared" do
+      it "no error" do
+        expect(subject).to match_json_expression(
+                               {
+                                   isWin: Boolean,
+                                   isDraw: Boolean,
+                                   rewards: Array
+                               }
+                           )
       end
     end
   end

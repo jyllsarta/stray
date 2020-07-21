@@ -12,11 +12,11 @@ class EnemiesController < ApplicationController
 
   def showdown
     quest = QuestBattle.new(current_user)
-
-    result = quest.showdown!(params[:operation_history].map{|x| x.permit(:skill, cards: [])}.map(&:to_h))
+    quest.showdown!(params[:operation_history].map{|x| x.permit(:skill, cards: [])}.map(&:to_h))
+    result = quest.result
     pp result unless Rails.env.test?
 
-    render json: {success: true, isWin: result["isWin"], isDraw: result["isDraw"]}, status: :ok
+    render json: {success: true, isWin: result["isWin"], isDraw: result["isDraw"], rewards: result["rewards"]}, status: :ok
   end
 end
 

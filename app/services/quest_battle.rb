@@ -1,5 +1,6 @@
 class QuestBattle
   class NoCache < StandardError; end
+  attr_reader :result
 
   def initialize(user)
     @user = user
@@ -22,9 +23,11 @@ class QuestBattle
   def showdown!(operation_history)
     cache = Cache.new(@user)
     raise NoCache unless cache.exist?
-    result = JSON.parse(Open3.capture2(node_command(cache.read, operation_history.to_json))[0].chomp)
+    restore_enemy!(cache.read)
+
+    @result = capture_result(cache, operation_history)
+    give_and_set_win_reward! if @result['isWin'] == true
     cache.delete
-    result
   end
 
   def content
@@ -34,6 +37,7 @@ class QuestBattle
         playerPower: 1,
         playerTech: 1,
         playerSpecial: 1,
+        enemyId: @enemy.id,
         enemyName: @enemy.name,
         enemyHp: @enemy.hp,
         enemyPower: @enemy.power,
@@ -47,6 +51,24 @@ class QuestBattle
   end
 
   private
+
+  def capture_result(cache, operation_history)
+    JSON.parse(Open3.capture2(node_command(cache.read, operation_history.to_json))[0].chomp)
+  end
+
+  # こういうことをしたくなるのであれば QuestResult エンティティが欲しい可能性が高そう
+  def give_and_set_win_reward!
+    # TODO: すでに勝利していたら resultに [] だけセットしてreturn
+
+    @enemy.enemy_rewards.each do |reward|
+      Gift.new(reward.giftable_type, reward.giftable_id, reward.amount).receive!(@user)
+    end
+    @result.merge!({'rewards'=> @enemy.enemy_rewards.map{|reward| reward.slice(:giftable_id, :giftable_type, :amount)}})
+  end
+
+  def restore_enemy!(cache)
+    @enemy = Enemy.find(JSON.parse(cache)['enemyId'])
+  end
 
   def enemy_cards
     @enemy.cards(@user.status.average_item_rank).each_with_index{|x, i| x.merge!(id: i+1)}
