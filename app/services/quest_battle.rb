@@ -26,7 +26,7 @@ class QuestBattle
     restore_enemy!(cache.read)
 
     @result = capture_result(cache, operation_history)
-    give_and_set_win_reward! if @result['isWin'] == true
+    give_and_set_win_reward! if win?
     cache.delete
   end
 
@@ -52,18 +52,24 @@ class QuestBattle
 
   private
 
+  def win?
+    @result['isWin'] == true
+  end
+
   def capture_result(cache, operation_history)
     JSON.parse(Open3.capture2(node_command(cache.read, operation_history.to_json))[0].chomp)
   end
 
   # こういうことをしたくなるのであれば QuestResult エンティティが欲しい可能性が高そう
   def give_and_set_win_reward!
-    # TODO: すでに勝利していたら resultに [] だけセットしてreturn
+    return [] if @user.won_enemies.exists?(enemy: @enemy)
 
     @enemy.enemy_rewards.each do |reward|
       Gift.new(reward.giftable_type, reward.giftable_id, reward.amount).receive!(@user)
     end
     @result.merge!({'rewards'=> @enemy.enemy_rewards.map{|reward| reward.slice(:giftable_id, :giftable_type, :amount)}})
+
+    @user.won_enemies.find_or_create_by!(enemy: @enemy)
   end
 
   def restore_enemy!(cache)

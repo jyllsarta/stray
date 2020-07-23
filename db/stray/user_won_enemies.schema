@@ -1,0 +1,7 @@
+create_table "user_won_enemies", force: :cascade do |t|
+  t.belongs_to :user, null: false
+  t.integer :enemy_id, null: false
+  t.timestamps
+end
+
+add_index "user_won_enemies", [:user_id, :enemy_id], unique: true

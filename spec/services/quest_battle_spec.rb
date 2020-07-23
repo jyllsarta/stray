@@ -56,6 +56,18 @@ RSpec.describe QuestBattle, type: :model do
         expect{subject}.to change(user.status.reload, :coin).by(123)
       end
 
+      it "records win result" do
+        expect{subject}.to change(user.won_enemies.reload, :count).by(1)
+      end
+
+      context "already won" do
+        let!(:user_won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
+        it "not gives reward" do
+          expect{subject}.to_not change(user.status.reload, :coin)
+        end
+      end
+
+
       context "lose" do
         let(:node_response) do
           {
@@ -66,6 +78,9 @@ RSpec.describe QuestBattle, type: :model do
         it "not gives reward" do
           expect{subject}.to_not change(user.status.reload, :coin)
         end
+        it "not records win result" do
+          expect{subject}.to_not change(user.won_enemies.reload, :count)
+        end  
       end
 
       context "draw" do
@@ -78,6 +93,9 @@ RSpec.describe QuestBattle, type: :model do
         it "not gives reward" do
           expect{subject}.to_not change(user.status.reload, :coin)
         end
+        it "not records win result" do
+          expect{subject}.to_not change(user.won_enemies.reload, :count)
+        end  
       end
     end
   end

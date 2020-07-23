@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :characters
   has_many :relics
   has_many :skills
+  has_many :won_enemies
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end
