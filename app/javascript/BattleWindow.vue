@@ -86,7 +86,13 @@
           .done.clickable(@click="endGame()")
             | OK
           img.result_image(:src="`/images/battle/outcome/${outcome}.png`")
-
+          .rewards
+            .descri
+              | 撃破報酬：
+            .reward(v-for="reward in rewards")
+              img.icon(:src="`/images/ui/${reward.giftable_type}.png`")
+              .count
+                | × {{ reward.amount }}
 </template>
 
 <script lang="ts">
@@ -116,6 +122,7 @@ export default {
       input: null,
       finished: false,
       outcome: "",
+      rewards: [],
       skillName: "",
       colors: {
         hpColor: "rgba(255,192,145,0.99)",
@@ -374,6 +381,7 @@ export default {
           console.log("OK");
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
           this.finished = true;
+          this.rewards = results.data.rewards;
           if(results.data.isDraw){
             this.outcome = "draw";
           }
@@ -390,8 +398,8 @@ export default {
         });
     },
     endGame(){
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false})
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false})
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
     },
   },
 }
@@ -559,6 +567,27 @@ export default {
     line-height: 100%;
     text-align: center;
   }
+  .rewards{
+    position: absolute;
+    bottom: 300px;
+    right: 300px;
+    width: 200px;
+    background-color: $background_with_opacity;
+    border-radius: $radius;
+    padding: $thin_space;
+    .reward{
+      width: 100%;
+      text-align: right;
+      .icon, .count{
+        display: inline-block;
+      }
+      .icon{
+        width: $font-size-normal;
+        height: $font-size-normal;
+      }
+    }
+  }
+
 }
 
 @keyframes skill-name {
