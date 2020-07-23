@@ -39,8 +39,8 @@ export default {
   .hand{
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        margin-left: $i * 6px;
-        margin-right: 48px - $i * 6px;
+        margin-left: $i * 4px;
+        margin-right: 32px - $i * 4px;
       }
     }
   }
@@ -50,7 +50,7 @@ export default {
   .hand{
     @for $i from 1 through 8 {
       &:nth-child(#{$i}){
-        margin-left: 48px - $i * 6px;
+        margin-left: 32px - $i * 4px;
       }
     }
   }

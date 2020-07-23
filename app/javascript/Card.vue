@@ -33,7 +33,7 @@ export default {
 .hand {
   padding: 4px 4px 4px 10px;
   height: 38px;
-  width: 150px;
+  width: 165px;
   margin-bottom: 2px;
   .name{
     line-height: 100%;

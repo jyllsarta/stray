@@ -264,7 +264,7 @@
       position: absolute;
       left: 205px;
       top: 100px;
-      width: 198px;
+      width: 213px;
       height: 330px;
     }
 
@@ -272,7 +272,7 @@
       position: absolute;
       right: 205px;
       top: 100px;
-      width: 198px;
+      width: 213px;
       height: 330px;
     }
 
