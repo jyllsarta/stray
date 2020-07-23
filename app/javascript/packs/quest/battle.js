@@ -245,6 +245,7 @@ module.exports = class Battle{
         for(let skill of this.enemy.skills){
             if(this.canEnemyUseSkill(skill.id)){
                 this.enemySelectingSkillId = skill.id;
+                return;
             }
         }
     }
