@@ -55,7 +55,7 @@ class BossBattleEvent < Event
 
   def win_log
     damages = @battle.damages
-    "[勝利]ボス戦だ！#{@battle.turn}ターン継続し、スピカ#{damages[0]}、チロル#{damages[1]}ダメージを負ったが無事勝利！\n次の階層が解放された！\n星のカケラを5個手に入れた！"
+    "[勝利]ボス戦だ！#{@battle.turn}ターン継続し、スピカ#{damages[0]}、チロル#{damages[1]}ダメージを負ったが無事勝利！\n星のカケラを5個手に入れた！"
   end
 
   def lose_log
