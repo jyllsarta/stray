@@ -90,7 +90,7 @@
             .descri
               | 撃破報酬：
             .reward(v-for="reward in rewards")
-              img.icon(:src="`/images/ui/${reward.giftable_type}.png`")
+              img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`")
               .count
                 | × {{ reward.amount }}
 </template>
