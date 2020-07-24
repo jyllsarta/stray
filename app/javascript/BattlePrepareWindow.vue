@@ -14,7 +14,7 @@
           img.spica(src="/images/battle/spica/normal.png")
         .enemy_character
           img.enemy(src="/images/battle/enemy.png")
-        .enemy_reward
+        .enemy_reward(@mouseover="$store.commit('guide/updateGuide', currentEnemyRewardTypeMessage)")
           .descri
             | 撃破報酬：
           img.icon(:src="`/images/ui/${currentEnemyRewardType}.png`")
@@ -136,6 +136,23 @@
           },
           currentEnemyRewardType(){
               return this.currentEnemyReward?.giftable_type?.toLowerCase() || 'coin';
+          },
+          currentEnemyRewardTypeMessage(){
+              let message = ""
+              switch(this.currentEnemyRewardType){
+                  case 'coin':
+                      message = "コインがもらえる。";
+                      break;
+                  case 'star':
+                      message = "星のカケラがもらえる。";
+                      break;
+                  case 'dungeon':
+                      message = "新たなダンジョンが解放される。";
+                      break;
+                  default:
+                      console.warn("undefined reward");
+              }
+              return message
           },
           enemyDeck(){
               return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
