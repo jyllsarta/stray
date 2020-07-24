@@ -41,4 +41,17 @@ RSpec.describe User::DungeonProgress, type: :model do
       end
     end
   end
+  describe "#clear!" do
+    let(:user){ create(:user) }
+    let(:dungeon) { create(:dungeon) }
+    let!(:progress) { create(:user_dungeon_progress, user: user, dungeon: dungeon) }
+    subject { progress.clear! }
+
+    context "depth > progress" do
+      let(:depth){ 10000 }
+      it "updates max depth" do
+        expect{ subject }.to change(progress, :cleared).to(true)
+      end
+    end
+  end
 end

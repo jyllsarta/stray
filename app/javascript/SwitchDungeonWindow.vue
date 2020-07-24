@@ -121,7 +121,7 @@ export default {
       if(!dungeon.parent_dungeon_id) {
         return true;
       }
-      return this.$store.state.user.dungeon_progresses[dungeon.parent_dungeon_id]?.max_depth >= this.$store.state.masterdata.dungeons[dungeon.parent_dungeon_id].depth;
+      return this.$store.state.user.dungeon_progresses[dungeon.parent_dungeon_id]?.cleared;
     },
     gotoDungeon(){
       this.$store.dispatch("user/gotoDungeon", {dungeon_id: this.selectingDungeonId, depth: this.selectingDungeonDepth})

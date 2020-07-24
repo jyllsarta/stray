@@ -25,4 +25,8 @@ class User::DungeonProgress < ApplicationRecord
   def unexplored?(depth)
     depth > self.max_depth
   end
+
+  def clear!
+    self.update!(cleared: true)
+  end
 end

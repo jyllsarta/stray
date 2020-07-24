@@ -99,9 +99,19 @@ RSpec.describe User::Status, type: :model do
     context "move to new dungeon" do
       let(:parent_dungeon){ create(:dungeon) }
       let(:dungeon){ create(:dungeon, parent_dungeon_id: parent_dungeon.id) }
+      let(:depth){ 1 }
+      context "not cleared parent dungeon" do
+        before do
+          status.dungeon_progresses.create(dungeon: parent_dungeon, max_depth: parent_dungeon.depth, cleared: false)
+          status.update!(current_dungeon_depth: 10)
+        end
+        it "do switch" do
+          expect{subject}.to raise_error(User::Status::CannotSwitchDungeon)
+        end
+      end
       context "cleared parent dungeon" do
         before do
-          status.dungeon_progresses.create(dungeon: parent_dungeon, max_depth: parent_dungeon.depth)
+          status.dungeon_progresses.create(dungeon: parent_dungeon, max_depth: parent_dungeon.depth, cleared: true)
           status.update!(current_dungeon_depth: 10)
         end
         context "depth 1" do

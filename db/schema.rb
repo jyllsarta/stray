@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "user_id", default: 0, null: false
     t.bigint "dungeon_id", null: false
     t.integer "max_depth", default: 0, null: false
+    t.boolean "cleared", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dungeon_id"], name: "index_user_dungeon_progresses_on_dungeon_id"

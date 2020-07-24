@@ -26,9 +26,6 @@ class Dungeon < ApplicationRecord
   end
 
   def cleared?(user)
-    progress = user.status.dungeon_progresses.find_by(dungeon_id: self.id)
-    return false if progress.nil?
-
-    progress.max_depth >= depth
+    user.status.dungeon_progresses.find_by(dungeon_id: self.id)&.cleared || false
   end
 end
