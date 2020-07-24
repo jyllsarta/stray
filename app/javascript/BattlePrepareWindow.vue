@@ -20,6 +20,8 @@
           img.icon(:src="`/images/ui/${currentEnemyRewardType}.png`")
           .count
             | × {{ currentEnemyReward.amount }}
+          .aquired(v-if="won(currentEnemy.id)")
+            | 獲得済み
         CardList.player_deck(
           :cards="currentPlayerCards"
           :right-side="false"
@@ -29,7 +31,7 @@
           :right-side="true"
         )
         .enemy_list.scrollable
-          .enemy.clickable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)")
+          .enemy.clickable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
               | {{enemy.name}}
             .rank
@@ -112,6 +114,7 @@
               classCardsResponse: [],
               itemCardsResponse: [],
               averageItemRank: 0,
+              wonEnemyIds: [],
           };
       },
       store,
@@ -119,6 +122,7 @@
           this.fetchEnemyList();
           this.fetchPlayerDeck();
           this.fetchPlayerSkills();
+          this.fetchPlayerWonEnemies();
       },
       computed: {
           currentEnemy(){
@@ -159,6 +163,7 @@
                       console.warn("NG");
                   });
           },
+
           fetchPlayerSkills(){
               const path = `/skills.json`;
               ax.get(path)
@@ -190,9 +195,32 @@
                   });
           },
 
+          fetchPlayerWonEnemies(){
+              const user_id = localStorage.user_id;
+              const path = `/users/${user_id}/won_enemies.json`;
+              ax.get(path)
+                  .then((results) => {
+                      console.log(results);
+                      console.log("OK");
+                      this.wonEnemyIds = results.data.won_enemies.map((x)=>x.enemy_id);
+                  })
+                  .catch((error) => {
+                      console.warn(error.response);
+                      console.warn("NG");
+                  });
+          },
+
           startBattle(){
               this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
               this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
+          },
+
+          enemyListClass(enemyId){
+              return this.won(enemyId) ? "disabled" : "";
+          },
+
+          won(enemyId){
+              return this.wonEnemyIds.includes(enemyId);
           }
       },
   }
@@ -295,7 +323,12 @@
           width: 2em;
         }
       }
+
+      .disabled{
+        opacity: 0.5;
+      }
     }
+
 
     .status_area{
       position: absolute;

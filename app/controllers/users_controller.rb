@@ -38,6 +38,10 @@ class UsersController < ApplicationController
     @item_cards = DeckBuilder.new(current_user).item_cards
   end
 
+  def won_enemies
+    @user = current_user
+  end
+
   def register_name
     current_user.register_name(name: params[:name], password: params[:password])
   end

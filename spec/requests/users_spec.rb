@@ -194,6 +194,29 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id/won_enemies" do
+    include_context("stub_current_user")
+    let(:user){ User.create }
+    let!(:enemy){ create(:enemy) }
+    let!(:won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
+    let(:do_get) { get user_won_enemies_path(user_id: user.id) + ".json" }
+    subject do
+      do_get
+      response
+    end
+    it 'succeeds' do
+      subject
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   won_enemies: [
+                                                       enemy_id: Integer
+                                                   ],
+                                               }
+                                           )
+    end
+  end
+
   describe "POST /users/:id/events" do
     include_context("stub_current_user")
     let(:user){ User.create }

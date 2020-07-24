@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     post :regenerate_token, on: :collection # アクセストークンの再取得
     get :status
     get :deck
+    get :won_enemies
     post :events
     post :resurrect
     post :switch_dungeon
