@@ -1,5 +1,6 @@
 create_table "enemies", force: :cascade  do |t|
   t.string :name
+  t.belongs_to :quest
   t.integer :hp, default: 0
   t.integer :power, default: 0
   t.integer :tech, default: 0

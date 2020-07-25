@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
+    t.bigint "quest_id"
     t.integer "hp", default: 0
     t.integer "power", default: 0
     t.integer "tech", default: 0
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "rank", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["quest_id"], name: "index_enemies_on_quest_id"
   end
 
   create_table "enemy_cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -98,6 +100,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "user_id"
     t.string "message"
     t.string "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "quests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "parent_quest_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

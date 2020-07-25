@@ -3,6 +3,7 @@
 # Table name: user_dungeon_progresses
 #
 #  id         :bigint           not null, primary key
+#  cleared    :boolean          default(FALSE), not null
 #  max_depth  :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

@@ -11,6 +11,11 @@
 #  tech       :integer          default(0)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  quest_id   :bigint
+#
+# Indexes
+#
+#  index_enemies_on_quest_id  (quest_id)
 #
 
 require 'rails_helper'
