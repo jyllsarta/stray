@@ -12,4 +12,8 @@
 class Quest < ApplicationRecord
   has_many :enemies
   has_one :parent, class_name: "::Quest" , primary_key: :parent_quest_id, foreign_key: :id
+
+  def cleared_count(user)
+    user.won_enemies.where(enemy_id: enemies.ids).count
+  end
 end
