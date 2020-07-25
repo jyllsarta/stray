@@ -21,4 +21,9 @@ class Quest < ApplicationRecord
     user_won_enemy_ids = user.won_enemies.map(&:enemy_id)
     enemies.ids.all?{ |enemy_id| user_won_enemy_ids.include?(enemy_id) }
   end
+
+  def visible?(user)
+    return true if parent.nil?
+    parent.cleared?(user)
+  end
 end

@@ -54,4 +54,27 @@ RSpec.describe Quest, type: :model do
       end
     end
   end
+
+  describe "#visible?" do
+    let(:quest) { create(:quest) }
+    let!(:enemy) { create(:enemy, quest: quest) }
+    let(:user) { create(:user) }
+
+    let(:child_quest) { create(:quest, parent_quest_id: quest.id) }
+    subject { child_quest.visible?(user) }
+
+
+    context "parent not cleared" do
+      it "false" do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context "parent quest cleared" do
+      let!(:won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
+      it "true" do
+        expect(subject).to eq(true)
+      end
+    end
+  end
 end
