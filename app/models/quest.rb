@@ -13,7 +13,12 @@ class Quest < ApplicationRecord
   has_many :enemies
   has_one :parent, class_name: "::Quest" , primary_key: :parent_quest_id, foreign_key: :id
 
-  def cleared_count(user)
+  def won_enemy_count(user)
     user.won_enemies.where(enemy_id: enemies.ids).count
+  end
+
+  def cleared?(user)
+    user_won_enemy_ids = user.won_enemies.map(&:enemy_id)
+    enemies.ids.all?{ |enemy_id| user_won_enemy_ids.include?(enemy_id) }
   end
 end

@@ -12,11 +12,11 @@
 require 'rails_helper'
 
 RSpec.describe Quest, type: :model do
-  describe "#cleared_count" do
+  describe "#won_enemy_count" do
     let(:quest) { create(:quest) }
     let(:enemy) { create(:enemy, quest: quest) }
     let(:user) { create(:user) }
-    subject { quest.cleared_count(user) }
+    subject { quest.won_enemy_count(user) }
 
     context "not cleared" do
       it "0" do
@@ -28,6 +28,29 @@ RSpec.describe Quest, type: :model do
       let!(:won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
       it "1" do
         expect(subject).to eq(1)
+      end
+    end
+  end
+
+  describe "#cleared?" do
+    let(:quest) { create(:quest) }
+    let!(:enemy1) { create(:enemy, quest: quest) }
+    let!(:enemy2) { create(:enemy, quest: quest) }
+    let(:user) { create(:user) }
+    subject { quest.cleared?(user) }
+
+    let!(:won_enemy1){ create(:user_won_enemy, user: user, enemy: enemy1) }
+
+    context "not cleared" do
+      it "false" do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context "all enemy cleared" do
+      let!(:won_enemy2){ create(:user_won_enemy, user: user, enemy: enemy2) }
+      it "true" do
+        expect(subject).to eq(true)
       end
     end
   end
