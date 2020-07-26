@@ -55,8 +55,11 @@
           img.icon(src="/images/icons/misc/shield.gif")
           .value
             | {{playerShield}}
-        .hp
-          | {{playerHp}}
+        .hps
+          .hp
+            | {{playerHp}}
+          .hp_max
+            | / {{playerHpMax}}
         .mp
           | {{playerMp}}
         .bars
@@ -69,8 +72,11 @@
           img.icon(src="/images/icons/misc/shield.gif")
           .value
             | {{enemyShield}}
-        .hp
-          | {{enemyHp}}
+        .hps
+          .hp
+            | {{enemyHp}}
+          .hp_max
+            | / {{enemyHpMax}}
         .mp
           | {{enemyMp}}
         .bars
@@ -142,8 +148,14 @@ export default {
     playerHp(){
       return this.battle?.player?.hp || 0;
     },
+    playerHpMax(){
+      return this.battle?.player?.hp_max || 0;
+    },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
+    },
+    enemyHpMax(){
+      return this.battle?.enemy?.hp_max || 0;
     },
     playerShield(){
       return this.battle?.player?.tempBuffs?.shield || 0;
@@ -469,10 +481,19 @@ export default {
 }
 
 .status{
-  .hp{
+  .hps{
     position: absolute;
-    top: -35px;
-    font-size: 40px;
+    top: -30px;
+    .hp{
+      text-align: right;
+      display: inline-block;
+      margin-right: $thin_space;
+      font-size: 40px;
+    }
+    .hp_max{
+      display: inline-block;
+      font-size: $font-size-normal;
+    }
   }
   .mp{
     position: absolute;
@@ -511,8 +532,8 @@ export default {
       font-size: $font-size-large;
     }
   }
-  .hp, .mp{
-    right: 10px;
+  .hps, .mp{
+    right: 0px;
   }
   .bars{
     align-items: flex-end;
@@ -534,8 +555,8 @@ export default {
       display: inline-block;
     }
   }
-  .hp, .mp{
-    left: 10px;
+  .hps, .mp{
+    left: 0px;
   }
   .bars{
     align-items: flex-start;
