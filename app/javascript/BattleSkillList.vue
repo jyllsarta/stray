@@ -55,12 +55,21 @@ export default {
       }
     },
     skillClassPlayer(skillId){
+      const skill = this.battle.player.skills.find((x)=>x.id===skillId);
+      if(!skill.reusable && this.battle.operationHistory.map((x)=>x.skill).includes(skillId)) {
+          return 'used';
+      }
       if(!this.battle.canUseSkill(skillId)){
         return 'disabled';
       }
       return this.battle.selectingSkillId == skillId ? 'selected' : 'available';
     },
     skillClassEnemy(skillId){
+      const skill = this.battle.enemy.skills.find((x)=>x.id===skillId);
+      if(!skill.reusable && this.battle.enemyOperationHistory.map((x)=>x.skill).includes(skillId)){
+        return 'used';
+      }
+
       if(!this.battle.canEnemyUseSkill(skillId)){
         return 'disabled';
       }
@@ -119,7 +128,11 @@ export default {
     border: 1px solid $yellow;
   }
   .disabled{
+    background-color: $gray3-opacity;
     opacity: 0.5;
+  }
+  .used{
+    opacity: 0.25;
   }
   .available{
     background-color: $gray3-opacity;
