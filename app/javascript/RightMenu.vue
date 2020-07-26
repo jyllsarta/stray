@@ -27,9 +27,9 @@
       | 能力解放
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: true})"
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
     )
-      | 強敵戦
+      | クエスト
 </template>
 
 <script lang="ts">

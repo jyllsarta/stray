@@ -83,7 +83,7 @@ export default {
       );
     },
     openBattlePrepareWindow(){
-      // TODO implement
+      this.$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: true});
     },
     questClass(questId){
       if(questId == this.selectingQuestId){
