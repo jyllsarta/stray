@@ -20,6 +20,8 @@
       transition(name="open_window")
         RelicWindow(v-if="$store.state.window.relic")
       transition(name="open_window")
+        QuestWindow(v-if="$store.state.window.quest")
+      transition(name="open_window")
         BattlePrepareWindow(v-if="$store.state.window.battle_prepare")
       transition(name="open_window")
         EquipSkillWindow(v-if="$store.state.window.equip_skill")
@@ -49,6 +51,7 @@ import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
 import RelicWindow from './RelicWindow'
+import QuestWindow from './QuestWindow'
 import BattlePrepareWindow from './BattlePrepareWindow'
 import EquipSkillWindow from './EquipSkillWindow'
 import BattleWindow from './BattleWindow'
@@ -76,6 +79,7 @@ export default {
     EquipDetailWindow,
     SwitchDungeonWindow,
     RelicWindow,
+    QuestWindow,
     BattlePrepareWindow,
     EquipSkillWindow,
     BattleWindow,

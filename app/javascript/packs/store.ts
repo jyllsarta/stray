@@ -12,6 +12,7 @@ import event from "./store/event.ts"
 import user from "./store/user.ts"
 import battle from "./store/battle.ts"
 import skill from "./store/skill.ts"
+import quest from "./store/quest.ts"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -33,6 +34,7 @@ const store = new Vuex.Store({
     user: user,
     battle: battle,
     skill: skill,
+    quest: quest,
   }
 });
 export default store;
