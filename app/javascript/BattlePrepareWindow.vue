@@ -329,7 +329,7 @@
 
     .enemy_deck{
       position: absolute;
-      right: 205px;
+      right: 190px;
       top: 100px;
       width: 213px;
       height: 330px;
@@ -339,7 +339,7 @@
       position: absolute;
       right: $space;
       top: 100px;
-      width: 200px;
+      width: 180px;
       height: 200px;
       .enemy{
         @include centering($height: 30px);
@@ -359,7 +359,6 @@
         opacity: 0.5;
       }
     }
-
 
     .status_area{
       position: absolute;
