@@ -1,7 +1,7 @@
 class EnemiesController < ApplicationController
   def index
     @user = current_user
-    @enemies = Enemy.all.preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
+    @enemies = Enemy.where(quest_id: params[:quest_id]).preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
   end
 
   def engage

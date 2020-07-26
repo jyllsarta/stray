@@ -167,13 +167,27 @@
               this.selectingEnemyId = id;
           },
 
+          selectFirstAliveEnemy(){
+            for(let enemy of this.enemyList){
+                if(!this.won(enemy.id)){
+                    this.selectEnemy(enemy.id);
+                    return;
+                }
+            }
+            this.selectEnemy(this.enemyList[this.enemyList.length - 1].id);
+          },
+
           fetchEnemyList(){
               const path = `/enemies.json`;
-              ax.get(path)
+              const params = {
+                  quest_id: this.$store.state.quest.quest_id,
+              };
+              ax.get(path, { params: params})
                   .then((results) => {
                       console.log(results);
                       console.log("OK");
                       this.enemyList = results.data.enemies;
+                      this.selectFirstAliveEnemy();
                   })
                   .catch((error) => {
                       console.warn(error.response);
