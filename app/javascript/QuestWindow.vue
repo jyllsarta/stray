@@ -28,7 +28,7 @@
               .quest_title(:key="selectingQuestId")
                 | {{ selectingQuest.name }}
               .description
-                | クエストマスタにdescriptionがないので、ここにはまだ説明が出せない！諸々の実装が終わったらここにそれっぽい説明を書こうと思っている。
+                | {{ selectingQuest.description }}
               .progress
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
