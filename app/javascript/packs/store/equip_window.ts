@@ -71,6 +71,33 @@ export default {
             lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('agi') - getters.getUserItem(a.id).effectValueOf('agi')) },
             name: "AGI順",
           };
+        case 6:
+          return {
+            lambda: (a, b) => {
+              let item_b = (getters.getUserItem(b.id));
+              let item_a = (getters.getUserItem(a.id));
+              return (item_b.rank + item_b.base_rank) - (item_a.rank + item_a.base_rank)
+            },
+            name: "ランク順",
+          };
+        case 7:
+          return {
+            lambda: (a, b) => {
+              const item_b = (getters.getUserItem(b.id));
+              const item_a = (getters.getUserItem(a.id));
+              return (item_b.power()) - (item_a.power());
+            },
+            name: "力順",
+          };
+        case 8:
+          return {
+            lambda: (a, b) => {
+              const item_b = (getters.getUserItem(b.id));
+              const item_a = (getters.getUserItem(a.id));
+              return (item_b.tech()) - (item_a.tech());
+            },
+            name: "技順",
+          };
         default:
           console.warn("undefined sort algorithm set");
           return null;
@@ -115,6 +142,15 @@ export default {
       ui.effectValueOf = function (paramName) {
         return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
       };
+      // NOTE: user/item.rb とがんばって共有すること
+      // tech: ((item.dex + item.agi) * rarity_factor(item.rarity) / 40).floor,
+      ui.tech = function () {
+        return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) / 40);
+      };
+      ui.power = function () {
+        return Math.floor((this.str + this.def) * rootGetters['user/rarityFactor'](this.rarity) / 40);
+      };
+
       ui.effectValue = ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
       return ui;
     },
