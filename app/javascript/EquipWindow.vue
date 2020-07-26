@@ -115,6 +115,16 @@
                 | {{param.toUpperCase()}}
               .value
                 | {{currentItem ? currentItem.effectValueOf(param) : ''}}
+            .parameter
+              .index.power
+                | 力
+              .value
+                | {{currentItem ? currentItem.power() : ''}}
+            .parameter
+              .index.tech
+                | 技
+              .value
+                | {{currentItem ? currentItem.tech() : ''}}
           .flavor_text
             | {{currentItem ? currentItem.flavor_text : "-"}}
           .open_detail_window.clickable(
@@ -359,7 +369,7 @@ export default {
   // 箱自体の配置
   // 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
 
-  $detail-width: 150px;
+  $detail-width: 180px;
   $character-width: 200px;
   $character-height: 380px;
   $sub-character-width: 100px;
@@ -405,6 +415,12 @@ export default {
     }
     .agi{
       color: $agi;
+    }
+    .power{
+      color: $plus;
+    }
+    .tech{
+      color: $minus;
     }
 
     .bar_area{
@@ -609,7 +625,7 @@ export default {
       font-size: $font-size-mini;
       .item_name{
         margin: $thin_space;
-        height: 46px;
+        height: 30px;
         border-bottom: 1px solid $gray3;
       }
       .parameters{
@@ -617,8 +633,9 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        height: 96px;
+        height: 120px;
         border-bottom: 1px solid $gray3;
+        line-height: 100%;
         .parameter{
           width: 100%;
           text-align: right;
@@ -635,12 +652,11 @@ export default {
       .flavor_text{
         line-height: 115%;
         margin: $thin_space;
-        height: 152px;
+        height: 140px;
       }
       .open_detail_window{
         margin: $thin_space;
-        height: 30px;
-        text-align: center;
+        @include centering($height: 30px);
       }
     }
 
