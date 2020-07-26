@@ -170,10 +170,10 @@ export default {
       return this.battle?.enemy?.mp || 0;
     },
     playerHands(){
-      return this.battle?.player?.deck?.currentHands() || [];
+      return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];
     },
     enemyHands(){
-      return this.battle?.enemy?.deck?.currentHands() || [];
+      return this.battle?.enemy?.deck?.currentHands()?.filter((x)=>!this.battle?.enemyCardIds?.includes(x.id)) || [];
     },
     playerSelectingCards(){
       return this.battle.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
