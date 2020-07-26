@@ -122,7 +122,7 @@ export default {
       finished: false,
       outcome: "",
       rewards: [],
-      skillName: "",
+      skillName: "戦闘開始！", // アニメーションが毎度発火してしまうので、戦闘開始時にそれっぽいスキル表示が出ることにしてごまかす
       colors: {
         hpColor: "rgba(255,192,145,0.99)",
         hpBlankColor: "rgba(255,192,145,0.22)",
@@ -608,6 +608,8 @@ export default {
   animation: skill-name 1s cubic-bezier(.17,.67,.83,.67) 0s;
   height: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
   opacity: 0;
   .pre, .after{
     width: 20px;
@@ -620,8 +622,8 @@ export default {
     background: linear-gradient(to left, $gray3 0%, transparent 100%);
   }
   .text{
-    flex: 1;
-    height: 100%;
+    line-height: 100%;
+    min-width: 6rem;
   }
 }
 
@@ -656,14 +658,14 @@ export default {
 }
 .player_hands{
   position: absolute;
-  top: 40px;
+  top: 90px;
   left: $space;
   width: 198px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
-  top: 40px;
+  top: 90px;
   right: $space;
   width: 198px;
   height: 310px;
@@ -685,8 +687,12 @@ export default {
 .skill_name{
   position: absolute;
   top: 20px;
-  left: calc( #{$window-width / 2} - 75px );
-  width: 150px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 150px;
+  max-width: 300px;
   height: 20px;
 }
 .current_strength{
