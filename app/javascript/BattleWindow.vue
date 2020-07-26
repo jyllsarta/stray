@@ -37,18 +37,18 @@
         .after
       .current_strength
         .power.strength
-          .player
+          .player(:class="playerPower > enemyPower ? 'win' : ''")
             | {{playerPower}}
           .sep
             | 力
-          .enemy
+          .enemy(:class="playerPower < enemyPower ? 'win' : ''")
             | {{enemyPower}}
         .tech.strength
-          .player
+          .player(:class="playerTech > enemyTech ? 'win' : ''")
             | {{playerTech}}
           .sep
             | 技
-          .enemy
+          .enemy(:class="playerTech < enemyTech ? 'win' : ''")
             | {{enemyTech}}
       .player_status.status
         .shield(v-if="playerShield > 0")
@@ -476,6 +476,10 @@ export default {
     .sep{
       text-align: center;
       width: 40%;
+    }
+    .win{
+      color: $yellow;
+      font-size: $font-size-large + 2px; // すこーしだけ大きくする、の意
     }
   }
 }
