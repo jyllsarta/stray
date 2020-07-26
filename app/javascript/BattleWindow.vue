@@ -400,6 +400,7 @@ export default {
     endGame(){
         this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
         this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
     },
   },
 }
