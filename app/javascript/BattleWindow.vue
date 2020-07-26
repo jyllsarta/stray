@@ -29,27 +29,26 @@
         :right-side="true"
       )
       .decide(@click="playTurn()" :class="decideButtonClass")
-        | Decide!
+        | ターン開始
       .skill_name(:key="skillName")
         .pre
         .text
           | {{skillName}}
         .after
       .current_strength
-        .player.strength
-          .power
+        .power.strength
+          .player
             | {{playerPower}}
-          .tech
-            | {{playerTech}}
-        .sep
-          .power
-            | Pow
-          .tech
-            | Tec
-        .enemy.strength
-          .power
+          .sep
+            | 力
+          .enemy
             | {{enemyPower}}
-          .tech
+        .tech.strength
+          .player
+            | {{playerTech}}
+          .sep
+            | 技
+          .enemy
             | {{enemyTech}}
       .player_status.status
         .shield(v-if="playerShield > 0")
@@ -246,7 +245,7 @@ export default {
       return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
-      return this.isDecidable ? "clickable" : "";
+      return this.isDecidable ? "startable" : "disabled";
     }
   },
   methods: {
@@ -408,17 +407,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
-* {
-  //outline: 1px solid #79f850;
-}
-
-.engage, .start{
-  position: relative;
-  z-index: 100;
-  width: 200px;
-  height: 50px;
-  left: 600px;
-}
 
 // -- -- --
 
@@ -462,21 +450,20 @@ export default {
 }
 
 .current_strength{
-  display: flex;
   height: 100%;
   .strength{
-    width: 35%;
-    .power, .tech{
+    display: flex;
+    width: 100%;
+    align-items: baseline;
+    height: 30px;
+    .player, .enemy{
+      width: 30%;
       text-align: center;
-      height: 50%;
       font-size: $font-size-large;
     }
-  }
-  .sep{
-    width: 30%;
-    .power, .tech{
+    .sep{
       text-align: center;
-      height: 50%;
+      width: 40%;
     }
   }
 }
@@ -502,8 +489,16 @@ export default {
 }
 
 .decide{
-  text-align: center;
-  padding-top: (35px - $font-size-normal) / 2;
+  @include centering($height: 40px);
+  border: 1px solid $gray3;
+  border-radius: $radius;
+  &.startable{
+    border: 1px solid $yellow;
+    background-color: $gray3;
+  }
+  &.disabled{
+    opacity: 0.5;
+  }
 }
 
 .player_status{
