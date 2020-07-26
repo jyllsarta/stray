@@ -29,6 +29,7 @@ RSpec.describe "Quest", type: :request do
                                                          {
                                                              id: Integer,
                                                              name: String,
+                                                             description: String,
                                                              enemy_count: Integer,
                                                              won_enemy_count: Integer
                                                          }
