@@ -10,9 +10,11 @@ RSpec.describe "Enemies", type: :request do
     let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
     let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
     let!(:user){ User.create }
-    let(:do_get) { get enemies_path + ".json" }
+    let(:do_get) { get enemies_path + ".json", params: params }
     let(:params) do
-      {}
+      {
+          quest_id: enemy.quest_id
+      }
     end
 
     subject do
@@ -88,6 +90,22 @@ RSpec.describe "Enemies", type: :request do
                                                              amount: Integer
                                                          }
                                                      ]
+                                                 }
+                                             )
+      end
+    end
+
+    context "wrong quest id" do
+      let(:params) do
+        {
+            quest_id: -1
+        }
+      end
+      it 'no return' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     enemies: Array,
                                                  }
                                              )
       end
