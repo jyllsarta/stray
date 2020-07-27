@@ -535,7 +535,8 @@ export default {
       .param_area{
         display: flex;
         flex-direction: row;
-        line-height: 110%;
+        align-items: center;
+        height: 20px;
         .param{
           display: inline-block;
           width: 90%;
@@ -551,9 +552,8 @@ export default {
           }
         }
         .go_to_detail{
-          text-align: center;
+          @include centering($height:30px);
           width: 10%;
-          transform: scaleY(1.4);
         }
       }
     }
@@ -582,11 +582,8 @@ export default {
         }
       }
       .order{
-        margin: $thin_space;
-        height: $space * 3 + $font-size-normal;
+        @include centering($height: 36px);
         width: 100px;
-        padding: $space;
-        text-align: center;
       }
       .select_order{
         position: absolute;
@@ -604,9 +601,12 @@ export default {
           z-index: 1;
           padding: $thin_space;
           background-color: $background_with_opacity;
-          width: 200px + $space * 4;
+          width: 230px;
           display: flex;
           flex-wrap: wrap;
+          .order{
+            margin: $thin_space;
+          }
         }
       }
       .item_list{
