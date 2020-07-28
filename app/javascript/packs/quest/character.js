@@ -1,6 +1,7 @@
 module.exports = class Character{
-    constructor(name, hp, power, tech, special, deck, skills) {
+    constructor(name, imageName, hp, power, tech, special, deck, skills) {
         this.name = name;
+        this.imageName = imageName;
         this.hp = hp;
         this.hp_max = hp;
         this.power = power;
@@ -30,7 +31,6 @@ module.exports = class Character{
             this.hp = this.hp_max;
         }
     }
-
 
     hpRatio(){
         return this.hp / this.hp_max;

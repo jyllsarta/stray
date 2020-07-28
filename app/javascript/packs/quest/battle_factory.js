@@ -8,8 +8,8 @@ let Effect = require("./effect");
 
 module.exports = class BattleFactory{
     constructor(input) {
-        this.player = new Player("プレイヤー", input.playerHp, input.playerPower, input.playerTech, input.playerSpecial, this.makeDeck(input.playerCards), this.makeSkills(input.playerSkills));
-        this.enemy = new Enemy(input.enemyName, input.enemyHp, input.enemyPower, input.enemyTech, input.enemySpecial, this.makeDeck(input.enemyCards), this.makeSkills(input.enemySkills));
+        this.player = new Player("プレイヤー", "", input.playerHp, input.playerPower, input.playerTech, input.playerSpecial, this.makeDeck(input.playerCards), this.makeSkills(input.playerSkills));
+        this.enemy = new Enemy(input.enemyName, input.enemyImageName, input.enemyHp, input.enemyPower, input.enemyTech, input.enemySpecial, this.makeDeck(input.enemyCards), this.makeSkills(input.enemySkills));
         this.seed = input.seed;
     }
 

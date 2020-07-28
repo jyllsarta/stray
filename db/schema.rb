@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
+    t.string "image_name"
     t.bigint "quest_id"
     t.integer "hp", default: 0
     t.integer "power", default: 0

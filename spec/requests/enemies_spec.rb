@@ -138,6 +138,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerTech: Integer,
                                                      playerSpecial: Integer,
                                                      enemyId: Integer,
+                                                     enemyImageName: String,
                                                      enemyName: String,
                                                      enemyHp: Integer,
                                                      enemyPower: Integer,

@@ -39,6 +39,7 @@ class QuestBattle
         playerSpecial: 1,
         enemyId: @enemy.id,
         enemyName: @enemy.name,
+        enemyImageName: @enemy.image_name,
         enemyHp: @enemy.hp,
         enemyPower: @enemy.power,
         enemyTech: @enemy.tech,

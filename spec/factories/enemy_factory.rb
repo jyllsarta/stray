@@ -21,6 +21,7 @@
 FactoryBot.define do
   factory :enemy, class: 'Enemy' do
     name { "ゴーレム" }
+    image_name { "golem" }
     hp { 5 }
     rank { 1 }
 

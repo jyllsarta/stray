@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     enemyName(){
-      return "maoh"; // TODO: バトルロジックから持ってくる
+      return this.battle?.enemy?.imageName || "faily";
     },
     enemyImageLibrary(){
       return Constants.battleCharacter.imageLibrary[this.enemyName] || {};

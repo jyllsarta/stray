@@ -87,6 +87,14 @@ const Constants = {
         magic:   'magic',
         default: 'normal',
       },
+      faily: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      kani: {
+        normal:  'normal',
+        default: 'normal',
+      },
     }
   }
 };
