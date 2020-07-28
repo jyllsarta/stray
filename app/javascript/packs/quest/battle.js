@@ -106,6 +106,7 @@ module.exports = class Battle{
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
         this.enemy.useMp(skill.cost);
+        this.characterStatus.enemy = 'magic';
     }
 
     invokePowerAttack(){
@@ -115,17 +116,20 @@ module.exports = class Battle{
             this.player.addMp(5);
             this.enemy.addMp(10);
             this.characterStatus.spica = 'attack';
+            this.characterStatus.enemy = 'lose';
         }
         else if(result === "lose"){
             this.player.damage(this.enemy.damageAt("power"));
             this.player.addMp(10);
             this.enemy.addMp(5);
             this.characterStatus.spica = 'lose';
+            this.characterStatus.enemy = 'attack';
         }
         else{
             this.player.addMp(40);
             this.enemy.addMp(0);
             this.characterStatus.spica = 'draw';
+            this.characterStatus.enemy = 'draw';
         }
     }
 
@@ -136,17 +140,21 @@ module.exports = class Battle{
             this.player.addMp(5);
             this.enemy.addMp(10);
             this.characterStatus.spica = 'attack';
+            this.characterStatus.enemy = 'lose';
+
         }
         else if(result === "lose"){
             this.player.damage(this.enemy.damageAt("tech"));
             this.player.addMp(10);
             this.enemy.addMp(5);
             this.characterStatus.spica = 'lose';
+            this.characterStatus.enemy = 'attack';
         }
         else{
             this.player.addMp(40);
             this.enemy.addMp(0);
             this.characterStatus.spica = 'draw';
+            this.characterStatus.enemy = 'draw';
         }
     }
 
@@ -158,12 +166,14 @@ module.exports = class Battle{
             this.player.addMp(0);
             this.enemy.addMp(20);
             this.characterStatus.spica = 'attack';
+            this.characterStatus.enemy = 'lose';
         }
         else if(powerResult === "lose" && techResult === "lose"){
             this.player.damage(this.enemy.damageAt("special"));
             this.player.addMp(20);
             this.enemy.addMp(0);
             this.characterStatus.spica = 'lose';
+            this.characterStatus.enemy = 'attack';
         }
         else{
             // nop
