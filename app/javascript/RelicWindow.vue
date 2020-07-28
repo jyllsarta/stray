@@ -23,6 +23,12 @@
               img.icon(:src="`/images/icons/relic/${selectingRelic.id}.gif`")
               .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
+            .parent
+              .descri
+                | 前提：
+              img.icon(:src="`/images/icons/relic/${selectingRelicParent.id || 'nothing'}.gif`")
+              .relic_name(:key="selectingRelicParent.name")
+                | {{selectingRelicParent.name || 'なし'}}
             .desc
               span.letter(
                 v-for="(t, index) in selectingRelic.description"
@@ -77,7 +83,10 @@ export default {
   computed: {
     selectingRelic(){
       return this.$store.state.masterdata.relics[this.selectingRelicId] || {};
-    }
+    },
+    selectingRelicParent(){
+      return this.$store.state.masterdata.relics[this.selectingRelic.parent_relic_id] || {};
+    },
   },
   methods: {
     relic(id){
@@ -167,20 +176,38 @@ export default {
     .relic_detail{
       padding-right: $space;
       width: 60%;
-      .title{
+      .title {
         display: flex;
         width: 100%;
         height: 50px;
         align-items: flex-end;
         border-bottom: 1px solid $gray3;
-        .icon{
+
+        .icon {
           width: 48px;
           height: 48px;
           image-rendering: pixelated;
         }
-        .relic_name{
+
+        .relic_name {
           padding-left: $space;
           font-size: $font-size-large;
+        }
+      }
+      .parent{
+        display: flex;
+        width: 100%;
+        height: 24px;
+        align-items: flex-end;
+        border-bottom: 1px solid $gray3;
+        .icon{
+          width: 24px;
+          height: 24px;
+          image-rendering: pixelated;
+        }
+        .relic_name{
+          padding-left: $space;
+          font-size: $font-size-normal;
         }
       }
       .desc{
