@@ -26,33 +26,33 @@ export default {
   computed: {
       normalImagePath(){
           if(!this.images.normal){
-              return `/images/battle/${this.characterName}/${this.images.default}.png`
+              return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
           }
-          return `/images/battle/${this.characterName}/${this.images.normal}.png`
+          return `/images/battle/characters/${this.characterName}_${this.images.normal}.png`
       },
       attackImagePath(){
           if(!this.images.attack){
-              return `/images/battle/${this.characterName}/${this.images.default}.png`
+              return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
           }
-          return `/images/battle/${this.characterName}/${this.images.attack}.png`
+          return `/images/battle/characters/${this.characterName}_${this.images.attack}.png`
       },
       drawImagePath(){
           if(!this.images.draw){
-              return `/images/battle/${this.characterName}/${this.images.default}.png`
+              return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
           }
-          return `/images/battle/${this.characterName}/${this.images.draw}.png`
+          return `/images/battle/characters/${this.characterName}_${this.images.draw}.png`
       },
       loseImagePath(){
           if(!this.images.lose){
-              return `/images/battle/${this.characterName}/${this.images.default}.png`
+              return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
           }
-          return `/images/battle/${this.characterName}/${this.images.lose}.png`
+          return `/images/battle/characters/${this.characterName}_${this.images.lose}.png`
       },
       magicImagePath(){
           if(!this.images.magic){
-              return `/images/battle/${this.characterName}/${this.images.default}.png`
+              return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
           }
-          return `/images/battle/${this.characterName}/${this.images.magic}.png`
+          return `/images/battle/characters/${this.characterName}_${this.images.magic}.png`
       },
   }
 }

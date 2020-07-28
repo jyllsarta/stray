@@ -67,5 +67,27 @@ const Constants = {
   itemsPerPage: 50,
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
+  battleCharacter: {
+    imageLibrary: {
+      spica: {
+        normal:  'normal',
+        attack:  'attack',
+        draw:    'draw',
+        lose:    'lose',
+        default: 'normal',
+      },
+      tirol: {
+        normal:  'tirol',
+        magic:   'magic',
+        default: 'normal',
+      },
+      maoh: {
+        normal:  'normal',
+        lose:    'lose',
+        magic:   'magic',
+        default: 'normal',
+      },
+    }
+  }
 };
 export default Constants;

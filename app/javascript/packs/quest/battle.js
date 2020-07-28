@@ -297,7 +297,8 @@ module.exports = class Battle{
     resetCharacterStatus(){
         this.characterStatus = {
             spica: 'normal',
-            tirol: 'normal'
+            tirol: 'normal',
+            enemy: 'normal',
         };
     }
 };

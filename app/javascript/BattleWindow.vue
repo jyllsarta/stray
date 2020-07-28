@@ -8,7 +8,7 @@
           BattleCharacter(:character-name="'spica'" :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}", :status="spicaStatus")
         img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
-        img.enemy(src="/images/battle/enemy.png")
+        BattleCharacter(:character-name="enemyName" :images="enemyImageLibrary", :status="enemyStatus")
         img.enemy_barrier(v-if="enemyShield > 0" src="/images/battle/barrier.png")
       CardList.player_hands(
         :cards="playerHands"
@@ -143,7 +143,10 @@ export default {
   },
   computed: {
     enemyName(){
-      return this.battle?.enemy?.name || "-";
+      return "maoh"; // TODO: バトルロジックから持ってくる
+    },
+    enemyImageLibrary(){
+      return Constants.battleCharacter.imageLibrary[this.enemyName] || {};
     },
     playerHp(){
       return this.battle?.player?.hp || 0;
@@ -252,6 +255,9 @@ export default {
     },
     tirolStatus(){
       return this.battle?.characterStatus?.tirol || 'normal';
+    },
+    enemyStatus(){
+      return this.battle?.characterStatus?.enemy || 'normal';
     },
     isDecidable(){
       return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
