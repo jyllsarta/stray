@@ -10,10 +10,10 @@
         | 強敵と戦います。
       .body
         .characters
-          img.tirol(src="/images/battle/tirol/normal.png")
-          img.spica(src="/images/battle/spica/normal.png")
+          img.tirol(src="/images/battle/characters/tirol_normal.png")
+          img.spica(src="/images/battle/characters/spica_normal.png")
         .enemy_character
-          img.enemy(src="/images/battle/enemy.png")
+          img.enemy(:src="`/images/battle/characters/${currentEnemy.image_name || 'faily'}_normal.png`")
         .enemy_reward(@mouseover="$store.commit('guide/updateGuide', currentEnemyRewardTypeMessage)")
           .descri
             | 撃破報酬：

@@ -2,6 +2,7 @@ json.enemies do
   json.array! @enemies do |enemy|
     json.id enemy.id
     json.name enemy.name
+    json.image_name enemy.image_name
     json.hp enemy.hp
     json.power enemy.power
     json.tech enemy.tech
