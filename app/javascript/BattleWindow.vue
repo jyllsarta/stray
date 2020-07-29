@@ -3,12 +3,30 @@
     .full_covered_window
       .player_character
         .tirol
-          BattleCharacter(:character-name="'tirol'" :images="{normal: 'normal', magic:'magic', default: 'default'}", :status="tirolStatus", :isPlayer="true" )
+          BattleCharacter(
+            :character-name="'tirol'"
+            :images="{normal: 'normal', magic:'magic', default: 'default'}"
+            :status="tirolStatus"
+            :isPlayer="true"
+            :currentSkillName="skillName"
+          )
         .spica
-          BattleCharacter(:character-name="'spica'" :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}", :status="spicaStatus", :isPlayer="true")
+          BattleCharacter(
+            :character-name="'spica'"
+            :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}"
+            :status="spicaStatus"
+            :isPlayer="true"
+            :currentSkillName="skillName"
+            )
         img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
-        BattleCharacter(:character-name="enemyName" :images="enemyImageLibrary", :status="enemyStatus")
+        BattleCharacter(
+          :character-name="enemyName"
+          :images="enemyImageLibrary",
+          :status="enemyStatus"
+          :isPlayer="false"
+          :currentSkillName="skillName"
+        )
         img.enemy_barrier(v-if="enemyShield > 0" src="/images/battle/barrier.png")
       CardList.player_hands(
         :cards="playerHands"

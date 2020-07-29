@@ -3,13 +3,13 @@
     transition(name="showing")
       img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="isPlayer ? 'player' : 'enemy'")
     transition(name="showing")
-      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
 </template>
 
 <script lang="ts">
@@ -28,6 +28,7 @@ export default {
     barrier: Boolean,
     isPlayer: Boolean,
     status: String,
+    currentSkillName: String,
   },
   computed: {
       normalImagePath(){
