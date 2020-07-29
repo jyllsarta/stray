@@ -27,7 +27,7 @@
               .descri
                 | 前提：
               img.icon(:src="`/images/icons/relic/${selectingRelicParent.id || 'nothing'}.gif`")
-              .relic_name(:key="selectingRelicParent.name")
+              .relic_name(:key="selectingRelicParent.name", :class="parentRelicObtained ? '' : 'red'")
                 | {{selectingRelicParent.name || 'なし'}}
             .desc
               span.letter(
@@ -46,7 +46,7 @@
               .label
                 | 消費
               .icon
-              .value
+              .value(:class="hasSufficientStar ? '' : 'red'")
                 | {{selectingRelic.cost}}
           .button
             .get(
@@ -86,6 +86,15 @@ export default {
     },
     selectingRelicParent(){
       return this.$store.state.masterdata.relics[this.selectingRelic.parent_relic_id] || {};
+    },
+    parentRelicObtained(){
+      if(this.selectingRelicParent.id === undefined){
+        return true;
+      }
+      return !!this.$store.state.user?.relics[this.selectingRelicParent.id];
+    },
+    hasSufficientStar(){
+      return this.$store.state.user?.status?.star >= this.selectingRelic.cost;
     },
   },
   methods: {
@@ -210,6 +219,9 @@ export default {
           font-size: $font-size-normal;
         }
       }
+      .red{
+        color: $plus;
+      }
       .desc{
         padding: $thin_space;
       }
@@ -245,6 +257,9 @@ export default {
         .value{
           text-align: right;
           width: 6rem;
+        }
+        .red{
+          color: $plus;
         }
       }
     }
