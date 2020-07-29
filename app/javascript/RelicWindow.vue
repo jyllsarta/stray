@@ -224,10 +224,15 @@ export default {
       line-height: 100%;
       .line{
         display: flex;
-        align-items: flex-end;
+        justify-content: flex-end;
+        align-items: center;
         line-height: 100%;
+        height: 30px;
         div{
           display: inline-block;
+        }
+        .label{
+          font-size: $font-size-normal;
         }
         .icon{
           margin-left: $space;
