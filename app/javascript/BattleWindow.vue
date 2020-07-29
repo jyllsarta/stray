@@ -294,6 +294,11 @@ export default {
       Promise.resolve()
         .then(()=>{
           return new Promise((resolve) => {
+            // プレイヤー魔法を使っていなかったらスルー
+            if(this.battle.selectingSkillId === null){
+              resolve();
+              return;
+            }
             setTimeout( ()=>{
               this.battle.invokePlayerMagic();
               this.skillName = "プレイヤー魔法";
@@ -303,6 +308,11 @@ export default {
         })
         .then(()=>{
           return new Promise((resolve) => {
+            // 敵が魔法を使っていなかったらスルー
+            if(this.battle.enemySelectingSkillId === null){
+              resolve();
+              return;
+            }
             setTimeout(()=>{
               this.battle.invokeEnemyMagic();
               this.skillName = "敵魔法";
@@ -316,7 +326,7 @@ export default {
               this.battle.invokePowerAttack();
               this.skillName = "力判定！";
               resolve();
-            }, 500);
+            }, 900);
           });
         })
         .then(()=>{
@@ -325,16 +335,22 @@ export default {
               this.battle.invokeTechAttack();
               this.skillName = "技判定！";
               resolve();
-            }, 500);
+            }, 900);
           });
         })
         .then(()=>{
           return new Promise((resolve) => {
+            // SP攻撃が出ない場合はスルー
+            if(!this.battle.isSPAttackWillHappen()){
+              resolve();
+              return;
+            }
+
             setTimeout(()=>{
               this.battle.invokeSPAttack();
               this.skillName = "SPアタック！";
               resolve();
-            }, 500);
+            }, 900);
           });
         })
         .then(()=>{

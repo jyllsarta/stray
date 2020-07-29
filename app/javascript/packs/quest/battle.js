@@ -180,6 +180,12 @@ module.exports = class Battle{
         }
     }
 
+    isSPAttackWillHappen(){
+        const powerResult = this.powerMeetResult();
+        const techResult = this.techMeetResult();
+        return (powerResult === "win" && techResult === "win") || (powerResult === "lose" && techResult === "lose");
+    }
+
     onTurnEnd(){
         this.resetCharacterStatus();
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
