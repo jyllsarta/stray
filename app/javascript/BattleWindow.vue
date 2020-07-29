@@ -3,9 +3,9 @@
     .full_covered_window
       .player_character
         .tirol
-          BattleCharacter(:character-name="'tirol'" :images="{normal: 'normal', magic:'magic', default: 'default'}", :status="tirolStatus" )
+          BattleCharacter(:character-name="'tirol'" :images="{normal: 'normal', magic:'magic', default: 'default'}", :status="tirolStatus", :isPlayer="true" )
         .spica
-          BattleCharacter(:character-name="'spica'" :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}", :status="spicaStatus")
+          BattleCharacter(:character-name="'spica'" :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}", :status="spicaStatus", :isPlayer="true")
         img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
         BattleCharacter(:character-name="enemyName" :images="enemyImageLibrary", :status="enemyStatus")
@@ -340,7 +340,6 @@ export default {
         })
         .then(()=>{
           return new Promise((resolve) => {
-            // SP攻撃が出ない場合はスルー
             if(!this.battle.isSPAttackWillHappen()){
               resolve();
               return;
@@ -358,7 +357,7 @@ export default {
             setTimeout(()=>{
               this.battle.onTurnEnd();
               resolve();
-            }, 10);
+            }, 900);
           });
         })
         .then(()=>{
