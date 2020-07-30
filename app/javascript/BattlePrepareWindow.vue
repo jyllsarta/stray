@@ -5,9 +5,9 @@
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: false})")
         .title
-          | 強敵戦・準備
+          | クエスト戦・準備
       .description
-        | 強敵と戦います。
+        | クエスト対象の敵と戦います。初めて倒す敵の場合は報酬がもらえます。
       .body
         .characters
           img.tirol(src="/images/battle/characters/tirol_normal.png")
@@ -372,6 +372,7 @@
         display: flex;
         text-align: center;
         align-items: baseline;
+        border-bottom: 1px solid $gray3;
         .player, .enemy{
           width: 35%;
           font-size: $font-size-large;
