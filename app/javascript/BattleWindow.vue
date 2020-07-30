@@ -21,7 +21,7 @@
         img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
         BattleCharacter(
-          :character-name="enemyName"
+          :character-name="enemyImageName"
           :images="enemyImageLibrary",
           :status="enemyStatus"
           :isPlayer="false"
@@ -161,10 +161,13 @@ export default {
   },
   computed: {
     enemyName(){
+      return this.battle?.enemy?.name || "faily";
+    },
+    enemyImageName(){
       return this.battle?.enemy?.imageName || "faily";
     },
     enemyImageLibrary(){
-      return Constants.battleCharacter.imageLibrary[this.enemyName] || {};
+      return Constants.battleCharacter.imageLibrary[this.enemyImageName] || {};
     },
     playerHp(){
       return this.battle?.player?.hp || 0;
@@ -447,11 +450,27 @@ export default {
           console.warn("NG");
         });
     },
+
     endGame(){
         this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
         this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
         this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
+        this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
     },
+
+    getLogMessage(){
+      switch (this.outcome) {
+        case "win":
+          return `${this.enemyName}と戦闘し勝利した！`;
+        case "draw":
+          return `${this.enemyName}と戦闘し引き分けた...`;
+        case "lose":
+          return `${this.enemyName}と戦闘し敗北した...`;
+        default:
+          console.warn(`undefined outcome ${this.outcome}`);
+          return "何かエラーが起きたみたい！";
+      }
+    }
   },
 }
 </script>
