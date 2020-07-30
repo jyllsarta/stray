@@ -40,16 +40,17 @@ export default {
   }
   .value {
     display: flex;
-    width: 100%;
+    width: 80%;
     line-height: 100%;
+    justify-content: center;
     .sep {
       display: inline-block;
-      width: 1em;
+      width: 1.5em;
       text-align: center;
     }
     .value {
       display: inline-block;
-      width: 2.5em;
+      width: 2em;
       text-align: right;
     }
   }
