@@ -110,6 +110,7 @@ module.exports = class Battle{
         }
         this.enemy.useMp(skill.cost);
         this.characterStatus.enemy = 'magic';
+        this.characterStatus.tirol = 'normal';
     }
 
     invokePowerAttack(){
@@ -135,6 +136,7 @@ module.exports = class Battle{
             this.characterStatus.spica = 'draw';
             this.characterStatus.enemy = 'draw';
         }
+        this.characterStatus.tirol = 'normal';
     }
 
     invokeTechAttack(){
