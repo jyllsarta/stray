@@ -36,6 +36,9 @@
               | {{enemy.name}}
             .rank
               | {{enemy.rank}}
+        .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
+          | 敵IRに達していないため、
+          | 敵カードが強化されます。
         .status_area
           .status
             .player
@@ -358,6 +361,17 @@
       .disabled{
         opacity: 0.5;
       }
+    }
+
+    .enemy_rank_notification{
+      position: absolute;
+      left: calc((100% - 180px) / 2);
+      top: 170px;
+      width: 180px;
+      height: 20px;
+      font-size: $font-size-mini;
+      line-height: 100%;
+      white-space: pre;
     }
 
     .status_area{
