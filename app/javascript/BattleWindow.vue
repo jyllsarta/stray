@@ -17,8 +17,8 @@
             :status="spicaStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
+            :shield="playerShield > 0"
             )
-        img.player_barrier(v-if="playerShield > 0" src="/images/battle/barrier.png")
       .enemy_character
         BattleCharacter(
           :character-name="enemyImageName"
@@ -26,8 +26,8 @@
           :status="enemyStatus"
           :isPlayer="false"
           :currentSkillName="skillName"
+          :shield="enemyShield > 0"
         )
-        img.enemy_barrier(v-if="enemyShield > 0" src="/images/battle/barrier.png")
       CardList.player_hands(
         :cards="playerHands"
         :right-side="false"
@@ -523,19 +523,13 @@ export default {
     width: 256px;
     height: 256px;
     position: absolute;
-    left: 100px;
+    left: 60px;
   }
   .tirol{
     width: 256px;
     height: 256px;
     position: absolute;
-    left: -50px;
-  }
-  .player_barrier{
-    width: 256px;
-    height: 256px;
-    position: absolute;
-    left: 50px;
+    left: -70px;
   }
 }
 
@@ -543,13 +537,6 @@ export default {
   .enemy{
     width: 256px;
     height: 256px;
-  }
-  .enemy_barrier{
-    width: 256px;
-    height: 256px;
-    position: absolute;
-    left: -50px;
-    transform: scale(-1,1);
   }
 }
 
@@ -777,14 +764,14 @@ export default {
 .player_character{
   position: absolute;
   top: 0;
-  left: 230px;
+  left: 200px;
   width: 256px;
   height: 256px;
 }
 .enemy_character{
   position: absolute;
   top: 0;
-  right: 230px;
+  right: 200px;
   width: 256px;
   height: 256px;
 }

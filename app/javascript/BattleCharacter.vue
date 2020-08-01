@@ -10,6 +10,14 @@
       img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
       img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+    transition(name="showing")
+      img.shield(
+        v-if="shield"
+        src="/images/battle/barrier.png"
+        :style="{transform: `translateX(${isPlayer ? playerBarrierPosition : enemyBarrierPosition}px) scale(${isPlayer ? 1 : -1} ,1)`}"
+        :key="`${characterName}${isPlayer ? playerBarrierPosition : enemyBarrierPosition}`"
+        )
+
 </template>
 
 <script lang="ts">
@@ -25,7 +33,7 @@ export default {
       default: String,
     },
     reversed: Boolean,
-    barrier: Boolean,
+    shield: Boolean,
     isPlayer: Boolean,
     status: String,
     currentSkillName: String,
@@ -61,6 +69,34 @@ export default {
           }
           return `/images/battle/characters/${this.characterName}_${this.images.magic}.png`
       },
+      playerBarrierPosition(){
+          switch(this.status){
+              case "normal":
+                  return 30;
+              case "attack":
+                  return 175;
+              case "draw":
+                  return 50;
+              case "lose":
+                  return -10;
+              case "magic":
+                  return 30;
+          }
+      },
+      enemyBarrierPosition(){
+          switch(this.status){
+              case "normal":
+                  return -30;
+              case "attack":
+                  return -175;
+              case "draw":
+                  return -50;
+              case "lose":
+                  return 10;
+              case "magic":
+                  return -30;
+          }
+      }
   }
 }
 </script>
@@ -72,13 +108,18 @@ export default {
     width: 256px;
     height: 256px;
   }
+  .shield{
+    position: absolute;
+    width: 256px;
+    height: 256px;
+  }
 
   // 多少冗長だけど、まあこれでいいか
   .player.normal{
     left: 0;
   }
   .player.attack{
-    left: 85px;
+    left: 145px;
   }
   .player.draw{
     left: 20px;
@@ -89,11 +130,14 @@ export default {
   .player.magic{
     left: 0;
   }
+  .player.shield{
+    left: 20px;
+  }
   .enemy.normal{
     left: 0;
   }
   .enemy.attack{
-    left: -85px;
+    left: -145px;
   }
   .enemy.draw{
     left: -20px;
@@ -103,6 +147,9 @@ export default {
   }
   .enemy.magic{
     left: 0;
+  }
+  .enemy.shield{
+    left: -20px;
   }
 }
 
