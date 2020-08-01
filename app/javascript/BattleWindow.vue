@@ -32,6 +32,7 @@
         :cards="playerHands"
         :right-side="false"
         @onClick="selectCard"
+        :global-disabled="isPlayerCardLocked"
       )
       CardList.enemy_hands(
         :cards="enemyHands"
@@ -41,6 +42,7 @@
         :cards="playerSelectingCards"
         :right-side="false"
         @onClick="selectCard"
+        :global-disabled="isPlayerCardLocked"
       )
       CardList.enemy_selecting_cards(
         :cards="enemySelectingCards"
@@ -160,6 +162,9 @@ export default {
     this.postEngage();
   },
   computed: {
+    isPlayerCardLocked(){
+      return this.battle?.turnInProgress;
+    },
     turnStatus(){
       return this.battle?.turnStatus || "selectCard";
     },

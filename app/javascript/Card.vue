@@ -1,5 +1,5 @@
 <template lang="pug">
-.hand(@click="onClick" :class="rightSide ? 'right_side' : 'left_side'")
+.hand(@click="onClick" :class="[rightSide ? 'right_side' : 'left_side', disabled ? 'disabled' : '']")
   .name
     | {{name}}
   .value
@@ -19,6 +19,7 @@ export default {
       power: Number,
       tech: Number,
       rightSide: Boolean,
+      disabled: Boolean,
   },
   methods: {
     onClick(){
@@ -61,10 +62,24 @@ export default {
     border-bottom: 1px solid $gray1;
   }
 }
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  animation: darken 0.2s;
+}
 .left_side{
   background: linear-gradient(80deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
 }
 .right_side{
   background: linear-gradient(100deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);
+}
+
+@keyframes darken {
+  0% {
+    opacity: 1;
+  }
+  100%{
+    opacity: 0.5;
+  }
 }
 </style>

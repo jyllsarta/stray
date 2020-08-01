@@ -9,6 +9,7 @@
       :rightSide="rightSide"
       :key="card.id",
       @onClick="$emit('onClick', card.id)"
+      :disabled="globalDisabled"
     )
 </template>
 
@@ -23,6 +24,7 @@ export default {
   props: {
     cards: Array,
     rightSide: Boolean,
+    globalDisabled: Boolean,
   },
 }
 </script>
