@@ -10,6 +10,7 @@ module.exports = class Battle{
         this.enemy = enemy;
 
         this.turnInProgress = false;
+        this.turnStatus = "selectCard";
 
         this.resetCharacterStatus();
 
@@ -75,6 +76,7 @@ module.exports = class Battle{
     }
 
     invokePlayerMagic(){
+        this.turnStatus = "playerMagic";
         if(this.selectingSkillId === null){
             return;
         }
@@ -92,6 +94,7 @@ module.exports = class Battle{
     }
 
     invokeEnemyMagic(){
+        this.turnStatus = "enemyMagic";
         this.resetCharacterStatus();
         if(this.enemySelectingSkillId === null){
             return;
@@ -110,6 +113,7 @@ module.exports = class Battle{
     }
 
     invokePowerAttack(){
+        this.turnStatus = "powerAttack";
         const result = this.powerMeetResult();
         if(result === "win"){
             this.enemy.damage(this.player.damageAt("power"));
@@ -134,6 +138,7 @@ module.exports = class Battle{
     }
 
     invokeTechAttack(){
+        this.turnStatus = "techAttack";
         const result = this.techMeetResult();
         if(result === "win"){
             this.enemy.damage(this.player.damageAt("tech"));
@@ -159,6 +164,7 @@ module.exports = class Battle{
     }
 
     invokeSPAttack(){
+        this.turnStatus = "SPAttack";
         const powerResult = this.powerMeetResult();
         const techResult = this.techMeetResult();
         if(powerResult === "win" && techResult === "win"){
@@ -207,6 +213,7 @@ module.exports = class Battle{
         this.player.resetTempBuffs();
         this.enemy.resetTempBuffs();
         this.turnInProgress = false;
+        this.turnStatus = "selectCard";
     }
 
     outcome(){

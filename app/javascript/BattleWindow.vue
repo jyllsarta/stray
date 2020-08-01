@@ -55,18 +55,18 @@
         .after
       .current_strength
         .power.strength
-          .player(:class="playerPower > enemyPower ? 'win' : ''")
+          .player(:class="[playerPower > enemyPower ? 'win' : '', isStrengthFlashing('player', 'power') ? 'flash' : '']", :key="'playerPower'+turnStatus")
             | {{playerPower}}
           .sep
             | 力
-          .enemy(:class="playerPower < enemyPower ? 'win' : ''")
+          .enemy(:class="[playerPower < enemyPower ? 'win' : '', isStrengthFlashing('enemy', 'power') ? 'flash' : '']", :key="'enemyPower'+turnStatus")
             | {{enemyPower}}
         .tech.strength
-          .player(:class="playerTech > enemyTech ? 'win' : ''")
+          .player(:class="[playerTech > enemyTech ? 'win' : '', isStrengthFlashing('player', 'tech') ? 'flash' : '']", :key="'playerTech'+turnStatus")
             | {{playerTech}}
           .sep
             | 技
-          .enemy(:class="playerTech < enemyTech ? 'win' : ''")
+          .enemy(:class="[playerTech < enemyTech ? 'win' : '', isStrengthFlashing('enemy', 'tech') ? 'flash' : '']", :key="'enemyTech'+turnStatus")
             | {{enemyTech}}
       .player_status.status
         .shield(v-if="playerShield > 0")
@@ -160,6 +160,9 @@ export default {
     this.postEngage();
   },
   computed: {
+    turnStatus(){
+      return this.battle?.turnStatus || "selectCard";
+    },
     enemyName(){
       return this.battle?.enemy?.name || "faily";
     },
@@ -297,11 +300,11 @@ export default {
     },
 
     selectCard(cardId){
-        this.battle?.selectCard(cardId);
+      this.battle?.selectCard(cardId);
     },
 
     selectSkill(skillId){
-        this.battle?.selectSkill(skillId);
+      this.battle?.selectSkill(skillId);
     },
 
     playTurn(){
@@ -470,7 +473,38 @@ export default {
           console.warn(`undefined outcome ${this.outcome}`);
           return "何かエラーが起きたみたい！";
       }
-    }
+    },
+
+    isStrengthFlashing(side, parameterName){
+      switch(this.battle?.turnStatus){
+        case "powerAttack":
+          if(side == "player" && this.playerPower > this.enemyPower){
+            return parameterName == 'power';
+          }
+          if(side == "enemy" && this.playerPower < this.enemyPower){
+            return parameterName == 'power';
+          }
+          return false;
+        case "techAttack":
+          if(side == "player" && this.playerTech > this.enemyTech){
+            return parameterName == 'tech';
+          }
+          if(side == "enemy" && this.playerTech < this.enemyTech){
+            return parameterName == 'tech';
+          }
+          return false;
+        case "SPAttack":
+          if(side == "player" && (this.playerPower > this.enemyPower) && (this.playerTech > this.enemyTech)){
+            return true;
+          }
+          if(side == "enemy" && (this.playerPower < this.enemyPower) && (this.playerTech < this.enemyTech)){
+            return true;
+          }
+          return false;
+        default:
+          return false;
+      }
+    },
   },
 }
 </script>
@@ -526,6 +560,7 @@ export default {
     width: 100%;
     align-items: baseline;
     height: 30px;
+
     .player, .enemy{
       width: 30%;
       text-align: center;
@@ -538,6 +573,20 @@ export default {
     .win{
       color: $yellow;
       font-size: $font-size-large + 2px; // すこーしだけ大きくする、の意
+    }
+    .flash{
+      animation: flash .5s cubic-bezier(.33,.81,.62,.92);
+    }
+  }
+
+  @keyframes flash {
+    0% {
+      transform: scale(2);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 }
