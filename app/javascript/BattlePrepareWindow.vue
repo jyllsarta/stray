@@ -158,7 +158,11 @@
               return message
           },
           enemyDeck(){
-              return this.currentEnemy?.cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech))
+              let cards = this.currentEnemy?.cards || [];
+              for(let i=0; i < cards.length; i++){
+                  cards[i].id = i;
+              }
+              return cards.map((x)=>new Card(x.id, x.name, x.power, x.tech));
           },
           currentPlayerCards(){
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;

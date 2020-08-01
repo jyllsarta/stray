@@ -14,12 +14,12 @@
 <script lang="ts">
 export default {
   props: {
-      id: Number,
-      name: String,
-      power: Number,
-      tech: Number,
-      rightSide: Boolean,
-      disabled: Boolean,
+    id: Number,
+    name: String,
+    power: Number,
+    tech: Number,
+    rightSide: Boolean,
+    disabled: Boolean,
   },
   methods: {
     onClick(){

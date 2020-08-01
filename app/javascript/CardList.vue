@@ -1,16 +1,17 @@
 <template lang="pug">
   .cards(:class="rightSide ? 'right' : 'left'")
-    Card(
-      v-for="card in cards",
-      :id="card.id",
-      :name="card.name",
-      :power="card.power",
-      :tech="card.tech",
-      :rightSide="rightSide"
-      :key="card.id",
-      @onClick="$emit('onClick', card.id)"
-      :disabled="globalDisabled"
-    )
+    transition-group(:name="rightSide ? 'right-show-in' : 'show-in'")
+      Card(
+        v-for="card in cards",
+        :id="card.id",
+        :name="card.name",
+        :power="card.power",
+        :tech="card.tech",
+        :rightSide="rightSide"
+        :key="card.id",
+        @onClick="$emit('onClick', card.id)"
+        :disabled="globalDisabled"
+      )
 </template>
 
 <script lang="ts">
@@ -56,6 +57,44 @@ export default {
       }
     }
   }
+}
+
+.show-in-enter-active {
+  transition: all .2s;
+}
+.show-in-leave-active {
+  transition: all .2s;
+}
+.show-in-enter{
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(-30px);
+  opacity: 0;
+}
+.show-in-leave-to{
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+.right-show-in-enter-active {
+  transition: all .2s;
+}
+.right-show-in-leave-active {
+  transition: all .2s;
+}
+.right-show-in-enter{
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(30px);
+  opacity: 0;
+}
+.right-show-in-leave-to{
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(30px);
+  opacity: 0;
 }
 
 </style>
