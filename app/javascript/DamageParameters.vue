@@ -2,15 +2,15 @@
 .parameters
   .param(@mouseover="$store.commit('guide/updateGuide', '力判定のダメージ値。')")
     img.icon(src="/images/icons/misc/power.gif")
-    .value(:class="powerClass")
+    .value(:class="powerClass", :key="power")
       | {{ power }}
   .param(@mouseover="$store.commit('guide/updateGuide', '技判定のダメージ値。')")
     img.icon(src="/images/icons/misc/tech.gif")
-    .value(:class="techClass")
+    .value(:class="techClass", :key="tech")
       | {{ tech }}
   .param(@mouseover="$store.commit('guide/updateGuide', 'SP攻撃のダメージ値。')")
     img.icon(src="/images/icons/misc/special.gif")
-    .value(:class="specialClass")
+    .value(:class="specialClass", :key="special")
       | {{ special }}
 </template>
 
@@ -58,10 +58,22 @@ export default {
       }
       .value{
         width: 1rem;
+        animation: flash .5s cubic-bezier(.33,.81,.62,.92);
       }
       .up{
         color: $yellow;
       }
+    }
+  }
+
+  @keyframes flash {
+    0% {
+      transform: scale(3);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 </style>
