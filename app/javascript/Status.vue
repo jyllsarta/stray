@@ -12,7 +12,11 @@
           .label
             | HP
           .value
-            | {{$store.state.user.characters.spica.hp}} / {{$store.state.user.characters.spica.hp_max}}
+            NumeratableNumber(:number="spicaHp")
+            .sep
+              | /
+            .number
+              | {{$store.state.user.characters.spica.hp_max}}
         .gauge(:style="{width: hpGaugeWidth('spica'), backgroundColor: hpGaugeColor('spica') }")
         .exp
           .label
@@ -31,7 +35,11 @@
           .label
             | HP
           .value
-            | {{$store.state.user.characters.tirol.hp}} / {{$store.state.user.characters.tirol.hp_max}}
+            NumeratableNumber(:number="tirolHp")
+            .sep
+              | /
+            .number
+              | {{$store.state.user.characters.tirol.hp_max}}
         .gauge(:style="{width: hpGaugeWidth('tirol'), backgroundColor: hpGaugeColor('tirol') }")
         .exp
           .label
@@ -44,12 +52,16 @@
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
+import NumeratableNumber from "./NumeratableNumber.vue";
 
 export default {
   data: function () {
     return {
       character_base_width: 190
     };
+  },
+  components: {
+    NumeratableNumber,
   },
   store,
   methods: {
@@ -77,6 +89,12 @@ export default {
   computed: {
     expMax(){
       return Constants.character.expMax;
+    },
+    spicaHp(){
+      return this.$store.state.user.characters.spica.hp || 0;
+    },
+    tirolHp(){
+      return this.$store.state.user.characters.tirol.hp || 0;
     }
   }
 }
@@ -133,6 +151,13 @@ export default {
           padding-left: $thin_space;
           display: inline-block;
           width: calc(100% - 2rem);
+          div{
+            display: inline-block;
+          }
+          .sep{
+            width: 1em;
+            text-align: center;
+          }
         }
       }
       .gauge{
