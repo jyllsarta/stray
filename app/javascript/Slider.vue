@@ -1,7 +1,7 @@
 <template lang="pug">
 .bar(:class="sliderClass" :style="{width: width}")
-  .on(:style="{width: mainWidth, backgroundColor: mainColor}")
-  .blank(:style="{width: mainWidth, backgroundColor: blankColor}")
+  .on(:style="{width: mainWidth, height: height, backgroundColor: mainColor}")
+  .blank(:style="{width: mainWidth, height: height, backgroundColor: blankColor}")
 </template>
 
 <script lang="ts">
@@ -32,7 +32,6 @@ export default {
 
 <style lang="scss" scoped>
   .bar{
-    height: 4px;
     display: flex;
     border-radius: 1px;
     .on{
