@@ -83,8 +83,11 @@
         .mp
           | {{playerMp}}
         .bars
-          Slider(:width="400", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+          Slider(:width="400", :height="4", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :height="4", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+        .ghost_bars
+          Slider(:width="380", :height="1", :ratio="playerHpRatio - 1", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :height="1", :ratio="playerMpRatio - 1", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
         .damage_parameters
           DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
       .enemy_status.status
@@ -100,8 +103,11 @@
         .mp
           | {{enemyMp}}
         .bars
-          Slider(:width="400", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+          Slider(:width="400", :height="4", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :height="4", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+        .ghost_bars
+          Slider(:width="380", :height="1", :ratio="enemyHpRatio - 1", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
+          Slider(:width="250", :height="1", :ratio="enemyMpRatio - 1", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
         .damage_parameters
           DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
       BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
@@ -151,9 +157,9 @@ export default {
       skillName: "戦闘開始！", // アニメーションが毎度発火してしまうので、戦闘開始時にそれっぽいスキル表示が出ることにしてごまかす
       colors: {
         hpColor: "rgba(255,192,145,0.99)",
-        hpBlankColor: "rgba(255,192,145,0.22)",
+        hpBlankColor: "rgba(255,192,145,0.32)",
         mpColor: "rgba(145,229,255,0.99)",
-        mpBlankColor: "rgba(145,229,255,0.22)",
+        mpBlankColor: "rgba(145,229,255,0.32)",
       }
     };
   },
@@ -610,6 +616,15 @@ export default {
     flex-direction: column;
     justify-content: space-around;
   }
+  .ghost_bars{
+    position: absolute;
+    top: -4px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 
 .decide{
@@ -641,6 +656,10 @@ export default {
   .bars{
     align-items: flex-end;
   }
+  .ghost_bars{
+    right: 90px;
+    align-items: flex-end;
+  }
   .damage_parameters{
     width: 100%;
     display: flex;
@@ -662,6 +681,10 @@ export default {
     left: 0px;
   }
   .bars{
+    align-items: flex-start;
+  }
+  .ghost_bars{
+    left: 90px;
     align-items: flex-start;
   }
   .damage_parameters{
