@@ -77,11 +77,11 @@
             | {{playerShield}}
         .hps
           .hp
-            | {{playerHp}}
+            NumeratableNumber(:number="playerHp")
           .hp_max
             | / {{playerHpMax}}
         .mp
-          | {{playerMp}}
+          NumeratableNumber(:number="playerMp")
         .bars
           Slider(:width="400", :height="4", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
           Slider(:width="250", :height="4", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
@@ -97,11 +97,11 @@
             | {{enemyShield}}
         .hps
           .hp
-            | {{enemyHp}}
+            NumeratableNumber(:number="enemyHp")
           .hp_max
             | / {{enemyHpMax}}
         .mp
-          | {{enemyMp}}
+          NumeratableNumber(:number="enemyMp")
         .bars
           Slider(:width="400", :height="4", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
           Slider(:width="250", :height="4", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
@@ -137,6 +137,7 @@ import CardList from "./CardList.vue";
 import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
+import NumeratableNumber from "./NumeratableNumber.vue";
 
 
 export default {
@@ -146,6 +147,7 @@ export default {
     Slider,
     DamageParameters,
     BattleCharacter,
+    NumeratableNumber,
   },
   data: function () {
     return {
