@@ -7,15 +7,21 @@
 export default {
   props: {
     number: Number,
+    speed: Number
   },
   data: ()=>{
     return {
-      currentNumber: 0,
+      currentNumber: -1,
       updateRatio: 0.1, // 毎フレーム何％目標値に近づけるか
     }
   },
   computed: {
-
+  },
+  mounted() {
+    this.currentNumber = this.number;
+    if(this.speed){
+      this.updateRatio = this.speed;
+    }
   },
   watch: {
     number(){

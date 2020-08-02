@@ -23,7 +23,7 @@
           .desc
             | 平均装備ランク
           .rank
-            | {{averageItemRank}}
+            NumeratableNumber(:number="averageItemRank", :speed="0.4")
         .reinforcements.block
           .label
             | 加護
@@ -181,7 +181,7 @@
                   .label(:class="param")
                     | {{param.toUpperCase()}}
                   .value
-                    | {{$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)}}
+                    NumeratableNumber(:number="$store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true)", :speed="0.6")
                 .bar_area
                   .bar(
                     :class="param"
@@ -203,31 +203,39 @@
               .status
                 .param_area
                   .param
-                    | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)}}
+                    .text
+                      | ATK:
+                    NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)", :speed="0.6")
                 .bar_area
                   .bar.plus(
                     :style="{width: atkBar()}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
-                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')}})
+                NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')", :speed="0.6")
               .status
                 .param_area
                   .param
-                    | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)}}
+                    .text
+                      | DEF:
+                    NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)", :speed="0.6")
                 .bar_area
                   .bar.minus(
                     :style="{width: defBar()}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
-                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')}})
+                NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')", :speed="0.6")
 </template>
 
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import ax from "./packs/axios_default_setting.ts";
+import NumeratableNumber from "./NumeratableNumber.vue";
 
 export default {
+  components: {
+    NumeratableNumber
+  },
   data: function () {
     return {
       move_character_handle: 0,
@@ -815,6 +823,11 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: space-around;
+          .param{
+            .text, .number{
+              display: inline-block;
+            }
+          }
           .status_diff{
             font-size: $font-size-mini;
             text-align: right;
