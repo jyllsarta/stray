@@ -58,18 +58,18 @@
       .current_strength
         .power.strength
           .player(:class="[playerPower > enemyPower ? 'win' : '', isStrengthFlashing('player', 'power') ? 'flash' : '']", :key="'playerPower'+turnStatus")
-            | {{playerPower}}
+            NumeratableNumber(:number="playerPower", :speed="0.4" )
           .sep
             | 力
           .enemy(:class="[playerPower < enemyPower ? 'win' : '', isStrengthFlashing('enemy', 'power') ? 'flash' : '']", :key="'enemyPower'+turnStatus")
-            | {{enemyPower}}
+            NumeratableNumber(:number="enemyPower", :speed="0.4")
         .tech.strength
           .player(:class="[playerTech > enemyTech ? 'win' : '', isStrengthFlashing('player', 'tech') ? 'flash' : '']", :key="'playerTech'+turnStatus")
-            | {{playerTech}}
+            NumeratableNumber(:number="playerTech", :speed="0.4")
           .sep
             | 技
           .enemy(:class="[playerTech < enemyTech ? 'win' : '', isStrengthFlashing('enemy', 'tech') ? 'flash' : '']", :key="'enemyTech'+turnStatus")
-            | {{enemyTech}}
+            NumeratableNumber(:number="enemyTech", :speed="0.4")
       .player_status.status
         .shield(v-if="playerShield > 0")
           img.icon(src="/images/icons/misc/shield.gif")
@@ -234,31 +234,34 @@ export default {
       return this.battle.enemyCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
     },
     playerPower(){
-      return this.battle.player?.powerAt(this.battle.selectingCardIds);
+      return this.battle.player?.powerAt(this.battle.selectingCardIds) || 0;
     },
     playerTech(){
-      return this.battle.player?.techAt(this.battle.selectingCardIds);
+      return this.battle.player?.techAt(this.battle.selectingCardIds) || 0;
     },
     enemyPower(){
-      return this.battle.enemy?.powerAt(this.battle.enemyCardIds);
+      return this.battle.enemy?.powerAt(this.battle.enemyCardIds) || 0;
+    },
+    enemyTech(){
+      return this.battle.enemy?.techAt(this.battle.enemyCardIds) || 0;
     },
     playerPowerDamage(){
-        return this.battle.player?.damageAt("power");
+      return this.battle.player?.damageAt("power");
     },
     playerTechDamage(){
-        return this.battle.player?.damageAt("tech");
+      return this.battle.player?.damageAt("tech");
     },
     playerSpecialDamage(){
-        return this.battle.player?.damageAt("special");
+      return this.battle.player?.damageAt("special");
     },
     playerBasicPowerDamage(){
-        return this.battle.player?.power;
+      return this.battle.player?.power;
     },
     playerBasicTechDamage(){
-        return this.battle.player?.tech;
+      return this.battle.player?.tech;
     },
     playerBasicSpecialDamage(){
-        return this.battle.player?.special;
+      return this.battle.player?.special;
     },
     enemyPowerDamage(){
       return this.battle.enemy?.damageAt("power");
@@ -277,9 +280,6 @@ export default {
     },
     enemyBasicSpecialDamage(){
       return this.battle.enemy?.special;
-    },
-    enemyTech(){
-      return this.battle.enemy?.techAt(this.battle.enemyCardIds);
     },
     playerSkills(){
       return this.battle.player?.skills;

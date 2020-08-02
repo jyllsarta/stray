@@ -26,6 +26,9 @@ export default {
   watch: {
     number(){
       this.react();
+    },
+    currentNumber(){
+      console.log(this.currentNumber);
     }
   },
   methods:{
