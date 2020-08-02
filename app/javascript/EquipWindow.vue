@@ -17,8 +17,13 @@
         .switch_character_button.clickable(
           @click="$store.commit('equip_window/switchMainCharacter')"
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
-          )
+        )
           | 編集キャラ交代
+        .player_rank
+          .desc
+            | 平均装備ランク
+          .rank
+            | {{averageItemRank}}
         .reinforcements.block
           .label
             | 加護
@@ -105,6 +110,11 @@
           .item_name
             | {{currentItem ? currentItem.name : "-"}}
           .parameters
+            .parameter
+              .index
+                | RANK
+              .value
+                | {{currentItem ? currentItem.rank + currentItem.base_rank  : ''}}
             .parameter
               .index
                 | TOTAL
@@ -346,6 +356,9 @@ export default {
     cancelAnimationFrame(this.move_character_handle);
   },
   computed: {
+    averageItemRank(){
+      return this.$store.getters['equip_window/averageItemRank']();
+    },
     currentItem(){
       return this.$store.getters['equip_window/getUserItem'](this.$store.state.equip_window.selecting_item_id);
     },
@@ -479,6 +492,25 @@ export default {
       top: 60px;
       left: $space;
       padding: $space;
+    }
+
+    .player_rank{
+      position: absolute;
+      left: $space;
+      top: 110px;
+      padding: 2px;
+      border: 1px solid $gray3;
+      border-radius: $radius;
+      .desc{
+        font-size: $font-size-mini;
+        line-height: 105%;
+      }
+      .rank{
+        font-size: $font-size-large;
+        width: 100%;
+        text-align: right;
+        line-height: 105%;
+      }
     }
 
     .reinforcements{
@@ -625,7 +657,7 @@ export default {
       font-size: $font-size-mini;
       .item_name{
         margin: $thin_space;
-        height: 30px;
+        height: 25px;
         border-bottom: 1px solid $gray3;
       }
       .parameters{
@@ -633,7 +665,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        height: 120px;
+        height: 130px;
         border-bottom: 1px solid $gray3;
         line-height: 100%;
         .parameter{
@@ -652,7 +684,7 @@ export default {
       .flavor_text{
         line-height: 115%;
         margin: $thin_space;
-        height: 140px;
+        height: 135px;
       }
       .open_detail_window{
         margin: $thin_space;

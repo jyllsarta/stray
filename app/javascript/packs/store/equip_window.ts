@@ -187,6 +187,13 @@ export default {
     getCharacterStrengthDiff: (state, getters) => (characterId, paramName) => {
       return getters.getCharacterStrength(characterId, paramName, true) - getters.getCharacterStrength(characterId, paramName, false);
     },
+    averageItemRank: (state, getters) => () => {
+      let sum = 0;
+      for(let characterName of ['spica', 'tirol']){
+         sum += state['draft'][characterName].reduce((p,x)=>(p + getters.getUserItem(x).rank + getters.getUserItem(x).base_rank), 0);
+      }
+      return Math.floor(sum / (Constants.maxEquipCount * 2));
+    },
   },
   mutations: {
     initializeEquipWindow(state, payload){
