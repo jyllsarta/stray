@@ -9,7 +9,7 @@ export default {
     switch_dungeon: false,
     relic: false,
     battle: false,
-    battle_prepare: true,
+    battle_prepare: false,
     quest: false,
     equip_skill: false,
     transition_frame: false,
