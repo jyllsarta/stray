@@ -430,15 +430,24 @@
       width: 140px;
       height: 56px;
       .class_cards, .equip_cards{
-        border-radius: $radius;
         width: 140px;
         height: 28px;
-        padding: 2px;
+        padding-top: 6px;
+        line-height: 100%;
         text-align: center;
-        border: 1px solid $gray3;
+      }
+      .class_cards{
+        border-radius: $radius $radius 0 0;
+        border: 1px solid $gray2;
+      }
+      .equip_cards{
+        border-radius: 0 0 $radius $radius;
+        border-right: 1px solid $gray2;
+        border-left: 1px solid $gray2;
+        border-bottom: 1px solid $gray2;
       }
       .active{
-        background-color: $gray3;
+        background-color: $gray3-opacity;
       }
     }
 
