@@ -27,14 +27,11 @@ export default {
     number(){
       this.react();
     },
-    currentNumber(){
-      console.log(this.currentNumber);
-    }
   },
   methods:{
     react(){
       this.currentNumber = (1 - this.updateRatio) * this.currentNumber + (this.updateRatio) * this.number;
-      if(Math.abs(this.currentNumber - this.number) < 1){
+      if(Math.abs(this.currentNumber - this.number) < 0.8){
         this.currentNumber = this.number;
       }
       if(Math.floor(this.currentNumber) != Math.floor(this.number)){
