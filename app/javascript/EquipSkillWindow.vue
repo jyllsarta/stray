@@ -22,8 +22,10 @@
           .detail_area
             .head
               | スキル詳細
-            .name
-              | {{pointingSkill.name}}
+            .names
+              img.icon(:src="iconImagePath(pointingSkill.id)")
+              .name
+                | {{pointingSkill.name}}
             .details
               .detail
                 .key
@@ -92,7 +94,13 @@
           }
       },
       methods: {
-          selectSkill(id){
+        iconImagePath(skillId){
+          if(!this.$store.state.masterdata?.skills[skillId]){
+            return "/images/icons/skill/default.gif";
+          }
+          return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId]?.icon_image_path}`;
+        },
+        selectSkill(id){
               if(this.selectingSkillIds.includes(id)){
                   this.selectingSkillIds = this.selectingSkillIds.filter(n => n !== id);
                   return;
@@ -158,40 +166,74 @@
       padding: $space;
       display: flex;
       .skill_select_area {
-        width: 80%;
+        width: 70%;
         .head{
           border-bottom: 1px solid $gray3;
           width: 100%;
           margin-bottom: $space;
         }
-        .skills{
-          height: 100px;
+        .all_skills{
+          height: 230px;
+          .skill_list{
+            flex-wrap: wrap;
+          }
+        }
+        .selected_skills{
+          height: 70px;
+          .skill_list{
+            flex-wrap: wrap;
+          }
         }
       }
       .detail_area{
-        width: 20%;
+        width: 30%;
         height: 350px;
         padding-left: $space;
         .head{
           border-bottom: 1px solid $gray3;
           width: 100%;
           margin-bottom: $space;
+          padding-left: $space;
         }
-        .name{
-          font-size: $font-size-large;
+        .names{
+          width: 100%;
+          border-bottom: 1px solid $gray3;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          margin-bottom: $space;
+          .name{
+            line-height: 100%;
+            padding-top: 2px;
+            font-size: $font-size-large;
+            height: 24px;
+            padding-left: $space;
+          }
+          .icon{
+            width: 24px;
+            height: 24px;
+            margin-left: $thin_space;
+          }
         }
         .details{
           .detail{
             display: flex;
             align-items: baseline;
             padding: $space;
+            border-bottom: 1px solid $gray3;
             .key{
               text-align: right;
               width: 50%;
+              height: $font-size-normal;
+              line-height: 100%;
+              padding-right: $space;
+              border-right: 1px solid $gray3;
             }
             .value{
               padding-left: $space;
               width: 50%;
+              height: $font-size-normal;
+              line-height: 100%;
             }
           }
         }
