@@ -472,6 +472,7 @@ export default {
         this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
         this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
         this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
+        this.$store.dispatch('user/fetchUserModel'); // 報酬の反映
     },
 
     getLogMessage(){
