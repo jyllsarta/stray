@@ -305,71 +305,71 @@ export default {
 // 置き方を自由に決めたいので、flexではなく全部absoluteでゴリ押す
 
 // イベント短縮
-.relic_10001{
+.relic_31{
   top:   30px;
   left:  30px;
 }
-.relic_10002{
+.relic_32{
   top:  120px;
   left:  30px;
 }
-.relic_10003{
+.relic_33{
   top:  210px;
   left:  30px;
 }
 
-.relic_20001{
+.relic_11{
   top:   30px;
   left: 110px;
 }
 
-.relic_20002{
+.relic_12{
   top:  130px;
   left: 110px;
 }
 
-.relic_30001{
+.relic_21{
   top:   30px;
   left: 330px;
 }
 
-.relic_30002{
+.relic_22{
   top:  130px;
   left: 330px;
 }
 
 // スピカスキル
-.relic_2000101{
+.relic_101{
   top:   60px;
   left: 170px;
 }
-.relic_2000102{
+.relic_102{
   top:   60px;
   left: 240px;
 }
-.relic_2000103{
+.relic_103{
   top:  160px;
   left: 170px;
 }
-.relic_2000104{
+.relic_104{
   top:  160px;
   left: 240px;
 }
 
 // チロルスキル
-.relic_2000201{
+.relic_201{
   top:   60px;
   left: 390px;
 }
-.relic_2000202{
+.relic_202{
   top:   60px;
   left: 460px;
 }
-.relic_2000203{
+.relic_203{
   top:  160px;
   left: 390px;
 }
-.relic_2000204{
+.relic_204{
   top:  160px;
   left: 460px;
 }
