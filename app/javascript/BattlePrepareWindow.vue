@@ -346,7 +346,7 @@
       position: absolute;
       right: $space;
       top: 100px;
-      width: 180px;
+      width: 200px;
       height: 200px;
       .enemy{
         @include centering($height: 30px);
@@ -359,6 +359,7 @@
         }
         .rank{
           width: 2em;
+          text-align: right;
         }
       }
 

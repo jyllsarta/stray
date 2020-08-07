@@ -91,7 +91,63 @@ const Constants = {
         normal:  'normal',
         default: 'normal',
       },
+      faily_eleki: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      faily_book: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      faily_queen: {
+        normal:  'normal',
+        default: 'normal',
+      },
       kani: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      kani_gold: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      kani_mage: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      kani_white: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      nya: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      nya_black: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      nya_blue: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      nya_king: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      gob: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      gob_rance: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      gob_mage: {
+        normal:  'normal',
+        default: 'normal',
+      },
+      gob_fighter: {
         normal:  'normal',
         default: 'normal',
       },
