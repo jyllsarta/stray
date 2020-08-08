@@ -9,6 +9,7 @@ module.exports = class Character{
         this.special = special;
         this.mp = 0;
         this.mp_max = 100;
+        this.handCardCount = 6;
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
@@ -65,6 +66,10 @@ module.exports = class Character{
         this.tempBuffs.shield += value;
     }
 
+    totalHandCardCount(){
+        return this.handCardCount + this.tempBuffs.handCardCountDelta;
+    }
+
     resetTempBuffs(){
         this.tempBuffs = {
             shield: 0,
@@ -75,6 +80,7 @@ module.exports = class Character{
             powerDamage: 0,
             techDamage: 0,
             specialDamage: 0,
+            handCardCountDelta: 0,
             usedDefenceSkill: false,
         };
     }

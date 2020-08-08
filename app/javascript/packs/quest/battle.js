@@ -21,8 +21,8 @@ module.exports = class Battle{
         this.player.deck.shuffle();
         this.enemy.deck.shuffle();
 
-        this.player.deck.fillDraw();
-        this.enemy.deck.fillDraw();
+        this.player.deck.fillDraw(this.player.totalHandCardCount());
+        this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
 
         this.operationHistory = [];
         this.enemyOperationHistory = [];
@@ -204,11 +204,11 @@ module.exports = class Battle{
         this.enemy.deck.consumeCards(this.enemyCardIds);
         this.selectingCardIds = [];
         this.selectingSkillId = null;
-        this.player.deck.fillDraw();
+        this.player.deck.fillDraw(this.player.totalHandCardCount());
 
         this.enemyCardIds = [];
         this.enemySelectingSkillId = null;
-        this.enemy.deck.fillDraw();
+        this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
         this.pickEnemyCards();
         this.pickEnemySkill();
 

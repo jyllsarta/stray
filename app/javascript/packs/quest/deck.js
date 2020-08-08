@@ -2,8 +2,6 @@ module.exports = class Deck {
     constructor(cards) {
         this.cards = cards;
 
-        this.maxHandCardNumber = 6;
-
         // いずれもカードIDを保持する
         this.handCardIds = [];
         this.discardCardIds = [];
@@ -31,8 +29,11 @@ module.exports = class Deck {
         return this.cards.find((x)=>x.id===id);
     }
 
-    fillDraw(){
-        while(this.handCardIds.length < this.maxHandCardNumber){
+    fillDraw(cardCount){
+        if(cardCount < 3){
+            cardCount = 3 // 手札枚数は絶対に3枚は確保される
+        }
+        while(this.handCardIds.length < cardCount){
             this.draw();
         }
     }
