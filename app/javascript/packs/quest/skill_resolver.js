@@ -46,6 +46,14 @@ SkillResolver {
         main.mp += value;
     }
 
+    resolveDamageMp(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.mp -= value;
+        if(main.mp < 0){
+            main.mp = 0;
+        }
+    }
+
     resolveAddShield(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.addShield(value);
@@ -66,6 +74,21 @@ SkillResolver {
         main.tempBuffs.techDamage += value;
     }
 
+    resolveAddSpDamageForever(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.special += value;
+    }
+
+    resolveAddPowerDamageForever(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.power += value;
+    }
+
+    resolveAddTechDamageForever(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tech += value;
+    }
+
     resolveAddPower(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.tempBuffs.power += value;
@@ -84,5 +107,39 @@ SkillResolver {
     resolveAlterTech(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.tempBuffs.techAlterTo = value;
+    }
+
+    resolveAddHandForever(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.handCardCount += value;
+    }
+
+    resolveReduceHandForever(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.handCardCount -= value;
+    }
+
+    resolveReduceHand(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.tempBuffs.handCardCountDelta -= value;
+    }
+
+    resolveUpgradeDeck(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        for(let card of main.deck.cards){
+            card.power += value;
+            card.tech += value;
+        }
+    }
+
+    resolveCalamity(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const multiplier = value;
+        for(let skill of main.skills){
+            skill.reusable = false;
+            for(let effect of skill.effects) {
+                effect.value *= multiplier;
+            }
+        }
     }
 };

@@ -100,7 +100,8 @@ module.exports = class Battle{
             return;
         }
         if(!this.canEnemyUseSkill(this.enemySelectingSkillId)){
-            console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`);
+            // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
+            // console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`);
             return;
         }
         const skill = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId);

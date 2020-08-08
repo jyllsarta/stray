@@ -33,6 +33,9 @@ module.exports = class Deck {
         if(cardCount < 3){
             cardCount = 3 // 手札枚数は絶対に3枚は確保される
         }
+        if(cardCount > 8){
+            cardCount = 8 // 手札枚数は8枚が上限
+        }
         while(this.handCardIds.length < cardCount){
             this.draw();
         }
