@@ -31,7 +31,7 @@ module.exports = class BattleFactory{
         let skills = [];
         for(let skill of inputSkills){
             let effects = [];
-            for(let i=1; i<3; i++){
+            for(let i=1; i<=3; i++){
                 if(skill[`effect${i}_category`]){
                     effects.push(new Effect(skill[`effect${i}_category`], skill[`effect${i}_to_self`], skill[`effect${i}_value`]));
                 }
