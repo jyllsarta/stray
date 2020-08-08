@@ -1,4 +1,5 @@
-module.exports = class SkillResolver {
+module.exports = class
+SkillResolver {
     constructor(battle) {
         this.battle = battle;
     }
@@ -38,6 +39,11 @@ module.exports = class SkillResolver {
     resolveAddMp(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.addMp(value);
+    }
+
+    resolveAddMpOverflow(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.mp += value;
     }
 
     resolveAddShield(actor, target, to_self, value){
