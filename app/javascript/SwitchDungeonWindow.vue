@@ -80,10 +80,10 @@ export default {
       return this.$store.state.masterdata.dungeons[this.selectingDungeonId] || {};
     },
     currentDungeonMaxDepth(){
-      return Math.max(this.selectingDungeon.depth, this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth)
+      return Math.max(this.selectingDungeon.depth, this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0)
     },
     currentDungeonMaxDepthCanSwitch(){
-      return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth;
+      return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0;
     },
     sliderWidthPercent(){
       const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.5);
