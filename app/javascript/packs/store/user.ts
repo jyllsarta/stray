@@ -56,7 +56,7 @@ export default {
       return Math.floor(state.status.current_dungeon_rank * Constants.event.battle.enemyRankFactor + Constants.event.battle.enemyRankGeta);
     },
     rankFactor: (state, getters) => (rank) => {
-      return Math.floor(Math.pow(rank, Constants.item.rankFactor));
+      return Math.floor(Math.pow(Constants.item.rankFactor, rank) * 100) - 100;
     },
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];

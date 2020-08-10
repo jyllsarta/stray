@@ -64,7 +64,7 @@ class User::Item < ApplicationRecord
   end
 
   def rank_factor(rank)
-    rank ** Constants.item.rank_factor
+    ((Constants.item.rank_factor ** rank) * 100).floor - 100
   end
 
   def rarity_factor(rarity)

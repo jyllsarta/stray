@@ -140,7 +140,8 @@ export default {
       }
       let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
       ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
+        return Math.floor(this[paramName] / 100 * rootGetters['user/' +
+        'rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
       };
       // NOTE: user/item.rb とがんばって共有すること
       // tech: ((item.dex + item.agi) * rarity_factor(item.rarity) / 40).floor,

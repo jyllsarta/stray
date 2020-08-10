@@ -55,9 +55,9 @@ RSpec.describe User::Item, type: :model do
 
       it "returns character's parameter" do
         expect(subject).to eq({
-                                  str: 25,
-                                  dex: 25,
-                                  def: 50,
+                                  str: 16,
+                                  dex: 16,
+                                  def: 32,
                                   agi: 0
                               })
       end
@@ -69,10 +69,10 @@ RSpec.describe User::Item, type: :model do
 
       it "設計シート通りの値をビタで返すか" do
         expect(subject).to eq({
-                                  str: 2638,
-                                  dex: 1365,
-                                  def: 170,
-                                  agi: 2428
+                                  str: 1588,
+                                  dex: 821,
+                                  def: 102,
+                                  agi: 1462
                               })
       end
     end
