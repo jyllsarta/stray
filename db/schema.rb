@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "depth"
     t.integer "initial_rank"
     t.integer "depth_per_rank"
+    t.integer "boss_reward_star_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

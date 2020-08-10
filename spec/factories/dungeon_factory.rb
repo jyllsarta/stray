@@ -19,5 +19,6 @@ FactoryBot.define do
     name { "サメの巣" }
     depth_per_rank { 10 }
     initial_rank { 1 }
+    boss_reward_star_amount { 7 }
   end
 end

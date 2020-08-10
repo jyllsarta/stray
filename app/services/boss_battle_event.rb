@@ -39,7 +39,7 @@ class BossBattleEvent < Event
 
   def process_win(user)
     # ロックはイベント処理全体のほうで取られているのでこっちでは取得していない
-    user.status.add_star!(Constants.event.battle.boss_reward_star)
+    user.status.add_star!(user.status.dungeon.boss_reward_star_amount)
     user.status.increment!(:current_dungeon_depth, 1)
     user.status.current_dungeon_progress.dig_to!(user.status.current_dungeon_depth)
   end
