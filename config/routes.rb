@@ -24,12 +24,12 @@
 #                      equip_skills POST /skills/equip(.:format)                                    skills#equip
 #                            skills GET  /skills(.:format)                                          skills#index
 #                            quests GET  /quests(.:format)                                          quests#index
-#             max_event_debug_index POST /debug/max_event(.:format)                                 debug#max_event
 #         get_all_items_debug_index POST /debug/get_all_items(.:format)                             debug#get_all_items
 #              set_coin_debug_index POST /debug/set_coin(.:format)                                  debug#set_coin
 #              set_star_debug_index POST /debug/set_star(.:format)                                  debug#set_star
 #             set_depth_debug_index POST /debug/set_depth(.:format)                                 debug#set_depth
 # learn_all_user_skills_debug_index POST /debug/learn_all_user_skills(.:format)                     debug#learn_all_user_skills
+#             max_event_debug_index POST /debug/max_event(.:format)                                 debug#max_event
 
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

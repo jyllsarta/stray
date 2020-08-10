@@ -2,15 +2,16 @@
 #
 # Table name: dungeons
 #
-#  id                :bigint           not null, primary key
-#  depth             :integer
-#  depth_per_rank    :integer
-#  description       :string(255)
-#  initial_rank      :integer
-#  name              :string(255)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  parent_dungeon_id :integer
+#  id                      :bigint           not null, primary key
+#  boss_reward_star_amount :integer
+#  depth                   :integer
+#  depth_per_rank          :integer
+#  description             :string(255)
+#  initial_rank            :integer
+#  name                    :string(255)
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  parent_dungeon_id       :integer
 #
 
 class Dungeon < ApplicationRecord

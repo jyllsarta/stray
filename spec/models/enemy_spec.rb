@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  hp         :integer          default(0)
+#  image_name :string(255)
 #  name       :string(255)
 #  power      :integer          default(0)
 #  rank       :integer          default(1)
