@@ -3,7 +3,7 @@ class BattleEvent < Event
   def initialize(rank=0, at=Time.now)
     @at = at
     # バトルイベントの強さは矯正する
-    @rank = (rank * Constants.event.battle.enemy_rank_factor + Constants.event.battle.enemy_rank_geta).floor
+    @rank = rank
   end
 
   def type

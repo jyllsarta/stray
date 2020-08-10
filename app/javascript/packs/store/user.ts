@@ -53,7 +53,7 @@ export default {
       return Math.floor(8 * getters.rankFactor(actual_rank));
     },
     aroundEnemyRank: (state, getters) => {
-      return Math.floor(state.status.current_dungeon_rank * Constants.event.battle.enemyRankFactor + Constants.event.battle.enemyRankGeta);
+      return Math.floor(state.status.current_dungeon_rank);
     },
     rankFactor: (state, getters) => (rank) => {
       return Math.floor(Math.pow(Constants.item.rankFactor, rank) * 100) - 100;

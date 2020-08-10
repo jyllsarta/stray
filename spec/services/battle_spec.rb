@@ -53,16 +53,16 @@ RSpec.describe Battle, type: :model do
   describe "#calc_damage" do
     subject { battle.send(:calc_damage, a, b) }
     let(:hp){ 1000 }
-    let(:a) { BattleCharacter.new({}, {atk: attack_a, def: 0}, hp, hp) }
-    let(:b) { BattleCharacter.new({}, {atk: 0, def: defence_b}, hp, hp) }
+    let(:a) { BattleCharacter.new({}, {atk: attack_a, def: 0}, hp, hp, rank) }
+    let(:b) { BattleCharacter.new({}, {atk: 0, def: defence_b}, hp, hp, rank) }
 
     # def割れ
     context "200 -> 100" do
-      let(:attack_a){ 200 }
+      let(:attack_a){ 255 }
       let(:defence_b){ 100 }
+      let(:rank){ 10 }
       it "calculates damage" do
-        # diff が 100, 比ダメージが等価なら 50 なところに 2倍なので 100
-        expect(subject).to eq(100 + 100)
+        expect(subject).to eq((255 - 100) + 10)
       end
     end
 
@@ -70,44 +70,19 @@ RSpec.describe Battle, type: :model do
     context "100 -> 100" do
       let(:attack_a){ 100 }
       let(:defence_b){ 100 }
+      let(:rank){ 10 }
       it "calculates damage" do
-        expect(subject).to eq(0 + 50)
+        expect(subject).to eq(10)
       end
     end
 
-    # ダメージの減るしきい値
+    # 高ランク
     context "100 -> 125" do
       let(:attack_a){ 100 }
       let(:defence_b){ 125 }
+      let(:rank){ 90 }
       it "calculates damage" do
-        expect(subject).to eq(0 + 40)
-      end
-    end
-
-    # 5倍ガードに届かないギリギリ
-    context "100 -> 499" do
-      let(:attack_a){ 100 }
-      let(:defence_b){ 499 }
-      it "calculates damage" do
-        expect(subject).to eq(0 + 20)
-      end
-    end
-
-    # 5倍ガードで最低値までダメージが減る
-    context "100 -> 500" do
-      let(:attack_a){ 100 }
-      let(:defence_b){ 500 }
-      it "calculates damage" do
-        expect(subject).to eq(0 + 10)
-      end
-    end
-
-    # defがどれだけ高くても 1% は保証される
-    context "100 -> 200000" do
-      let(:attack_a){ 100 }
-      let(:defence_b){ 200000 }
-      it "calculates damage" do
-        expect(subject).to eq(0 + 10)
+        expect(subject).to eq(0 + 90)
       end
     end
   end

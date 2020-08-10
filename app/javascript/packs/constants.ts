@@ -52,12 +52,6 @@ const Constants = {
       5: 2.2,
     },
   },
-  event: {
-    battle: {
-      enemyRankFactor: 0.98,
-      enemyRankGeta: 4,
-    },
-  },
   dungeon: {
     bossFloorFrequency: 100,
     bossLoseRewindFloor: 3,

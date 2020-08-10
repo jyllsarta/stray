@@ -53,8 +53,8 @@ private
 
   def calc_damage(actor, target)
     diff_damage = [actor.atk - target.def, 0].max
-    ratio_damage = ((target.hp_max.to_f / 100) * (actor.atk.to_f / (target.def.to_f == 0 ? 1 : target.def.to_f) * Constants.event.battle.ratio_damage_factor).ceil).floor
-    diff_damage + ratio_damage
+    rank_damage = actor.rank
+    diff_damage + rank_damage
   end
 
   def extincted?(characters)
