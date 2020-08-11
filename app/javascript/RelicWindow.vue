@@ -20,7 +20,7 @@
         .detail
           .relic_detail
             .title
-              img.icon(:src="`/images/icons/relic/${selectingRelic.id}.gif`")
+              img.icon(:src="`/images/icons/relic/${selectingRelic.id || 'nothing'}.gif`")
               .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
             .parent
