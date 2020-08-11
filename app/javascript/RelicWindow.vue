@@ -41,13 +41,13 @@
                 | 所持
               .icon
               .value
-                | {{$store.state.user.status.star}}
+                NumeratableNumber(:number="$store.state.user.status.star")
             .line
               .label
                 | 消費
               .icon
               .value(:class="hasSufficientStar ? '' : 'red'")
-                | {{selectingRelic.cost}}
+                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.2")
           .button
             .get(
               :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']"
@@ -61,8 +61,13 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
+import NumeratableNumber from "./NumeratableNumber.vue";
 
 export default {
+  components: {
+    NumeratableNumber
+  },
+
   data: function () {
     return {
       selectingRelicId: 10001,
@@ -94,7 +99,7 @@ export default {
       return !!this.$store.state.user?.relics[this.selectingRelicParent.id];
     },
     hasSufficientStar(){
-      return this.$store.state.user?.status?.star >= this.selectingRelic.cost;
+      return this.$store.state.user?.status?.star >= (this.selectingRelic.cost || 0);
     },
   },
   methods: {
