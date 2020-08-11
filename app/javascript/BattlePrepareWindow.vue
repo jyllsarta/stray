@@ -39,6 +39,9 @@
         .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
           | 敵IRに達していないため、
           | 敵カードが強化されます。
+        .blank_card_notification(v-if="$store.getters['user/hasEmptySlot']" )
+          | 装備枠に空きがあると
+          | 「休憩」で埋まります。
         .status_area
           .status
             .player
@@ -88,7 +91,13 @@
           .equip_cards(@click="showsClassCards = false", :class="showsClassCards ? '' : 'active'")
             | 装備
         .player_skill_list
-          SkillList(:isPlayer="true", :skills="$store.state.skill.skills.filter((x)=>x.is_equipped)")
+          SkillList(
+            :isPlayer="true"
+            :skills="$store.state.skill.skills.filter((x)=>x.is_equipped)"
+            v-if="$store.state.skill.skills.filter((x)=>x.is_equipped).length > 0"
+          )
+          .blank_skill_notification(v-if="$store.state.skill.skills.length > 0 && $store.state.skill.skills.filter((x)=>x.is_equipped).length===0")
+            | スキルは能力解放か、一部の敵の討伐で取得できます。
         .enemy_skill_list
           SkillList(:isPlayer="false", :skills="currentEnemy.skills")
         .battle_start.clickable(@click="startBattle")
@@ -103,6 +112,7 @@
   import SkillList from "./SkillList.vue";
   import CardList from "./CardList.vue";
   import Card from "./packs/quest/card";
+
 
   export default {
       components: {
@@ -372,6 +382,17 @@
       position: absolute;
       left: calc((100% - 180px) / 2);
       top: 170px;
+      width: 180px;
+      height: 20px;
+      font-size: $font-size-mini;
+      line-height: 100%;
+      white-space: pre;
+    }
+
+    .blank_card_notification{
+      position: absolute;
+      left: calc((100% - 180px) / 2);
+      top: 120px;
       width: 180px;
       height: 20px;
       font-size: $font-size-mini;

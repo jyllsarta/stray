@@ -64,6 +64,9 @@ export default {
     maxItemRank: (state) => {
       return Object.values(state.items).reduce((max, item)=>(max < item.rank ? item.rank : max), 0);
     },
+    hasEmptySlot: (state) => {
+      return state.equips.spica.length + state.equips.tirol.length < Constants.maxEquipCount * 2;
+    }
   },
   mutations: {
     syncEquipDraft(state, payload){
