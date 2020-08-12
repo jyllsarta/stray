@@ -30,6 +30,12 @@ class UsersController < ApplicationController
     end.to_h
     @spica_equips = current_user.characters.spica.first.equip_item_ids.compact
     @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
+    @quest_battle_parameters = {
+      hp: 5 + current_user.status.quest_battle_additional_hp,
+      power: 1,
+      tech: 1,
+      special: 1
+    }
   end
 
   def deck

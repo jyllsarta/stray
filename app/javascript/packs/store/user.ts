@@ -9,6 +9,7 @@ export default {
     items: {},
     relics: {},
     dungeon_progresses: {},
+    quest_battle_parameters: {},
     equips: {
       spica: [],
       tirol: [],

@@ -52,28 +52,28 @@
               | {{currentEnemy.rank}}
           .status
             .player
-              | 1
+              | {{$store.state.user.quest_battle_parameters.power}}
             .label
               | 力威力
             .enemy
               | {{currentEnemy.power}}
           .status
             .player
-              | 1
+              | {{$store.state.user.quest_battle_parameters.tech}}
             .label
               | 技威力
             .enemy
               | {{currentEnemy.tech}}
           .status
             .player
-              | 1
+              | {{$store.state.user.quest_battle_parameters.special}}
             .label
               | SP威力
             .enemy
               | {{currentEnemy.special}}
           .status
             .player
-              | 5
+              | {{$store.state.user.quest_battle_parameters.hp}}
             .label
               | HP
             .enemy

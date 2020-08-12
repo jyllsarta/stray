@@ -33,7 +33,7 @@ class QuestBattle
   def content
     {
         seed: @seed,
-        playerHp: 5,
+        playerHp: 5 + @user.status.quest_battle_additional_hp,
         playerPower: 1,
         playerTech: 1,
         playerSpecial: 1,

@@ -343,6 +343,33 @@ export default {
   left: 330px;
 }
 
+// HPレリック
+
+.relic_41{
+  top:   30px;
+  left: 540px;
+}
+
+.relic_42{
+  top:   82px;
+  left: 540px;
+}
+
+.relic_43{
+  top:  134px;
+  left: 540px;
+}
+
+.relic_44{
+  top:  186px;
+  left: 540px;
+}
+
+.relic_45{
+  top:  238px;
+  left: 540px;
+}
+
 // スピカスキル
 .relic_101{
   top:   60px;

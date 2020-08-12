@@ -109,6 +109,11 @@ class User::Status < ApplicationRecord
     user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
+  def quest_battle_additional_hp
+    # HP追加レリックの個数そのものが性能
+    user.relics.joins(:relic).where(relics: {category: :hp}).count
+  end
+
   def average_item_rank
     preload_item_associations!
     user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:item_rank).sum / (Constants.equip.max_count * 2)
