@@ -46,7 +46,7 @@ RSpec.describe Skill, type: :model do
         user.skills.create!(skill: skill)
       end
       it "cannot get" do
-        expect{subject}.to raise_error(Skill::AlreadyLearned)
+        expect{subject}.to_not change(user.skills, :length)
       end
     end
   end

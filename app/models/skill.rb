@@ -27,10 +27,7 @@ class Skill < ApplicationRecord
   class AlreadyLearned < StandardError; end
 
   def learn!(user)
-    # このraiseやめてしれっと空振りするほうが賢い可能性ある
-    raise AlreadyLearned if user.skills.exists?(skill: self)
-
-    user.skills.create!(skill: self)
+    user.skills.find_or_create_by(skill: self)
   end
 
   def to_battle_skill

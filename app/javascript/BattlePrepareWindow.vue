@@ -159,6 +159,9 @@
                   case 'star':
                       message = "星のカケラがもらえる。";
                       break;
+                  case 'skill':
+                      message = "新たなスキルを教えてもらえる。";
+                      break;
                   case 'dungeon':
                       message = "新たなダンジョンが解放される。";
                       break;
