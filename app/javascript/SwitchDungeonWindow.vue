@@ -29,13 +29,18 @@
             .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
-              | {{selectingDungeonDepth}}F
+              NumeratableNumber(:number="selectingDungeonDepth", :speed="0.4")
+              .f
+                | F
             .go_to_floor_label
               | 移動先：
             .top_floor
               | 1F
             .deepest_floor
-              | {{currentDungeonMaxDepth}}F
+              NumeratableNumber(:number="currentDungeonMaxDepth", :speed="0.4")
+              .f
+                | F
+
             .descriptions
               .dungeon_title(:key="selectingDungeon.name")
                 | {{selectingDungeon.name}}
@@ -52,6 +57,7 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
+import NumeratableNumber from "./NumeratableNumber.vue";
 
 export default {
   data: function () {
@@ -62,6 +68,9 @@ export default {
   },
   props: {
     rootRef: Object,
+  },
+  components: {
+    NumeratableNumber,
   },
   store,
   mounted(){
@@ -80,7 +89,7 @@ export default {
       return this.$store.state.masterdata.dungeons[this.selectingDungeonId] || {};
     },
     currentDungeonMaxDepth(){
-      return Math.max(this.selectingDungeon.depth, this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0)
+      return Math.max(this.selectingDungeon.depth || 0, this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0)
     },
     currentDungeonMaxDepthCanSwitch(){
       return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0;
@@ -247,6 +256,7 @@ export default {
         bottom: $space;
         right: 120px;
         font-size: $font-size-large;
+        display: flex;
       }
       .go_to_floor_label{
         position: absolute;
@@ -264,6 +274,7 @@ export default {
         position: absolute;
         bottom: $space;
         left: 100px;
+        display: flex;
       }
       .descriptions{
         position: absolute;
