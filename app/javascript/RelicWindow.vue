@@ -20,7 +20,8 @@
         .detail
           .relic_detail
             .title
-              img.icon(:src="`/images/icons/relic/${selectingRelic.id || 'nothing'}.gif`")
+              transition(name="show-in")
+                img.icon(:src="`/images/icons/relic/${selectingRelic.id || 'nothing'}.gif`" :key="selectingRelic.id")
               .relic_name(:key="selectingRelic.name")
                 | {{selectingRelic.name}}
             .parent
@@ -108,7 +109,6 @@ export default {
     },
     selectRelic(id){
       this.selectingRelicId = id;
-      console.log(id);
     },
     relicStatus(relicId){
       const relic = this.relic(relicId);
@@ -214,6 +214,9 @@ export default {
         height: 24px;
         align-items: flex-end;
         border-bottom: 1px solid $gray3;
+        .descri{
+          width: 3rem;
+        }
         .icon{
           width: 24px;
           height: 24px;
@@ -459,6 +462,23 @@ export default {
 
 .obtained{
   animation: obtained 1.3s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+}
+
+.show-in-enter-active {
+  transition: all .3s;
+}
+.show-in-leave-active {
+  transition: all .3s;
+}
+.show-in-enter{
+  position: absolute;
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.show-in-leave-to{
+  position: absolute;
+  transform: translateY(10px);
+  opacity: 0;
 }
 
 </style>
