@@ -65,10 +65,10 @@ class QuestBattle
   def give_and_set_win_reward!
     return [] if @user.won_enemies.exists?(enemy: @enemy)
 
-    @enemy.enemy_rewards.each do |reward|
+    received_content_messages = @enemy.enemy_rewards.map do |reward|
       Gift.new(reward.giftable_type, reward.giftable_id, reward.amount).receive!(@user)
-    end
-    @result.merge!({'rewards'=> @enemy.enemy_rewards.map{|reward| reward.slice(:giftable_id, :giftable_type, :amount)}})
+    end.compact
+    @result.merge!({'rewards'=> received_content_messages})
 
     @user.won_enemies.find_or_create_by!(enemy: @enemy)
   end

@@ -16,4 +16,11 @@ RSpec.describe GiftableReceiver::Coin, type: :model do
       end
     end
   end
+  describe "#received_content_message" do
+    subject{ receiver.received_content_message }
+
+    it "returns text" do
+      expect(subject).to eq("コインx#{amount}枚")
+    end
+  end
 end

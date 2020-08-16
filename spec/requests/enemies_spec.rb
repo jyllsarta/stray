@@ -185,11 +185,7 @@ RSpec.describe "Enemies", type: :request do
                                                      isWin: Boolean,
                                                      isDraw: Boolean,
                                                      rewards: [
-                                                         {
-                                                             giftable_type: String,
-                                                             giftable_id: Integer,
-                                                             amount: Integer
-                                                         }
+                                                      String,
                                                      ],
                                                  }
                                              )

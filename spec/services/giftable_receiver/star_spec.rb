@@ -16,4 +16,11 @@ RSpec.describe GiftableReceiver::Star, type: :model do
       end
     end
   end
+  describe "#received_content_message" do
+    subject{ receiver.received_content_message }
+
+    it "returns text" do
+      expect(subject).to eq("星のカケラx#{amount}個")
+    end
+  end
 end

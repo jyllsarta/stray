@@ -33,4 +33,13 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
       end
     end
   end
+  describe "#received_content_message" do
+    subject{ receiver.received_content_message }
+    before do
+      receiver.receive!(user)
+    end
+    it "returns text" do
+      expect(subject.class).to eq(String) # ランダムアイテムなので、エラーが出ていなければ特にこだわらないことにする
+    end
+  end
 end

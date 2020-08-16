@@ -7,4 +7,8 @@ class GiftableReceiver::Dungeon
   def receive!(user)
     user.status.dungeon_progresses.find_or_create_by(dungeon_id: @id).clear!
   end
+
+  def received_content_message
+    "#{Dungeon.find(@id).name}を完全クリア！"
+  end
 end

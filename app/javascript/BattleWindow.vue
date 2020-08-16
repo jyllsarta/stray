@@ -117,16 +117,15 @@
           .done.clickable(@click="endGame()")
             | OK
           img.result_image(:src="`/images/battle/outcome/${outcome}.png`")
-          .rewards(:class="[rewardRevealed ? '' : 'unclicked']" @click="rewardRevealed = true")
+          .rewards(v-if="outcome==='win'" :class="[rewardRevealed ? '' : 'unclicked']" @click="rewardRevealed = true")
             span.descri
               | 撃破報酬：
             .reward(v-for="reward in rewards")
               .ques(v-if="!rewardRevealed")
                 | ???
-              img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`" v-if="rewardRevealed")
               .count(v-if="rewardRevealed")
-                | × {{ reward.amount }}
-            span.nothing(v-if="rewards.length === 0")
+                | {{ reward }}
+            span.nothing(v-if="!rewards && outcome==='win'")
               | なし
 </template>
 

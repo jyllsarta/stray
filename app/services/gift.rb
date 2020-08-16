@@ -8,5 +8,6 @@ class Gift
   def receive!(user)
     receiver = "GiftableReceiver::#{@type}".constantize.new(@id, @amount)
     receiver.receive!(user)
+    receiver.received_content_message
   end
 end

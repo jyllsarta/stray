@@ -7,4 +7,8 @@ class GiftableReceiver::Star
   def receive!(user)
     user.status.add_star!(@amount)
   end
+
+  def received_content_message
+    "星のカケラx#{@amount}個"
+  end
 end

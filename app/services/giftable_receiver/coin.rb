@@ -7,4 +7,8 @@ class GiftableReceiver::Coin
   def receive!(user)
     user.status.add_coin!(@amount)
   end
+
+  def received_content_message
+    "コインx#{@amount}枚"
+  end
 end
