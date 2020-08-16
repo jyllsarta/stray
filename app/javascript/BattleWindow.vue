@@ -117,13 +117,17 @@
           .done.clickable(@click="endGame()")
             | OK
           img.result_image(:src="`/images/battle/outcome/${outcome}.png`")
-          .rewards
-            .descri
+          .rewards(:class="[rewardRevealed ? '' : 'unclicked']" @click="rewardRevealed = true")
+            span.descri
               | 撃破報酬：
             .reward(v-for="reward in rewards")
-              img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`")
-              .count
+              .ques(v-if="!rewardRevealed")
+                | ???
+              img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`" v-if="rewardRevealed")
+              .count(v-if="rewardRevealed")
                 | × {{ reward.amount }}
+            span.nothing(v-if="rewards.length === 0")
+              | なし
 </template>
 
 <script lang="ts">
@@ -155,6 +159,7 @@ export default {
       input: null,
       finished: false,
       outcome: "",
+      rewardRevealed: false,
       rewards: [],
       skillName: "戦闘開始！", // アニメーションが毎度発火してしまうので、戦闘開始時にそれっぽいスキル表示が出ることにしてごまかす
       colors: {
@@ -713,14 +718,21 @@ export default {
     line-height: 100%;
     text-align: center;
   }
+  .unclicked{
+    &:hover{
+      filter: brightness(120%);
+      transform: scale(1.05);
+    }
+  }
   .rewards{
     position: absolute;
-    bottom: 300px;
-    right: 300px;
-    width: 200px;
-    background-color: $background_with_opacity;
+    bottom: 150px;
+    right: 275px;
+    width: 250px;
     border-radius: $radius;
     padding: $thin_space;
+    color: $gray3;
+    border: 1px solid $plus;
     .reward{
       width: 100%;
       text-align: right;
