@@ -11,11 +11,6 @@
     )
       | 装備
     .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
-    )
-      | 引き継ぎ設定(仮)
-    .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
     )
@@ -30,6 +25,11 @@
       @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
     )
       | クエスト
+    .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
+    )
+      | 引き継ぎ設定
 </template>
 
 <script lang="ts">
