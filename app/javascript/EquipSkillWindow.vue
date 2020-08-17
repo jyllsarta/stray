@@ -100,7 +100,8 @@
           }
           return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId]?.icon_image_path}`;
         },
-        selectSkill(id){
+        selectSkill(emittedObject){
+              const id = emittedObject.skillId;
               if(this.selectingSkillIds.includes(id)){
                   this.selectingSkillIds = this.selectingSkillIds.filter(n => n !== id);
                   return;

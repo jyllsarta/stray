@@ -12,7 +12,7 @@ class EnemiesController < ApplicationController
 
   def showdown
     quest = QuestBattle.new(current_user)
-    quest.showdown!(params[:operation_history].map{|x| x.permit(:skill, cards: [])}.map(&:to_h))
+    quest.showdown!(params[:operation_history].map{|x| x.permit(:skillIndex, cards: [])}.map(&:to_h))
     result = quest.result
     pp result unless Rails.env.test?
 

@@ -13,6 +13,11 @@ module.exports = class Character{
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
+        this.selectingSkillIndex = null;
+    }
+
+    selectingSkill(){
+        return this.skills[this.selectingSkillIndex];
     }
 
     isAlive(){

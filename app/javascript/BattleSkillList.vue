@@ -1,9 +1,9 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills"
-           @click="$emit('onClick', skill.id)"
+    .skill(v-for="(skill, index) in skills"
+           @click="$emit('onClick', {skillId: skill.id, skillIndex: index})"
            @mouseover="onPoint(skill.id)"
-           :class="skillClass(skill.id)"
+           :class="skillClass(index)"
            )
       .upper
         img.icon(:src="iconImagePath(skill.id)")
@@ -47,33 +47,33 @@ export default {
       this.$emit('onPoint', skillId);
       this.$store.commit('guide/updateGuide', `${this.$store.state.masterdata.skills[skillId]?.name}：${this.$store.state.masterdata.skills[skillId]?.description}`);
     },
-    skillClass(skillId) {
+    skillClass(skillIndex) {
       if (this.isPlayer) {
-        return this.skillClassPlayer(skillId);
+        return this.skillClassPlayer(skillIndex);
       } else {
-        return this.skillClassEnemy(skillId);
+        return this.skillClassEnemy(skillIndex);
       }
     },
-    skillClassPlayer(skillId){
-      const skill = this.battle.player.skills.find((x)=>x.id===skillId);
-      if(!skill.reusable && this.battle.operationHistory.map((x)=>x.skill).includes(skillId)) {
+    skillClassPlayer(skillIndex){
+      const skill = this.battle.player.skills[skillIndex];
+      if(!skill.reusable && this.battle.operationHistory.map((x)=>x.skillIndex).includes(skillIndex)) {
           return 'used';
       }
-      if(!this.battle.canUseSkill(skillId)){
+      if(!this.battle.canUseSkill(skillIndex)){
         return 'disabled';
       }
-      return this.battle.selectingSkillId == skillId ? 'selected' : 'available';
+      return this.battle.player.selectingSkillIndex === skillIndex ? 'selected' : 'available';
     },
-    skillClassEnemy(skillId){
-      const skill = this.battle.enemy.skills.find((x)=>x.id===skillId);
-      if(!skill.reusable && this.battle.enemyOperationHistory.map((x)=>x.skill).includes(skillId)){
+    skillClassEnemy(skillIndex){
+      const skill = this.battle.enemy.skills[skillIndex];
+      if(!skill.reusable && this.battle.enemyOperationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
         return 'used';
       }
 
-      if(!this.battle.canEnemyUseSkill(skillId)){
+      if(!this.battle.canEnemyUseSkill(skillIndex)){
         return 'disabled';
       }
-      return this.battle.enemySelectingSkillId == skillId ? 'selected' : 'available';
+      return this.battle.enemy.selectingSkillIndex == skillIndex ? 'selected' : 'available';
     },
     iconImagePath(skillId){
       if(!this.$store.state.masterdata.skills){

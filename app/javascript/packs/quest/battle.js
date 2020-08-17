@@ -27,8 +27,6 @@ module.exports = class Battle{
         this.operationHistory = [];
         this.enemyOperationHistory = [];
         this.selectingCardIds = [];
-        this.selectingSkillId = null;
-        this.enemySelectingSkillId = null;
         this.enemyCardIds = [];
 
         this.battleLog = [];
@@ -51,18 +49,18 @@ module.exports = class Battle{
         this.selectingCardIds.push(cardId);
     }
 
-    selectSkill(skillId){
+    selectSkill(skillIndex){
         if(this.turnInProgress){
             return;
         }
-        if(!this.canUseSkill(skillId)){
+        if(!this.canUseSkill(skillIndex)){
             return;
         }
-        if(this.selectingSkillId === skillId){
-            this.selectingSkillId = null;
+        if(this.player.selectingSkillIndex === skillIndex){
+            this.player.selectingSkillIndex = null;
             return;
         }
-        this.selectingSkillId = skillId;
+        this.player.selectingSkillIndex = skillIndex;
     }
 
     playTurn(){
@@ -77,14 +75,15 @@ module.exports = class Battle{
 
     invokePlayerMagic(){
         this.turnStatus = "playerMagic";
-        if(this.selectingSkillId === null){
+        const skillIndex = this.player.selectingSkillIndex;
+        if(skillIndex === null || skillIndex === undefined){
             return;
         }
-        if(!this.canUseSkill(this.selectingSkillId)){
-            console.warn(`不正なスキル指定です！ id:${this.selectingSkillId}`);
+        if(!this.canUseSkill(skillIndex)){
+            console.warn(`不正なスキル指定です！ idx:${skillIndex}`);
             return;
         }
-        const skill = this.player.skills.find((x)=>x.id===this.selectingSkillId);
+        const skill = this.player.selectingSkill();
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -96,15 +95,15 @@ module.exports = class Battle{
     invokeEnemyMagic(){
         this.turnStatus = "enemyMagic";
         this.resetCharacterStatus();
-        if(this.enemySelectingSkillId === null){
+        const skillIndex = this.enemy.selectingSkillIndex;
+        if(skillIndex === null || skillIndex === undefined){
             return;
         }
-        if(!this.canEnemyUseSkill(this.enemySelectingSkillId)){
+        if(!this.canEnemyUseSkill(skillIndex)){
             // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
-            // console.warn(`不正なエネミースキル指定です！...なんで？ id:${this.enemySelectingSkillId}`);
             return;
         }
-        const skill = this.enemy.skills.find((x)=>x.id===this.enemySelectingSkillId);
+        const skill = this.enemy.selectingSkill();
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -198,17 +197,17 @@ module.exports = class Battle{
     onTurnEnd(){
         this.resetCharacterStatus();
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
-        this.operationHistory.push({cards: this.selectingCardIds, skill: this.selectingSkillId});
-        this.enemyOperationHistory.push({cards: this.enemyCardIds, skill: this.enemySelectingSkillId});
+        this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndex});
+        this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndex});
 
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
         this.selectingCardIds = [];
-        this.selectingSkillId = null;
+        this.player.selectingSkillIndex = null;
         this.player.deck.fillDraw(this.player.totalHandCardCount());
 
         this.enemyCardIds = [];
-        this.enemySelectingSkillId = null;
+        this.enemy.selectingSkillIndex = null;
         this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
         this.pickEnemyCards();
         this.pickEnemySkill();
@@ -231,28 +230,33 @@ module.exports = class Battle{
     // 以下privateのつもり
 
     // こうして条件を書いていくと operationHistory は character の持つべきロジックだった感がある
-    canUseSkill(skillId){
-        const skill = this.player.skills.find((x)=>x.id===skillId);
+    canUseSkill(skillIndex){
+        const skill = this.player.skills[skillIndex];
+        if(!skill){
+            return false;
+        }
         // MPが足りてないとダメ
-        if (this.player.mp < skill.cost ){
+        if (this.player.mp < (skill.cost || 10000) ){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.operationHistory.map((x)=>x.skill).includes(skillId)){
+        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
             return false;
         }
         return true;
     }
 
-    canEnemyUseSkill(skillId){
-        const skill = this.enemy.skills.find((x)=>x.id===skillId);
-
+    canEnemyUseSkill(skillIndex){
+        const skill = this.enemy.skills[skillIndex];
+        if(!skill){
+            return false;
+        }
         // MPが足りてないとダメ
-        if (this.enemy.mp < skill.cost ){
+        if (this.enemy.mp < (skill.cost || 10000) ){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skill).includes(skillId)){
+        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
             return false;
         }
         return true;
@@ -268,9 +272,9 @@ module.exports = class Battle{
     }
 
     pickEnemySkill(){
-        for(let skill of this.enemy.skills){
-            if(this.canEnemyUseSkill(skill.id)){
-                this.enemySelectingSkillId = skill.id;
+        for(let i=0; i<this.enemy.skills.length; i++){
+            if(this.canEnemyUseSkill(i)){
+                this.enemy.selectingSkillIndex = i;
                 return;
             }
         }

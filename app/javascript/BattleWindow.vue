@@ -320,8 +320,9 @@ export default {
       this.battle?.selectCard(cardId);
     },
 
-    selectSkill(skillId){
-      this.battle?.selectSkill(skillId);
+    selectSkill(emittedObject){
+      const skillIndex = emittedObject.skillIndex;
+      this.battle?.selectSkill(skillIndex);
     },
 
     playTurn(){
@@ -336,7 +337,7 @@ export default {
         .then(()=>{
           return new Promise((resolve) => {
             // プレイヤー魔法を使っていなかったらスルー
-            if(this.battle.selectingSkillId === null){
+            if(this.battle.player.selectingSkillIndex === null){
               resolve();
               return;
             }
@@ -350,7 +351,7 @@ export default {
         .then(()=>{
           return new Promise((resolve) => {
             // 敵が魔法を使っていなかったらスルー
-            if(this.battle.enemySelectingSkillId === null){
+            if(this.battle.enemy.selectingSkillIndex === null){
               resolve();
               return;
             }

@@ -1,6 +1,11 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
-    .skill(v-for="skill in skills" @click="$emit('onClick', skill.id)", @mouseover="onPoint(skill.id)" :class="clickable ? 'clickable' : ''")
+    .skill(
+      v-for="(skill,index) in skills"
+      @click="$emit('onClick', {skillId: skill.id, skillIndex: index})"
+      @mouseover="onPoint(skill.id)"
+      :class="clickable ? 'clickable' : ''"
+      )
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost

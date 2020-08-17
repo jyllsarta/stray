@@ -163,7 +163,7 @@ RSpec.describe "Enemies", type: :request do
     let(:do_post) { post enemy_showdown_path(enemy_id: enemy.id), params: params }
     let(:params) do
       {
-          operation_history: [{cards:[], skill:1}]
+          operation_history: [{cards:[], skillIndex:1}]
       }
     end
 
