@@ -127,7 +127,7 @@ export default {
       width: 100%;
       .name{
         display: inline-block;
-        width: 60%;
+        width: 70%;
       }
       .progress{
         .current_progress{
@@ -137,7 +137,7 @@ export default {
           color: $yellow;
         }
         display: inline-block;
-        width: 40%;
+        width: 30%;
         text-align: right;
       }
     }
