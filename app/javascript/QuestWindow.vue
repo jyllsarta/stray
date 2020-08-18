@@ -149,7 +149,7 @@ export default {
       height: 200px;
       background-repeat: no-repeat;
       background-size: cover;
-      background-position: -120px 0;
+      background-position: 0 0;
       image-rendering: pixelated;
     }
     .controls{
@@ -203,7 +203,7 @@ export default {
   }
   @keyframes main-image {
     0% {
-      background-position: 0 0;
+      background-position: 0 20px;
       opacity: 0.5;
     }
   }
@@ -218,6 +218,6 @@ export default {
     animation: vertical-text-in .2s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
   }
   .main_image {
-    animation: main-image 20s cubic-bezier(0,1.1,0,.98) 0s;
+    animation: main-image 1s cubic-bezier(.31,.99,1,.99) 0s;
   }
 </style>
