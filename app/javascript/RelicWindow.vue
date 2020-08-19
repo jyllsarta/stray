@@ -314,98 +314,114 @@ export default {
 
 // イベント短縮
 .relic_31{
-  top:   30px;
-  left:  30px;
+  top:   20px;
+  left:  20px;
 }
 .relic_32{
-  top:  120px;
-  left:  30px;
+  top:   80px;
+  left:  20px;
 }
 .relic_33{
-  top:  210px;
-  left:  30px;
+  top:  140px;
+  left:  20px;
 }
 
 .relic_11{
-  top:   30px;
-  left: 110px;
+  top:  100px;
+  left: 100px;
 }
 
 .relic_12{
-  top:  130px;
-  left: 110px;
+  top:  180px;
+  left: 100px;
 }
 
 .relic_21{
-  top:   30px;
-  left: 330px;
+  top:  100px;
+  left: 320px;
 }
 
 .relic_22{
-  top:  130px;
-  left: 330px;
+  top:  180px;
+  left: 320px;
 }
 
 // HPレリック
 
 .relic_41{
-  top:   30px;
+  top:   20px;
   left: 540px;
 }
 
 .relic_42{
-  top:   82px;
+  top:   74px;
   left: 540px;
 }
 
 .relic_43{
-  top:  134px;
+  top:  128px;
   left: 540px;
 }
 
 .relic_44{
-  top:  186px;
+  top:  182px;
   left: 540px;
 }
 
 .relic_45{
-  top:  238px;
+  top:  236px;
   left: 540px;
 }
 
 // スピカスキル
 .relic_101{
-  top:   60px;
+  top:   20px;
   left: 170px;
 }
 .relic_102{
-  top:   60px;
+  top:   20px;
   left: 240px;
 }
 .relic_103{
-  top:  160px;
+  top:  100px;
   left: 170px;
 }
 .relic_104{
-  top:  160px;
+  top:  100px;
+  left: 240px;
+}
+.relic_105{
+  top:  180px;
+  left: 170px;
+}
+.relic_106{
+  top:  180px;
   left: 240px;
 }
 
 // チロルスキル
 .relic_201{
-  top:   60px;
+  top:   20px;
   left: 390px;
 }
 .relic_202{
-  top:   60px;
+  top:   20px;
   left: 460px;
 }
 .relic_203{
-  top:  160px;
+  top:  100px;
   left: 390px;
 }
 .relic_204{
-  top:  160px;
+  top:  100px;
+  left: 460px;
+}
+.relic_205{
+  top:  180px;
+  left: 390px;
+}
+.relic_206{
+  top:  180px;
   left: 460px;
 }
 
