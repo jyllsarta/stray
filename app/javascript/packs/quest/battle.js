@@ -236,7 +236,7 @@ module.exports = class Battle{
             return false;
         }
         // MPが足りてないとダメ
-        if (this.player.mp < (skill.cost || 10000) ){
+        if (this.player.mp < (skill.cost) ){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
@@ -252,7 +252,7 @@ module.exports = class Battle{
             return false;
         }
         // MPが足りてないとダメ
-        if (this.enemy.mp < (skill.cost || 10000) ){
+        if (this.enemy.mp < (skill.cost) ){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
