@@ -188,10 +188,10 @@ RSpec.describe User::Character, type: :model do
       let!(:user_relic){create(:user_relic, relic: relic, user: user)}
       it "grows up with rank" do
         expect(subject).to eq({
-                                  str: 1202, # 1 + 1 + 1200(rank2)
-                                  dex: 1204, # 2 + 2 + 1200
-                                  def: 1206, # 3 + 3 + 1200
-                                  agi: 1200, # 0 + 0 + 1200
+                                  str: 502, # 1 + 1 + 500(rank2)
+                                  dex: 504, # 2 + 2 + 500
+                                  def: 506, # 3 + 3 + 500
+                                  agi: 500, # 0 + 0 + 500
                               })
       end
     end

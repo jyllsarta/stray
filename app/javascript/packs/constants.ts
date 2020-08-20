@@ -19,10 +19,10 @@ const Constants = {
         agi: 10,
       },
       rank2: {
-        str: 1200,
-        dex: 1200,
-        def: 1200,
-        agi: 1200,
+        str: 500,
+        dex: 500,
+        def: 500,
+        agi: 500,
       },
       rank3: {
         str: 7500,
