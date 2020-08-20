@@ -131,7 +131,7 @@ module.exports = class Battle{
             this.characterStatus.enemy = 'attack';
         }
         else{
-            this.player.addMp(15);
+            this.player.addMp(20);
             this.enemy.addMp(0);
             this.characterStatus.spica = 'draw';
             this.characterStatus.enemy = 'draw';
@@ -158,7 +158,7 @@ module.exports = class Battle{
             this.characterStatus.enemy = 'attack';
         }
         else{
-            this.player.addMp(15);
+            this.player.addMp(20);
             this.enemy.addMp(0);
             this.characterStatus.spica = 'draw';
             this.characterStatus.enemy = 'draw';
