@@ -131,7 +131,7 @@ class User::Status < ApplicationRecord
     return false if dungeon.parent.present? && !dungeon.parent.cleared?(user)
 
     # progress を持っていなかったとしても、1Fには無条件で侵入可能
-    max_depth = user.status.dungeon_progresses.find_by(dungeon_id: dungeon_id)&.max_depth || 1
+    max_depth = [user.status.dungeon_progresses.find_by(dungeon_id: dungeon_id)&.max_depth || 0, 1].max
 
     depth <= max_depth
   end
