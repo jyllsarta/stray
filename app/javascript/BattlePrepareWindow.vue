@@ -165,6 +165,9 @@
                   case 'dungeon':
                       message = "新たなダンジョンが解放される。";
                       break;
+                  case 'randomitem':
+                      message = "ランダムな高ランクアイテムが手に入る。";
+                      break;
                   default:
                       console.warn("undefined reward");
               }
