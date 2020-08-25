@@ -39,3 +39,6 @@ yarn-debug.log*
 .env
 coverage
 masterdata/
+
+# sentry credentials
+.sentryclirc
