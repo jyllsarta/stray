@@ -29,7 +29,7 @@
             .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
-              NumeratableNumber(:number="selectingDungeonDepth", :speed="0.4")
+              NumeratableNumber(:number="parseInt(selectingDungeonDepth)", :speed="0.4")
               .f
                 | F
             .go_to_floor_label
@@ -74,6 +74,7 @@ export default {
   },
   store,
   mounted(){
+    console.log(window.a.a.a);
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
     this.selectingDungeonDepth = this.$store.state.user.status.current_dungeon_depth;
   },
