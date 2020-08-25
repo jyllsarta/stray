@@ -74,7 +74,6 @@ export default {
   },
   store,
   mounted(){
-    console.log(window.a.a.a);
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
     this.selectingDungeonDepth = this.$store.state.user.status.current_dungeon_depth;
   },
