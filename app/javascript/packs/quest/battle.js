@@ -263,6 +263,7 @@ module.exports = class Battle{
     }
 
     onTurnStart(){
+        this.a.a; // sentryテスト用にわざと壊した
         this.turnInProgress = true;
         this.validateSelectingCardIds();
     }
