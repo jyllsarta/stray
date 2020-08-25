@@ -12,3 +12,4 @@ CIRCLECI_PROJECT_URL=https://circleci.com/gh/__YOUR_GITHUB_ACCOUNT__/__YOUR_REPO
 TWITTER_USERNAME=@null
 
 MASTERDATA_PATH=masterdata/seeds
+SENTRY_DSN=https://xxxxxxxxxxxxxxxx@xxxxxxxxxxx.ingest.sentry.io/xxxxxxxxxxx
