@@ -39,7 +39,7 @@ class BattleEvent < Event
   private
 
   def coin_amount
-    @rank * 3
+    @rank * 10
   end
 
   def process_win(user)
