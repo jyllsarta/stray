@@ -25,10 +25,10 @@ const Constants = {
         agi: 500,
       },
       rank3: {
-        str: 7500,
-        dex: 7500,
-        def: 7500,
-        agi: 7500,
+        str: 3500,
+        dex: 3500,
+        def: 3500,
+        agi: 3500,
       },
       rank4: {
         str: 50000,
