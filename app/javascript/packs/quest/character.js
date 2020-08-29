@@ -127,6 +127,6 @@ module.exports = class Character{
         if(cards.length === 0){
             return 0;
         }
-        return cards.map((c)=>c.tech).reduce((a,b)=>(a+b)) + this.tempBuffs.power;
+        return cards.map((c)=>c.tech).reduce((a,b)=>(a+b)) + this.tempBuffs.tech;
     }
 };

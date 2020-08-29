@@ -142,4 +142,19 @@ SkillResolver {
             }
         }
     }
+
+    resolveAddPointToWeaker(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const cardIds = to_self ? this.battle.selectingCardIds : this.battle.enemyCardIds;
+        if(main.powerAt(cardIds) > main.techAt(cardIds)){
+            main.tempBuffs.tech += value;
+        }
+        else if(main.powerAt(cardIds) < main.techAt(cardIds)){
+            main.tempBuffs.power += value;
+        }
+        else{
+            main.tempBuffs.power += value;
+            main.tempBuffs.tech += value;
+        }
+    }
 };
