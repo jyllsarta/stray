@@ -9,6 +9,9 @@ if (process.env.NODE_ENV === 'production') {
     dsn: "https://6c19d26f2b2d49a69e5a03826d7ff625@o438865.ingest.sentry.io/5404630",
     integrations: [new VueIntegration({ Vue, attachProps: true, logErrors: true })],
   });
+  Sentry.configureScope(function(scope) {
+    scope.setUser({ id: localStorage.user_id });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
