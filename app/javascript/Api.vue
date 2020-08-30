@@ -29,7 +29,7 @@ export default {
       })
     },
     isAuthorized(){
-      return localStorage.access_token !== ""; 
+      return localStorage.access_token !== "";
     },
     retryFetchLatestEvents(){
       console.log("10秒後に再取得を試みます");
@@ -51,9 +51,11 @@ export default {
     },
     loadUserData(){
       if(localStorage.access_token){
+        console.log("fetch user model")
         this.fetchUserModel();
       }
       else{
+        console.log("sign up")
         this.signUp();
       }
     },
@@ -112,7 +114,7 @@ export default {
           ax.defaults.
             headers = {
             "X-AccessToken": localStorage.access_token,
-              accept: "application/json",
+            accept: "application/json",
           } // axios_default_setting を読み込み直す処理を入れるのが理想
           this.fetchUserModel();
         })
