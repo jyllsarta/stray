@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   end
   resources :relics, only: [:create]
   resources :messages, only: [:index, :create]
+  resources :release_notes, only: [:index]
   resources :masterdata, only: [:index]
 
   resources :enemies, only: [:index] do

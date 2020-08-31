@@ -1,23 +1,24 @@
 header
   img.logo[src="images/ui/logo.png"]
   .title
-    | スピカとチロルの大陸踏破譚(アルファ)
+    | スピカとチロル(アルファ)
 .main
-  .back_to_game
-    a[href="/clients"]
-      | ゲームに戻る
-  .messages
-    .message.index
-      .user_id
-        | ユーザID
-      .content
-        | おたよりの内容
-    - @messages.each do |message|
-      .message
+  .body
+    .back_to_game
+      a[href="/"]
+        | ゲームに戻る
+    .messages
+      .message.index
         .user_id
-          | #{message.user_id}
+          | ユーザID
         .content
-          | #{message.message}
+          | おたよりの内容
+      - @messages.each do |message|
+        .message
+          .user_id
+            | #{message.user_id}
+          .content
+            | #{message.message}
 
 link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:300|Roboto:300&display=swap" rel="stylesheet"
 = stylesheet_link_tag 'reset'

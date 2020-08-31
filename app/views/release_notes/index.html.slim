@@ -1,0 +1,30 @@
+header
+  img.logo[src="images/ui/logo.png"]
+  .title
+    | スピカとチロル(アルファ)
+.main
+  .body
+    .back_to_game
+      a[href="/"]
+        | ゲームに戻る
+    .release_notes
+      - @release_notes.each do |note|
+        .release_note
+          .version
+            | ver. #{note.version}
+          .published_at
+            | #{note.published_at.strftime("%Y/%m/%d")}
+          pre.content
+            code.markdown
+              | #{note.content}
+
+link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:300|Roboto:300&display=swap" rel="stylesheet"
+
+
+link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/styles/night-owl.min.css"
+script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.2/build/highlight.min.js"
+script
+  | hljs.initHighlightingOnLoad();
+= stylesheet_link_tag 'reset'
+= stylesheet_link_tag 'stray'
+= stylesheet_link_tag 'release_notes'
