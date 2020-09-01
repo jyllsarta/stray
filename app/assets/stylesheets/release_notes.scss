@@ -16,7 +16,7 @@
     .release_notes{
       .release_note{
         margin-bottom: 40px;
-        .version{
+        .title{
           font-size: 20px;
           border-bottom: 1px solid #f0f4f0;
         }
@@ -27,6 +27,7 @@
         .content{
           padding: 8px;
           white-space: pre-wrap;
+          line-height: 150%;
         }
       }  
     }
