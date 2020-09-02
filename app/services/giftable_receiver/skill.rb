@@ -9,6 +9,6 @@ class GiftableReceiver::Skill
   end
 
   def received_content_message
-    "スキル#{Skill.find(@id).name}を習得！"
+    "スキル：#{Skill.find(@id).name}を習得！"
   end
 end
