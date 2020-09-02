@@ -20,7 +20,7 @@ RSpec.describe GiftableReceiver::Skill, type: :model do
     subject{ receiver.received_content_message }
 
     it "returns text" do
-      expect(subject).to eq("スキル#{skill.name}を習得！")
+      expect(subject).to eq("スキル：#{skill.name}を習得！")
     end
   end
 end
