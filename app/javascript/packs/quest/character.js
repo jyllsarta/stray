@@ -25,7 +25,8 @@ module.exports = class Character{
     }
 
     damageAt(type){
-        return this[type] + this.tempBuffs[`${type}Damage`];
+        const damage = this[type] + this.tempBuffs[`${type}Damage`];
+        return damage > 0 ? damage : 0;
     }
 
     addHp(value){
