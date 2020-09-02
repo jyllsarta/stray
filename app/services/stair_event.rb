@@ -17,7 +17,7 @@ class StairEvent < Event
     [
       {
         at: @at.to_i,
-        message: "階段を降りた！"
+        message: "階段を発見した！"
       }
     ]
   end
