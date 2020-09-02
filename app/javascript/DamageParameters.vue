@@ -57,7 +57,7 @@ export default {
         display: inline-block;
       }
       .value{
-        width: 1rem;
+        min-width: 1rem;
         animation: flash .5s cubic-bezier(.33,.81,.62,.92);
       }
       .up{
