@@ -1,6 +1,17 @@
 <template lang="pug">
   .menu
     .full_covered_window
+      transition(name="open_window")
+        .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
+          | メニュー
+      transition(name="open_window")
+        .battle_menu(v-if="showMenu")
+          .back(@click="showMenu = false")
+          .items
+            .item.clickable(@click="showMenu = false")
+              | メニューをとじる
+            .item.clickable(@click="retire()")
+              | 諦める
       .player_character
         .tirol
           BattleCharacter(
@@ -166,7 +177,8 @@ export default {
         hpBlankColor: "rgba(255,192,145,0.32)",
         mpColor: "rgba(145,229,255,0.99)",
         mpBlankColor: "rgba(145,229,255,0.32)",
-      }
+      },
+      showMenu: false,
     };
   },
   store,
@@ -472,6 +484,11 @@ export default {
         });
     },
 
+    retire(){
+        this.outcome = "retired";
+        this.endGame();
+    },
+
     endGame(){
         this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
         this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
@@ -488,6 +505,8 @@ export default {
           return `${this.enemyName}と戦闘し引き分けた...`;
         case "lose":
           return `${this.enemyName}と戦闘し敗北した...`;
+        case "retired":
+          return `${this.enemyName}と戦闘したが撤退した！`;
         default:
           console.warn(`undefined outcome ${this.outcome}`);
           return "何かエラーが起きたみたい！";
@@ -537,7 +556,41 @@ export default {
 
 // -- -- --
 
+.show_battle_menu{
+  position: absolute;
+  top: $space;
+  right: $space;
+  @include centering($height:35px);
+  width: 160px;
+}
+
+.battle_menu{
+  position: absolute;
+  top: $space;
+  right: $space;
+  width: 160px;
+  .back{
+    position: absolute;
+    left: -1000px; // 起点がダメすぎてきつい宣言になった...
+    top: -100px;
+    width: 100vw;
+    height: 100vh;
+  }
+  .items{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .item{
+      width: 100%;
+      @include centering($height:35px);
+      margin-bottom: $thin_space;
+    }
+  }
+}
+
 .player_character{
+  pointer-events: none;
   .spica{
     width: 256px;
     height: 256px;
@@ -553,6 +606,7 @@ export default {
 }
 
 .enemy_character{
+  pointer-events: none;
   .enemy{
     width: 256px;
     height: 256px;
