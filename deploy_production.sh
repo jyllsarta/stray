@@ -26,6 +26,9 @@ RAILS_ENV=production bundle exec rails db:seed
 echo "##### compile asset"
 yarn build
 
+echo "##### compile rails asset"
+RAILS_ENV=production bundle exec rails assets:precompile
+
 echo "#### kill older server"
 PID=`ps ax | grep '[p]uma' | awk '{ print $1 }'`
 if [ PID != "" ]; then
