@@ -28,7 +28,7 @@
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(item(), param)}}
-          .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.5}")
+          .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.3}")
             .name
               | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + 1}}
             .total.item
@@ -45,13 +45,15 @@
                 | {{getEffectValue(rankUpItem(), param)}}
               .diff(:class="diffClass(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))")
                 | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
+        .cannot_rankup(v-if="!canRankUp()")
+          | {{cannotRankUpReason()}}
         .controls
           .costs
             .line
               .label
                 | 所持
               .coin_icon
-              .value
+              .value(:class="[isCoinSufficient() ? '' : 'insufficient_coin']")
                 | {{$store.state.user.status.coin}}
             .line
               .label
@@ -63,6 +65,7 @@
             | 強化
         .enchantment_area
           //ここは実装後に埋めればいいや
+
 
 
 </template>
@@ -130,11 +133,24 @@ export default {
       return Math.pow((this.item().rank + this.item().base_rank) || 0 , 2);
     },
     canRankUp(){
-      console.log(this.rankUpCost() , this.$store.state.user.status?.coin)
-      console.log(this.$store.getters['user/maxItemRank'] , this.item().rank)
-      return this.rankUpCost() <= this.$store.state.user.status.coin && this.item().rank < this.$store.getters['user/maxItemRank'];
+      return this.isCoinSufficient() && this.isRankCapable();
     },
-
+    cannotRankUpReason(){
+      let reason = "";
+      if(!this.isCoinSufficient()){
+        reason += "コイン不足です。"
+      }
+      if(!this.isRankCapable()){
+        reason += "最大強化ランクに達しました。"
+      }
+      return reason;
+    },
+    isCoinSufficient(){
+      return this.rankUpCost() <= this.$store.state.user.status.coin;
+    },
+    isRankCapable(){
+      return this.item().rank < this.$store.getters['user/maxItemRank'];
+    }
   },
 }
 </script>
@@ -191,12 +207,12 @@ export default {
           display: inline-block;
         }
         .value{
-          width: 6rem;
+          width: 7rem;
           display: inline-block;
           text-align: right;
         }
         .diff{
-          width: 4rem;
+          width: 6rem;
           display: inline-block;
           padding-left: $space;
         }
@@ -255,6 +271,9 @@ export default {
           text-align: right;
           width: 6rem;
         }
+        .insufficient_coin{
+          color: $plus;
+        }
       }
     }
     .rank_up{
@@ -270,6 +289,13 @@ export default {
     height: 100px;
     padding: $space;
   }
+}
+.cannot_rankup{
+  position: absolute;
+  bottom: 200px;
+  right: 80px;
+  width: 400px;
+  text-align: center;
 }
 
 </style>
