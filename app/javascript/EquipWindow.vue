@@ -11,9 +11,15 @@
           | 装備
       .body
         .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}")
-          img.sub_character_image(:src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'")
+          img.sub_character_image(
+            :src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'"
+            @click="$store.commit('equip_window/switchMainCharacter')"
+          )
         .chara(:style="{transform: `translateY(${main_character_position}px)`}")
-          img.character_image(:src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'")
+          img.character_image(
+            :src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'"
+            @click="$store.commit('equip_window/switchMainCharacter')"
+          )
         .switch_character_button.clickable(
           @click="$store.commit('equip_window/switchMainCharacter')"
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
