@@ -442,7 +442,6 @@ export default {
       ax.post(path, params)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.input = results.data;
           this.localBattleStart();
           // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
@@ -464,7 +463,6 @@ export default {
       ax.post(path, params)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
           this.finished = true;
           this.rewards = results.data.rewards;

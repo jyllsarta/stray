@@ -51,7 +51,6 @@ export default {
       ax.post(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
           this.$store.commit("event_illust/showEventIllust", "resurrect");

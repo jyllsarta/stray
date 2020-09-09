@@ -127,7 +127,6 @@ export default {
         ax.post(path, payload)
           .then((results) => {
             console.log(results);
-            console.log("OK");
             resolve();
           })
           .catch((error) => {
@@ -142,9 +141,7 @@ export default {
         const path = `/users/${user_id}/user_items/${payload}/rank_up.json`;
         ax.post(path)
           .then((results) => {
-            console.log("uooo!");
             console.log(results);
-            console.log("OK");
             commit("updateUserCoin", results.data.after_coin);
             commit("updateItemRank", {item_id: results.data.item_id, rank: results.data.after_rank});
             resolve();
@@ -163,7 +160,6 @@ export default {
         ax.post(path, {relic_id: payload})
           .then((results) => {
             console.log(results);
-            console.log("OK");
             resolve();
           })
           .catch((error) => {

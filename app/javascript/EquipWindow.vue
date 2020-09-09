@@ -284,7 +284,6 @@ export default {
         })
         .then((results) => {
           console.log(results);
-          console.log("OK");
         })
         .catch((error) => {
           console.warn(error.response);

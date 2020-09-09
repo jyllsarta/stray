@@ -208,7 +208,6 @@
               ax.get(path, { params: params})
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.enemyList = results.data.enemies;
                       this.selectFirstAliveEnemy();
                   })
@@ -223,7 +222,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.$store.commit("skill/setPlayerSkills", results.data.skills);
                       this.selectingSkillIds = this.$store.state.skill.skills.filter((x)=>x.is_equipped).map((x)=>x.id);
                   })
@@ -238,7 +236,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.classCardsResponse = results.data.class_cards;
                       this.itemCardsResponse = results.data.item_cards;
                       this.averageItemRank = results.data.average_item_rank;
@@ -255,7 +252,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.wonEnemyIds = results.data.won_enemies.map((x)=>x.enemy_id);
                   })
                   .catch((error) => {

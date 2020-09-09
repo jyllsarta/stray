@@ -64,7 +64,6 @@ export default {
       axios.get(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.$store.commit("masterdata/updateMasterData", results.data);
         })
         .catch((error) => {
@@ -108,7 +107,6 @@ export default {
       ax.post(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
           ax.defaults.

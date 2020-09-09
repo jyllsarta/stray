@@ -119,7 +119,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.$store.commit("skill/setPlayerSkills", results.data.skills);
                       this.selectingSkillIds = this.$store.state.skill.skills.filter((x)=>x.is_equipped).map((x)=>x.id);
                   })
@@ -136,7 +135,6 @@
               ax.post(path, params)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.fetchPlayerSkills(); // 編集結果を再読み込み、ひっじょーに無駄が多いけど、一旦これで
                       this.$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: false});
                   })

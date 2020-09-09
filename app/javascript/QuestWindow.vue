@@ -72,7 +72,6 @@ export default {
       ax.get(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.quests = results.data.quests;
           this.selectQuest(results.data.quests[0]?.id || 1);
         })
