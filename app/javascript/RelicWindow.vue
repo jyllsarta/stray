@@ -71,7 +71,7 @@ export default {
 
   data: function () {
     return {
-      selectingRelicId: 10001,
+      selectingRelicId: null,
       relicLabels: {
         disabled: "取得不可",
         got: "取得済み",
@@ -112,6 +112,10 @@ export default {
     },
     relicStatus(relicId){
       const relic = this.relic(relicId);
+      // データ未取得なら disabled
+      if(!relicId){
+        return "disabled";
+      }
       // 取得済みなら got
       if(this.$store.state.user.relics[relicId]){
         return "got";
