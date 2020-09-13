@@ -60,7 +60,7 @@ class User::Item < ApplicationRecord
   end
 
   def rank_up_cost
-    (rank + item.base_rank) ** 2
+    ((rank + item.base_rank) ** 2 * rarity_factor(item.rarity)).floor
   end
 
   def rank_factor(rank)

@@ -130,7 +130,7 @@ export default {
       this.$store.dispatch("user/rankUpItem", this.item_id );
     },
     rankUpCost(){
-      return Math.pow((this.item().rank + this.item().base_rank) || 0 , 2);
+      return Math.floor(Math.pow((this.item().rank + this.item().base_rank) || 0 , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity));
     },
     canRankUp(){
       return this.isCoinSufficient() && this.isRankCapable();
