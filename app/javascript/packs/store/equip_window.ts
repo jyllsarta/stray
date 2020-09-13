@@ -85,11 +85,20 @@ export default {
             lambda: (a, b) => {
               const item_b = (getters.getUserItem(b.id));
               const item_a = (getters.getUserItem(a.id));
+              return (item_b.tech() + item_b.power()) - (item_a.tech() + item_a.power());
+            },
+            name: "力+技順",
+          };
+        case 8:
+          return {
+            lambda: (a, b) => {
+              const item_b = (getters.getUserItem(b.id));
+              const item_a = (getters.getUserItem(a.id));
               return (item_b.power()) - (item_a.power());
             },
             name: "力順",
           };
-        case 8:
+        case 9:
           return {
             lambda: (a, b) => {
               const item_b = (getters.getUserItem(b.id));
