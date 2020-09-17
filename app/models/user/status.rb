@@ -16,6 +16,8 @@
 
 class User::Status < ApplicationRecord
   class CannotSwitchDungeon < StandardError; end
+  class InsufficientStar < StandardError; end
+  class InsufficientCoin < StandardError; end
 
   belongs_to :user
   belongs_to :dungeon, foreign_key: :current_dungeon_id
@@ -89,6 +91,7 @@ class User::Status < ApplicationRecord
   end
 
   def consume_coin!(amount)
+    raise InsufficientCoin if coin < amount
     self.decrement!(:coin, amount)
   end
 
@@ -97,6 +100,7 @@ class User::Status < ApplicationRecord
   end
 
   def consume_star!(amount)
+    raise InsufficientStar if star < amount
     self.decrement!(:star, amount)
   end
 

@@ -279,8 +279,21 @@ RSpec.describe User::Status, type: :model do
   describe "#consume_coin!" do
     subject { status.consume_coin!(amount) }
     let(:amount){100}
-    it "decrements coin" do
-      expect{subject}.to change(status, :coin).by(-amount)
+    context "sufficient" do
+      before do
+        status.add_coin!(amount)
+      end
+      it "decrements coin" do
+        expect{subject}.to change(status, :coin).by(-amount)
+      end
+    end
+    context "insufficient" do
+      before do
+        status.add_coin!(amount - 1)
+      end
+      it "raise" do
+        expect{subject}.to raise_error(User::Status::InsufficientCoin)
+      end
     end
   end
 
@@ -291,11 +304,24 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :star).by(amount)
     end
   end
-  describe "#consume_coin!" do
+  describe "#consume_star!" do
     subject { status.consume_star!(amount) }
     let(:amount){100}
-    it "decrements star" do
-      expect{subject}.to change(status, :star).by(-amount)
+    context "sufficient" do
+      before do
+        status.add_star!(amount)
+      end
+      it "raise" do
+        expect{subject}.to change(status, :star).by(-amount)
+      end
+    end
+    context "insufficient" do
+      before do
+        status.add_star!(amount - 1)
+      end
+      it "decrements coin" do
+        expect{subject}.to raise_error(User::Status::InsufficientStar)
+      end
     end
   end
 

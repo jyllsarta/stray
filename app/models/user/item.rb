@@ -40,11 +40,9 @@ class User::Item < ApplicationRecord
   end
 
   def rank_up!
-    raise InsufficientCoin if user.status.coin < rank_up_cost
     raise InsufficientRank if max_rank < (rank + 1)
-    ActiveRecord::Base.transaction do
-      # 前後入れ替えると消費額が変わるのちょっと怖い書き方だなって思うけどまあこれで...
-      user.status.decrement!(:coin, rank_up_cost)
+    with_lock do
+      user.status.consume_coin!(rank_up_cost)
       self.increment!(:rank, 1)
     end
   end

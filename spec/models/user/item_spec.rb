@@ -94,7 +94,8 @@ RSpec.describe User::Item, type: :model do
         expect{subject}.to change(user_item, :rank).by(1)
       end
       it "uses coin" do
-        expect{subject}.to change(user.status, :coin).by(-100)
+        subject
+        expect(user.status.reload.coin).to eq(0)
       end
     end
 
@@ -107,7 +108,7 @@ RSpec.describe User::Item, type: :model do
       end
 
       it "raises error" do
-        expect{subject}.to raise_error(User::Item::InsufficientCoin)
+        expect{subject}.to raise_error(User::Status::InsufficientCoin)
       end
     end
 
@@ -137,7 +138,8 @@ RSpec.describe User::Item, type: :model do
           expect{subject}.to change(user_item, :rank).by(1)
         end
         it "uses more coin" do
-          expect{subject}.to change(user.status, :coin)
+          subject
+          expect(user.status.reload.coin).to_not eq(1000000)
         end
       end
     end
@@ -151,7 +153,8 @@ RSpec.describe User::Item, type: :model do
       end
 
       it "uses coin" do
-        expect{subject}.to change(user.status, :coin).by(-110)
+        subject
+        expect(user.status.reload.coin).to eq(1000000 - 110)
       end
     end
   end
