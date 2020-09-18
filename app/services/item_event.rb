@@ -89,7 +89,7 @@ private
     elsif user_item.rank < Constants.item.default_max_rank
       "#{item.name}を+#{user_item.rank + @amount}に強化した！"
     else
-      "#{item.name}を拾った！(最大強化済だったので#{coin_amount}コインに変換した！)"
+      "#{item.name}を拾った！(+#{Constants.item.default_max_rank}以上だったので#{coin_amount}コインに変換した！)"
     end
   end
 end
