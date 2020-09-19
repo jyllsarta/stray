@@ -19,6 +19,8 @@ export default {
       current_dungeon_depth: 1,
       current_dungeon_rank: 1,
       coin: 0,
+      star: 0,
+      velocity: 100,
     },
     characters: {
       spica: {},

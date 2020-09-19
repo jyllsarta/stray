@@ -232,6 +232,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "resurrect_timer", default: 0, null: false
     t.integer "coin", default: 0, null: false
     t.integer "star", default: 0, null: false
+    t.integer "velocity", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
