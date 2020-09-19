@@ -13,6 +13,7 @@ class EventFacade
         events.append(event)
         event.execute!(user)
         user.status.tick_timer!(event.consume_time(user))
+        user.status.attenuate_velocity!
         event = pick_next_event(user)
       end
       events.push(calibrate_event) if calibrate_event.present?

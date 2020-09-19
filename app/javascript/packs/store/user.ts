@@ -105,6 +105,9 @@ export default {
     updateUserCoin(state, payload) {
       state.status.coin = payload;
     },
+    updateUserVelocity(state, payload) {
+      state.status.velocity = payload;
+    },
   },
   actions: {
     fetchUserModel ({ commit }) {

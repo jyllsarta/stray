@@ -111,6 +111,12 @@ class User::Status < ApplicationRecord
     self.update!(velocity: v)
   end
 
+  def attenuate_velocity!
+    delta = Constants.event.attenuate_velocity_per_event
+    delta *= 2 if self.velocity > Constants.event.attenuate_increase_threshold
+    self.fluctuate_velocity!(-delta)
+  end
+
   def velocity_rank
     case
     when velocity < 150

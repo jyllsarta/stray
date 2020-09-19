@@ -246,7 +246,8 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    version: String,
                                                    events: Array,
-                                                   next_event_at: Integer
+                                                   next_event_at: Integer,
+                                                   after_velocity: Integer,
                                                }
                                            )
     end

@@ -78,8 +78,9 @@ class BattleEvent < Event
   end
 
   def coin_message
+    return "" unless @battle.is_win
     multiplied = @coin_multiplier > 1 ? '多めに' : ''
-    @battle.is_win ? "#{multiplied}#{@coin_amount}コイン手にいれた！" : ''
+    "#{multiplied}#{@coin_amount}コイン手にいれた！"
   end
 
   def battle_result_mark_message

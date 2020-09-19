@@ -90,6 +90,7 @@ export default {
         }})
         .then((results) => {
           this.$store.commit("event/updateLatestEvents", results.data);
+          this.$store.commit("user/updateUserVelocity", results.data.after_velocity);
         })
         .catch((error) => {
           console.warn(error.response);

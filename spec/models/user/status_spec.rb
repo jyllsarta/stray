@@ -360,7 +360,31 @@ RSpec.describe User::Status, type: :model do
       end
     end
   end
-
+  describe "#attenuate_velocity!" do
+    subject { status.attenuate_velocity! }
+    let(:delta){100}
+    context "min" do
+      it "not attenuate" do
+        expect{subject}.to_not change(status, :velocity)
+      end
+    end
+    context "some" do
+      before do
+        status.update!(velocity: 150)
+      end
+      it "attenuate" do
+        expect{subject}.to change(status, :velocity).by(-Constants.event.attenuate_velocity_per_event)
+      end
+    end
+    context "huge" do
+      before do
+        status.update!(velocity: 350)
+      end
+      it "more attenuate" do
+        expect{subject}.to change(status, :velocity).by(-Constants.event.attenuate_velocity_per_event * 2)
+      end
+    end
+  end
   describe "#velocity_rank" do
     subject { status.velocity_rank }
     before do
