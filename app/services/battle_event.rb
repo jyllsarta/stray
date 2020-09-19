@@ -74,12 +74,18 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
+    "[#{battle_result_mark_message}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
   end
 
   def coin_message
     multiplied = @coin_multiplier > 1 ? '多めに' : ''
     @battle.is_win ? "#{multiplied}#{@coin_amount}コイン手にいれた！" : ''
+  end
+
+  def battle_result_mark_message
+    return "敗北" unless @battle.is_win
+    buster_level = Constants.event.battle.buster_level[@battle.turn] || Constants.event.battle.default_buster_level
+    "#{buster_level}勝利"
   end
 
   def lot_enemies!(rank)
