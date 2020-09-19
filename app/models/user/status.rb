@@ -111,6 +111,19 @@ class User::Status < ApplicationRecord
     self.update!(velocity: v)
   end
 
+  def velocity_rank
+    case
+    when velocity < 150
+      return 0
+    when velocity < 200
+      return 1
+    when velocity < 300
+      return 2
+    else
+      return 3
+    end
+  end
+
   def max_item_rank
     self.items.order(rank: :desc).first&.rank || 0
   end

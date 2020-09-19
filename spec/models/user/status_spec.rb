@@ -361,6 +361,44 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#velocity_rank" do
+    subject { status.velocity_rank }
+    before do
+      status.update!(velocity: velocity)
+    end
+
+    context "0" do
+      let(:velocity){ 100 }
+      it "returns rank" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "1" do
+      let(:velocity){ 150 }
+      it "returns rank" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "1" do
+      let(:velocity){ 199 }
+      it "returns rank" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "2" do
+      let(:velocity){ 200 }
+      it "returns rank" do
+        expect(subject).to eq(2)
+      end
+    end
+    context "3" do
+      let(:velocity){ 300 }
+      it "returns rank" do
+        expect(subject).to eq(3)
+      end
+    end
+  end
+
   describe "#max_item_rank" do
     subject { status.max_item_rank }
     context "without item" do
