@@ -60,10 +60,13 @@ RSpec.describe ItemEvent, type: :model do
     context "持ってるアイテムが選ばれた時" do
       context "ランクがまだ最大になっていなかったら" do
         let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: 1)}
+        before do
+          allow_any_instance_of(ItemEvent).to receive(:amount).and_return(2)
+        end
         it "そいつのランクがamount分増える" do
           expect(user.items.find(user_item.id).rank).to eq(1)
           subject
-          expect(user.items.find(user_item.id).rank).to eq(1 + event.instance_variable_get('@amount'))
+          expect(user.items.find(user_item.id).rank).to eq(1 + 2)
           expect(user.status.coin).to eq(0)
         end
       end
@@ -85,8 +88,7 @@ RSpec.describe ItemEvent, type: :model do
       context "amountがランク最大値にかぶるような値になった時" do
         let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: Constants.item.default_max_rank - 2)}
         before do
-          # イベント作成時にもうamountは決まってしまっているので、lot_amount! をこのタイミングでモックしても遅い...
-          event.instance_variable_set("@amount", 5)
+          allow_any_instance_of(ItemEvent).to receive(:amount).and_return(5)
         end
         it "ランク最大値まで上昇し、それ以上は捨てられる" do
           subject
@@ -119,4 +121,40 @@ RSpec.describe ItemEvent, type: :model do
       end
     end
   end
+  describe "#amount" do
+    subject { event.send(:amount, user) }
+
+    context "1" do
+      before do
+        status.update!(velocity: 100)
+      end
+      it "returns 1" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "1" do
+      before do
+        status.update!(velocity: 199)
+      end
+      it "returns 1" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "2" do
+      before do
+        status.update!(velocity: 200)
+      end
+      it "returns 2" do
+        expect(subject).to eq(2)
+      end
+    end
+    context "3" do
+      before do
+        status.update!(velocity: 300)
+      end
+      it "returns 2" do
+        expect(subject).to eq(3)
+      end
+    end
+  end  
 end

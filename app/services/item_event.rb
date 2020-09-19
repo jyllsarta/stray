@@ -6,7 +6,6 @@ class ItemEvent < Event
     @rank = rank
     @rarity = lot_item_rarity!
     @item_id = lot_item!(@rank, @rarity).id
-    @amount = lot_amount!
     @done = false
   end
 
@@ -42,7 +41,7 @@ class ItemEvent < Event
     # 最大強化済ならコインが代わりに貰える
     user.status.add_coin!(coin_amount) if user_item.rank >= Constants.item.default_max_rank
 
-    user_item.rank = [user_item.rank + @amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank && user_item.persisted?
+    user_item.rank = [user_item.rank + amount(user), Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank && user_item.persisted?
     @rank = user_item.rank
     user_item.save!
     @done = true
@@ -79,15 +78,17 @@ private
     ::Item.where("id < #{rank}").where(rarity: rarity).order(id: :desc).limit(1).first
   end
 
-  def lot_amount!
-    1
+  def amount(user)
+    [user.status.velocity_rank, 1].max
   end
 
   def get_message(user_item)
     if user_item.new_record?
       "#{item.name}を拾った！"
+    elsif user_item.rank < Constants.item.default_max_rank && amount(user_item.user) > 1
+      "#{item.name}を+#{user_item.rank + amount(user_item.user)}に強化した！(まとめて+#{amount(user_item.user)}強化した！)"
     elsif user_item.rank < Constants.item.default_max_rank
-      "#{item.name}を+#{user_item.rank + @amount}に強化した！"
+      "#{item.name}を+#{user_item.rank + amount(user_item.user)}に強化した！"
     else
       "#{item.name}を拾った！(+#{Constants.item.default_max_rank}以上だったので#{coin_amount}コインに変換した！)"
     end
