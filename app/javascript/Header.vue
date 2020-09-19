@@ -27,6 +27,15 @@
           | {{$store.getters['masterdata/getCurrentDungeon'].depth}}
         .sep
           | F
+    .resources
+      .line
+        .coin_icon
+        .value
+          | {{$store.state.user.status.coin}}
+      .line
+        .star_icon
+        .value
+          | {{$store.state.user.status.star}}
 </template>
 
 <script lang="ts">
@@ -98,11 +107,13 @@ export default {
       height: 60%;
       font-size: 18px;
       padding-right: $space;
+      padding-top: $space;
       text-align: right;
+      line-height: 100%;
     }
   }
   .clock{
-    width: 25%;
+    width: 22%;
   }
   .next_event_time{
     width: 20%;
@@ -112,6 +123,9 @@ export default {
   }
   .dungeon_depth{
     width: 20%;
+  }
+  .resources{
+    width: 15%;
   }
   .floor{
     .current{
@@ -130,6 +144,39 @@ export default {
     }
     .boss_floor{
       color: $plus;
+    }
+  }
+  .resources{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: $thin_space;
+    padding-bottom: $thin_space;
+    .line{
+      display: flex;
+      align-items: flex-end;
+      line-height: 100%;
+      div{
+        display: inline-block;
+      }
+      .coin_icon{
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url("/images/ui/coin.png");
+        background-size: cover;
+      }
+      .star_icon{
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url("/images/ui/star.png");
+        background-size: cover;
+      }
+      .value{
+        text-align: right;
+        width: 6rem;
+      }
     }
   }
 }
