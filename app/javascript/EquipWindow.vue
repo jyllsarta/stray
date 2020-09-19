@@ -456,7 +456,7 @@ export default {
 
     .bar_area{
       width: 80%;
-      height: 0.3px;
+      height: 0.5px;
       display: flex;
       opacity: 0.9;
       .bar{
@@ -800,10 +800,10 @@ export default {
             }
             .bar_area{
               width: 100%;
-              height: 0.3px;
+              height: 0.5px;
               .bar{
                 width: 100%;
-                height: 0.3px;
+                height: 0.5px;
               }
             }
           }
@@ -818,11 +818,11 @@ export default {
               padding-left: $space;
             }
             .bar_area{
-              height: 0.3px;
+              height: 0.5px;
               width: 50%;
               .bar{
                 width: 100%;
-                height: 0.3px;
+                height: 0.5px;
               }
             }
           }
