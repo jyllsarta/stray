@@ -39,7 +39,7 @@ class BattleEvent < Event
 
   private
 
-  def coin_amount
+  def base_coin_amount
     @rank * 10
   end
 
@@ -50,7 +50,9 @@ class BattleEvent < Event
       multiplier = rank_ratio(@rank, character.level)
       character.gain_exp!(exp * multiplier)
     end
-    user.status.add_coin!(coin_amount)
+    @coin_multiplier = [user.status.velocity_rank, 1].max
+    @coin_amount = base_coin_amount * @coin_multiplier
+    user.status.add_coin!(@coin_amount)
   end
 
   def fluctuate_velocity!(user)
@@ -72,7 +74,12 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{@battle.is_win ? "#{coin_amount}コイン手にいれた！" : ''}"
+    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
+  end
+
+  def coin_message
+    multiplied = @coin_multiplier > 1 ? '多めに' : ''
+    @battle.is_win ? "#{multiplied}#{@coin_amount}コイン手にいれた！" : ''
   end
 
   def lot_enemies!(rank)
