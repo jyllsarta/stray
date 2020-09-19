@@ -6,6 +6,12 @@ max_event_consume_time_seconds: <%= Rails.env.production? ? 1000 : 100 %>
 max_charge_absent_time_seconds: 86400
 resurrect_time_seconds: <%= Rails.env.production? ? 1800 : 25 %>
 
+user:
+  velocity:
+    min: 100
+    # 内部的には350を最大値として保持するが、UI上では333が最大かのように見せる
+    max: 350
+
 character:
   initial_hp_max: 100
   gain_hp_per_level: 100
@@ -55,7 +61,12 @@ event:
     additional_exp_range: 50
     boss_additional_rank: 5
     boss_lose_rewind_floor: 2
-
+    velocity_delta:
+      turn2:  60
+      turn3:  40
+      turn4:  20
+      turn5:   0
+      other: -10
 dungeon:
   boss_floor_frequency: 100
 

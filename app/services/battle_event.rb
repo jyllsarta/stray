@@ -30,6 +30,7 @@ class BattleEvent < Event
     @battle.execute!
     @battle.apply_damages!
     @battle.is_win ? process_win(user) : process_lose(user)
+    fluctuate_velocity!(user)
   end
 
   def consume_time(user)
@@ -50,6 +51,15 @@ class BattleEvent < Event
       character.gain_exp!(exp * multiplier)
     end
     user.status.add_coin!(coin_amount)
+  end
+
+  def fluctuate_velocity!(user)
+    if @battle.is_win
+      delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
+      user.status.fluctuate_velocity!(delta)
+    else
+      user.status.fluctuate_velocity!(-9999)
+    end
   end
 
   def process_lose(user)

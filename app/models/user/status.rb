@@ -44,6 +44,7 @@ class User::Status < ApplicationRecord
     self.current_dungeon_id = dungeon_id
     self.current_dungeon_depth = depth
     self.save!
+    self.fluctuate_velocity!(-9999)
   end
 
   def tick_timer!(seconds)
@@ -103,6 +104,11 @@ class User::Status < ApplicationRecord
   def consume_star!(amount)
     raise InsufficientStar if star < amount
     self.decrement!(:star, amount)
+  end
+
+  def fluctuate_velocity!(delta)
+    v = (self.velocity + delta).clamp(Constants.user.velocity.min, Constants.user.velocity.max)
+    self.update!(velocity: v)
   end
 
   def max_item_rank

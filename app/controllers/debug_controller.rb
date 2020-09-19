@@ -26,6 +26,11 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def set_velocity
+    current_user.status.update!(velocity: params[:velocity])
+    redirect_to clients_path
+  end
+
   def learn_all_user_skills
     Skill.where(for_player: true).each do |skill|
       skill.learn!(current_user) unless current_user.skills.exists?(skill: skill)

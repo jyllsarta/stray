@@ -81,6 +81,15 @@ RSpec.describe User::Status, type: :model do
         it "do switch" do
           expect{subject}.to change(status, :current_dungeon_depth).to(depth)
         end
+        context "velocity" do
+          before do
+            status.update!(velocity: 300)
+          end
+          it "resets" do
+            expect{ subject }.to change(status, :velocity).to(Constants.user.velocity.min)
+          end
+        end
+
       end
     end
     context "move to floor 150" do
@@ -322,6 +331,32 @@ RSpec.describe User::Status, type: :model do
       end
       it "decrements coin" do
         expect{subject}.to raise_error(User::Status::InsufficientStar)
+      end
+    end
+  end
+
+  describe "#fluctuate_velocity!" do
+    subject { status.fluctuate_velocity!(delta) }
+    let(:delta){100}
+    it "adds" do
+      expect{subject}.to change(status, :velocity).by(delta)
+    end
+
+    context "with max" do
+      before do
+        status.update!(velocity: Constants.user.velocity.max - 10)
+      end
+      it "adds to max, no overflow" do
+        expect{subject}.to change(status, :velocity).to(Constants.user.velocity.max)
+      end
+    end
+    context "with min" do
+      let(:delta){ -100 }
+      before do
+        status.update!(velocity: Constants.user.velocity.min + 10)
+      end
+      it "adds to max, no overflow" do
+        expect{subject}.to change(status, :velocity).to(Constants.user.velocity.min)
       end
     end
   end
