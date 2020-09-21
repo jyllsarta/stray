@@ -10,7 +10,7 @@
         | 強敵と戦い、クエストを進行させます。
       .body
         .quest_list_tab
-          .quest.hoverable(
+          .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
             :class="questClass(quest.id)"
@@ -116,13 +116,6 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
-    .selected{
-      background-color: $gray3;
-      border: 1px solid $yellow;
-    }
-    .not_selected{
-      border: 1px solid transparent;
-    }
     .quest{
       margin: $thin_space;
       padding: $space;

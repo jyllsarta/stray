@@ -128,3 +128,12 @@
     box-shadow: none;
   }
 }
+
+.selectable{
+  background-color: $gray3-opacity;
+  border: 1px solid transparent;
+  &.selected{
+    background-color: $gray3;
+    border: 1px solid $yellow;
+  }
+}
