@@ -17,6 +17,9 @@
             )
             .name
               | {{quest.name}}
+            .clear_mark
+              .claar(v-if="quest.won_enemy_count === quest.enemy_count")
+                | clear!
             .progress
               .current_progress(:class="questColorClass(quest.id)")
                 | {{quest.won_enemy_count}}
@@ -128,6 +131,13 @@ export default {
         display: inline-block;
         width: 70%;
       }
+      .clear_mark{
+        display: inline-block;
+        width: 15%;
+        .clear{
+          display: inline-block;
+        }
+      }
       .progress{
         .current_progress{
           display: inline-block;
@@ -136,7 +146,7 @@ export default {
           color: $yellow;
         }
         display: inline-block;
-        width: 30%;
+        width: 15%;
         text-align: right;
       }
     }
