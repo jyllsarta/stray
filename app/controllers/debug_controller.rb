@@ -38,6 +38,19 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def clear_quest
+    Enemy.where(quest_id: params[:clear_quest_id]).each do |enemy|
+      current_user.won_enemies.find_or_create_by(enemy: enemy)
+    end
+    redirect_to clients_path
+  end
+
+  def reset_quest
+    enemy_ids = Enemy.where(quest_id: params[:reset_quest_id]).ids
+    current_user.won_enemies.where(enemy_id: enemy_ids).map(&:destroy)
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
