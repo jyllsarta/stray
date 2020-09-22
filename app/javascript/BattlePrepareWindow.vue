@@ -12,8 +12,9 @@
         .characters
           img.tirol(src="/images/battle/characters/tirol_normal.png")
           img.spica(src="/images/battle/characters/spica_normal.png")
-        .enemy_character
-          img.enemy(:src="`/images/battle/characters/${currentEnemy.image_name || 'faily'}_normal.png`")
+        transition(name="vertical-in")
+          .enemy_character(:key="currentEnemy.image_name")
+            img.enemy(:src="`/images/battle/characters/${currentEnemy.image_name || 'faily'}_normal.png`")
         .enemy_reward(@mouseover="$store.commit('guide/updateGuide', currentEnemyRewardTypeMessage)")
           .descri
             | 撃破報酬：
@@ -314,6 +315,7 @@
     }
 
     .enemy_character{
+      animation: vertical-in;
       position: absolute;
       bottom: $space + 70px;
       right: $space;
@@ -492,5 +494,19 @@
       width: 150px;
       @include centering($height: 50px);
     }
+  }
+
+  .vertical-in-enter-active {
+    transition: all .3s;
+  }
+  .vertical-in-leave-active {
+    transition: all .0s;
+  }
+  .vertical-in-enter{
+    transform: translateY(-10px);
+    opacity: 0.5;
+  }
+  .vertical-in-leave-to{
+    opacity: 0;
   }
 </style>

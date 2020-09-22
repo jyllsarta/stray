@@ -117,6 +117,7 @@ class User::Status < ApplicationRecord
     self.fluctuate_velocity!(-delta)
   end
 
+  # クライアントと定義を共有しているので注意
   def velocity_rank
     case
     when velocity < 150

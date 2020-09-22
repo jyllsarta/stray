@@ -69,6 +69,20 @@ export default {
     },
     hasEmptySlot: (state) => {
       return state.equips.spica.length + state.equips.tirol.length < Constants.maxEquipCount * 2;
+    },
+    // サーバでも定義共有してるので注意
+    currentVelocityRank: (state) => {
+      const v = state.status.velocity;
+      if(v < 150){
+        return 0;
+      }
+      if(v < 200){
+        return 1;
+      }
+      if(v < 300){
+        return 2;
+      }
+      return 3;
     }
   },
   mutations: {

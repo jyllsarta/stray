@@ -62,11 +62,11 @@ export default {
   height: 100px;
 }
 .opened{
-  height: $window-height - 200px - $space * 3;
+  height: $window-height - 210px - $space * 3;
 }
 .log{
   width: 300px;
-  top: 60px + 80px + 40px + $space * 4;
+  top: 60px + 80px + 50px + $space * 4;
   left: $space;
   display: flex;
   flex-direction: column;
