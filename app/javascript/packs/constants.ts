@@ -9,6 +9,7 @@ const Constants = {
       staticStateThreshold: 0.05,
     },
   },
+  welcomeMessage: "スピカとチロルへようこそ！\nまずは二人の冒険を見守りつつ、装備を拾ったらつけてあげてね。",
   character: {
     // constants.yml とそれぞれ重複定義しているので注意...(つらい)
     defaultParameters: {

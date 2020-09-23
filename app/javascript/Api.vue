@@ -5,6 +5,7 @@
 <script lang="ts">
 import axios from "axios";
 import ax from "./packs/axios_default_setting.ts";
+import Constants from "./packs/constants.ts";
 
 export default {
   data: function () {
@@ -116,6 +117,7 @@ export default {
             accept: "application/json",
           } // axios_default_setting を読み込み直す処理を入れるのが理想
           this.fetchUserModel();
+          this.$store.commit("event/addEventLog", {message: Constants.welcomeMessage});
         })
         .catch((error) => {
           console.warn(error.response);
