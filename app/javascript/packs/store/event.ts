@@ -5,11 +5,22 @@ export default {
   namespaced: true,
   state: {
     next_event_at: 123123123,
-    events: []
+    events: [],
+    version: null,
   },
   getters: {
+    isVersionChanged: (state) => (version) =>  {
+      // 未設定ならバージョン違いとは判定しない
+      if(!state.version){
+        return false;
+      }
+      return state.version != version;
+    }
   },
   mutations: {
+    setVersion(state, payload) {
+      state.version = payload;
+    },
     setNextEventAtTo(state, payload) {
       state.next_event_at = payload;
     },

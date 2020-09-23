@@ -90,6 +90,14 @@ export default {
           "X-SessionStartedAt": this.session_started_at,
         }})
         .then((results) => {
+          console.log(this.$store.state.event.version);
+          console.log(results.data.version);          
+          if(this.$store.getters["event/isVersionChanged"](results.data.version)){
+            this.$store.commit("event/addEventLog", {message: `新Ver${results.data.version}が公開されています！\nCtrl+Shift+Rで更新してね`});
+          }
+          else if(!this.$store.state.event.version){
+            this.$store.commit("event/setVersion", results.data.version);
+          }
           this.$store.commit("event/updateLatestEvents", results.data);
           this.$store.commit("user/updateUserVelocity", results.data.after_velocity);
         })

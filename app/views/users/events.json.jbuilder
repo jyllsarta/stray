@@ -1,4 +1,4 @@
-json.version "0.0.1"
+json.version Constants.version
 json.events do
   json.array! @events, :type, :detail, :logs
 end
