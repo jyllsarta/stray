@@ -3,7 +3,7 @@ class UserItemsController < ApplicationController
     @user = current_user
     @user.with_lock do
       @item = current_user.status.items.find_by!(item_id: params[:user_item_id])
-      @item.rank_up!
+      @item.rank_up!(params[:count].to_i)
     end
   end
 end

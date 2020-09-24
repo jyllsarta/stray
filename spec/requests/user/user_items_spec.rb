@@ -16,7 +16,9 @@ RSpec.describe "User::Item", type: :request do
         user.status.reload
       end
       let(:params) do
-        {}
+        {
+          count: 1
+        }
       end
       subject do
         do_post
@@ -38,7 +40,9 @@ RSpec.describe "User::Item", type: :request do
     # 厳密なテストはmodelに書くのでエラーキャッチだけテスト
     context "insufficient coin" do
       let(:params) do
-        {}
+        {
+            count: 1
+        }
       end
       subject do
         do_post

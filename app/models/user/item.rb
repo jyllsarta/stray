@@ -39,11 +39,11 @@ class User::Item < ApplicationRecord
     item.base_rank + rank
   end
 
-  def rank_up!
-    raise InsufficientRank if max_rank < (rank + 1)
+  def rank_up!(count)
+    raise InsufficientRank if max_rank < (rank + count)
     with_lock do
-      user.status.consume_coin!(rank_up_cost)
-      self.increment!(:rank, 1)
+      user.status.consume_coin!(rank_up_cost(count))
+      self.increment!(:rank, count)
     end
   end
 
@@ -57,8 +57,12 @@ class User::Item < ApplicationRecord
     [user.status.max_item_rank, 10].max
   end
 
-  def rank_up_cost
-    ((rank + item.base_rank) ** 2 * rarity_factor(item.rarity)).floor
+  def rank_up_cost(count)
+    sum = 0
+    (0..(count-1)).each do |i|
+      sum += ((rank + item.base_rank + i) ** 2 * rarity_factor(item.rarity)).floor
+    end
+    sum
   end
 
   def rank_factor(rank)
