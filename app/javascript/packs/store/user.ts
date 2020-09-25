@@ -157,8 +157,8 @@ export default {
     rankUpItem ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         const user_id = localStorage.user_id;
-        const path = `/users/${user_id}/user_items/${payload}/rank_up.json`;
-        ax.post(path)
+        const path = `/users/${user_id}/user_items/${payload.item_id}/rank_up.json`;
+        ax.post(path, {count: payload.count})
           .then((results) => {
             console.log(results);
             commit("updateUserCoin", results.data.after_coin);

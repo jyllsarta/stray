@@ -60,11 +60,11 @@
                 | 消費
               .coin_icon
               .value
-                | {{rankUpCost()}}
+                | {{totalRankUpCost(count)}}
           .rank_up.clickable(@click="executeRankUpItem", :style="{opacity: canRankUp() ? 1 : 0.5}")
             | 強化
         .enchantment_area
-          //ここは実装後に埋めればいいや
+          | limit: {{rankUpLimit()}}
 
 
 
@@ -80,6 +80,7 @@ export default {
   data: function () {
     return {
       item_id: null,
+      count: 1,
     };
   },
   props: {
@@ -127,10 +128,26 @@ export default {
         console.log("強化不能ですね");
         return;
       }
-      this.$store.dispatch("user/rankUpItem", this.item_id );
+      this.$store.dispatch("user/rankUpItem", {item_id: this.item_id, count: this.count} );
     },
-    rankUpCost(){
-      return Math.floor(Math.pow((this.item().rank + this.item().base_rank) || 0 , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity));
+    rankUpLimit(){
+      const coin = this.$store.state.user.status.coin;
+      let i = 0;
+      while(coin >= this.totalRankUpCost(i)){
+        i++;
+      }
+      return i - 1;
+    },
+    totalRankUpCost(delta){
+      const rank = (this.item().rank + this.item().base_rank) || 0;
+      let totalCost = 0;
+      for(let i = 0; i < delta; i++){
+        totalCost += this.rankUpCost(rank + i);
+      }
+      return totalCost;
+    },
+    rankUpCost(rank){
+      return Math.floor(Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity));
     },
     canRankUp(){
       return this.isCoinSufficient() && this.isRankCapable();
@@ -146,7 +163,7 @@ export default {
       return reason;
     },
     isCoinSufficient(){
-      return this.rankUpCost() <= this.$store.state.user.status.coin;
+      return this.totalRankUpCost(this.count) <= this.$store.state.user.status.coin;
     },
     isRankCapable(){
       return this.item().rank < this.$store.getters['user/maxItemRank'];
