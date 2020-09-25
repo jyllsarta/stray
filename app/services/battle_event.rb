@@ -25,12 +25,12 @@ class BattleEvent < Event
     ]
   end
 
-  def execute!(user)
+  def execute(user)
     @battle = Battle.new(user, lot_enemies!(@rank))
-    @battle.execute!
-    @battle.apply_damages!
+    @battle.execute
+    @battle.apply_damages
     @battle.is_win ? process_win(user) : process_lose(user)
-    fluctuate_velocity!(user)
+    fluctuate_velocity(user)
   end
 
   def consume_time(user)
@@ -48,24 +48,24 @@ class BattleEvent < Event
     user.characters.each do |character|
       next if character.dead?
       multiplier = rank_ratio(@rank, character.level)
-      character.gain_exp!(exp * multiplier)
+      character.gain_exp(exp * multiplier)
     end
     @coin_multiplier = [user.status.velocity_rank, 1].max
     @coin_amount = base_coin_amount * @coin_multiplier
-    user.status.add_coin!(@coin_amount)
+    user.status.add_coin(@coin_amount)
   end
 
-  def fluctuate_velocity!(user)
+  def fluctuate_velocity(user)
     if @battle.is_win
       delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
-      user.status.fluctuate_velocity!(delta)
+      user.status.fluctuate_velocity(delta)
     else
-      user.status.fluctuate_velocity!(-9999)
+      user.status.fluctuate_velocity(-9999)
     end
   end
 
   def process_lose(user)
-    user.status.start_resurrect_timer!
+    user.status.start_resurrect_timer
   end
 
   def rank_ratio(enemy_rank, character_rank)

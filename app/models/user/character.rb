@@ -36,9 +36,8 @@ class User::Character < ApplicationRecord
     end
   end
 
-  def damage!(value)
+  def damage(value)
     self.hp = [self.hp - value, 0].max
-    save!
   end
 
   def alive?
@@ -58,10 +57,12 @@ class User::Character < ApplicationRecord
   end
 
   def parameters
+    return @_parameters if @_parameters
     default_parameters = Constants.character.default_parameters["rank_#{rank}"].to_h
-    compacted_equips.each_with_object(default_parameters) do |equip, hash|
+    @_parameters = compacted_equips.each_with_object(default_parameters) do |equip, hash|
       hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
     end
+    @_parameters
   end
 
   def strength
@@ -73,14 +74,10 @@ class User::Character < ApplicationRecord
     }
   end
 
-  def gain_exp!(value)
-    with_lock do
-      # UPDATEの発行数を減らすため、レベルアップしまくるのはメモリ上で行う
-      increment(:exp, value)
-      while can_level_up?
-        level_up
-      end
-      save!
+  def gain_exp(value)
+    increment(:exp, value)
+    while can_level_up?
+      level_up
     end
   end
 

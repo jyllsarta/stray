@@ -22,7 +22,7 @@ class ResurrectEvent < Event
     ]
   end
 
-  def execute!(user)
+  def execute(user)
     @user = user
     # これもトランザクションはEventFacadeがやってるので不要(多重トランザクションはDBによってややこしい挙動をするので避ける)
     @user.status.tick_resurrect_timer!(consume_time(user))

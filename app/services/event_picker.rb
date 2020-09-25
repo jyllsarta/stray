@@ -11,7 +11,7 @@ class EventPicker
     return BossBattleEvent.new(rank, @user.status.event_updated_at) if @user.status.at_boss_floor?
 
     rand = pick_event
-    case rand
+    case 2
     when 0
       return StairEvent.new(rank, @user.status.event_updated_at)
     when 1

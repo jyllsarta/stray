@@ -47,9 +47,8 @@ class User::Status < ApplicationRecord
     self.fluctuate_velocity!(-9999)
   end
 
-  def tick_timer!(seconds)
+  def tick_timer(seconds)
     self.event_updated_at += seconds
-    save!
   end
   
   def next_event_at
@@ -72,8 +71,8 @@ class User::Status < ApplicationRecord
     end
   end
 
-  def start_resurrect_timer!
-    self.update!(resurrect_timer: 0)
+  def start_resurrect_timer
+    self.resurrect_timer = 0
   end
 
   def tick_resurrect_timer!(seconds)
@@ -92,6 +91,10 @@ class User::Status < ApplicationRecord
     self.increment!(:coin, amount)
   end
 
+  def add_coin(amount)
+    self.increment(:coin, amount)
+  end
+
   def consume_coin!(amount)
     raise InsufficientCoin if coin < amount
     self.decrement!(:coin, amount)
@@ -106,15 +109,15 @@ class User::Status < ApplicationRecord
     self.decrement!(:star, amount)
   end
 
-  def fluctuate_velocity!(delta)
+  def fluctuate_velocity(delta)
     v = (self.velocity + delta).clamp(Constants.user.velocity.min, Constants.user.velocity.max)
-    self.update!(velocity: v)
+    self.velocity = v
   end
 
-  def attenuate_velocity!
+  def attenuate_velocity
     delta = Constants.event.attenuate_velocity_per_event
     delta *= 2 if self.velocity > Constants.event.attenuate_increase_threshold
-    self.fluctuate_velocity!(-delta)
+    self.fluctuate_velocity(-delta)
   end
 
   # クライアントと定義を共有しているので注意
@@ -137,7 +140,7 @@ class User::Status < ApplicationRecord
 
   def event_wait_reduction_seconds
     # イベント短縮レリックいっこにつき2秒短縮
-    user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
+    @_event_wait_reduction_seconds ||= user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
   def quest_battle_additional_hp

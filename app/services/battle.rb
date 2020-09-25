@@ -12,7 +12,7 @@ class Battle
   end
 
   # シミュレートを回す
-  def execute!
+  def execute
     while !extincted?(@players) && !extincted?(@enemies) do
       @turn += 1
       play_turn!(@enemies, @players)
@@ -28,8 +28,8 @@ class Battle
   end
 
   # シミュレーション結果のHP増減をDBに反映させる
-  def apply_damages!
-    @user.characters.zip(damages).each { |character, damage| character.damage!(damage) }
+  def apply_damages
+    @user.characters.zip(damages).each { |character, damage| character.damage(damage) }
   end
 
   def damages

@@ -5,17 +5,18 @@ class EventFacade
 
   def get_and_execute_latest_events!(user)
     events = []
-    ActiveRecord::Base.transaction do
-      user.lock!
+    user.with_lock do
       calibrate_event = needs_calibrate?(user) ? CalibrateEvent.new(Time.now, user.status.current_dungeon_rank).execute!(user) : nil
       event = pick_next_event(user)
       while next_event_available?(user, event)
         events.append(event)
-        event.execute!(user)
-        user.status.tick_timer!(event.consume_time(user))
-        user.status.attenuate_velocity!
+        event.execute(user)
+        user.status.tick_timer(event.consume_time(user))
+        user.status.attenuate_velocity
         event = pick_next_event(user)
       end
+      user.status.save!
+      user.characters.map(&:save!)
       events.push(calibrate_event) if calibrate_event.present?
     end
     events
