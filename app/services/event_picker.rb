@@ -11,7 +11,7 @@ class EventPicker
     return BossBattleEvent.new(rank, @user.status.event_updated_at) if @user.status.at_boss_floor?
 
     rand = pick_event
-    case 2
+    case rand
     when 0
       return StairEvent.new(rank, @user.status.event_updated_at)
     when 1
@@ -24,6 +24,7 @@ class EventPicker
   end
 
   def pick_event
+    return 2 #TODO: イベント軽量化が終わったら戻す
     table = Constants.event.weight[@user.status.velocity_rank]
     seed = Random.random_number(table.sum)
     sum = 0

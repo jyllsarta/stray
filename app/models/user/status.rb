@@ -43,8 +43,8 @@ class User::Status < ApplicationRecord
 
     self.current_dungeon_id = dungeon_id
     self.current_dungeon_depth = depth
+    self.velocity = Constants.user.velocity.min
     self.save!
-    self.fluctuate_velocity!(-9999)
   end
 
   def tick_timer(seconds)
@@ -66,7 +66,8 @@ class User::Status < ApplicationRecord
 
   def manual_resurrect!
     ActiveRecord::Base.transaction do
-      user.characters.map(&:resurrect!)
+      user.characters.map(&:resurrect)
+      user.characters.map(&:save!)
       self.update!(resurrect_timer: Constants.resurrect_time_seconds)
     end
   end
@@ -75,8 +76,8 @@ class User::Status < ApplicationRecord
     self.resurrect_timer = 0
   end
 
-  def tick_resurrect_timer!(seconds)
-    self.increment!(:resurrect_timer, seconds)
+  def tick_resurrect_timer(seconds)
+    self.increment(:resurrect_timer, seconds)
   end
 
   def resurrect_progress
@@ -101,6 +102,10 @@ class User::Status < ApplicationRecord
   end
 
   def add_star!(amount)
+    self.increment!(:star, amount)
+  end
+
+  def add_star(amount)
     self.increment!(:star, amount)
   end
 

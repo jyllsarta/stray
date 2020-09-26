@@ -15,7 +15,7 @@ RSpec.describe ResurrectEvent, type: :model do
   describe "#detail" do
     subject { event.detail }
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     it "returns formatted hash" do
       expect(subject).to match_json_expression(
@@ -42,7 +42,10 @@ RSpec.describe ResurrectEvent, type: :model do
       user.characters.map{|uc| uc.update!(hp: 0)}
     end
 
-    subject { event.execute!(user) }
+    subject do
+      event.execute(user)
+      user.characters.map(&:save!)
+    end
     context "終わってない時" do
       it "タイマーが増えるだけ" do
         expect{subject}.to change(user.characters.spica.first, :hp).by(0)

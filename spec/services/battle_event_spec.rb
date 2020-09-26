@@ -16,7 +16,7 @@ RSpec.describe BattleEvent, type: :model do
   end
   describe "#detail" do
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.detail }
     it "returns formatted hash" do
@@ -30,7 +30,7 @@ RSpec.describe BattleEvent, type: :model do
   describe "#logs" do
     subject { event.logs }
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     it "returns formatted logs" do
       expect(subject).to match_json_expression(
@@ -43,16 +43,16 @@ RSpec.describe BattleEvent, type: :model do
   end
   describe "#execute!" do
     before do
-      allow(user.status).to receive(:start_resurrect_timer!)
-      allow_any_instance_of(Battle).to receive(:execute!)
-      allow_any_instance_of(Battle).to receive(:apply_damages!)
+      allow(user.status).to receive(:start_resurrect_timer)
+      allow_any_instance_of(Battle).to receive(:execute)
+      allow_any_instance_of(Battle).to receive(:apply_damages)
       allow_any_instance_of(Battle).to receive(:is_win).and_return(true)
     end
-    subject { event.execute!(user) }
+    subject { event.execute(user) }
     it "Battle.execute!他バトル関連メソッドが一回呼ばれてる" do
       subject
-      expect(event.instance_variable_get("@battle")).to have_received(:execute!).once
-      expect(event.instance_variable_get("@battle")).to have_received(:apply_damages!).once
+      expect(event.instance_variable_get("@battle")).to have_received(:execute).once
+      expect(event.instance_variable_get("@battle")).to have_received(:apply_damages).once
     end
     context "win" do
       before do
@@ -60,7 +60,7 @@ RSpec.describe BattleEvent, type: :model do
       end
       it "復活しない" do
         subject
-        expect(user.status).to_not have_received(:start_resurrect_timer!)
+        expect(user.status).to_not have_received(:start_resurrect_timer)
       end
       it "gains some exp" do
         expect{subject}.to change(user.characters.first, :exp)
@@ -88,7 +88,7 @@ RSpec.describe BattleEvent, type: :model do
       end
       it "復活開始" do
         subject
-        expect(user.status).to have_received(:start_resurrect_timer!).once
+        expect(user.status).to have_received(:start_resurrect_timer).once
       end
       it "no gain exp" do
         expect{subject}.to_not change(user.characters.first, :exp)

@@ -155,7 +155,7 @@ RSpec.describe User::Status, type: :model do
 
   describe "#tick_timer!" do
     let(:seconds){ 3600 }
-    subject { status.tick_timer!(seconds) }
+    subject { status.tick_timer(seconds) }
     it "proceeds event_updated_at for <seconds>" do
       expect{subject}.to change(status, :event_updated_at).by( seconds.seconds )
     end
@@ -220,8 +220,8 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#start_resurrect_timer!" do
-    subject { status.start_resurrect_timer! }
+  describe "#start_resurrect_timer" do
+    subject { status.start_resurrect_timer }
     before do
       status.update!(resurrect_timer: 123)
     end
@@ -230,15 +230,15 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#tick_resurrect_timer!" do
+  describe "#tick_resurrect_timer" do
     let(:seconds){1111}
-    subject { status.tick_resurrect_timer!(seconds) }
+    subject { status.tick_resurrect_timer(seconds) }
     it "increments seconds" do
       expect{subject}.to change(status, :resurrect_timer).by(seconds)
     end
   end
 
-  describe "#resurrect_progress!" do
+  describe "#resurrect_progress" do
     # 割り切れない数字だとテストがこけるので0 or 100でいいや
     subject { status.resurrect_progress }
     context "100%" do
@@ -336,7 +336,7 @@ RSpec.describe User::Status, type: :model do
   end
 
   describe "#fluctuate_velocity!" do
-    subject { status.fluctuate_velocity!(delta) }
+    subject { status.fluctuate_velocity(delta) }
     let(:delta){100}
     it "adds" do
       expect{subject}.to change(status, :velocity).by(delta)
@@ -361,7 +361,7 @@ RSpec.describe User::Status, type: :model do
     end
   end
   describe "#attenuate_velocity!" do
-    subject { status.attenuate_velocity! }
+    subject { status.attenuate_velocity }
     let(:delta){100}
     context "min" do
       it "not attenuate" do

@@ -24,10 +24,10 @@ class BossBattleEvent < Event
     ]
   end
 
-  def execute!(user)
+  def execute(user)
     @battle = Battle.new(user, boss(@rank))
-    @battle.execute!
-    @battle.apply_damages!
+    @battle.execute
+    @battle.apply_damages
     @battle.is_win ? process_win(user) : process_lose(user)
   end
 
@@ -40,14 +40,14 @@ class BossBattleEvent < Event
   def process_win(user)
     # ロックはイベント処理全体のほうで取られているのでこっちでは取得していない
     @received_star = user.status.dungeon.boss_reward_star_amount
-    user.status.add_star!(@received_star)
-    user.status.increment!(:current_dungeon_depth, 1)
+    user.status.add_star(@received_star)
+    user.status.increment(:current_dungeon_depth, 1)
     user.status.current_dungeon_progress.dig_to!(user.status.current_dungeon_depth)
   end
 
   def process_lose(user)
-    user.status.decrement!(:current_dungeon_depth, Constants.event.battle.boss_lose_rewind_floor)
-    user.status.start_resurrect_timer!
+    user.status.decrement(:current_dungeon_depth, Constants.event.battle.boss_lose_rewind_floor)
+    user.status.start_resurrect_timer
   end
 
   def log_messages

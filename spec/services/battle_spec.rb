@@ -15,8 +15,8 @@ RSpec.describe Battle, type: :model do
     end
   end
 
-  describe "#execute!, #is_win, #turn" do
-    subject { battle.execute! }
+  describe "#execute, #is_win, #turn" do
+    subject { battle.execute }
     context "lose" do
       let(:rank){ 1000 }
       it "both characters dies" do
@@ -37,12 +37,15 @@ RSpec.describe Battle, type: :model do
     end
   end
 
-  describe "#apply_damages!" do
+  describe "#apply_damages" do
     let(:rank){ 0 }
     before do
-      battle.execute!
+      battle.execute
     end
-    subject { battle.apply_damages! }
+    subject do
+      battle.apply_damages
+      user.characters.map(&:save!)
+    end
     it "applies damage to user db characters" do
       subject
       expect(user.characters.spica.first.hp).to eq(user.characters.spica.first.hp_max - battle.damages[0])

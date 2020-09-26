@@ -78,9 +78,9 @@ RSpec.describe User::Character, type: :model do
     end
   end
 
-  describe "#damage!" do
+  describe "#damage" do
     let(:character){ create(:user_character, user: user) }
-    subject { character.damage!(value) }
+    subject { character.damage(value) }
     context "hp > damage" do
       let(:value){ 10 }
       it "reduces hp" do
@@ -137,9 +137,9 @@ RSpec.describe User::Character, type: :model do
     end
   end
 
-  describe "#resurrect!" do
+  describe "#resurrect" do
     let(:character){ create(:user_character, user: user) }
-    subject { character.resurrect! }
+    subject { character.resurrect }
     before do
       character.update(hp: 0)
     end
@@ -215,10 +215,10 @@ RSpec.describe User::Character, type: :model do
     end
   end
 
-  describe "#gain_exp!" do
+  describe "#gain_exp" do
     let(:character){ create(:user_character, user: user) }
 
-    subject { character.gain_exp!(value) }
+    subject { character.gain_exp(value) }
     context "< threshold" do
       let(:value){ Constants.character.level_up_exp - 1 }
       it "just gains exp" do

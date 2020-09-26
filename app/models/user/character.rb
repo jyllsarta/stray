@@ -48,8 +48,8 @@ class User::Character < ApplicationRecord
     !alive?
   end
 
-  def resurrect!
-    self.update!(hp: self.hp_max)
+  def resurrect
+    self.hp = self.hp_max
   end
 
   def rank

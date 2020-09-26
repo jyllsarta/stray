@@ -25,9 +25,9 @@ class ResurrectEvent < Event
   def execute(user)
     @user = user
     # これもトランザクションはEventFacadeがやってるので不要(多重トランザクションはDBによってややこしい挙動をするので避ける)
-    @user.status.tick_resurrect_timer!(consume_time(user))
+    @user.status.tick_resurrect_timer(consume_time(user))
     @completed = @user.status.resurrect_completed?
-    @user.characters.each(&:resurrect!) if @completed
+    @user.characters.each(&:resurrect) if @completed
     @after_progress = @user.status.resurrect_progress
   end
 
