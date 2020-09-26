@@ -1,6 +1,6 @@
 <template lang="pug">
   .menu
-    .full_covered_window
+    .full_covered_window(@click.right.prevent="removeLastCard")
       transition(name="open_window")
         .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
           | メニュー
@@ -330,6 +330,13 @@ export default {
 
     selectCard(cardId){
       this.battle?.selectCard(cardId);
+    },
+
+    removeLastCard(){
+      if(this.battle.selectingCardIds.length === 0){
+        return;
+      }
+      this.battle?.selectCard(this.battle.selectingCardIds.slice(-1)[0]);
     },
 
     selectSkill(emittedObject){
