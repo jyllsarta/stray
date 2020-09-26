@@ -4,6 +4,7 @@ RSpec.describe ItemEvent, type: :model do
   before do
     # Item は IDにロジックが食い込んでるのでtest dbに適当に溜め込むわけにはいかない
     Item.delete_all
+    Item.reset_cache!
   end
   let(:user){create(:user)}
   let!(:status){create(:user_status, user: user)}

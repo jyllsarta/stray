@@ -37,4 +37,38 @@ RSpec.describe Item, type: :model do
       end
     end
   end
+
+  describe "#rarity_map" do
+    before do
+      Item.delete_all
+    end
+    subject { Item.rarity_map }
+    let!(:item){ create :item, rarity: 1}
+    let!(:item2){ create :item, rarity: 2}
+    it "returns string" do
+      expect(subject).to eq(
+        {
+          1 => [item.id],
+          2 => [item2.id]
+        }
+      )
+    end
+  end
+
+  describe "#indexed_hash" do
+    before do
+      Item.delete_all
+    end
+    subject { Item.indexed_hash }
+    let!(:item){ create :item, rarity: 1}
+    let!(:item2){ create :item, rarity: 2}
+    it "returns string" do
+      expect(subject).to eq(
+        {
+          item.id => item,
+          item2.id => item2,
+        }
+      )
+    end
+  end
 end

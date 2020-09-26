@@ -153,7 +153,7 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#tick_timer!" do
+  describe "#tick_timer" do
     let(:seconds){ 3600 }
     subject { status.tick_timer(seconds) }
     it "proceeds event_updated_at for <seconds>" do
@@ -286,6 +286,15 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :coin).by(amount)
     end
   end
+
+  describe "#add_coin" do
+    subject { status.add_coin(amount) }
+    let(:amount){100}
+    it "increments coin" do
+      expect{subject}.to change(status, :coin).by(amount)
+    end
+  end
+
   describe "#consume_coin!" do
     subject { status.consume_coin!(amount) }
     let(:amount){100}
@@ -314,6 +323,15 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :star).by(amount)
     end
   end
+
+  describe "#add_star" do
+    subject { status.add_star(amount) }
+    let(:amount){100}
+    it "increments star" do
+      expect{subject}.to change(status, :star).by(amount)
+    end
+  end
+
   describe "#consume_star!" do
     subject { status.consume_star!(amount) }
     let(:amount){100}
@@ -335,7 +353,7 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#fluctuate_velocity!" do
+  describe "#fluctuate_velocity" do
     subject { status.fluctuate_velocity(delta) }
     let(:delta){100}
     it "adds" do
@@ -360,7 +378,7 @@ RSpec.describe User::Status, type: :model do
       end
     end
   end
-  describe "#attenuate_velocity!" do
+  describe "#attenuate_velocity" do
     subject { status.attenuate_velocity }
     let(:delta){100}
     context "min" do

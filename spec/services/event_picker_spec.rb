@@ -49,4 +49,25 @@ RSpec.describe EventPicker, type: :model do
       end
     end
   end
+
+  describe "#pick_event" do
+    subject { picker.pick_event }
+    let(:velocity_rank){ 0 }
+    before do
+      allow(user).to receive(:velocity_rank).and_return(velocity_rank)
+      allow(Random).to receive(:random_number).and_return(random_result)
+    end
+    context "rand picks 0" do
+      let(:random_result){ 0 }
+      it "returns that" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "rand picks 2" do
+      let(:random_result){ 9999 }
+      it "returns that" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
 end

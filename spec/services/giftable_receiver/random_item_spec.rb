@@ -7,6 +7,10 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
   let(:id) { 125 }
   let(:amount){ 1 }
 
+  before do
+    Item.reset_cache!
+  end
+
   describe "#receive!" do
     subject{ receiver.receive!(user) }
 

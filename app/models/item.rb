@@ -33,6 +33,11 @@ class Item < ApplicationRecord
     end
   end
 
+  def self.reset_cache!
+    @_rarity_map = nil
+    @_indexed_hash = nil
+  end
+
   def self.rarity_map
     return @_rarity_map if @_rarity_map.present?
     hash = {}
