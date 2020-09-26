@@ -25,6 +25,10 @@ class User::Status < ApplicationRecord
   has_many :dungeon_progresses, primary_key: :user_id, foreign_key: :user_id
   has_many :items, primary_key: :user_id, foreign_key: :user_id
 
+  def memoized_items_hash
+    @_items_hash ||= items.index_by(&:item_id)
+  end
+
   def current_dungeon_progress
     # メモ化して使い回すことによって、同一イベント中では同じオブジェクトを掴み続けさせる。
     @_current_dungeon_progress ||= dungeon_progresses.find_or_create_by!(dungeon: dungeon)
@@ -108,7 +112,7 @@ class User::Status < ApplicationRecord
   end
 
   def add_star(amount)
-    self.increment!(:star, amount)
+    self.increment(:star, amount)
   end
 
   def consume_star!(amount)
@@ -117,6 +121,7 @@ class User::Status < ApplicationRecord
   end
 
   def fluctuate_velocity(delta)
+    @_velocity_rank = nil
     v = (self.velocity + delta).clamp(Constants.user.velocity.min, Constants.user.velocity.max)
     self.velocity = v
   end
@@ -129,7 +134,8 @@ class User::Status < ApplicationRecord
 
   # クライアントと定義を共有しているので注意
   def velocity_rank
-    case
+    return @_velocity_rank if @_velocity_rank.present?
+    @_velocity_rank = case
     when velocity < 150
       return 0
     when velocity < 200

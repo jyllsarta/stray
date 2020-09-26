@@ -8,7 +8,7 @@ class EventFacade
     user.with_lock do
       calibrate_event = needs_calibrate?(user) ? CalibrateEvent.new(Time.now, user.status.current_dungeon_rank).execute!(user) : nil
       event = pick_next_event(user)
-      while next_event_available?(user, event)
+       while next_event_available?(user, event)
         events.append(event)
         event.execute(user)
         user.status.tick_timer(event.consume_time(user))
@@ -18,6 +18,8 @@ class EventFacade
       user.status.save!
       user.characters.map(&:save!)
       user.status.current_dungeon_progress.save!
+      changed_items = user.status.memoized_items_hash.values.select{ |item| item.changed? || !item.persisted? }
+      User::Item.import!(changed_items, on_duplicate_key_update: [:rank])
       events.push(calibrate_event) if calibrate_event.present?
     end
     events

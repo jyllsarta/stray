@@ -5,7 +5,7 @@ class ItemEvent < Event
     @at = at
     @rank = rank
     @rarity = lot_item_rarity!
-    @item_id = lot_item!(@rank, @rarity).id
+    @item_id = lot_item!(@rank, @rarity)
     @done = false
   end
 
@@ -34,16 +34,16 @@ class ItemEvent < Event
     @_message
   end
 
-  def execute!(user)
-    user_item = user.items.find_or_initialize_by(item_id: @item_id)
+  def execute(user)
+    user_item = find_or_build_user_item(user, @item_id)
+    @user = user
     @_message = get_message(user_item)
 
     # 最大強化済ならコインが代わりに貰える
-    user.status.add_coin!(coin_amount) if user_item.rank >= Constants.item.default_max_rank
+    user.status.add_coin(coin_amount) if user_item.rank >= Constants.item.default_max_rank
 
-    user_item.rank = [user_item.rank + amount(user), Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank && user_item.persisted?
+    user_item.rank = [user_item.rank + amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank
     @rank = user_item.rank
-    user_item.save!
     @done = true
   end
 
@@ -53,12 +53,18 @@ class ItemEvent < Event
 
 private
 
+  def find_or_build_user_item(user, item_id)
+    item = user.status.memoized_items_hash[item_id]
+    return item if item
+    user.status.memoized_items_hash[item_id] = user.items.build(item_id: item_id)
+  end
+
   def coin_amount
     @rank
   end
 
   def item
-    @_item ||= Item.find(@item_id)
+    ::Item.indexed_hash[@item_id]
   end
 
   def lot_item_rarity!
@@ -71,24 +77,25 @@ private
   end
 
   def lot_item!(rank, rarity)
-    sample = ::Item.where(id: rank..(rank + Constants.event.item.id_range - 1)).where(rarity: rarity).sample
+    rarity_map = ::Item.rarity_map[rarity]
+    sample = rarity_map.select{|id| (rank..(rank + Constants.event.item.id_range - 1)).include?(id)}.sample
     return sample if sample.present?
 
     # サンプルの中に存在しないレアリティがピックされちゃった場合、それより前のid群からピックする
-    ::Item.where("id < #{rank}").where(rarity: rarity).order(id: :desc).limit(1).first
+    rarity_map.select{|id| id <= rank + Constants.event.item.id_range}.last
   end
 
-  def amount(user)
-    [user.status.velocity_rank, 1].max
+  def amount
+    [@user.status.velocity_rank, 1].max
   end
 
   def get_message(user_item)
-    if user_item.new_record?
+    if user_item.rank == 0
       "#{item.name}を拾った！"
-    elsif user_item.rank < Constants.item.default_max_rank && amount(user_item.user) > 1
-      "#{item.name}を+#{user_item.rank + amount(user_item.user)}に強化した！(まとめて+#{amount(user_item.user)}強化した！)"
+    elsif user_item.rank < Constants.item.default_max_rank && amount > 1
+      "#{item.name}を+#{user_item.rank + amount}に強化した！(まとめて+#{amount}強化した！)"
     elsif user_item.rank < Constants.item.default_max_rank
-      "#{item.name}を+#{user_item.rank + amount(user_item.user)}に強化した！"
+      "#{item.name}を+#{user_item.rank + amount}に強化した！"
     else
       "#{item.name}を拾った！(+#{Constants.item.default_max_rank}以上だったので#{coin_amount}コインに変換した！)"
     end

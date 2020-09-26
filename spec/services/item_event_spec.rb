@@ -23,7 +23,7 @@ RSpec.describe ItemEvent, type: :model do
   end
   describe "#detail" do
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.detail }
     it "returns formatted hash" do
@@ -37,7 +37,7 @@ RSpec.describe ItemEvent, type: :model do
   end
   describe "#logs" do
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.logs }
     it "returns formatted logs" do
@@ -50,7 +50,11 @@ RSpec.describe ItemEvent, type: :model do
     end
   end
   describe "#execute!" do
-    subject { event.execute!(user) }
+    subject do
+      event.execute(user)
+      changed_items = user.status.memoized_items_hash.values.select{ |item| item.changed? || !item.persisted? }
+      User::Item.import!(changed_items, on_duplicate_key_update: [:rank])
+    end
     context "アイテムを何も持ってない時" do
       it "アイテムが何かしら一個増える" do
         expect{subject}.to change(user.items, :count).by(1)
@@ -122,7 +126,10 @@ RSpec.describe ItemEvent, type: :model do
     end
   end
   describe "#amount" do
-    subject { event.send(:amount, user) }
+    before do
+      event.execute(user)
+    end
+    subject { event.send(:amount) }
 
     context "1" do
       before do

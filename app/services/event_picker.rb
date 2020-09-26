@@ -24,7 +24,6 @@ class EventPicker
   end
 
   def pick_event
-    return 0 #TODO: イベント軽量化が終わったら戻す
     table = Constants.event.weight[@user.status.velocity_rank]
     seed = Random.random_number(table.sum)
     sum = 0

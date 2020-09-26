@@ -9,7 +9,7 @@ class Event
   def logs
     raise NotImplementedError
   end
-  def execute!
+  def execute
     raise NotImplementedError
   end
   def consume_time

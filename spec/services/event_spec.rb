@@ -21,7 +21,7 @@ RSpec.describe Event, type: :model do
     end
   end
   describe "#execute!" do
-    subject { event.execute! }
+    subject { event.execute }
     it "raises" do
       expect{subject}.to raise_error NotImplementedError
     end
