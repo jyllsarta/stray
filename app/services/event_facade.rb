@@ -17,6 +17,7 @@ class EventFacade
       end
       user.status.save!
       user.characters.map(&:save!)
+      user.status.current_dungeon_progress.save!
       events.push(calibrate_event) if calibrate_event.present?
     end
     events

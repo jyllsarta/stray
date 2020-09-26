@@ -26,7 +26,8 @@ class User::Status < ApplicationRecord
   has_many :items, primary_key: :user_id, foreign_key: :user_id
 
   def current_dungeon_progress
-    dungeon_progresses.find_or_create_by!(dungeon: dungeon)
+    # メモ化して使い回すことによって、同一イベント中では同じオブジェクトを掴み続けさせる。
+    @_current_dungeon_progress ||= dungeon_progresses.find_or_create_by!(dungeon: dungeon)
   end
 
   def current_dungeon_rank
@@ -43,6 +44,7 @@ class User::Status < ApplicationRecord
 
     self.current_dungeon_id = dungeon_id
     self.current_dungeon_depth = depth
+    @_current_dungeon_progress = nil # current_dungeon_progressキャッシュが不正になるので手放す
     self.velocity = Constants.user.velocity.min
     self.save!
   end

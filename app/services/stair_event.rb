@@ -22,9 +22,9 @@ class StairEvent < Event
     ]
   end
 
-  def execute!(user)
-    user.status.increment!(:current_dungeon_depth, 1)
-    user.status.current_dungeon_progress.dig_to!(user.status.current_dungeon_depth)
+  def execute(user)
+    user.status.increment(:current_dungeon_depth, 1)
+    user.status.current_dungeon_progress.dig_to(user.status.current_dungeon_depth)
     @max_depth_dug = user.status.current_dungeon_progress.max_depth
   end
 

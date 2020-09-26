@@ -42,7 +42,7 @@ class BossBattleEvent < Event
     @received_star = user.status.dungeon.boss_reward_star_amount
     user.status.add_star(@received_star)
     user.status.increment(:current_dungeon_depth, 1)
-    user.status.current_dungeon_progress.dig_to!(user.status.current_dungeon_depth)
+    user.status.current_dungeon_progress.dig_to(user.status.current_dungeon_depth)
   end
 
   def process_lose(user)
