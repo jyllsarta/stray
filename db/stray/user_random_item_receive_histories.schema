@@ -1,0 +1,8 @@
+create_table "user_random_item_receive_histories", force: :cascade do |t|
+  t.belongs_to :user, null: false
+  t.integer    :item_id, null: false
+  t.datetime   :received_at, null: false
+  t.timestamps
+end
+
+add_index "user_random_item_receive_histories", [:user_id, :received_at], name: "receive_history"
