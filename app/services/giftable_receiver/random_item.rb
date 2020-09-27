@@ -19,16 +19,24 @@ class GiftableReceiver::RandomItem
   private
 
   def add_random_item!(user, rank)
-    item = lot_item!(rank)
+    item = lot_item!(user, rank)
+    user.random_item_receive_histories.create(item: item, received_at: Time.now)
     @user_item = user.items.find_or_initialize_by(item_id: item.id)
     @user_item.rank = [(rank - item.base_rank), @user_item.rank].max
     @user_item.save!
   end
 
-  def lot_item!(rank)
+  def lot_item!(user, rank)
     rarity = lot_rarity
+    items = available_items(user, rank, rarity)
+    return items.sample unless items.empty?
+    ::Item.where(rarity: rarity).order(id: :asc).first
+  end
+
+  def available_items(user, rank, rarity)
     rank = [rank, 100].max
-    ::Item.where(id: 1..(rank)).where(rarity: rarity).sample
+    recent_item_ids = user.random_item_receive_histories.recent.map(&:item_id)
+    ::Item.where.not(id: recent_item_ids).where("base_rank <= #{rank}").where(rarity: rarity)
   end
 
   def lot_rarity

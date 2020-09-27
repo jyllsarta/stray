@@ -25,6 +25,11 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
           expect(user.items.first.rank).to eq(125 - 30)
         end
       end
+      it "succeeds" do
+        aggregate_failures do
+          expect{ subject }.to change(user.random_item_receive_histories, :count).by(1)
+        end
+      end
     end
 
     context "already have strong item" do
@@ -63,6 +68,25 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
         it "5" do
           expect(subject).to eq(5)
         end
+      end
+    end
+  end
+
+  describe "available_items" do
+    before do
+      Item.delete_all
+    end
+    subject{ receiver.send(:available_items, user, rank, rarity) }
+
+    let!(:item2){ create(:item, rarity: rarity, base_rank: 100) }
+    let!(:other_rarity_item){ create(:item, rarity: 5, base_rank: 100) }
+    let!(:high_rank_item){ create(:item, rarity: rarity, base_rank: 101) }
+    let!(:rank){ 100 }
+    let!(:rarity){ 4 }
+
+    context "history not exist" do
+      it "selects" do
+        expect(subject.to_a).to eq([item2])
       end
     end
   end
