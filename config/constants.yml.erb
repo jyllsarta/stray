@@ -51,7 +51,7 @@ equip:
   max_count: 4
 
 event:
-  attenuate_velocity_per_event: 5
+  attenuate_velocity_per_event: 1
   attenuate_increase_threshold: 250
   item:
     max_rarity: 5
@@ -66,18 +66,18 @@ event:
     boss_additional_rank: 5
     boss_lose_rewind_floor: 2
     velocity_delta:
-      turn2:  60
-      turn3:  40
-      turn4:  20
-      turn5:   0
-      other: -10
+      turn2:  12
+      turn3:   9
+      turn4:   5
+      turn5:   3
+      other:  -1
     buster_level: ["SS","SS","SS","S","A","B","C"]
     default_buster_level: "C"
   weight: [
     # 階段 : アイテム : 戦闘 (event_picker で対応を定義している)
     [2500, 3750, 3750], # 100 ~ 149
     [3000, 3500, 3500], # 150 ~ 199
-    [4000, 3000, 3000], # 200 ~ 299
+    [4000, 3500, 2500], # 200 ~ 299
     [6000, 2000, 2000], # 300 ~ 350
   ]
 
