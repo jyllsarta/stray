@@ -46,4 +46,24 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
       expect(subject.class).to eq(String) # ランダムアイテムなので、エラーが出ていなければ特にこだわらないことにする
     end
   end
+
+  describe "lot_rarity" do
+    subject{ receiver.send(:lot_rarity) }
+    context "4" do
+      before do
+        allow(Random).to receive(:random_number).and_return(1000)
+      end
+      it "4" do
+        expect(subject).to eq(4)
+      end
+      context "5" do
+        before do
+          allow(Random).to receive(:random_number).and_return(999)
+        end
+        it "5" do
+          expect(subject).to eq(5)
+        end
+      end
+    end
+  end
 end
