@@ -32,7 +32,7 @@
           :right-side="true"
         )
         .enemy_list.scrollable
-          .enemy.selectable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
+          .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
               | {{enemy.name}}
             .rank
