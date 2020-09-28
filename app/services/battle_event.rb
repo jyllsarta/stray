@@ -26,6 +26,7 @@ class BattleEvent < Event
   end
 
   def execute(user)
+    @user = user
     @battle = Battle.new(user, lot_enemies!(@rank))
     @battle.execute
     @battle.apply_damages

@@ -19,6 +19,7 @@ RSpec.describe EventFacade, type: :model do
       # Picker の spec は別のところに書いてあるので、ここでは階段イベントを吐き出すbotになってもらう
       allow_any_instance_of(EventPicker).to receive(:pick!).and_return(event)
       allow(event).to receive(:execute)
+      allow(event).to receive(:save_status)
     end
     context "no event" do
       before do

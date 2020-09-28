@@ -22,7 +22,7 @@ class CalibrateEvent < Event
     ]
   end
 
-  def execute!(user)
+  def execute(user)
     @user = user
     delta_seconds = [(user.status.event_remain_time(@at) - Constants.max_event_consume_time_seconds), Constants.max_charge_absent_time_seconds].min
     @coin = (delta_seconds * (@rank.to_f / 10)).to_i
