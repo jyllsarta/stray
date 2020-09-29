@@ -7,7 +7,9 @@ import store from './packs/store.ts'
 
 export default {
   data: function () {
-    return {};
+    return {
+
+    };
   },
   props: {
     rootRef: Object,
@@ -17,21 +19,35 @@ export default {
     // イベント発生時の処理
     "$store.state.event.events": {
       handler: function(events){
-        if(events.filter(event=>!event.resolved).length > 0){
-          this.showEventIllust(events.slice(-1)[0]);
+        const lastEvent = events.slice(-1)[0];
+        if(this.$store.state.event.eventsQueue.length > 0){
+          this.updatePartialUserStatus();
+          return;
         }
-        // 再生した中にバトルイベントがあったら全部終わったあとにユーザデータを再ロードする
-        const hasBattleEvent = events.filter(event=>!event.resolved).filter(event=>event.type === 'battle').length > 0;
-        events.filter(event=>!event.resolved).forEach((event)=>{
-          this.processEvent(event);
-        });
-        if(hasBattleEvent){
-          this.$store.dispatch("user/fetchUserModel");
+        this.showEventIllust(lastEvent);
+        this.processEvent(lastEvent);
+      },
+    },
+    // イベント発生時の処理
+    "$store.state.event.eventsQueue": {
+      handler: function(eventsQueue){
+        if(eventsQueue.length > 0){
+          setTimeout(this.pollEventQueue, 50);
         }
       },
     }
   },
+  mounted(){
+  },
   methods: {
+    updatePartialUserStatus(){
+      console.log("nop! TODO!");
+    },
+    pollEventQueue(){
+      if(this.$store.state.event.eventsQueue.length > 0){
+        this.$store.commit("event/dequeueEvent");
+      }
+    },
     showEventIllust(event){
       if(event.type === 'calibrate'){
         return;

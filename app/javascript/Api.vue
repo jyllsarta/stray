@@ -96,7 +96,8 @@ export default {
           else if(!this.$store.state.event.version){
             this.$store.commit("event/setVersion", results.data.version);
           }
-          this.$store.commit("event/updateLatestEvents", results.data);
+          //this.$store.commit("event/updateLatestEvents", results.data);
+          this.$store.commit("event/queueEvents", results.data);
           this.$store.commit("user/updateUserVelocity", results.data.after_velocity);
         })
         .catch((error) => {

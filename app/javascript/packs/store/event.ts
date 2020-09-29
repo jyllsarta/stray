@@ -6,6 +6,7 @@ export default {
   state: {
     next_event_at: 123123123,
     events: [],
+    eventsQueue: [],
     version: null,
   },
   getters: {
@@ -33,7 +34,13 @@ export default {
         }
         state.events = state.events.concat([event]).slice(-Constants.log.maxLength);
       }
-
+    },
+    queueEvents(state, payload) {
+      state.next_event_at = payload.next_event_at;
+      state.eventsQueue = state.eventsQueue.concat(payload.events);
+    },
+    dequeueEvent(state){
+      state.events = state.events.concat([state.eventsQueue.shift()]).slice(-Constants.log.maxLength);
     },
     addEventLog(state, payload){
       const manualEvent = {
