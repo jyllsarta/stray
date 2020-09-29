@@ -20,8 +20,8 @@ export default {
     "$store.state.event.events": {
       handler: function(events){
         const lastEvent = events.slice(-1)[0];
+        this.updatePartialUserStatus(lastEvent.status);
         if(this.$store.state.event.eventsQueue.length > 0){
-          this.updatePartialUserStatus();
           return;
         }
         this.showEventIllust(lastEvent);
@@ -40,8 +40,8 @@ export default {
   mounted(){
   },
   methods: {
-    updatePartialUserStatus(){
-      console.log("nop! TODO!");
+    updatePartialUserStatus(partialStatus){
+      this.$store.commit("user/updateUserModelEventPartial", partialStatus);
     },
     pollEventQueue(){
       if(this.$store.state.event.eventsQueue.length > 0){
@@ -90,7 +90,6 @@ export default {
       }
     },
     resolveBattleEvent(event){
-      this.$store.commit("user/applyBattleDamage", event.detail.damages);
     },
     resolveStairEvent(event){
       this.$store.commit("user/incrementCurrentDungeonDepth");

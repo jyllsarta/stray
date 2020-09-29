@@ -113,6 +113,16 @@ export default {
     updateUserModel(state, payload) {
       Object.assign(state, payload);
     },
+    // ステート更新系
+    updateUserModelEventPartial(state, payload) {
+      state.characters.spica.hp = payload.characters.spica.hp;
+      state.characters.spica.exp = payload.characters.spica.exp;
+      state.characters.tirol.hp = payload.characters.tirol.hp;
+      state.characters.tirol.exp = payload.characters.tirol.exp;
+      state.status.coin = payload.coin;
+      state.status.star = payload.star;
+      state.status.current_dungeon_depth = payload.current_dungeon_depth;
+    },
     updateItemRank(state, payload) {
       state.items[payload.item_id].rank = payload.rank;
     },
