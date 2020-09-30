@@ -46,16 +46,19 @@ RSpec.describe Event, type: :model do
         characters: {
           spica: {
             hp: Integer,
+            hp_max: Integer,
             exp: Integer
           },
           tirol: {
-            hp: Integer, 
+            hp: Integer,
+            hp_max: Integer,
             exp: Integer
           }
         },
         current_dungeon_depth: Integer,
         coin: Integer, 
         star: Integer,
+        velocity: Integer,
       )
     end
   end

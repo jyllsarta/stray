@@ -24,16 +24,19 @@ class Event
         spica: {
           # TODO: preload の結果を生かしつつ [0][1] のアクセスをさせない安全な方法を考える
           hp: @user.characters[0].hp,
-          exp: @user.characters[0].exp,          
+          hp_max: @user.characters[0].hp_max,
+          exp: @user.characters[0].exp,
         },
         tirol: {
           hp: @user.characters[1].hp,
-          exp: @user.characters[1].exp,          
+          hp_max: @user.characters[1].hp_max,
+          exp: @user.characters[1].exp,
         },
       },
       current_dungeon_depth: @user.status.current_dungeon_depth,
       coin: @user.status.coin,
-      star: @user.status.star
+      star: @user.status.star,
+      velocity: @user.status.velocity
     }
   end
 end

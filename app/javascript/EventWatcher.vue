@@ -20,7 +20,10 @@ export default {
     "$store.state.event.events": {
       handler: function(events){
         const lastEvent = events.slice(-1)[0];
-        this.updatePartialUserStatus(lastEvent.status);
+        // キャリブレイベとかはstatusないかも
+        if(lastEvent.status){
+          this.updatePartialUserStatus(lastEvent.status);
+        }
         if(this.$store.state.event.eventsQueue.length > 0){
           return;
         }
