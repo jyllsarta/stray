@@ -45,7 +45,8 @@ export default {
       const event = state.eventsQueue.shift();
       // 回復ログは最新の一件のみを保存する
       if(event.type === 'resurrect' && state.events.slice(-1)?.pop()?.type === 'resurrect'){
-        state.events.pop();
+        state.events[state.events.length -1].logs[0].message = event.logs[0].message;
+        return;
       }
       state.events = state.events.concat([event]).slice(-Constants.log.maxLength);
     },

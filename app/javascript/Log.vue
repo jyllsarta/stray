@@ -41,9 +41,8 @@ export default {
     }
   },
   watch: {
-    "logs": {
-      handler: function(newVal, oldVal){
-        const count = newVal.length - oldVal.length;
+    "$store.state.event.events": {
+      handler: function(){
         Vue.nextTick(()=>{
           //大雑把にだいたい画面の下の方にいたら下限をキープする
           if(this.$refs.log.scrollHeight - this.$refs.log.scrollTop < 600){
