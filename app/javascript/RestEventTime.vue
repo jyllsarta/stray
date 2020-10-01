@@ -19,7 +19,6 @@ export default {
   store,
   computed: {
     restSeconds(){
-      console.log(this.$store.getters["event/pseudoCurrentTime"]);
       return Math.floor(((new Date() - this.$store.getters["event/pseudoCurrentTime"]) / 1000));
     }
   },

@@ -1,10 +1,9 @@
 <template lang="pug">
   .header.window
-    .clock.header_content
-      .label
-        | 時刻
-      .content
-        | {{month}}月{{date}}日 {{hours}}:{{minutes}}:{{seconds}}
+    .clock.header_content(v-if="!$store.getters['event/isDequeueMode']")
+      CurrentClock
+    .clock.header_content(v-if="$store.getters['event/isDequeueMode']")
+      PseudoClock
     .until_next_event.header_content(v-if="!$store.getters['event/isDequeueMode']")
       UntilNextEvent
     .rest_event_time.header_content(v-if="$store.getters['event/isDequeueMode']")
@@ -42,23 +41,21 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import UntilNextEvent from './UntilNextEvent'
 import RestEventTime from "./RestEventTime.vue";
+import CurrentClock from "./CurrentClock.vue";
+import PseudoClock from "./PseudoClock.vue";
 
 export default {
   components: {
+    PseudoClock,
+    CurrentClock,
     RestEventTime,
     UntilNextEvent,
   },
   data: function () {
     return {
-      month: "0",
-      date: "0",
-      hours: "0",
-      minutes: "0",
-      seconds: "0",
     };
   },
   mounted() {
-    setInterval(this.tick, 1000);
   },
   store,
   computed: {
@@ -73,17 +70,6 @@ export default {
     }
   },
   methods: {
-    tick(){
-      const now = new Date();
-      this.month = now.getMonth() + 1;
-      this.date = now.getDate();
-      this.hours = this.format(now.getHours());
-      this.minutes = this.format(now.getMinutes());
-      this.seconds = this.format(now.getSeconds());
-    },
-    format(time){
-      return ("00" + time).slice(-2)
-    }
   }
 }
 </script>
