@@ -1,7 +1,7 @@
 <template lang="pug">
   .log.window(ref="log", :class="foldClass" @click="folded = !folded")
     transition-group(name="show-in")
-      .item(v-for="log in logs", :key="'' + log.pseudo_id + log.at")
+      .item(v-for="log in logs", :key="log.pseudo_id")
         .at
           | {{composeTime(log.at)}}
         .content

@@ -122,7 +122,7 @@ RSpec.describe ItemEvent, type: :model do
         allow(user.status).to receive(:event_wait_reduction_seconds).and_return(5)
       end
       it "returns minimum value" do # テスト環境なので5 → 4 で下限に到達
-        expect(subject).to eq(4)
+        expect(subject).to eq(Constants.default_event_interval_seconds - 5)
       end
     end
   end

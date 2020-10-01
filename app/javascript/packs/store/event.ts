@@ -50,6 +50,7 @@ export default {
       if(event.type === 'resurrect' && state.events.slice(-1)?.pop()?.type === 'resurrect'){
         if(state.eventsQueue.length > 0){
           state.events[state.events.length -1].logs[0].message = event.logs[0].message;
+          state.events[state.events.length -1].logs[0].at = event.logs[0].at;
           return;
         }
         else{

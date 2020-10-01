@@ -35,7 +35,7 @@ export default {
     "$store.state.event.eventsQueue": {
       handler: function(eventsQueue){
         if(eventsQueue.length > 0){
-          setTimeout(this.pollEventQueue, 50);
+          setTimeout(this.pollEventQueue, 20);
         }
       },
     }
