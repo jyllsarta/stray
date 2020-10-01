@@ -47,11 +47,13 @@ RSpec.describe Event, type: :model do
           spica: {
             hp: Integer,
             hp_max: Integer,
+            level: Integer,
             exp: Integer
           },
           tirol: {
             hp: Integer,
             hp_max: Integer,
+            level: Integer,
             exp: Integer
           }
         },
