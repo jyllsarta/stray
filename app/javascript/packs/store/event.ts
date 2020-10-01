@@ -16,7 +16,19 @@ export default {
         return false;
       }
       return state.version != version;
-    }
+    },
+    // ただ1~2個イベント拾っただけの時は出さない(ふたつとるのは端末時間的にあり得るので余裕を持って閾値は3)
+    isDequeueMode: (state) =>  {
+      return state.eventsQueue.length >= 3;
+    },
+    // 最後に消化したイベントでの時刻
+    pseudoCurrentTime: (state) =>  {
+      const lastEvent = state.events.slice(-1)[0];
+      if(!lastEvent){
+        return new Date();
+      }
+      return new Date(lastEvent.logs[0].at * 1000);
+    },
   },
   mutations: {
     setVersion(state, payload) {
