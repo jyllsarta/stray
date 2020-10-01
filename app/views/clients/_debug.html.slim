@@ -3,6 +3,10 @@ p
 = form_tag max_event_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag 'イベント最大チャージ'
+= form_tag some_event_debug_index_path
+  = text_field_tag :seconds, 600
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag '秒分のイベントチャージ'
 = form_tag get_all_items_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag 'アイテム全部ゲット'

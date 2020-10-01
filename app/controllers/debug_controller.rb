@@ -6,6 +6,11 @@ class DebugController < ApplicationController
     head 204
   end
 
+  def some_event
+    current_user.status.update!(event_updated_at: current_user.status.event_updated_at - (params[:seconds]).to_i)
+    head 204
+  end
+
   def get_all_items
     current_user.debug_get_all_items!
     redirect_to clients_path
