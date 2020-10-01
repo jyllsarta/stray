@@ -52,7 +52,7 @@ export default {
       }
     },
     showEventIllust(event){
-      if(event.type === 'calibrate'){
+      if(event.type === 'calibrate' || event.type === 'custom'){
         return;
       }
       this.$store.commit("event_illust/showEventIllust", event.type);
@@ -75,14 +75,14 @@ export default {
           this.resolveBossBattleEvent(event);
           break;
         case "calibrate":
-          event.logs[0].pseudo_id = Math.floor(Math.random() * 1000000000);
           console.log("pass!"); // ログにだけ流れればそれでOK
+          break;
+        case "custom":
           break;
         default:
           console.warn(`undefined event type: ${event.type}`);
           break;
       }
-      event.resolved = true;
     },
     resolveItemEvent(event){
       if(this.$store.state.user.items[event.detail.id]){
@@ -96,7 +96,6 @@ export default {
       // かつてキャラモデルを取り直してたけど、部分的ユーザモデル更新で不要になった
     },
     resolveStairEvent(event){
-      this.$store.commit("user/incrementCurrentDungeonDepth");
       this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
       setTimeout(()=>{
         this.rootRef.field.reseedScene();

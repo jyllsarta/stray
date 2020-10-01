@@ -97,7 +97,6 @@ export default {
             this.$store.commit("event/setVersion", results.data.version);
           }
           this.$store.commit("event/queueEvents", results.data);
-          this.$store.commit("user/updateUserVelocity", results.data.after_velocity);
         })
         .catch((error) => {
           console.warn(error.response);

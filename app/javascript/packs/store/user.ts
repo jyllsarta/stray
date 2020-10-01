@@ -91,9 +91,6 @@ export default {
         state.equips[characterName] = payload[characterName];
       });
     },
-    incrementCurrentDungeonDepth(state){
-      state.status.current_dungeon_depth++;
-    },
     updateCurrentDungeonProgress(state, payload){
       if(!state.dungeon_progresses[state.status.current_dungeon_id]){
         console.log("マスタ読み込み前なので処理を中断します");
@@ -126,9 +123,6 @@ export default {
     },
     updateUserCoin(state, payload) {
       state.status.coin = payload;
-    },
-    updateUserVelocity(state, payload) {
-      state.status.velocity = payload;
     },
   },
   actions: {
