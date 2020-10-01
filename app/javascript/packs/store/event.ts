@@ -25,22 +25,17 @@ export default {
     setNextEventAtTo(state, payload) {
       state.next_event_at = payload;
     },
-    updateLatestEvents(state, payload) {
-      state.next_event_at = payload.next_event_at;
-      for(let event of payload.events){
-        // 回復ログは最新の一件のみを保存する
-        if(event.type === 'resurrect' && state.events.slice(-1)?.pop()?.type === 'resurrect'){
-          state.events.pop();
-        }
-        state.events = state.events.concat([event]).slice(-Constants.log.maxLength);
-      }
-    },
     queueEvents(state, payload) {
       state.next_event_at = payload.next_event_at;
       state.eventsQueue = state.eventsQueue.concat(payload.events);
     },
     dequeueEvent(state){
-      state.events = state.events.concat([state.eventsQueue.shift()]).slice(-Constants.log.maxLength);
+      const event = state.eventsQueue.shift();
+      // 回復ログは最新の一件のみを保存する
+      if(event.type === 'resurrect' && state.events.slice(-1)?.pop()?.type === 'resurrect'){
+        state.events.pop();
+      }
+      state.events = state.events.concat([event]).slice(-Constants.log.maxLength);
     },
     addEventLog(state, payload){
       const manualEvent = {
