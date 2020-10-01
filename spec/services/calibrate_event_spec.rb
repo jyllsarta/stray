@@ -51,7 +51,7 @@ RSpec.describe ResurrectEvent, type: :model do
 
       context "イベント溜まってる時" do
         before do
-          user.status.update!(event_updated_at: time.ago(3.hours) )
+          user.status.update!(event_updated_at: time.ago(Constants.max_event_consume_time_seconds + 1000) )
         end
 
         it "それなりに何か起こる" do
