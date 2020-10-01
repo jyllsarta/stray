@@ -105,18 +105,18 @@ export default {
   }
 
   .show-in-enter-active {
-    transition: all .4s;
+    transition: all .3s;
   }
   .show-in-leave-active {
-    transition: all .4s;
+    transition: all .3s;
   }
   .show-in-enter{
     transform: translateX(-30px);
-    opacity: 0;
+    opacity: 0.5;
   }
   .show-in-leave-to{
     transform: translateX(-30px);
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 </style>
