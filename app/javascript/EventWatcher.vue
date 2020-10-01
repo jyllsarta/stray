@@ -93,6 +93,7 @@ export default {
       }
     },
     resolveBattleEvent(event){
+      // かつてキャラモデルを取り直してたけど、部分的ユーザモデル更新で不要になった
     },
     resolveStairEvent(event){
       this.$store.commit("user/incrementCurrentDungeonDepth");
@@ -107,8 +108,7 @@ export default {
       }
     },
     resolveBossBattleEvent(event){
-      // 色々更新されちゃうのでもうモデル取り直しちゃお...
-      this.$store.dispatch('user/fetchUserModel');
+      // かつてキャラモデルを取り直してたけど、部分的ユーザモデル更新で不要になった
     },
   },
 }

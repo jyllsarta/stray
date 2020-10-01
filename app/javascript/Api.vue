@@ -135,6 +135,10 @@ export default {
     // storeのイベントタイマーを監視して、0秒になったタイミングで追加のイベントを取得しに行く
     "$store.state.timer.next_event": {
       handler: function(newVal, oldVal){
+        if(this.$store.getters['event/isDequeueMode']){
+          this.retryFetchLatestEvents();
+          return;
+        }
         if(oldVal > 0 && newVal == 0){
           this.fetchLatestEvents();
         }
