@@ -53,7 +53,7 @@ private
 
   def calc_damage(actor, target)
     diff_damage = [actor.atk - target.def, 0].max
-    rank_damage = [actor.rank / 5, 1].max
+    rank_damage = [actor.rank / 2, 1].max
     diff_damage + rank_damage
   end
 
