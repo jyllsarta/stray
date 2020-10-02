@@ -46,6 +46,11 @@ export default {
   },
   methods: {
     resurrect(){
+      if(this.$store.getters['event/isDequeueMode']){
+        console.log("イベント再生中なので回復はしません");
+        return;
+      }
+
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/resurrect`;
       ax.post(path)
