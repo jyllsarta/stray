@@ -7,6 +7,7 @@ export default {
     next_event_at: 123123123,
     events: [],
     eventsQueue: [],
+    eventsQueueOriginalSize: 0,
     version: null,
   },
   getters: {
@@ -43,6 +44,7 @@ export default {
         event.logs[0].pseudo_id = Math.floor(Math.random() * 1000000000);
       }
       state.eventsQueue = state.eventsQueue.concat(payload.events);
+      state.eventsQueueOriginalSize = payload.events.length;
     },
     dequeueEvent(state){
       const event = state.eventsQueue.shift();

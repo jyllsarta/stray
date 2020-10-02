@@ -49,6 +49,9 @@ export default {
     pollEventQueue(){
       if(this.$store.state.event.eventsQueue.length > 0){
         this.$store.commit("event/dequeueEvent");
+        if(this.$store.state.event.eventsQueue.length == 0 && this.$store.state.event.eventsQueueOriginalSize >= 2){
+          this.$store.dispatch('user/fetchUserModel');
+        }
       }
     },
     showEventIllust(event){
