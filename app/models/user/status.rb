@@ -8,6 +8,7 @@
 #  event_updated_at      :datetime
 #  resurrect_timer       :integer          default(0), not null
 #  star                  :integer          default(0), not null
+#  velocity              :integer          default(100), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
@@ -16,14 +17,21 @@
 
 class User::Status < ApplicationRecord
   class CannotSwitchDungeon < StandardError; end
+  class InsufficientStar < StandardError; end
+  class InsufficientCoin < StandardError; end
 
   belongs_to :user
   belongs_to :dungeon, foreign_key: :current_dungeon_id
   has_many :dungeon_progresses, primary_key: :user_id, foreign_key: :user_id
   has_many :items, primary_key: :user_id, foreign_key: :user_id
 
+  def memoized_items_hash
+    @_items_hash ||= items.index_by(&:item_id)
+  end
+
   def current_dungeon_progress
-    dungeon_progresses.find_or_create_by!(dungeon: dungeon)
+    # メモ化して使い回すことによって、同一イベント中では同じオブジェクトを掴み続けさせる。
+    @_current_dungeon_progress ||= dungeon_progresses.find_or_create_by!(dungeon: dungeon)
   end
 
   def current_dungeon_rank
@@ -40,12 +48,13 @@ class User::Status < ApplicationRecord
 
     self.current_dungeon_id = dungeon_id
     self.current_dungeon_depth = depth
+    @_current_dungeon_progress = nil # current_dungeon_progressキャッシュが不正になるので手放す
+    self.velocity = Constants.user.velocity.min
     self.save!
   end
 
-  def tick_timer!(seconds)
+  def tick_timer(seconds)
     self.event_updated_at += seconds
-    save!
   end
   
   def next_event_at
@@ -63,17 +72,18 @@ class User::Status < ApplicationRecord
 
   def manual_resurrect!
     ActiveRecord::Base.transaction do
-      user.characters.map(&:resurrect!)
+      user.characters.map(&:resurrect)
+      user.characters.map(&:save!)
       self.update!(resurrect_timer: Constants.resurrect_time_seconds)
     end
   end
 
-  def start_resurrect_timer!
-    self.update!(resurrect_timer: 0)
+  def start_resurrect_timer
+    self.resurrect_timer = 0
   end
 
-  def tick_resurrect_timer!(seconds)
-    self.increment!(:resurrect_timer, seconds)
+  def tick_resurrect_timer(seconds)
+    self.increment(:resurrect_timer, seconds)
   end
 
   def resurrect_progress
@@ -88,7 +98,12 @@ class User::Status < ApplicationRecord
     self.increment!(:coin, amount)
   end
 
+  def add_coin(amount)
+    self.increment(:coin, amount)
+  end
+
   def consume_coin!(amount)
+    raise InsufficientCoin if coin < amount
     self.decrement!(:coin, amount)
   end
 
@@ -96,8 +111,40 @@ class User::Status < ApplicationRecord
     self.increment!(:star, amount)
   end
 
+  def add_star(amount)
+    self.increment(:star, amount)
+  end
+
   def consume_star!(amount)
+    raise InsufficientStar if star < amount
     self.decrement!(:star, amount)
+  end
+
+  def fluctuate_velocity(delta)
+    @_velocity_rank = nil
+    v = (self.velocity + delta).clamp(Constants.user.velocity.min, Constants.user.velocity.max)
+    self.velocity = v
+  end
+
+  def attenuate_velocity
+    delta = Constants.event.attenuate_velocity_per_event
+    delta *= 2 if self.velocity > Constants.event.attenuate_increase_threshold
+    self.fluctuate_velocity(-delta)
+  end
+
+  # クライアントと定義を共有しているので注意
+  def velocity_rank
+    return @_velocity_rank if @_velocity_rank.present?
+    @_velocity_rank = case
+    when velocity < 150
+      return 0
+    when velocity < 200
+      return 1
+    when velocity < 300
+      return 2
+    else
+      return 3
+    end
   end
 
   def max_item_rank
@@ -106,7 +153,7 @@ class User::Status < ApplicationRecord
 
   def event_wait_reduction_seconds
     # イベント短縮レリックいっこにつき2秒短縮
-    user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
+    @_event_wait_reduction_seconds ||= user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
   def quest_battle_additional_hp

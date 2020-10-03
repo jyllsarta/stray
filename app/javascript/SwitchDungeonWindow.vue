@@ -10,7 +10,7 @@
         | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
       .body
         .dungeon_list_tab
-          .dungeon.hoverable(
+          .dungeon.hoverable.selectable(
             v-for="dungeon in visibleDungeons"
             @click="selectDungeon(dungeon.id)"
             :class="dungeonClass(dungeon.id)"
@@ -29,7 +29,7 @@
             .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
-              NumeratableNumber(:number="parseInt(selectingDungeonDepth)", :speed="0.4")
+              input.floor(v-model="selectingDungeonDepth" @blur="onFloorBlur()")
               .f
                 | F
             .go_to_floor_label
@@ -40,7 +40,6 @@
               NumeratableNumber(:number="currentDungeonMaxDepth", :speed="0.4")
               .f
                 | F
-
             .descriptions
               .dungeon_title(:key="selectingDungeon.name")
                 | {{selectingDungeon.name}}
@@ -75,7 +74,7 @@ export default {
   store,
   mounted(){
     this.selectDungeon(this.$store.state.user.status.current_dungeon_id);
-    this.selectingDungeonDepth = this.$store.state.user.status.current_dungeon_depth;
+    this.selectingDungeonDepth = this.$store.state?.user?.status?.current_dungeon_depth || 1;
   },
   computed: {
     visibleDungeons(){
@@ -150,7 +149,11 @@ export default {
           this.$store.commit("event/addEventLog", {message: `${this.$store.state.masterdata.dungeons[this.selectingDungeonId].name}に移動した！`});
         }
       );
-    }
+    },
+    onFloorBlur(){
+      this.selectingDungeonDepth = parseInt(this.selectingDungeonDepth) || 1;
+      this.selectingDungeonDepth = Math.min(Math.max(this.selectingDungeonDepth, 1), this.currentDungeonMaxDepth);
+    },
   }
 }
 </script>
@@ -171,13 +174,6 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
-    .selected{
-      background-color: $gray3;
-      border: 1px solid $yellow;
-    }
-    .not_selected{
-      border: 1px solid transparent;
-    }
     .dungeon{
       margin: $thin_space;
       padding: $space;
@@ -257,6 +253,11 @@ export default {
         right: 120px;
         font-size: $font-size-large;
         display: flex;
+        .floor{
+          color: $white;
+          width: 110px;
+          text-align: right;
+        }
       }
       .go_to_floor_label{
         position: absolute;

@@ -15,7 +15,7 @@ RSpec.describe StairEvent, type: :model do
   describe "#detail" do
     subject { event.detail }
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     it "returns formatted hash" do
       expect(subject).to match_json_expression({
@@ -38,7 +38,7 @@ RSpec.describe StairEvent, type: :model do
     before do
       user.status.update!(current_dungeon_id: dungeon.id)
     end
-    subject { event.execute!(user) }
+    subject { event.execute(user) }
     it "階層が1増える" do
       expect{subject}.to change(user.status, :current_dungeon_depth).by(1)
     end

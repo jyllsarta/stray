@@ -5,6 +5,7 @@
 <script lang="ts">
 import axios from "axios";
 import ax from "./packs/axios_default_setting.ts";
+import Constants from "./packs/constants.ts";
 
 export default {
   data: function () {
@@ -51,11 +52,11 @@ export default {
     },
     loadUserData(){
       if(localStorage.access_token){
-        console.log("fetch user model")
+        console.log("fetch user model");
         this.fetchUserModel();
       }
       else{
-        console.log("sign up")
+        console.log("sign up");
         this.signUp();
       }
     },
@@ -64,7 +65,6 @@ export default {
       axios.get(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.$store.commit("masterdata/updateMasterData", results.data);
         })
         .catch((error) => {
@@ -90,7 +90,13 @@ export default {
           "X-SessionStartedAt": this.session_started_at,
         }})
         .then((results) => {
-          this.$store.commit("event/updateLatestEvents", results.data);
+          if(this.$store.getters["event/isVersionChanged"](results.data.version)){
+            this.$store.commit("event/addEventLog", {message: `新Ver${results.data.version}が公開されています！\nCtrl+Shift+Rで更新してね`});
+          }
+          else if(!this.$store.state.event.version){
+            this.$store.commit("event/setVersion", results.data.version);
+          }
+          this.$store.commit("event/queueEvents", results.data);
         })
         .catch((error) => {
           console.warn(error.response);
@@ -108,7 +114,6 @@ export default {
       ax.post(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
           ax.defaults.
@@ -117,6 +122,7 @@ export default {
             accept: "application/json",
           } // axios_default_setting を読み込み直す処理を入れるのが理想
           this.fetchUserModel();
+          this.$store.commit("event/addEventLog", {message: Constants.welcomeMessage});
         })
         .catch((error) => {
           console.warn(error.response);
@@ -128,6 +134,10 @@ export default {
     // storeのイベントタイマーを監視して、0秒になったタイミングで追加のイベントを取得しに行く
     "$store.state.timer.next_event": {
       handler: function(newVal, oldVal){
+        if(this.$store.getters['event/isDequeueMode']){
+          this.retryFetchLatestEvents();
+          return;
+        }
         if(oldVal > 0 && newVal == 0){
           this.fetchLatestEvents();
         }

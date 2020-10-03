@@ -1,15 +1,13 @@
 <template lang="pug">
   .header.window
-    .clock.header_content
-      .label
-        | 時刻
-      .content
-        | {{month}}月{{date}}日 {{hours}}:{{minutes}}:{{seconds}}
-    .next_event_time.header_content
-      .label
-        | 次回イベントまで
-      .content
-        | {{$store.state.timer.next_event}}秒
+    .clock.header_content(v-if="!$store.getters['event/isDequeueMode']")
+      CurrentClock
+    .clock.header_content(v-if="$store.getters['event/isDequeueMode']")
+      PseudoClock
+    .until_next_event.header_content(v-if="!$store.getters['event/isDequeueMode']")
+      UntilNextEvent
+    .rest_event_time.header_content(v-if="$store.getters['event/isDequeueMode']")
+      RestEventTime
     .dungeon_name.header_content
       .label
         | 現在地
@@ -27,24 +25,37 @@
           | {{$store.getters['masterdata/getCurrentDungeon'].depth}}
         .sep
           | F
+    .resources
+      .line
+        .coin_icon
+        .value
+          | {{$store.state.user.status.coin}}
+      .line
+        .star_icon
+        .value
+          | {{$store.state.user.status.star}}
 </template>
 
 <script lang="ts">
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
+import UntilNextEvent from './UntilNextEvent'
+import RestEventTime from "./RestEventTime.vue";
+import CurrentClock from "./CurrentClock.vue";
+import PseudoClock from "./PseudoClock.vue";
 
 export default {
+  components: {
+    PseudoClock,
+    CurrentClock,
+    RestEventTime,
+    UntilNextEvent,
+  },
   data: function () {
     return {
-      month: "0",
-      date: "0",
-      hours: "0",
-      minutes: "0",
-      seconds: "0",
     };
   },
   mounted() {
-    setInterval(this.tick, 1000);
   },
   store,
   computed: {
@@ -59,17 +70,6 @@ export default {
     }
   },
   methods: {
-    tick(){
-      const now = new Date();
-      this.month = now.getMonth() + 1;
-      this.date = now.getDate();
-      this.hours = this.format(now.getHours());
-      this.minutes = this.format(now.getMinutes());
-      this.seconds = this.format(now.getSeconds());
-    },
-    format(time){
-      return ("00" + time).slice(-2)
-    }
   }
 }
 </script>
@@ -98,13 +98,18 @@ export default {
       height: 60%;
       font-size: 18px;
       padding-right: $space;
+      padding-top: $space;
       text-align: right;
+      line-height: 100%;
     }
   }
   .clock{
-    width: 25%;
+    width: 22%;
   }
-  .next_event_time{
+  .until_next_event{
+    width: 20%;
+  }
+  .rest_event_time{
     width: 20%;
   }
   .dungeon_name{
@@ -112,6 +117,9 @@ export default {
   }
   .dungeon_depth{
     width: 20%;
+  }
+  .resources{
+    width: 15%;
   }
   .floor{
     .current{
@@ -130,6 +138,39 @@ export default {
     }
     .boss_floor{
       color: $plus;
+    }
+  }
+  .resources{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: $thin_space;
+    padding-bottom: $thin_space;
+    .line{
+      display: flex;
+      align-items: flex-end;
+      line-height: 100%;
+      div{
+        display: inline-block;
+      }
+      .coin_icon{
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url("/images/ui/coin.png");
+        background-size: cover;
+      }
+      .star_icon{
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-image: url("/images/ui/star.png");
+        background-size: cover;
+      }
+      .value{
+        text-align: right;
+        width: 6rem;
+      }
     }
   }
 }

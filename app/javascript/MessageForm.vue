@@ -44,7 +44,6 @@ export default {
         })
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.onSuccess();
         })
         .catch((error) => {

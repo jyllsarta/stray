@@ -19,8 +19,8 @@ class User::DungeonProgress < ApplicationRecord
   belongs_to :user
   belongs_to :dungeon
 
-  def dig_to!(depth)
-    self.update!(max_depth: depth) if unexplored?(depth)
+  def dig_to(depth)
+    self.max_depth = depth if unexplored?(depth)
   end
 
   def unexplored?(depth)

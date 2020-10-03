@@ -1,0 +1,54 @@
+<template lang="pug">
+ .rest_event_times
+    .label
+      | 不在時イベント再生
+    .content
+      | {{restSeconds}}秒
+</template>
+
+<script lang="ts">
+import Constants from "./packs/constants.ts";
+import store from './packs/store.ts'
+
+export default {
+  data: function () {
+    return {};
+  },
+  mounted() {
+  },
+  store,
+  computed: {
+    restSeconds(){
+      return Math.floor(((new Date() - this.$store.getters["event/pseudoCurrentTime"]) / 1000));
+    }
+  },
+  methods: {
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "stylesheets/constants";
+
+.rest_event_times{
+  width: 100%;
+  .label{
+    width: 100%;
+    height: 40%;
+    font-size: 14px;
+    &::after{
+      content: "：";
+    }
+  }
+  .content{
+    width: 100%;
+    height: 60%;
+    font-size: 18px;
+    padding-right: $space;
+    padding-top: $space;
+    text-align: right;
+    line-height: 100%;
+    color: $yellow;
+  }
+}
+</style>

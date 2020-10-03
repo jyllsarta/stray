@@ -1,7 +1,7 @@
 <template lang="pug">
   .log.window(ref="log", :class="foldClass" @click="folded = !folded")
     transition-group(name="show-in")
-      .item(v-for="log in logs", :key="'' + log.pseudo_id + log.at")
+      .item(v-for="log in logs", :key="log.pseudo_id")
         .at
           | {{composeTime(log.at)}}
         .content
@@ -41,9 +41,8 @@ export default {
     }
   },
   watch: {
-    "logs": {
-      handler: function(newVal, oldVal){
-        const count = newVal.length - oldVal.length;
+    "$store.state.event.events": {
+      handler: function(){
         Vue.nextTick(()=>{
           //大雑把にだいたい画面の下の方にいたら下限をキープする
           if(this.$refs.log.scrollHeight - this.$refs.log.scrollTop < 600){
@@ -62,11 +61,11 @@ export default {
   height: 100px;
 }
 .opened{
-  height: $window-height - 140px - $space * 4;
+  height: $window-height - 210px - $space * 3;
 }
 .log{
   width: 300px;
-  top: 60px + 80px + $space * 3;
+  top: 60px + 80px + 50px + $space * 4;
   left: $space;
   display: flex;
   flex-direction: column;
@@ -106,18 +105,18 @@ export default {
   }
 
   .show-in-enter-active {
-    transition: all .4s;
+    transition: all .3s;
   }
   .show-in-leave-active {
-    transition: all .4s;
+    transition: all .3s;
   }
   .show-in-enter{
     transform: translateX(-30px);
-    opacity: 0;
+    opacity: 0.5;
   }
   .show-in-leave-to{
     transform: translateX(-30px);
-    opacity: 0;
+    opacity: 0.5;
   }
 }
 </style>

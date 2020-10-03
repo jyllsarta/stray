@@ -1,8 +1,16 @@
-default_event_interval_seconds: <%= Rails.env.production? ? 30 : 5 %>
+version: 0.4.0
+
+default_event_interval_seconds: <%= Rails.env.production? ? 30 : 30 %>
 minimum_event_interval_seconds: 4
-max_event_consume_time_seconds: <%= Rails.env.production? ? 1000 : 100 %>
-max_charge_absent_time_seconds: 86400
-resurrect_time_seconds: <%= Rails.env.production? ? 1800 : 25 %>
+max_event_consume_time_seconds: <%= Rails.env.production? ? 3600*12 : 3600*12 %>
+max_charge_absent_time_seconds: <%= 3600*12 %>
+resurrect_time_seconds: <%= Rails.env.production? ? 3600 : 3600 %>
+
+user:
+  velocity:
+    min: 100
+    # 内部的には350を最大値として保持するが、UI上では333が最大かのように見せる
+    max: 350
 
 character:
   initial_hp_max: 100
@@ -35,24 +43,43 @@ item:
   # アイテム設計の係数やクライアントパラメータ計算に使ってる値といっしょ
   rank_factor: 1.015
   rarity_factor: [0, 1, 1.1, 1.3, 1.65, 2.2]
-  default_max_rank: 10
+  default_max_rank: 100
+  random_item_max_rarity_weight: 1000 # 10000分率での、ランダムアイテム受領時の最大レアリティアイテムを拾う確率
+  random_item_recent_threshold: 5 # 最近引いたX件のアイテムはランダムアイテム報酬の対象外とする
 
 equip:
   max_count: 4
 
 event:
+  attenuate_velocity_per_event: 1
+  attenuate_increase_threshold: 250
   item:
     max_rarity: 5
     # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり
     id_range: 10
     # レアリティidと重みを一致させたいのでrarity: 0 は重み0 をつける
-    weights: [0, 8000, 1500, 450, 45, 5]
+    weights: [0, 8000, 1500, 450, 48, 2]
   battle:
     # base + (0 ~ additional) 点の経験値を得る
-    base_exp: 100
-    additional_exp_range: 50
+    base_exp: 10
+    additional_exp_range: 5
     boss_additional_rank: 5
     boss_lose_rewind_floor: 2
+    velocity_delta:
+      turn2:  12
+      turn3:   9
+      turn4:   5
+      turn5:   3
+      other:  -1
+    buster_level: ["SS","SS","SS","S","A","B","C"]
+    default_buster_level: "C"
+  weight: [
+    # 階段 : アイテム : 戦闘 (event_picker で対応を定義している)
+    [2500, 3750, 3750], # 100 ~ 149
+    [3000, 3500, 3500], # 150 ~ 199
+    [4000, 3500, 2500], # 200 ~ 299
+    [6000, 2000, 2000], # 300 ~ 350
+  ]
 
 dungeon:
   boss_floor_frequency: 100

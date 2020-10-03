@@ -11,9 +11,15 @@
           | 装備
       .body
         .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}")
-          img.sub_character_image(:src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'")
+          img.sub_character_image(
+            :src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'"
+            @click="$store.commit('equip_window/switchMainCharacter')"
+          )
         .chara(:style="{transform: `translateY(${main_character_position}px)`}")
-          img.character_image(:src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'")
+          img.character_image(
+            :src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'"
+            @click="$store.commit('equip_window/switchMainCharacter')"
+          )
         .switch_character_button.clickable(
           @click="$store.commit('equip_window/switchMainCharacter')"
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
@@ -69,9 +75,9 @@
             .select_order(v-if="showing_select_order_window")
               .close(@click="toggleSelectOrderWindow")
               .in_window.window
-                .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8]", @click="onClickChangeSortLambdaButton(i)")
+                .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", @click="onClickChangeSortLambdaButton(i)")
                   | {{$store.getters['equip_window/sortLambdas'](i).name}}
-          .item_list.scrollable
+          .item_list.scrollable(ref="item_list")
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
@@ -251,6 +257,9 @@ export default {
     this.moveCharacter();
   },
   methods: {
+    scrollToTop(){
+      this.$refs.item_list.scrollTo(0, 0);
+    },
     removeLastEquip(){
       const characterId = this.$store.state.equip_window.main_character_id;
       const item = this.$store.getters['equip_window/getCurrentEquipsByCharacterId'](characterId).pop();
@@ -275,7 +284,6 @@ export default {
         })
         .then((results) => {
           console.log(results);
-          console.log("OK");
         })
         .catch((error) => {
           console.warn(error.response);
@@ -302,6 +310,7 @@ export default {
         page = 1;
       }
       this.$store.commit("equip_window/changePage", page);
+      this.scrollToTop();
     },
     moveCharacter(){
       const now = new Date().getTime();
@@ -358,6 +367,7 @@ export default {
     onClickChangeSortLambdaButton(id){
       this.showing_select_order_window = false;
       this.$store.commit('equip_window/switchItemSortLambda',  id)
+      this.scrollToTop();
     },
   },
   beforeDestroy(){
@@ -446,7 +456,7 @@ export default {
 
     .bar_area{
       width: 80%;
-      height: 1px;
+      height: 0.5px;
       display: flex;
       opacity: 0.9;
       .bar{
@@ -790,10 +800,10 @@ export default {
             }
             .bar_area{
               width: 100%;
-              height: 1px;
+              height: 0.5px;
               .bar{
                 width: 100%;
-                height: 1px;
+                height: 0.5px;
               }
             }
           }
@@ -808,11 +818,11 @@ export default {
               padding-left: $space;
             }
             .bar_area{
-              height: 1px;
+              height: 0.5px;
               width: 50%;
               .bar{
                 width: 100%;
-                height: 1px;
+                height: 0.5px;
               }
             }
           }

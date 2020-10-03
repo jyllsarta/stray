@@ -98,7 +98,6 @@ export default {
         })
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.register.message = "成功しました！";
           this.register.status = "completed";
         })
@@ -120,7 +119,6 @@ export default {
         })
         .then((results) => {
           console.log(results);
-          console.log("OK");
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
           this.restore.message = "成功しました！";

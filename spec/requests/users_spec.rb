@@ -151,6 +151,7 @@ RSpec.describe "Users", type: :request do
                                                            current_dungeon_rank: Integer,
                                                            coin: Integer,
                                                            star: Integer,
+                                                           velocity: Integer,
                                                        },
                                                        characters: {
                                                            spica: Hash,
@@ -245,7 +246,8 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    version: String,
                                                    events: Array,
-                                                   next_event_at: Integer
+                                                   next_event_at: Integer,
+                                                   after_velocity: Integer,
                                                }
                                            )
     end

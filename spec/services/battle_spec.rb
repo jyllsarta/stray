@@ -15,8 +15,8 @@ RSpec.describe Battle, type: :model do
     end
   end
 
-  describe "#execute!, #is_win, #turn" do
-    subject { battle.execute! }
+  describe "#execute, #is_win, #turn" do
+    subject { battle.execute }
     context "lose" do
       let(:rank){ 1000 }
       it "both characters dies" do
@@ -37,12 +37,15 @@ RSpec.describe Battle, type: :model do
     end
   end
 
-  describe "#apply_damages!" do
+  describe "#apply_damages" do
     let(:rank){ 0 }
     before do
-      battle.execute!
+      battle.execute
     end
-    subject { battle.apply_damages! }
+    subject do
+      battle.apply_damages
+      user.characters.map(&:save!)
+    end
     it "applies damage to user db characters" do
       subject
       expect(user.characters.spica.first.hp).to eq(user.characters.spica.first.hp_max - battle.damages[0])
@@ -60,9 +63,9 @@ RSpec.describe Battle, type: :model do
     context "200 -> 100" do
       let(:attack_a){ 255 }
       let(:defence_b){ 100 }
-      let(:rank){ 10 }
+      let(:rank){ 100 }
       it "calculates damage" do
-        expect(subject).to eq((255 - 100) + 10)
+        expect(subject).to eq((255 - 100) + 100 / 2)
       end
     end
 
@@ -70,9 +73,9 @@ RSpec.describe Battle, type: :model do
     context "100 -> 100" do
       let(:attack_a){ 100 }
       let(:defence_b){ 100 }
-      let(:rank){ 10 }
+      let(:rank){ 100 }
       it "calculates damage" do
-        expect(subject).to eq(10)
+        expect(subject).to eq(100 / 2)
       end
     end
 
@@ -82,7 +85,7 @@ RSpec.describe Battle, type: :model do
       let(:defence_b){ 125 }
       let(:rank){ 90 }
       it "calculates damage" do
-        expect(subject).to eq(0 + 90)
+        expect(subject).to eq(0 + 90 / 2)
       end
     end
   end

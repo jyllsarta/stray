@@ -46,12 +46,16 @@ export default {
   },
   methods: {
     resurrect(){
+      if(this.$store.getters['event/isDequeueMode']){
+        console.log("イベント再生中なので回復はしません");
+        return;
+      }
+
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/resurrect`;
       ax.post(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
           this.$store.commit("event_illust/showEventIllust", "resurrect");

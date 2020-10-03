@@ -8,6 +8,7 @@
 #  event_updated_at      :datetime
 #  resurrect_timer       :integer          default(0), not null
 #  star                  :integer          default(0), not null
+#  velocity              :integer          default(100), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
@@ -80,6 +81,15 @@ RSpec.describe User::Status, type: :model do
         it "do switch" do
           expect{subject}.to change(status, :current_dungeon_depth).to(depth)
         end
+        context "velocity" do
+          before do
+            status.update!(velocity: 300)
+          end
+          it "resets" do
+            expect{ subject }.to change(status, :velocity).to(Constants.user.velocity.min)
+          end
+        end
+
       end
     end
     context "move to floor 150" do
@@ -143,9 +153,9 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#tick_timer!" do
+  describe "#tick_timer" do
     let(:seconds){ 3600 }
-    subject { status.tick_timer!(seconds) }
+    subject { status.tick_timer(seconds) }
     it "proceeds event_updated_at for <seconds>" do
       expect{subject}.to change(status, :event_updated_at).by( seconds.seconds )
     end
@@ -210,8 +220,8 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#start_resurrect_timer!" do
-    subject { status.start_resurrect_timer! }
+  describe "#start_resurrect_timer" do
+    subject { status.start_resurrect_timer }
     before do
       status.update!(resurrect_timer: 123)
     end
@@ -220,15 +230,15 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#tick_resurrect_timer!" do
+  describe "#tick_resurrect_timer" do
     let(:seconds){1111}
-    subject { status.tick_resurrect_timer!(seconds) }
+    subject { status.tick_resurrect_timer(seconds) }
     it "increments seconds" do
       expect{subject}.to change(status, :resurrect_timer).by(seconds)
     end
   end
 
-  describe "#resurrect_progress!" do
+  describe "#resurrect_progress" do
     # 割り切れない数字だとテストがこけるので0 or 100でいいや
     subject { status.resurrect_progress }
     context "100%" do
@@ -276,11 +286,33 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :coin).by(amount)
     end
   end
+
+  describe "#add_coin" do
+    subject { status.add_coin(amount) }
+    let(:amount){100}
+    it "increments coin" do
+      expect{subject}.to change(status, :coin).by(amount)
+    end
+  end
+
   describe "#consume_coin!" do
     subject { status.consume_coin!(amount) }
     let(:amount){100}
-    it "decrements coin" do
-      expect{subject}.to change(status, :coin).by(-amount)
+    context "sufficient" do
+      before do
+        status.add_coin!(amount)
+      end
+      it "decrements coin" do
+        expect{subject}.to change(status, :coin).by(-amount)
+      end
+    end
+    context "insufficient" do
+      before do
+        status.add_coin!(amount - 1)
+      end
+      it "raise" do
+        expect{subject}.to raise_error(User::Status::InsufficientCoin)
+      end
     end
   end
 
@@ -291,11 +323,121 @@ RSpec.describe User::Status, type: :model do
       expect{subject}.to change(status, :star).by(amount)
     end
   end
-  describe "#consume_coin!" do
+
+  describe "#add_star" do
+    subject { status.add_star(amount) }
+    let(:amount){100}
+    it "increments star" do
+      expect{subject}.to change(status, :star).by(amount)
+    end
+  end
+
+  describe "#consume_star!" do
     subject { status.consume_star!(amount) }
     let(:amount){100}
-    it "decrements star" do
-      expect{subject}.to change(status, :star).by(-amount)
+    context "sufficient" do
+      before do
+        status.add_star!(amount)
+      end
+      it "raise" do
+        expect{subject}.to change(status, :star).by(-amount)
+      end
+    end
+    context "insufficient" do
+      before do
+        status.add_star!(amount - 1)
+      end
+      it "decrements coin" do
+        expect{subject}.to raise_error(User::Status::InsufficientStar)
+      end
+    end
+  end
+
+  describe "#fluctuate_velocity" do
+    subject { status.fluctuate_velocity(delta) }
+    let(:delta){100}
+    it "adds" do
+      expect{subject}.to change(status, :velocity).by(delta)
+    end
+
+    context "with max" do
+      before do
+        status.update!(velocity: Constants.user.velocity.max - 10)
+      end
+      it "adds to max, no overflow" do
+        expect{subject}.to change(status, :velocity).to(Constants.user.velocity.max)
+      end
+    end
+    context "with min" do
+      let(:delta){ -100 }
+      before do
+        status.update!(velocity: Constants.user.velocity.min + 10)
+      end
+      it "adds to max, no overflow" do
+        expect{subject}.to change(status, :velocity).to(Constants.user.velocity.min)
+      end
+    end
+  end
+  describe "#attenuate_velocity" do
+    subject { status.attenuate_velocity }
+    let(:delta){100}
+    context "min" do
+      it "not attenuate" do
+        expect{subject}.to_not change(status, :velocity)
+      end
+    end
+    context "some" do
+      before do
+        status.update!(velocity: 150)
+      end
+      it "attenuate" do
+        expect{subject}.to change(status, :velocity).by(-Constants.event.attenuate_velocity_per_event)
+      end
+    end
+    context "huge" do
+      before do
+        status.update!(velocity: 350)
+      end
+      it "more attenuate" do
+        expect{subject}.to change(status, :velocity).by(-Constants.event.attenuate_velocity_per_event * 2)
+      end
+    end
+  end
+  describe "#velocity_rank" do
+    subject { status.velocity_rank }
+    before do
+      status.update!(velocity: velocity)
+    end
+
+    context "0" do
+      let(:velocity){ 100 }
+      it "returns rank" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "1" do
+      let(:velocity){ 150 }
+      it "returns rank" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "1" do
+      let(:velocity){ 199 }
+      it "returns rank" do
+        expect(subject).to eq(1)
+      end
+    end
+    context "2" do
+      let(:velocity){ 200 }
+      it "returns rank" do
+        expect(subject).to eq(2)
+      end
+    end
+    context "3" do
+      let(:velocity){ 300 }
+      it "returns rank" do
+        expect(subject).to eq(3)
+      end
     end
   end
 

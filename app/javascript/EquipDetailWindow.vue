@@ -30,7 +30,7 @@
                 | {{getEffectValue(item(), param)}}
           .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.3}")
             .name
-              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + 1}}
+              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + parseInt(count)}}
             .total.item
               .label
                 |  TOTAL
@@ -47,6 +47,16 @@
                 | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
         .cannot_rankup(v-if="!canRankUp()")
           | {{cannotRankUpReason()}}
+        .slider_area
+          .labels
+            .min.label
+              | +{{ item().rank }}
+            .current.label(:class="[canRankUp() ? '' : 'cannot']")
+              | +{{item().rank + parseInt(count)}}
+            .max.label
+              | +{{item().rank + rankUpLimit}}
+          .slider
+            input(type="range" orient="vertical" v-model="count" min="0" :max="rankUpLimit")
         .controls
           .costs
             .line
@@ -60,11 +70,10 @@
                 | 消費
               .coin_icon
               .value
-                | {{rankUpCost()}}
+                | {{totalRankUpCost(count)}}
           .rank_up.clickable(@click="executeRankUpItem", :style="{opacity: canRankUp() ? 1 : 0.5}")
             | 強化
         .enchantment_area
-          //ここは実装後に埋めればいいや
 
 
 
@@ -80,6 +89,8 @@ export default {
   data: function () {
     return {
       item_id: null,
+      count: 1,
+      rankUpLimit: 0,
     };
   },
   props: {
@@ -87,6 +98,7 @@ export default {
   store,
   mounted(){
     this.item_id = this.$store.state.equip_window.selecting_item_id || 1;
+    this.calculateRankUpLimit();
   },
   computed: {
   },
@@ -95,7 +107,7 @@ export default {
       return this.$store.getters['equip_window/getUserItem'](this.item_id) || {};
     },
     rankUpItem(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id, 1) || {};
+      return this.$store.getters['equip_window/getUserItem'](this.item_id, parseInt(this.count)) || {};
     },
     getEffectValue(itemObj, param){
       if(!itemObj.effectValueOf){
@@ -127,10 +139,33 @@ export default {
         console.log("強化不能ですね");
         return;
       }
-      this.$store.dispatch("user/rankUpItem", this.item_id );
+      this.$store.dispatch("user/rankUpItem", {item_id: this.item_id, count: this.count} ).then(()=>{
+        this.count = 1;
+        this.calculateRankUpLimit();
+      });
     },
-    rankUpCost(){
-      return Math.pow((this.item().rank + this.item().base_rank) || 0 , 2);
+    calculateRankUpLimit(){
+      const coin = this.$store.state.user.status.coin;
+      let i = 0;
+      let cost = 0;
+      while(coin >= cost){
+        cost += this.rankUpCost(this.item().rank + this.item().base_rank + i)
+        i++;
+      }
+      let coinLimit = i - 1;
+      let rankLimit = this.maxRank() - this.item().rank || 1;
+      this.rankUpLimit = Math.min(coinLimit, rankLimit);
+    },
+    totalRankUpCost(delta){
+      const rank = (this.item().rank + this.item().base_rank) || 0;
+      let totalCost = 0;
+      for(let i = 0; i < delta; i++){
+        totalCost += this.rankUpCost(rank + i);
+      }
+      return totalCost;
+    },
+    rankUpCost(rank){
+      return Math.floor(Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity));
     },
     canRankUp(){
       return this.isCoinSufficient() && this.isRankCapable();
@@ -146,12 +181,22 @@ export default {
       return reason;
     },
     isCoinSufficient(){
-      return this.rankUpCost() <= this.$store.state.user.status.coin;
+      return this.totalRankUpCost(this.count) <= this.$store.state.user.status.coin;
     },
     isRankCapable(){
-      return this.item().rank < this.$store.getters['user/maxItemRank'];
+      return this.item().rank < this.maxRank();
+    },
+    maxRank(){
+      return this.$store.getters['user/maxItemRank'];
     }
   },
+  watch: {
+    "$store.state.user.status.coin": {
+      handler: function (events) {
+        this.calculateRankUpLimit();
+      }
+    }
+  }
 }
 </script>
 
@@ -241,6 +286,46 @@ export default {
     }
     .before{
       border-right: 1px solid $gray3;
+    }
+  }
+  .slider_area{
+    padding-top: $space;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .labels{
+      width: 500px;
+      display: flex;
+      justify-content: space-between;
+      .cannot{
+        color: $plus;
+      }
+      .label{
+        width: 4rem;
+        text-align: center;
+      }
+    }
+    .slider{
+      background-color: #93baeb;
+      width: 440px;
+      height: 30px;
+      border-radius: $radius;
+      input{
+        -webkit-appearance:none;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, $gray3, transparent );
+        border-radius: $radius;
+        outline: none;
+      }
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border-radius: $radius;
+        background-color: $white;
+        height: 100%;
+        width: 10px;
+      }
     }
   }
   .controls{

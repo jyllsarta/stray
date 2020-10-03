@@ -16,7 +16,7 @@ RSpec.describe ResurrectEvent, type: :model do
   describe "#detail" do
     subject { event.detail }
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     it "returns formatted hash" do
       expect(subject).to match_json_expression({})
@@ -25,7 +25,7 @@ RSpec.describe ResurrectEvent, type: :model do
   describe "#logs" do
     before do
       user.status.update!(event_updated_at: time.ago(1.days) )
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.logs }
     it "returns formatted logs" do
@@ -37,8 +37,8 @@ RSpec.describe ResurrectEvent, type: :model do
                          )
     end
   end
-  describe "#execute!" do
-    subject { event.execute!(user) }
+  describe "#execute" do
+    subject { event.execute(user) }
     context "イベント最大チャージしてないとき" do
       before do
         user.status.update!(event_updated_at: time.ago(1.seconds) )
@@ -51,7 +51,7 @@ RSpec.describe ResurrectEvent, type: :model do
 
       context "イベント溜まってる時" do
         before do
-          user.status.update!(event_updated_at: time.ago(3.hours) )
+          user.status.update!(event_updated_at: time.ago(Constants.max_event_consume_time_seconds + 1000) )
         end
 
         it "それなりに何か起こる" do

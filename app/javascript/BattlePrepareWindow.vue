@@ -12,8 +12,9 @@
         .characters
           img.tirol(src="/images/battle/characters/tirol_normal.png")
           img.spica(src="/images/battle/characters/spica_normal.png")
-        .enemy_character
-          img.enemy(:src="`/images/battle/characters/${currentEnemy.image_name || 'faily'}_normal.png`")
+        transition(name="vertical-in")
+          .enemy_character(:key="currentEnemy.image_name")
+            img.enemy(:src="`/images/battle/characters/${currentEnemy.image_name || 'faily'}_normal.png`")
         .enemy_reward(@mouseover="$store.commit('guide/updateGuide', currentEnemyRewardTypeMessage)")
           .descri
             | 撃破報酬：
@@ -31,7 +32,7 @@
           :right-side="true"
         )
         .enemy_list.scrollable
-          .enemy.clickable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
+          .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
               | {{enemy.name}}
             .rank
@@ -86,9 +87,9 @@
         .open_skill_window.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: true})")
           | スキル選択
         .switch_deck_type
-          .class_cards(@click="showsClassCards = true", :class="showsClassCards ? 'active' : ''")
+          .class_cards.selectable(@click="showsClassCards = true", :class="showsClassCards ? 'selected' : ''")
             | クラスカード
-          .equip_cards(@click="showsClassCards = false", :class="showsClassCards ? '' : 'active'")
+          .equip_cards.selectable(@click="showsClassCards = false", :class="showsClassCards ? '' : 'selected'")
             | 装備
         .player_skill_list
           SkillList(
@@ -208,7 +209,6 @@
               ax.get(path, { params: params})
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.enemyList = results.data.enemies;
                       this.selectFirstAliveEnemy();
                   })
@@ -223,7 +223,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.$store.commit("skill/setPlayerSkills", results.data.skills);
                       this.selectingSkillIds = this.$store.state.skill.skills.filter((x)=>x.is_equipped).map((x)=>x.id);
                   })
@@ -238,7 +237,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.classCardsResponse = results.data.class_cards;
                       this.itemCardsResponse = results.data.item_cards;
                       this.averageItemRank = results.data.average_item_rank;
@@ -255,7 +253,6 @@
               ax.get(path)
                   .then((results) => {
                       console.log(results);
-                      console.log("OK");
                       this.wonEnemyIds = results.data.won_enemies.map((x)=>x.enemy_id);
                   })
                   .catch((error) => {
@@ -270,6 +267,9 @@
           },
 
           enemyListClass(enemyId){
+              if(this.selectingEnemyId == enemyId){
+                  return 'selected';
+              }
               return this.won(enemyId) ? "disabled" : "";
           },
 
@@ -315,12 +315,13 @@
     }
 
     .enemy_character{
+      animation: vertical-in;
       position: absolute;
       bottom: $space + 70px;
       right: $space;
       .enemy{
-        width: 256px;
-        height: 256px;
+        width: 220px;
+        height: 220px;
       }
     }
 
@@ -333,6 +334,7 @@
       background-color: $background_with_opacity;
       border-radius: $radius;
       padding: $thin_space;
+      line-height: 105%;
       .descri, .icon, .count{
         display: inline-block;
       }
@@ -378,7 +380,6 @@
           text-align: right;
         }
       }
-
       .disabled{
         opacity: 0.5;
       }
@@ -466,13 +467,9 @@
       }
       .class_cards{
         border-radius: $radius $radius 0 0;
-        border: 1px solid $gray2;
       }
       .equip_cards{
         border-radius: 0 0 $radius $radius;
-        border-right: 1px solid $gray2;
-        border-left: 1px solid $gray2;
-        border-bottom: 1px solid $gray2;
       }
       .active{
         background-color: $gray3-opacity;
@@ -497,5 +494,19 @@
       width: 150px;
       @include centering($height: 50px);
     }
+  }
+
+  .vertical-in-enter-active {
+    transition: all .3s;
+  }
+  .vertical-in-leave-active {
+    transition: all .0s;
+  }
+  .vertical-in-enter{
+    transform: translateY(-10px);
+    opacity: 0.5;
+  }
+  .vertical-in-leave-to{
+    opacity: 0;
   }
 </style>

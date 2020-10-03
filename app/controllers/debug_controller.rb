@@ -6,6 +6,11 @@ class DebugController < ApplicationController
     head 204
   end
 
+  def some_event
+    current_user.status.update!(event_updated_at: current_user.status.event_updated_at - (params[:seconds]).to_i)
+    head 204
+  end
+
   def get_all_items
     current_user.debug_get_all_items!
     redirect_to clients_path
@@ -26,10 +31,28 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def set_velocity
+    current_user.status.update!(velocity: params[:velocity])
+    redirect_to clients_path
+  end
+
   def learn_all_user_skills
     Skill.where(for_player: true).each do |skill|
       skill.learn!(current_user) unless current_user.skills.exists?(skill: skill)
     end
+    redirect_to clients_path
+  end
+
+  def clear_quest
+    Enemy.where(quest_id: params[:clear_quest_id]).each do |enemy|
+      current_user.won_enemies.find_or_create_by(enemy: enemy)
+    end
+    redirect_to clients_path
+  end
+
+  def reset_quest
+    enemy_ids = Enemy.where(quest_id: params[:reset_quest_id]).ids
+    current_user.won_enemies.where(enemy_id: enemy_ids).map(&:destroy)
     redirect_to clients_path
   end
 

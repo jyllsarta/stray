@@ -32,4 +32,26 @@ class Item < ApplicationRecord
       raise NotImplementedError
     end
   end
+
+  def self.reset_cache!
+    @_rarity_map = nil
+    @_indexed_hash = nil
+  end
+
+  def self.rarity_map
+    return @_rarity_map if @_rarity_map.present?
+    hash = {}
+    select(:id, :rarity).map{|i| [i.rarity, i.id]}.each do |rarity, id|
+      if hash[rarity].present?
+        hash[rarity].push(id)
+      else
+        hash[rarity] = [id]
+      end
+    end
+    @_rarity_map = hash
+  end
+
+  def self.indexed_hash
+    @_indexed_hash ||= all.index_by(&:id)
+  end
 end

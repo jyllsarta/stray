@@ -10,13 +10,16 @@
         | 強敵と戦い、クエストを進行させます。
       .body
         .quest_list_tab
-          .quest.hoverable(
+          .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
             :class="questClass(quest.id)"
             )
             .name
               | {{quest.name}}
+            .clear_mark
+              .claar(v-if="quest.won_enemy_count === quest.enemy_count")
+                | clear!
             .progress
               .current_progress(:class="questColorClass(quest.id)")
                 | {{quest.won_enemy_count}}
@@ -72,7 +75,6 @@ export default {
       ax.get(path)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.quests = results.data.quests;
           this.selectQuest(results.data.quests[0]?.id || 1);
         })
@@ -114,13 +116,6 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
-    .selected{
-      background-color: $gray3;
-      border: 1px solid $yellow;
-    }
-    .not_selected{
-      border: 1px solid transparent;
-    }
     .quest{
       margin: $thin_space;
       padding: $space;
@@ -128,6 +123,13 @@ export default {
       .name{
         display: inline-block;
         width: 70%;
+      }
+      .clear_mark{
+        display: inline-block;
+        width: 15%;
+        .clear{
+          display: inline-block;
+        }
       }
       .progress{
         .current_progress{
@@ -137,7 +139,7 @@ export default {
           color: $yellow;
         }
         display: inline-block;
-        width: 30%;
+        width: 15%;
         text-align: right;
       }
     }

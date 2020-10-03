@@ -80,7 +80,8 @@ RSpec.describe User::Item, type: :model do
 
   describe "#rank_up!" do
     let(:user){ User.create }
-    subject { user_item.rank_up! }
+    subject { user_item.rank_up!(count) }
+    let(:count){ 1 }
 
     context "succeeds" do
       let(:item){ create(:item, base_rank: 5) }
@@ -94,7 +95,8 @@ RSpec.describe User::Item, type: :model do
         expect{subject}.to change(user_item, :rank).by(1)
       end
       it "uses coin" do
-        expect{subject}.to change(user.status, :coin).by(-100)
+        subject
+        expect(user.status.reload.coin).to eq(0)
       end
     end
 
@@ -107,7 +109,7 @@ RSpec.describe User::Item, type: :model do
       end
 
       it "raises error" do
-        expect{subject}.to raise_error(User::Item::InsufficientCoin)
+        expect{subject}.to raise_error(User::Status::InsufficientCoin)
       end
     end
 
@@ -136,10 +138,42 @@ RSpec.describe User::Item, type: :model do
         it "rank up" do
           expect{subject}.to change(user_item, :rank).by(1)
         end
-        it "uses coin" do
-          # 額は別の場所でテストする
-          expect{subject}.to change(user.status, :coin)
+        it "uses more coin" do
+          subject
+          expect(user.status.reload.coin).to_not eq(1000000)
         end
+      end
+    end
+
+    context "about item rarity" do
+      let(:item){ create(:item, base_rank: 10, rarity: 2) }
+      let(:user_item){ create(:user_item, user: user, item: item) }
+
+      before do
+        user.status.add_coin!(1000000)
+      end
+
+      it "uses coin" do
+        subject
+        expect(user.status.reload.coin).to eq(1000000 - 110)
+      end
+    end
+
+    context "about count" do
+      let(:item){ create(:item, base_rank: 5) }
+      let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
+      let(:count){ 10 }
+      before do
+        user.status.add_coin!(100000)
+        allow(user.status).to receive(:max_item_rank).and_return(1000)
+      end
+
+      it "rank up" do
+        expect{subject}.to change(user_item, :rank).by(count)
+      end
+      it "現状の設計通りの値を返す" do
+        subject
+        expect(user.status.reload.coin).to eq(97815)
       end
     end
   end

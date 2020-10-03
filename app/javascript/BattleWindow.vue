@@ -1,6 +1,6 @@
 <template lang="pug">
   .menu
-    .full_covered_window
+    .full_covered_window(@click.right.prevent="removeLastCard")
       transition(name="open_window")
         .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
           | メニュー
@@ -332,6 +332,13 @@ export default {
       this.battle?.selectCard(cardId);
     },
 
+    removeLastCard(){
+      if(this.battle.selectingCardIds.length === 0){
+        return;
+      }
+      this.battle?.selectCard(this.battle.selectingCardIds.slice(-1)[0]);
+    },
+
     selectSkill(emittedObject){
       const skillIndex = emittedObject.skillIndex;
       this.battle?.selectSkill(skillIndex);
@@ -442,7 +449,6 @@ export default {
       ax.post(path, params)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           this.input = results.data;
           this.localBattleStart();
           // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
@@ -464,7 +470,6 @@ export default {
       ax.post(path, params)
         .then((results) => {
           console.log(results);
-          console.log("OK");
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
           this.finished = true;
           this.rewards = results.data.rewards;

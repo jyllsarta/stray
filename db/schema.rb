@@ -207,6 +207,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_random_item_receive_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "item_id", null: false
+    t.datetime "received_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "received_at"], name: "receive_history"
+    t.index ["user_id"], name: "index_user_random_item_receive_histories_on_user_id"
+  end
+
   create_table "user_relics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "relic_id", default: 0
@@ -232,6 +242,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "resurrect_timer", default: 0, null: false
     t.integer "coin", default: 0, null: false
     t.integer "star", default: 0, null: false
+    t.integer "velocity", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

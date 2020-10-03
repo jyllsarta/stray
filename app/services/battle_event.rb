@@ -25,11 +25,13 @@ class BattleEvent < Event
     ]
   end
 
-  def execute!(user)
+  def execute(user)
+    @user = user
     @battle = Battle.new(user, lot_enemies!(@rank))
-    @battle.execute!
-    @battle.apply_damages!
+    @battle.execute
+    @battle.apply_damages
     @battle.is_win ? process_win(user) : process_lose(user)
+    fluctuate_velocity(user)
   end
 
   def consume_time(user)
@@ -38,7 +40,7 @@ class BattleEvent < Event
 
   private
 
-  def coin_amount
+  def base_coin_amount
     @rank * 10
   end
 
@@ -47,13 +49,24 @@ class BattleEvent < Event
     user.characters.each do |character|
       next if character.dead?
       multiplier = rank_ratio(@rank, character.level)
-      character.gain_exp!(exp * multiplier)
+      character.gain_exp(exp * multiplier)
     end
-    user.status.add_coin!(coin_amount)
+    @coin_multiplier = [user.status.velocity_rank, 1].max
+    @coin_amount = base_coin_amount * @coin_multiplier
+    user.status.add_coin(@coin_amount)
+  end
+
+  def fluctuate_velocity(user)
+    if @battle.is_win
+      delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
+      user.status.fluctuate_velocity(delta)
+    else
+      user.status.fluctuate_velocity(-9999)
+    end
   end
 
   def process_lose(user)
-    user.status.start_resurrect_timer!
+    user.status.start_resurrect_timer
   end
 
   def rank_ratio(enemy_rank, character_rank)
@@ -62,7 +75,19 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{@battle.is_win ? '勝利' : '敗北'}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{@battle.is_win ? "#{coin_amount}コイン手にいれた！" : ''}"
+    "[#{battle_result_mark_message}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
+  end
+
+  def coin_message
+    return "" unless @battle.is_win
+    multiplied = @coin_multiplier > 1 ? '多めに' : ''
+    "#{multiplied}#{@coin_amount}コイン手にいれた！"
+  end
+
+  def battle_result_mark_message
+    return "敗北" unless @battle.is_win
+    buster_level = Constants.event.battle.buster_level[@battle.turn] || Constants.event.battle.default_buster_level
+    "#{buster_level}勝利"
   end
 
   def lot_enemies!(rank)

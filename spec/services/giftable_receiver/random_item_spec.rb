@@ -7,6 +7,10 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
   let(:id) { 125 }
   let(:amount){ 1 }
 
+  before do
+    Item.reset_cache!
+  end
+
   describe "#receive!" do
     subject{ receiver.receive!(user) }
 
@@ -19,6 +23,11 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
         aggregate_failures do
           expect{ subject }.to change(user.items, :count).by(1)
           expect(user.items.first.rank).to eq(125 - 30)
+        end
+      end
+      it "succeeds" do
+        aggregate_failures do
+          expect{ subject }.to change(user.random_item_receive_histories, :count).by(1)
         end
       end
     end
@@ -40,6 +49,45 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
     end
     it "returns text" do
       expect(subject.class).to eq(String) # ランダムアイテムなので、エラーが出ていなければ特にこだわらないことにする
+    end
+  end
+
+  describe "lot_rarity" do
+    subject{ receiver.send(:lot_rarity) }
+    context "4" do
+      before do
+        allow(Random).to receive(:random_number).and_return(1000)
+      end
+      it "4" do
+        expect(subject).to eq(4)
+      end
+      context "5" do
+        before do
+          allow(Random).to receive(:random_number).and_return(999)
+        end
+        it "5" do
+          expect(subject).to eq(5)
+        end
+      end
+    end
+  end
+
+  describe "available_items" do
+    before do
+      Item.delete_all
+    end
+    subject{ receiver.send(:available_items, user, rank, rarity) }
+
+    let!(:item2){ create(:item, rarity: rarity, base_rank: 100) }
+    let!(:other_rarity_item){ create(:item, rarity: 5, base_rank: 100) }
+    let!(:high_rank_item){ create(:item, rarity: rarity, base_rank: 101) }
+    let!(:rank){ 100 }
+    let!(:rarity){ 4 }
+
+    context "history not exist" do
+      it "selects" do
+        expect(subject.to_a).to eq([item2])
+      end
     end
   end
 end

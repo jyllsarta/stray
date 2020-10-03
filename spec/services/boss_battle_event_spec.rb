@@ -15,7 +15,7 @@ RSpec.describe BossBattleEvent, type: :model do
 
   describe "#detail" do
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.detail }
     it "returns formatted hash" do
@@ -27,7 +27,7 @@ RSpec.describe BossBattleEvent, type: :model do
 
   describe "#logs" do
     before do
-      event.execute!(user)
+      event.execute(user)
     end
     subject { event.logs }
     it "returns formatted logs" do
@@ -40,18 +40,18 @@ RSpec.describe BossBattleEvent, type: :model do
     end
   end
 
-  describe "#execute!" do
+  describe "#execute" do
     before do
-      allow(user.status).to receive(:start_resurrect_timer!)
-      allow_any_instance_of(Battle).to receive(:execute!)
-      allow_any_instance_of(Battle).to receive(:apply_damages!)
+      allow(user.status).to receive(:start_resurrect_timer)
+      allow_any_instance_of(Battle).to receive(:execute)
+      allow_any_instance_of(Battle).to receive(:apply_damages)
       allow_any_instance_of(Battle).to receive(:is_win).and_return(true)
     end
-    subject { event.execute!(user) }
+    subject { event.execute(user) }
     it "Battle.execute!他バトル関連メソッドが一回呼ばれてる" do
       subject
-      expect(event.instance_variable_get("@battle")).to have_received(:execute!).once
-      expect(event.instance_variable_get("@battle")).to have_received(:apply_damages!).once
+      expect(event.instance_variable_get("@battle")).to have_received(:execute).once
+      expect(event.instance_variable_get("@battle")).to have_received(:apply_damages).once
     end
     context "win" do
       before do
@@ -59,7 +59,7 @@ RSpec.describe BossBattleEvent, type: :model do
       end
       it "復活しない" do
         subject
-        expect(user.status).to_not have_received(:start_resurrect_timer!)
+        expect(user.status).to_not have_received(:start_resurrect_timer)
       end
       it "digs floor" do
         expect{subject}.to change(user.status, :current_dungeon_depth).by(1)
@@ -74,7 +74,7 @@ RSpec.describe BossBattleEvent, type: :model do
       end
       it "復活開始" do
         subject
-        expect(user.status).to have_received(:start_resurrect_timer!).once
+        expect(user.status).to have_received(:start_resurrect_timer).once
       end
       it "bounces floor" do
         expect{subject}.to change(user.status, :current_dungeon_depth).by(-Constants.event.battle.boss_lose_rewind_floor)

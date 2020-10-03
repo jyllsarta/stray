@@ -6,6 +6,7 @@
       Header
       RightMenu
       Status
+      Velocity
       Log
       EventIllust
       TransitionFrame(v-if="$store.state.window.transition_frame")
@@ -43,6 +44,7 @@ import Guide from './Guide'
 import Field from './Field'
 import Header from './Header'
 import RightMenu from './RightMenu'
+import Velocity from "./Velocity.vue";
 import Log from './Log'
 import Status from './Status'
 import EventIllust from './EventIllust'
@@ -71,6 +73,7 @@ export default {
     Field,
     Header,
     RightMenu,
+    Velocity,
     Log,
     Status,
     EventIllust,

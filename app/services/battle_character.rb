@@ -17,10 +17,9 @@ class BattleCharacter
 
   def self.new_enemy(rank=0)
     base = self.base_parameter(rank)
-    parameters = { str: base * 4, dex: base * 4, def: base * 4, agi: base * 4 }
-    strength = { atk: base * 8, def: base * 4 }
-    # 基準火力の1.5倍でワンパン、等倍で2パン、75%で4パン、半分でノーダメージ
-    hp = hp_max = base * 8 + 1
+    parameters = { str: base * 4, dex: base * 4, def: base, agi: base }
+    strength = { atk: base * 8, def: base * 2 }
+    hp = hp_max = base * 30 + 1
     self.new(parameters, strength, hp, hp_max, rank)
   end
 

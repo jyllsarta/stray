@@ -18,12 +18,12 @@
 require 'rails_helper'
 
 RSpec.describe User::DungeonProgress, type: :model do
-  describe "#dig_to!" do
+  describe "#dig_to" do
     let(:user){ create(:user) }
     let(:dungeon) { create(:dungeon) }
     let(:status){ create(:user_status, user: user, dungeon: dungeon) }
     let!(:progress) { create(:user_dungeon_progress, user: user, dungeon: dungeon) }
-    subject { progress.dig_to!(depth) }
+    subject { progress.dig_to(depth) }
 
     context "depth > progress" do
       let(:depth){ 10000 }

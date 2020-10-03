@@ -28,13 +28,13 @@ User::Status::CannotSwitchDungeon:
 User::Item::InsufficientRank:
   status: bad_request
   message: 所持アイテムの最大強化値以上に強化はできません。
-User::Item::InsufficientCoin:
+User::Status::InsufficientCoin:
   status: bad_request
   message: コインが足りません。
 SessionId::Expired:
   status: bad_request
   message: 別ウィンドウでゲームが開始されました。
-Relic::InsufficientStar:
+User::Status::InsufficientStar:
   status: bad_request
   message: 星のカケラが足りません。
 Relic::AlreadyObtained:

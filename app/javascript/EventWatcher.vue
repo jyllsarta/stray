@@ -7,7 +7,9 @@ import store from './packs/store.ts'
 
 export default {
   data: function () {
-    return {};
+    return {
+
+    };
   },
   props: {
     rootRef: Object,
@@ -17,23 +19,43 @@ export default {
     // イベント発生時の処理
     "$store.state.event.events": {
       handler: function(events){
-        if(events.filter(event=>!event.resolved).length > 0){
-          this.showEventIllust(events.slice(-1)[0]);
+        const lastEvent = events.slice(-1)[0];
+        // キャリブレイベとかはstatusないかも
+        if(lastEvent.status){
+          this.updatePartialUserStatus(lastEvent.status);
         }
-        // 再生した中にバトルイベントがあったら全部終わったあとにユーザデータを再ロードする
-        const hasBattleEvent = events.filter(event=>!event.resolved).filter(event=>event.type === 'battle').length > 0;
-        events.filter(event=>!event.resolved).forEach((event)=>{
-          this.processEvent(event);
-        });
-        if(hasBattleEvent){
-          this.$store.dispatch("user/fetchUserModel");
+        if(this.$store.state.event.eventsQueue.length > 0){
+          return;
+        }
+        this.showEventIllust(lastEvent);
+        this.processEvent(lastEvent);
+      },
+    },
+    // イベント発生時の処理
+    "$store.state.event.eventsQueue": {
+      handler: function(eventsQueue){
+        if(eventsQueue.length > 0){
+          setTimeout(this.pollEventQueue, 20);
         }
       },
     }
   },
+  mounted(){
+  },
   methods: {
+    updatePartialUserStatus(partialStatus){
+      this.$store.commit("user/updateUserModelEventPartial", partialStatus);
+    },
+    pollEventQueue(){
+      if(this.$store.state.event.eventsQueue.length > 0){
+        this.$store.commit("event/dequeueEvent");
+        if(this.$store.state.event.eventsQueue.length == 0 && this.$store.state.event.eventsQueueOriginalSize >= 2){
+          this.$store.dispatch('user/fetchUserModel');
+        }
+      }
+    },
     showEventIllust(event){
-      if(event.type === 'calibrate'){
+      if(event.type === 'calibrate' || event.type === 'custom'){
         return;
       }
       this.$store.commit("event_illust/showEventIllust", event.type);
@@ -56,14 +78,14 @@ export default {
           this.resolveBossBattleEvent(event);
           break;
         case "calibrate":
-          event.logs[0].pseudo_id = Math.floor(Math.random() * 1000000000);
           console.log("pass!"); // ログにだけ流れればそれでOK
+          break;
+        case "custom":
           break;
         default:
           console.warn(`undefined event type: ${event.type}`);
           break;
       }
-      event.resolved = true;
     },
     resolveItemEvent(event){
       if(this.$store.state.user.items[event.detail.id]){
@@ -74,10 +96,9 @@ export default {
       }
     },
     resolveBattleEvent(event){
-      this.$store.commit("user/applyBattleDamage", event.detail.damages);
+      // かつてキャラモデルを取り直してたけど、部分的ユーザモデル更新で不要になった
     },
     resolveStairEvent(event){
-      this.$store.commit("user/incrementCurrentDungeonDepth");
       this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
       setTimeout(()=>{
         this.rootRef.field.reseedScene();
@@ -89,8 +110,7 @@ export default {
       }
     },
     resolveBossBattleEvent(event){
-      // 色々更新されちゃうのでもうモデル取り直しちゃお...
-      this.$store.dispatch('user/fetchUserModel');
+      // かつてキャラモデルを取り直してたけど、部分的ユーザモデル更新で不要になった
     },
   },
 }

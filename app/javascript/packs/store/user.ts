@@ -19,6 +19,8 @@ export default {
       current_dungeon_depth: 1,
       current_dungeon_rank: 1,
       coin: 0,
+      star: 0,
+      velocity: 100,
     },
     characters: {
       spica: {},
@@ -67,6 +69,20 @@ export default {
     },
     hasEmptySlot: (state) => {
       return state.equips.spica.length + state.equips.tirol.length < Constants.maxEquipCount * 2;
+    },
+    // サーバでも定義共有してるので注意
+    currentVelocityRank: (state) => {
+      const v = state.status.velocity;
+      if(v < 150){
+        return 0;
+      }
+      if(v < 200){
+        return 1;
+      }
+      if(v < 300){
+        return 2;
+      }
+      return 3;
     }
   },
   mutations: {
@@ -74,9 +90,6 @@ export default {
       ["spica", "tirol"].forEach(characterName=>{
         state.equips[characterName] = payload[characterName];
       });
-    },
-    incrementCurrentDungeonDepth(state){
-      state.status.current_dungeon_depth++;
     },
     updateCurrentDungeonProgress(state, payload){
       if(!state.dungeon_progresses[state.status.current_dungeon_id]){
@@ -96,6 +109,14 @@ export default {
     // ステート更新系
     updateUserModel(state, payload) {
       Object.assign(state, payload);
+    },
+    // ステート更新系
+    updateUserModelEventPartial(state, payload) {
+      state.characters = payload.characters;
+      state.status.coin = payload.coin;
+      state.status.star = payload.star;
+      state.status.velocity = payload.velocity;
+      state.status.current_dungeon_depth = payload.current_dungeon_depth;
     },
     updateItemRank(state, payload) {
       state.items[payload.item_id].rank = payload.rank;
@@ -127,7 +148,6 @@ export default {
         ax.post(path, payload)
           .then((results) => {
             console.log(results);
-            console.log("OK");
             resolve();
           })
           .catch((error) => {
@@ -139,12 +159,10 @@ export default {
     rankUpItem ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         const user_id = localStorage.user_id;
-        const path = `/users/${user_id}/user_items/${payload}/rank_up.json`;
-        ax.post(path)
+        const path = `/users/${user_id}/user_items/${payload.item_id}/rank_up.json`;
+        ax.post(path, {count: payload.count})
           .then((results) => {
-            console.log("uooo!");
             console.log(results);
-            console.log("OK");
             commit("updateUserCoin", results.data.after_coin);
             commit("updateItemRank", {item_id: results.data.item_id, rank: results.data.after_rank});
             resolve();
@@ -163,7 +181,6 @@ export default {
         ax.post(path, {relic_id: payload})
           .then((results) => {
             console.log(results);
-            console.log("OK");
             resolve();
           })
           .catch((error) => {

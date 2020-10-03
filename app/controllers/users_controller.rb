@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def events
     @events = EventFacade.new.get_and_execute_latest_events!(current_user)
     @next_event_at = current_user.status.next_event_at
+    @after_velocity = current_user.status.velocity
   end
 
   def resurrect

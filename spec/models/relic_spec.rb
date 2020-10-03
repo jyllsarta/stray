@@ -66,7 +66,7 @@ RSpec.describe Relic, type: :model do
       end
 
       it "raises" do
-        expect{subject}.to raise_error Relic::InsufficientStar
+        expect{subject}.to raise_error User::Status::InsufficientStar
       end
     end
 
