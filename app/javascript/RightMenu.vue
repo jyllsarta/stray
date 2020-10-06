@@ -26,6 +26,11 @@
     )
       | クエスト
     .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
+    )
+      | 実績
+    .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )

@@ -27,6 +27,8 @@
       transition(name="open_window")
         EquipSkillWindow(v-if="$store.state.window.equip_skill")
       transition(name="open_window")
+        AchievementWindow(v-if="$store.state.window.achievement")
+      transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
       Api(ref="api")
       Timer
@@ -64,10 +66,12 @@ import TransitionFrame from "./TransitionFrame.vue";
 import LoadingFrame from "./LoadingFrame.vue";
 import SessionExpiredFrame from "./SessionExpiredFrame.vue";
 import ClickEffect from "./ClickEffect.vue";
+import AchievementWindow from "./AchievementWindow.vue";
 
 export default {
   store,
   components: {
+    AchievementWindow,
     Api,
     Guide,
     Field,
