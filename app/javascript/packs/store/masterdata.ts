@@ -7,6 +7,7 @@ export default {
     items: {},
     relics: {},
     skills: {},
+    achievement_steps: {},
   },
   getters: {
     getCurrentDungeon: (state, getters, rootState, rootGetters) => {
@@ -20,6 +21,7 @@ export default {
       state.items = payload.masterdata.items;
       state.relics = payload.masterdata.relics;
       state.skills = payload.masterdata.skills;
+      state.achievement_steps = payload.masterdata.achievement_steps;
     },
   }
 }

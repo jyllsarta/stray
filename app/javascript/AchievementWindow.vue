@@ -10,18 +10,18 @@
         | これまでに取得した実績を確認できます。報酬がある場合受け取れます。
       .body
         .achievements
-          .achievement
+          .achievement(v-for="achievement in achievements")
             .icon.item
               img(src="/images/icons/achievements/treasure.gif")
             .title.item
-              | 全部一緒じゃないですかー！
+              | {{achievement.title}}
             .progress.item
               .current
-                | 3000
+                | 0
               .sep
                 | /
               .target
-                | 2500
+                | {{achievement.progress}}
             .reward_icon.item
               img(src="/images/ui/star.png")
             .amount.item
@@ -51,6 +51,9 @@
     },
     store,
     computed: {
+      achievements(){
+        return Object.values(this.$store.state.masterdata.achievement_steps);
+      }
     },
     methods: {
     }
@@ -73,8 +76,9 @@
   .body{
     .achievements{
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+      flex-direction: column;
+      height: 440px;
+      overflow-y: scroll;
       .achievement{
         margin: $thin_space;
         width: 70%;
