@@ -10,14 +10,17 @@
         | これまでに取得した実績を確認できます。報酬がある場合受け取れます。
       .body
         .achievements
-          .achievement(v-for="achievement in achievements")
+          .achievement.selectable.hoverable(
+            v-for="achievement in achievements",
+            @mouseover="$store.commit('guide/updateGuide', achievement.description)",
+          )
             .icon.item
               img(src="/images/icons/achievements/treasure.gif")
             .title.item
               | {{achievement.title}}
             .progress.item
               .current
-                | 0
+                | 123123123
               .sep
                 | /
               .target
@@ -26,8 +29,13 @@
               img(src="/images/ui/star.png")
             .amount.item
               | x1
-            .receive.clickable.item
+            .receive.item
               | 達成
+        .details
+          .summary
+            | 実績達成数とか
+          .detail
+            | 詳細エリアだよ
 
 </template>
 
@@ -74,32 +82,37 @@
   }
 
   .body{
+    display: flex;
+
     .achievements{
       display: flex;
       flex-direction: column;
       height: 440px;
       overflow-y: scroll;
+      width: 70%;
       .achievement{
         margin: $thin_space;
-        width: 70%;
+        width: 100%;
         height: 30px;
         display: flex;
         flex-direction: row;
         align-items: center;
         .item{
-          margin: $thin_space;
+          margin-left: $thin_space;
+          margin-right: $thin_space;
         }
         .icon{
           width: 24px;
           height: 24px;
         }
         .title{
-          width: 240px;
+          flex-grow: 1;
+          font-size: 18px; // ここも妙に通常サイズだと小さく見えるので特異なサイズにする...
         }
         .progress{
           .current, .target{
             display: inline-block;
-            width: 5rem;
+            min-width: 3rem;
             text-align: right;
           }
           .sep{
@@ -122,8 +135,12 @@
         .receive{
           @include centering($height: 30px);
           width: 40px;
+          margin-right: 20px;
         }
       }
+    }
+    .details{
+      width: 30%;
     }
   }
 </style>
