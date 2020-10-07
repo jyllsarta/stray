@@ -33,10 +33,42 @@
               | 達成
         .details
           .summary
-            | 実績達成数とか
-          .detail
-            | 詳細エリアだよ
+            .label
+              | トータル実績達成率：
 
+            .value
+              | 75%
+          .detail
+            .descri
+              | 選択中の実績：
+            .titles
+              .icon
+                img(src="/images/icons/achievements/treasure.gif")
+              .title
+               | 今日から図鑑埋めの方やっていこうかと
+            .description
+              | 何とかかんとかをXにする。
+            .current.key_value
+              .key
+                | 現在値：
+              .value
+                | 876876876
+            .taeget.key_value
+              .key
+                | 達成値：
+              .value
+                | 876876876
+            .reward.key_value
+              .key
+                | 報酬：
+              .value
+                .icon
+                  img(src="/images/ui/star.png")
+                .amount
+                  | x1
+            .reward_button_area
+              .reward_button.clickable
+                | 達成
 </template>
 
 <script lang="ts">
@@ -71,10 +103,6 @@
 <style lang="scss" scoped>
   @import "stylesheets/global_setting";
 
-  *{
-    //outline: 1px solid #79f850;
-  }
-
   .description{
     padding: $space;
     white-space: pre-wrap;
@@ -89,7 +117,7 @@
       flex-direction: column;
       height: 440px;
       overflow-y: scroll;
-      width: 70%;
+      width: 75%;
       .achievement{
         margin: $thin_space;
         width: 100%;
@@ -122,8 +150,8 @@
           }
         }
         .reward_icon{
-          width: 22px;
-          height: 22px;
+          width: 20px;
+          height: 20px;
           img{
             width: 100%;
             height: 100%;
@@ -140,7 +168,79 @@
       }
     }
     .details{
-      width: 30%;
+      width: 25%;
+      padding: $space;
+      .summary{
+        border-bottom: 1px solid $gray3;
+        .label{
+        }
+        .value{
+          width: 100%;
+          font-size: $font-size-large;
+          text-align: right;
+        }
+      }
+      .detail{
+        .titles{
+          height: 50px;
+          display: flex;
+          align-items: center;
+          .icon{
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+          }
+          .title{
+            display: inline-block;
+            padding-left: $space;
+            font-size: 18px;
+            line-height: 110%;
+          }
+        }
+        .description{
+          height: 100px;
+        }
+        .key_value{
+          padding-top: $space;
+          height: 40px;
+          .key{
+            display: inline-block;
+            width: 30%;
+            margin-left: 10%;
+            text-align: right;
+          }
+          .value{
+            display: inline-block;
+            padding-left: $thin_space;
+            width: 60%;
+          }
+        }
+        .reward{
+          .icon{
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .amount{
+            display: inline-block;
+          }
+        }
+        .reward_button_area{
+          width: 100%;
+          height: 80px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .reward_button{
+            @include centering($height: 40px);
+            width: 100px;
+          }
+        }
+      }
     }
   }
 </style>
