@@ -31,7 +31,7 @@
             .reward_icon.item
               img(src="/images/ui/star.png")
             .amount.item
-              | x1
+              | x{{achievement.rewards[0] ? achievement.rewards[0].amount : 0}}
             .receive.item
               | 達成
         .details
@@ -67,7 +67,7 @@
                 .icon
                   img(src="/images/ui/star.png")
                 .amount
-                  | x1
+                  | x{{selectingAchievement.rewards[0] ? selectingAchievement.rewards[0].amount : 0}}
             .reward_button_area
               .reward_button.clickable
                 | 達成
@@ -105,7 +105,12 @@
         return {
           title: "-",
           description: "",
-          progress: "-"
+          progress: "-",
+          rewards: [
+            {
+              amount: "-"
+            }
+          ]
         }
       },
     },

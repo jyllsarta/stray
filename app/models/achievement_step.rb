@@ -16,4 +16,9 @@
 #
 
 class AchievementStep < ApplicationRecord
+  has_many :achievement_step_rewards
+
+  def rewards
+    achievement_step_rewards
+  end
 end
