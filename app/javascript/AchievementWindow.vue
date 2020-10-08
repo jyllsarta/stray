@@ -13,7 +13,10 @@
           .achievement.selectable.hoverable(
             v-for="achievement in achievements",
             @mouseover="$store.commit('guide/updateGuide', achievement.description)",
+            @click="selectAchievement(achievement.id)",
+            :class="achievement.id === selectingAchievementId ? 'selected' : 'not_selected'"
           )
+            .height_block
             .icon.item
               img(src="/images/icons/achievements/treasure.gif")
             .title.item
@@ -35,7 +38,6 @@
           .summary
             .label
               | トータル実績達成率：
-
             .value
               | 75%
           .detail
@@ -45,9 +47,9 @@
               .icon
                 img(src="/images/icons/achievements/treasure.gif")
               .title
-               | 今日から図鑑埋めの方やっていこうかと
+               | {{selectingAchievement.title}}
             .description
-              | 何とかかんとかをXにする。
+              | {{selectingAchievement.description}}
             .current.key_value
               .key
                 | 現在値：
@@ -55,9 +57,9 @@
                 | 876876876
             .taeget.key_value
               .key
-                | 達成値：
+                | 目標値：
               .value
-                | 876876876
+                | {{selectingAchievement.progress}}
             .reward.key_value
               .key
                 | 報酬：
@@ -85,6 +87,7 @@
     },
     data: function () {
       return {
+        selectingAchievementId: -1,
       };
     },
     mounted(){
@@ -93,9 +96,23 @@
     computed: {
       achievements(){
         return Object.values(this.$store.state.masterdata.achievement_steps);
-      }
+      },
+      selectingAchievement(){
+        const achievement = this.$store.state.masterdata.achievement_steps[this.selectingAchievementId];
+        if(achievement){
+          return achievement;
+        }
+        return {
+          title: "-",
+          description: "",
+          progress: "-"
+        }
+      },
     },
     methods: {
+      selectAchievement(id){
+        this.selectingAchievementId = id;
+      },
     }
   }
 </script>
@@ -119,12 +136,14 @@
       overflow-y: scroll;
       width: 75%;
       .achievement{
-        margin: $thin_space;
-        width: 100%;
-        height: 30px;
+        margin: $thin_space / 2;
+        width: calc(100% - 8px);
         display: flex;
         flex-direction: row;
         align-items: center;
+        .height_block{
+          height: 40px; // achievement 全体の高さをこいつで決めている
+        }
         .item{
           margin-left: $thin_space;
           margin-right: $thin_space;
