@@ -1,0 +1,5 @@
+create_table "user_achievement_steps", force: :cascade  do |t|
+  t.belongs_to :user
+  t.belongs_to :achievement_step
+  t.timestamps
+end

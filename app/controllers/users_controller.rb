@@ -49,6 +49,10 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def achievements
+    @user = current_user
+  end
+
   def register_name
     current_user.register_name(name: params[:name], password: params[:password])
   end

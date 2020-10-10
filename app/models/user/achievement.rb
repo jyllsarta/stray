@@ -3,11 +3,11 @@
 # Table name: user_achievements
 #
 #  id             :bigint           not null, primary key
-#  progress       :integer
+#  progress       :integer          default(0), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  achievement_id :bigint
-#  user_id        :bigint
+#  achievement_id :bigint           not null
+#  user_id        :bigint           not null
 #
 # Indexes
 #

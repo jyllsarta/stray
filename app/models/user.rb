@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :won_enemies
   has_many :random_item_receive_histories
   has_many :achievements
+  has_many :achievement_steps
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end

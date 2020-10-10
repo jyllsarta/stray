@@ -224,6 +224,36 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id/achievements" do
+    include_context("stub_current_user")
+    let(:user){ User.create }
+    let!(:achievement){ create(:achievement) }
+    let!(:achievement_step){ create(:achievement_step, achievement: achievement) }
+    let!(:user_achievement){ create(:user_achievement, user: user, achievement: achievement) }
+    let!(:user_achievement_step){ create(:user_achievement_step, user: user, achievement_step: achievement_step) }
+    let(:do_get) { get user_achievements_path(user_id: user.id) + ".json" }
+    subject do
+      do_get
+      response
+    end
+    it 'succeeds' do
+      subject
+      expect(response).to have_http_status(200)
+      
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   achievements: [
+                                                      achievement_id: Integer,
+                                                      progress: Integer
+                                                  ],
+                                                  achievement_steps: [
+                                                      achievement_step_id: Integer,
+                                                  ],
+                                               }
+                                           )
+    end
+  end
+
   describe "POST /users/:id/events" do
     include_context("stub_current_user")
     let(:user){ User.create }

@@ -17,8 +17,8 @@
 
 FactoryBot.define do
   factory :achievement_step, class: 'AchievementStep' do
-    title { 'コイン収集' }
-    name { 'コインを500枚集める' }
-    progress { 500 }
+    title { "一石二鳥" }
+    description { "一度に二体敵を倒す" }
+    progress { 100 }
   end
 end
