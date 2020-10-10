@@ -1,0 +1,6 @@
+create_table "user_achievements", force: :cascade  do |t|
+  t.belongs_to :user
+  t.belongs_to :achievement
+  t.integer :progress
+  t.timestamps
+end
