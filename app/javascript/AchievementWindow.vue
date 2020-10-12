@@ -88,9 +88,12 @@
     data: function () {
       return {
         selectingAchievementId: -1,
+        playerAchievements: [],
+        playerAchievementSteps: [],
       };
     },
     mounted(){
+      this.fetchPlayerAchievements();
     },
     store,
     computed: {
@@ -117,6 +120,20 @@
     methods: {
       selectAchievement(id){
         this.selectingAchievementId = id;
+      },
+      fetchPlayerAchievements(){
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/achievements.json`;
+        ax.get(path)
+          .then((results) => {
+            console.log(results);
+            this.playerAchievements = results.data.achievements;
+            this.playerAchievementSteps = results.data.achievement_steps;
+          })
+          .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
       },
     }
   }
