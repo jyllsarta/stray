@@ -11,35 +11,31 @@
       .body
         .achievements
           .achievement.selectable.hoverable(
-            v-for="achievement in achievements",
-            @mouseover="$store.commit('guide/updateGuide', achievement.description)",
-            @click="selectAchievement(achievement.id)",
-            :class="achievement.id === selectingAchievementId ? 'selected' : 'not_selected'"
+            v-for="achievementStep in achievementSteps",
+            @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
+            @click="selectAchievementStep(achievementStep.id)",
+            :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
           )
             .height_block
             .icon.item
               img(src="/images/icons/achievements/treasure.gif")
             .title.item
-              | {{achievement.title}}
+              | {{achievementStep.title}}
             .progress.item
               .current
-                | 123123123
+                | {{userAchievements[achievementStep.achievement_id] ? userAchievements[achievementStep.achievement_id].progress : 0}}
               .sep
                 | /
               .target
-                | {{achievement.progress}}
-            .reward_icon.item
-              img(src="/images/ui/star.png")
-            .amount.item
-              | x{{achievement.rewards[0] ? achievement.rewards[0].amount : 0}}
+                | {{achievementStep.progress}}
             .receive.item
-              | 達成
+              | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
         .details
           .summary
             .label
               | トータル実績達成率：
             .value
-              | 75%
+              | {{currentProgressPercentage()}}%
           .detail
             .descri
               | 選択中の実績：
@@ -47,19 +43,19 @@
               .icon
                 img(src="/images/icons/achievements/treasure.gif")
               .title
-               | {{selectingAchievement.title}}
+               | {{selectingAchievementStep.title}}
             .description
-              | {{selectingAchievement.description}}
+              | {{selectingAchievementStep.description}}
             .current.key_value
               .key
                 | 現在値：
               .value
-                | 876876876
+                |  {{userAchievements[selectingAchievementStep.achievement_id] ? userAchievements[selectingAchievementStep.achievement_id].progress : 0}}
             .taeget.key_value
               .key
                 | 目標値：
               .value
-                | {{selectingAchievement.progress}}
+                | {{selectingAchievementStep.progress}}
             .reward.key_value
               .key
                 | 報酬：
@@ -67,10 +63,10 @@
                 .icon
                   img(src="/images/ui/star.png")
                 .amount
-                  | x{{selectingAchievement.rewards[0] ? selectingAchievement.rewards[0].amount : 0}}
+                  | x{{selectingAchievementStep.rewards[0] ? selectingAchievementStep.rewards[0].amount : 0}}
             .reward_button_area
-              .reward_button.clickable
-                | 達成
+              .reward_button.hoverable(:class="achievementStepStatus(selectingAchievementStep.id)")
+                | {{achievementLabels[achievementStepStatus(selectingAchievementStep.id)]}}
 </template>
 
 <script lang="ts">
@@ -87,9 +83,14 @@
     },
     data: function () {
       return {
-        selectingAchievementId: -1,
-        playerAchievements: [],
-        playerAchievementSteps: [],
+        selectingAchievementStepId: -1,
+        userAchievements: {},
+        userAchievementSteps: {},
+        achievementLabels: {
+          cleared: "達成",
+          in_progress: "進行中",
+          reward_received: "受取済"
+        }
       };
     },
     mounted(){
@@ -97,11 +98,11 @@
     },
     store,
     computed: {
-      achievements(){
+      achievementSteps(){
         return Object.values(this.$store.state.masterdata.achievement_steps);
       },
-      selectingAchievement(){
-        const achievement = this.$store.state.masterdata.achievement_steps[this.selectingAchievementId];
+      selectingAchievementStep(){
+        const achievement = this.$store.state.masterdata.achievement_steps[this.selectingAchievementStepId];
         if(achievement){
           return achievement;
         }
@@ -118,8 +119,12 @@
       },
     },
     methods: {
-      selectAchievement(id){
-        this.selectingAchievementId = id;
+      currentProgressPercentage(){
+        const steps = Object.keys(this.$store.state.masterdata.achievement_steps);
+        return Math.floor(steps.filter((x)=>{return this.achievementStepStatus(x) != 'in_progress'}).length / steps.length * 100);
+      },
+      selectAchievementStep(id){
+        this.selectingAchievementStepId = id;
       },
       fetchPlayerAchievements(){
         const user_id = localStorage.user_id;
@@ -127,14 +132,27 @@
         ax.get(path)
           .then((results) => {
             console.log(results);
-            this.playerAchievements = results.data.achievements;
-            this.playerAchievementSteps = results.data.achievement_steps;
+            this.userAchievements = results.data.achievements;
+            this.userAchievementSteps = results.data.achievement_steps;
           })
           .catch((error) => {
             console.warn(error.response);
             console.warn("NG");
           });
       },
+      achievementStepStatus(achievement_step_id){
+        if(this.userAchievementSteps[achievement_step_id]){
+          return "reward_received";
+        }
+        const step = this.$store.state.masterdata.achievement_steps[achievement_step_id];
+        if(!step){
+          return "in_progress";
+        }
+        if(this.userAchievements[step.achievement_id]?.progress >= step.progress){
+          return "cleared";
+        }
+        return "in_progress";
+      }
     }
   }
 </script>
@@ -203,7 +221,7 @@
         }
         .receive{
           @include centering($height: 30px);
-          width: 40px;
+          width: 60px;
           margin-right: 20px;
         }
       }
@@ -277,11 +295,30 @@
           justify-content: center;
           align-items: center;
           .reward_button{
-            @include centering($height: 40px);
-            width: 100px;
+            @include centering($height: 60px);
+            width: 140px;
+            border: 1px solid $gray3;
+            border-radius: $radius;
           }
         }
       }
+    }
+    .in_progress{
+      border: 1px solid transparent;
+    }
+    .cleared{
+      background-color: $yellow-opacity;
+      border: 1px solid $gray1;
+      &:hover{
+        background-color: $yellow-opacity;
+        filter: brightness(130%);
+        transform: scale(1.03);
+      }
+    }
+    .reward_received{
+      background-color: $background_with_opacity;
+      border: 1px solid transparent;
+      opacity: 0.5;
     }
   }
 </style>

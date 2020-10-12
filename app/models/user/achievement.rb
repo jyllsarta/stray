@@ -17,5 +17,5 @@
 
 class User::Achievement < ApplicationRecord
   belongs_to :user
-  belongs_to :achievement
+  belongs_to :achievement, class_name: "::Achievement"
 end

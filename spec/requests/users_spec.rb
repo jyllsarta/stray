@@ -242,13 +242,12 @@ RSpec.describe "Users", type: :request do
       
       expect(JSON.parse(response.body)).to match_json_expression(
                                                {
-                                                   achievements: [
-                                                      achievement_id: Integer,
-                                                      progress: Integer
-                                                  ],
-                                                  achievement_steps: [
-                                                      achievement_step_id: Integer,
-                                                  ],
+                                                   achievements: {
+                                                       "#{achievement.id}" => Hash
+                                                   },
+                                                   achievement_steps: {
+                                                       "#{achievement_step.id}" => Hash
+                                                   },
                                                }
                                            )
     end

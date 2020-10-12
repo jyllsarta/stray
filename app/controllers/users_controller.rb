@@ -50,7 +50,8 @@ class UsersController < ApplicationController
   end
 
   def achievements
-    @user = current_user
+    @achievements = current_user.achievements.index_by(&:achievement_id)
+    @achievement_steps = current_user.achievement_steps.index_by(&:achievement_step_id)
   end
 
   def register_name
