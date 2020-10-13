@@ -16,4 +16,5 @@
 #
 
 class AchievementStepReward < ApplicationRecord
+  belongs_to :achievement_step
 end

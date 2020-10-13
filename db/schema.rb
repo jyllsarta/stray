@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "user_achievement_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "achievement_step_id"
+    t.boolean "received", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["achievement_step_id"], name: "index_user_achievement_steps_on_achievement_step_id"

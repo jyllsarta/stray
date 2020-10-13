@@ -22,4 +22,9 @@ class AchievementStep < ApplicationRecord
   def rewards
     achievement_step_rewards
   end
+
+  def cleared?(user)
+    user_progress = user.achievements.find_by(achievement: achievement)&.progress || 0
+    user_progress >= progress
+  end
 end

@@ -3,6 +3,7 @@
 # Table name: user_achievement_steps
 #
 #  id                  :bigint           not null, primary key
+#  received            :boolean          default(FALSE), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  achievement_step_id :bigint
