@@ -33,11 +33,9 @@ RSpec.describe User::AchievementStep, type: :model do
     context "ok" do
       let(:received){ false }
       let(:progress){ 100 }
-      it "succeeds" do
+      it "succeed and receives reward" do
         expect{subject}.to_not raise_error
-      end
-      it "receives reward" do
-        expect{subject}.to change(user.status, :coin).by(100)
+        expect(user.status.reload.coin).to eq(100)
       end
     end
     context "already received" do

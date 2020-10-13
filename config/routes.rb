@@ -45,6 +45,11 @@ Rails.application.routes.draw do
     resources :user_items, only: [] do
       post :rank_up
     end
+    resources :user_achievement_steps, only: [] do
+      # 本来の筋で行くとuser_achievement_step_id 指定が正しいんだけど...
+      # achievement_step_id 指定の方が楽なので on:collection で余計なパラメータを挟まないようにする
+      post :receive_reward, on: :collection
+    end
     post :register_name # ユーザ名の登録
     post :regenerate_token, on: :collection # アクセストークンの再取得
     get :status

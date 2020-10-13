@@ -17,14 +17,12 @@
 
 class User::AchievementStep < ApplicationRecord
   belongs_to :user
-  belongs_to :achievement_step
+  belongs_to :achievement_step, class_name: "::AchievementStep"
   class AlreadyReceived < StandardError; end
   class NotClearedYet < StandardError; end
 
   def receive!
-    # 本当に謎なんだけど、 with_lock do だとspec上で achievement_step が関連で引けなくなる超謎な現象が発生する
-    # ...ので多重受け取りの可能性を微妙に許容して一旦これで行く
-    ActiveRecord::Base.transaction do
+    with_lock do
       raise AlreadyReceived if received
       raise NotClearedYet unless achievement_step.cleared?(user)
       achievement_step.rewards.each do |reward|
