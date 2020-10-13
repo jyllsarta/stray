@@ -65,7 +65,10 @@
                 .amount
                   | x{{selectingAchievementStep.rewards[0] ? selectingAchievementStep.rewards[0].amount : 0}}
             .reward_button_area
-              .reward_button.hoverable(:class="achievementStepStatus(selectingAchievementStep.id)")
+              .reward_button.hoverable(
+                :class="achievementStepStatus(selectingAchievementStep.id)"
+                @click="onReceiveRewardButtonClick(selectingAchievementStep.id)"
+              )
                 | {{achievementLabels[achievementStepStatus(selectingAchievementStep.id)]}}
 </template>
 
@@ -90,7 +93,8 @@
           cleared: "達成",
           in_progress: "進行中",
           reward_received: "受取済"
-        }
+        },
+        isReceiving: false,
       };
     },
     mounted(){
@@ -152,7 +156,36 @@
           return "cleared";
         }
         return "in_progress";
-      }
+      },
+      onReceiveRewardButtonClick(achievement_step_id) {
+        if(this.isReceiving){
+          console.log("通信中...")
+          return;
+        }
+        if(this.achievementStepStatus(achievement_step_id) === "cleared"){
+          this.receiveReward(achievement_step_id);
+        }
+        console.log("クリア意外なのでスルーします");
+      },
+      receiveReward(achievement_step_id) {
+        this.isReceiving = true;
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/user_achievement_steps/receive_reward.json`;
+        ax.post(path, { achievement_step_id: achievement_step_id })
+          .then((results) => {
+            console.log(results);
+            this.$store.dispatch('user/fetchUserModel');
+            // 受け取り済み扱いにする
+            this.$set(this.userAchievementSteps, achievement_step_id, {achievement_step_id: achievement_step_id});
+            this.isReceiving = false;
+          })
+          .catch((error) => {
+            console.warn(error);
+            console.warn(error.response);
+            console.warn("NG");
+          }
+        );
+      },
     }
   }
 </script>
