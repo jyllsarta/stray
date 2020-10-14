@@ -63,6 +63,12 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def clear_achievement
+    current_user.achievements.destroy_all
+    current_user.achievement_steps.destroy_all
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
