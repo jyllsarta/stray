@@ -11,7 +11,7 @@
       .body
         .achievements
           .achievement.selectable.hoverable(
-            v-for="achievementStep in achievementSteps",
+            v-for="achievementStep in sortedAchievementSteps()",
             @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
             @click="selectAchievementStep(achievementStep.id)",
             :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
@@ -94,6 +94,11 @@
           in_progress: "進行中",
           reward_received: "受取済"
         },
+        achievementPriorities: {
+          cleared: 1,
+          in_progress: 2,
+          reward_received: 3,
+        },
         isReceiving: false,
       };
     },
@@ -123,11 +128,19 @@
       },
     },
     methods: {
+      sortedAchievementSteps(){
+        return [this.filteredAchievementSteps('cleared'), this.filteredAchievementSteps('in_progress'),this.filteredAchievementSteps('reward_received')].flat();
+      },
+      filteredAchievementSteps(key){
+        const steps = Object.values(this.$store.state.masterdata.achievement_steps);
+        return steps.filter((x)=>{return this.achievementStepStatus(x.id) === key})
+      },
       currentProgressPercentage(){
         const steps = Object.keys(this.$store.state.masterdata.achievement_steps);
         return Math.floor(steps.filter((x)=>{return this.achievementStepStatus(x) != 'in_progress'}).length / steps.length * 100);
       },
       selectAchievementStep(id){
+        console.log(id);
         this.selectingAchievementStepId = id;
       },
       fetchPlayerAchievements(){
@@ -177,6 +190,8 @@
             this.$store.dispatch('user/fetchUserModel');
             // 受け取り済み扱いにする
             this.$set(this.userAchievementSteps, achievement_step_id, {achievement_step_id: achievement_step_id});
+            // 画面中で一番上に来るやつを選択し直す
+            this.selectAchievementStep(this.sortedAchievementSteps()[0].id);
             this.isReceiving = false;
           })
           .catch((error) => {
