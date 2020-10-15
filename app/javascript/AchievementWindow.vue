@@ -129,9 +129,23 @@
     },
     methods: {
       sortedAchievementSteps(){
-        return [this.filteredAchievementSteps('cleared'), this.filteredAchievementSteps('in_progress'),this.filteredAchievementSteps('reward_received')].flat();
+        const active_steps = this.removeDuplicateAchievementIdFromSteps([this.filteredAchievementStepsByStatus('cleared'), this.filteredAchievementStepsByStatus('in_progress')].flat());
+        return [active_steps, this.filteredAchievementStepsByStatus('reward_received')].flat();
       },
-      filteredAchievementSteps(key){
+      // achievement_steps のリストから同一achievement_id のものは最初の一つだけを残す
+      removeDuplicateAchievementIdFromSteps(steps){
+        let filtered = [];
+        let achievement_ids = [];
+        for(let step of steps){
+          if(!achievement_ids.includes(step.achievement_id)){
+            filtered.push(step);
+            achievement_ids.push(step.achievement_id);
+          }
+        }
+        console.log(filtered);
+        return filtered;
+      },
+      filteredAchievementStepsByStatus(key){
         const steps = Object.values(this.$store.state.masterdata.achievement_steps);
         return steps.filter((x)=>{return this.achievementStepStatus(x.id) === key})
       },
