@@ -10,26 +10,28 @@
         | これまでに取得した実績を確認できます。報酬がある場合受け取れます。
       .body
         .achievements
-          .achievement.selectable.hoverable(
-            v-for="achievementStep in sortedAchievementSteps()",
-            @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
-            @click="selectAchievementStep(achievementStep.id)",
-            :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
-          )
-            .height_block
-            .icon.item
-              img(src="/images/icons/achievements/treasure.gif")
-            .title.item
-              | {{achievementStep.title}}
-            .progress.item
-              .current
-                | {{userAchievements[achievementStep.achievement_id] ? userAchievements[achievementStep.achievement_id].progress : 0}}
-              .sep
-                | /
-              .target
-                | {{achievementStep.progress}}
-            .receive.item
-              | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
+          transition-group(name="achievement-animation")
+            .achievement.selectable.hoverable(
+              v-for="achievementStep in sortedAchievementSteps()",
+              @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
+              @click="selectAchievementStep(achievementStep.id)",
+              :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
+              :key="achievementStep.id"
+            )
+              .height_block
+              .icon.item
+                img(src="/images/icons/achievements/treasure.gif")
+              .title.item
+                | {{achievementStep.title}}
+              .progress.item
+                .current
+                  | {{userAchievements[achievementStep.achievement_id] ? userAchievements[achievementStep.achievement_id].progress : 0}}
+                .sep
+                  | /
+                .target
+                  | {{achievementStep.progress}}
+              .receive.item
+                | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
         .details
           .summary
             .label
@@ -142,7 +144,6 @@
             achievement_ids.push(step.achievement_id);
           }
         }
-        console.log(filtered);
         return filtered;
       },
       filteredAchievementStepsByStatus(key){
@@ -381,6 +382,17 @@
       background-color: $background_with_opacity;
       border: 1px solid transparent;
       opacity: 0.5;
+    }
+
+    .achievement{
+      transition: all 0.5s;
+    }
+    .achievement-animation-leave-to {
+      opacity: 0;
+      transform: scale(1.3);
+    }
+    .achievement-animation-leave-active {
+      position: absolute;
     }
   }
 </style>
