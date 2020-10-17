@@ -9,7 +9,7 @@
       .description
         | これまでに取得した実績を確認できます。報酬がある場合受け取れます。
       .body
-        .achievements
+        .achievements.scrollable
           transition-group(name="achievement-animation")
             .achievement.selectable.hoverable(
               v-for="achievementStep in sortedAchievementSteps()",
