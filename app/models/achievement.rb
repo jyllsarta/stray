@@ -11,5 +11,4 @@
 #
 
 class Achievement < ApplicationRecord
-  self.inheritance_column = :_nothing # TODO: 今後STI使うけど、typeごとの準備ができるまでは無効化する
 end

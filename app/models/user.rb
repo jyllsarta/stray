@@ -78,6 +78,10 @@ class User < ApplicationRecord
     end
   end
 
+  def achievement_logger
+    @_logger ||= ::Achievement::Logger.new(self)
+  end
+
   private
 
   def self.same_name_user_exists?(id, name)

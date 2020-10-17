@@ -1,15 +1,20 @@
 class ApplicationController < ActionController::Base
-  before_action :set_raven_context
+  after_action :commit_achievement
   class NoToken < StandardError; end
 
   def current_user
-    raise NoToken if request.headers["X-AccessToken"].blank? || request.headers["X-AccessToken"] == "undefined"
+    raise NoToken if unauthorized?
     @_user ||= User::AccessToken.find_user_by_token!(request.headers["X-AccessToken"])
   end
 
   private
 
-  def set_raven_context
-    return if request.headers["X-AccessToken"].blank? || request.headers["X-AccessToken"] == "undefined"
+  def commit_achievement
+    return if unauthorized?
+    current_user.achievement_logger.commit
+  end
+
+  def unauthorized?
+    request.headers["X-AccessToken"].blank? || request.headers["X-AccessToken"] == "undefined"
   end
 end

@@ -12,6 +12,6 @@
 
 FactoryBot.define do
   factory :achievement, class: 'Achievement' do
-    type { 'Achievement::Type::TotalCoinCollect' }
+    type { 'Achievement::Type::TotalCoin' }
   end
 end
