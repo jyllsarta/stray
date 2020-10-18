@@ -293,6 +293,16 @@ RSpec.describe User::Status, type: :model do
     it "increments coin" do
       expect{subject}.to change(status, :coin).by(amount)
     end
+
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
+    end
   end
 
   describe "#consume_coin!" do
@@ -329,6 +339,16 @@ RSpec.describe User::Status, type: :model do
     let(:amount){100}
     it "increments star" do
       expect{subject}.to change(status, :star).by(amount)
+    end
+
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
     end
   end
 

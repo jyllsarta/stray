@@ -117,4 +117,12 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#achievement_logger" do
+    let(:user){ create(:user) }
+    subject { user.achievement_logger }
+    it "returns achievement logger" do
+      expect(subject.class).to eq(Achievement::Logger)
+    end
+  end
 end
