@@ -315,6 +315,15 @@ RSpec.describe User::Status, type: :model do
       it "decrements coin" do
         expect{subject}.to change(status, :coin).by(-amount)
       end
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end
     end
     context "insufficient" do
       before do

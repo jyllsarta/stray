@@ -107,6 +107,7 @@ class User::Status < ApplicationRecord
   def consume_coin!(amount)
     raise InsufficientCoin if coin < amount
     self.decrement!(:coin, amount)
+    user.achievement_logger.post(Achievement::Event::FluctuateCoin.new(user, -amount))
   end
 
   def add_star!(amount)
