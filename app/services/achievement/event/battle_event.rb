@@ -11,7 +11,7 @@ class Achievement::Event::BattleEvent < Achievement::Event::Base
     [
       'Achievement::Type::TotalEvent',
       'Achievement::Type::TotalPlayTime',
-      'Achievement::Type::SSRankBattle',
+      'Achievement::Type::SsRankBattle',
       'Achievement::Type::DeathCount',
       'Achievement::Type::MaxVelocity',
     ]

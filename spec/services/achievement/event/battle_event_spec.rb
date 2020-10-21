@@ -24,7 +24,7 @@ RSpec.describe Achievement::Event::BattleEvent, type: :model do
       expect( subject ).to eq([
         'Achievement::Type::TotalEvent',
         'Achievement::Type::TotalPlayTime',
-        'Achievement::Type::SSRankBattle',
+        'Achievement::Type::SsRankBattle',
         'Achievement::Type::DeathCount',
         'Achievement::Type::MaxVelocity'
       ])

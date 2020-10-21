@@ -32,6 +32,8 @@ class BattleEvent < Event
     @battle.execute
     @battle.apply_damages
     @battle.is_win ? process_win(user) : process_lose(user)
+    @is_win = @battle.is_win
+    @turn = @battle.turn
     fluctuate_velocity(user)
     user.achievement_logger.post(Achievement::Event::BattleEvent.new(user, self))
   end
