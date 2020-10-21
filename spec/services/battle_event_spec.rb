@@ -80,6 +80,16 @@ RSpec.describe BattleEvent, type: :model do
         allow_any_instance_of(Battle).to receive(:turn).and_return(3)
         expect{subject}.to change(user.status, :velocity)
       end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger).twice # 報酬コインの獲得で1, バトルで1
+        end
+      end
     end
     context "lose" do
       before do

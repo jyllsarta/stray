@@ -1,4 +1,5 @@
 class BattleEvent < Event
+  attr_reader :is_win, :turn
 
   def initialize(rank=0, at=Time.now)
     @at = at
@@ -32,6 +33,7 @@ class BattleEvent < Event
     @battle.apply_damages
     @battle.is_win ? process_win(user) : process_lose(user)
     fluctuate_velocity(user)
+    user.achievement_logger.post(Achievement::Event::BattleEvent.new(user, self))
   end
 
   def consume_time(user)
