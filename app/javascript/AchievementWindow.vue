@@ -155,7 +155,6 @@
         return Math.floor(steps.filter((x)=>{return this.achievementStepStatus(x) != 'in_progress'}).length / steps.length * 100);
       },
       selectAchievementStep(id){
-        console.log(id);
         this.selectingAchievementStepId = id;
       },
       fetchPlayerAchievements(){
