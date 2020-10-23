@@ -1,4 +1,5 @@
 class ItemEvent < Event
+  attr_reader :item_id
   class NotYet < StandardError; end
 
   def initialize(rank=1, at=Time.now)
@@ -47,6 +48,7 @@ class ItemEvent < Event
       user_item.rank += @rank_delta
     end
     @done = true
+    user.achievement_logger.post(Achievement::Event::ItemEvent.new(user, self))
   end
 
   def consume_time(user)

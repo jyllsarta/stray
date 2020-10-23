@@ -64,6 +64,16 @@ RSpec.describe ItemEvent, type: :model do
         subject
         expect(event.logs[0][:message].include?("拾った")).to eq(true)
       end
+      
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end
     end
 
     context "持ってるアイテムが選ばれた時" do
