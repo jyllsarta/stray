@@ -97,6 +97,16 @@ RSpec.describe QuestBattle, type: :model do
           expect{subject}.to_not change(user.won_enemies.reload, :count)
         end  
       end
+
+      context "achievement" do
+        before do
+          allow(Achievement::Event::Quest).to receive(:new).and_call_original
+        end
+        it "posts achievement" do
+          subject
+          expect(Achievement::Event::Quest).to have_received(:new)
+        end
+      end
     end
   end
 

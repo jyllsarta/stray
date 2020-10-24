@@ -1,6 +1,7 @@
 class QuestBattle
   class NoCache < StandardError; end
   attr_reader :result
+  attr_reader :enemy
 
   def initialize(user)
     @user = user
@@ -28,6 +29,7 @@ class QuestBattle
     @result = capture_result(cache, operation_history)
     give_and_set_win_reward! if win?
     cache.delete
+    @user.achievement_logger.post(Achievement::Event::Quest.new(@user, self))
   end
 
   def content
@@ -51,11 +53,11 @@ class QuestBattle
     }.to_json
   end
 
-  private
-
   def win?
     @result['isWin'] == true
   end
+
+  private
 
   def capture_result(cache, operation_history)
     JSON.parse(Open3.capture2(node_command(cache.read, operation_history.to_json))[0].chomp)
