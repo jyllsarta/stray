@@ -44,6 +44,7 @@ class User::Item < ApplicationRecord
     with_lock do
       user.status.consume_coin!(rank_up_cost(count))
       self.increment!(:rank, count)
+      user.achievement_logger.post(Achievement::Event::ItemRankUp.new(item_id, rank + count))
     end
   end
 

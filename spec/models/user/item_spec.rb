@@ -98,6 +98,16 @@ RSpec.describe User::Item, type: :model do
         subject
         expect(user.status.reload.coin).to eq(0)
       end
+      
+      context "achievement" do
+        before do
+          allow(Achievement::Event::ItemRankUp).to receive(:new).and_call_original
+        end
+        it "posts achievement" do
+          subject
+          expect(Achievement::Event::ItemRankUp).to have_received(:new)
+        end
+      end
     end
 
     context "insufficient money" do

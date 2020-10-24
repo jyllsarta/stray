@@ -7,7 +7,7 @@ RSpec.describe Achievement::Type::UniqueItemCount, type: :model do
   let!(:user_achievement){ create(:user_achievement, user: user, achievement: achievement) }
   let(:params) do
     {
-      type: :battle,
+      type: :item_event,
       user: user,
       event: OpenStruct.new()
     }

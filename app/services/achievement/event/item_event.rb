@@ -2,7 +2,7 @@ class Achievement::Event::ItemEvent < Achievement::Event::Base
   attr_reader :params
   def initialize(user, event)
     @params = {
-      type: :item,
+      type: :item_event,
       user: user,
       event: event
     }

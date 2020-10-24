@@ -16,7 +16,7 @@ RSpec.describe Achievement::Event::ItemEvent, type: :model do
 
     it "returns parameter" do
       expect( subject ).to eq({
-        type: :item,
+        type: :item_event,
         user: user,
         event: item_event
       })
