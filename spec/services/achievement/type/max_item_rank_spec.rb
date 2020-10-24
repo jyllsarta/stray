@@ -39,13 +39,10 @@ RSpec.describe Achievement::Type::MaxItemRank, type: :model do
           after_rank: after_rank
         }
       end
-    
       # STI を発動してサブクラスを取得させるために、わざわざfind を通している
       subject{ Achievement.find(achievement.id).progress_achievement(user_achievement, params) }
-
       context "正常系" do
         let!(:after_rank){ 100 }
-
         it "proceeds user_achievement" do
           aggregate_failures do
             expect{subject}.to change(user_achievement, :progress).to(100)
@@ -54,11 +51,38 @@ RSpec.describe Achievement::Type::MaxItemRank, type: :model do
       end
       context "伸びないとき" do
         let!(:after_rank){ 5 }
-
         it "proceeds user_achievement" do
           aggregate_failures do
             expect{subject}.to_not change(user_achievement, :progress)
           end
+        end
+      end
+    end
+  end
+  context "ランダムアイテムギフト経由" do
+    let(:params) do
+      {
+        type: :receive_random_item,
+        user: user,
+        item_id: 1,
+        after_rank: after_rank
+      }
+    end
+    # STI を発動してサブクラスを取得させるために、わざわざfind を通している
+    subject{ Achievement.find(achievement.id).progress_achievement(user_achievement, params) }
+    context "正常系" do
+      let!(:after_rank){ 100 }
+      it "proceeds user_achievement" do
+        aggregate_failures do
+          expect{subject}.to change(user_achievement, :progress).to(100)
+        end
+      end
+    end
+    context "伸びないとき" do
+      let!(:after_rank){ 5 }
+      it "proceeds user_achievement" do
+        aggregate_failures do
+          expect{subject}.to_not change(user_achievement, :progress)
         end
       end
     end

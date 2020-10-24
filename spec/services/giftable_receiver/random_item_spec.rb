@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe GiftableReceiver::RandomItem, type: :model do
   let(:receiver){ GiftableReceiver::RandomItem.new(id, amount) }
   let(:user){ create(:user) }
+  let!(:user_status){ create(:user_status, user: user) }
   let!(:item){ create(:item, base_rank: 30, rarity: 4) }
   let(:id) { 125 }
   let(:amount){ 1 }
@@ -39,6 +40,16 @@ RSpec.describe GiftableReceiver::RandomItem, type: :model do
           expect{ subject }.to_not change(user.items.reload, :count)
           expect(user.items.first.rank).to eq(500)
         end
+      end
+    end
+
+    context "achievement" do
+      before do
+        allow(Achievement::Event::ReceiveRandomItem).to receive(:new).and_call_original
+      end
+      it "posts achievement" do
+        subject
+        expect(Achievement::Event::ReceiveRandomItem).to have_received(:new)
       end
     end
   end
