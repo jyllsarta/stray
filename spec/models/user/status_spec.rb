@@ -532,6 +532,10 @@ RSpec.describe User::Status, type: :model do
     let!(:equip2){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item2)}
     let(:user){ User.create }
 
+    before do
+      user.characters.reload
+    end
+
     subject { user.status.average_item_rank }
     it "4" do
       expect(subject).to eq(4)

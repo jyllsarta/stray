@@ -236,6 +236,10 @@ RSpec.describe "Users", type: :request do
       do_get
       response
     end
+    before do
+      user.characters.reload
+      user.achievements.reload
+    end
     it 'succeeds' do
       subject
       expect(response).to have_http_status(200)
