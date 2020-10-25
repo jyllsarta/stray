@@ -218,6 +218,15 @@ RSpec.describe User::Status, type: :model do
       subject
       expect(user.characters.first.hp).to eq(user.characters.first.hp_max)
     end
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
+    end
   end
 
   describe "#start_resurrect_timer" do

@@ -75,6 +75,7 @@ class User::Status < ApplicationRecord
       user.characters.map(&:resurrect)
       user.characters.map(&:save!)
       self.update!(resurrect_timer: Constants.resurrect_time_seconds)
+      user.achievement_logger.post(Achievement::Event::ManualResurrect.new)
     end
   end
 
