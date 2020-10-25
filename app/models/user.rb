@@ -55,6 +55,7 @@ class User < ApplicationRecord
     raise EmptyPassword if password.blank?
     raise AlreadyUsed if User.same_name_user_exists?(self.id, name)
     self.update!(name: name, password_hash: User.hash_method(password))
+    achievement_logger.post(::Achievement::Event::RegisterUsername.new)
   end
 
   def self.regenerate_token(name: nil, password: nil)
