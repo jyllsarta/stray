@@ -12,6 +12,7 @@ class Achievement::Event::ItemEvent < Achievement::Event::Base
       'Achievement::Type::TotalEvent',
       'Achievement::Type::TotalPlayTime',
       'Achievement::Type::UniqueItemCount',
+      'Achievement::Type::MaxRarityItemEvent',
       'Achievement::Type::MaxItemRank',
       'Achievement::Type::ObtainItem',
     ]

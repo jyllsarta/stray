@@ -55,6 +55,10 @@ class ItemEvent < Event
     [Constants.default_event_interval_seconds - user.status.event_wait_reduction_seconds, Constants.minimum_event_interval_seconds].max
   end
 
+  def item
+    ::Item.indexed_hash[@item_id]
+  end
+
 private
 
   def find_or_build_user_item(user, item_id)
@@ -65,10 +69,6 @@ private
 
   def coin_amount
     @rank
-  end
-
-  def item
-    ::Item.indexed_hash[@item_id]
   end
 
   def lot_item_rarity!
