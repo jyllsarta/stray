@@ -78,6 +78,10 @@ Rails.application.routes.draw do
 
   resources :quests, only: [:index]
 
+  resources :achievements, only: [] do
+    post :complete, on: :collection
+  end
+
   if Rails.env.development?
     resources :debug, only: [] do
       DebugController.action_methods.each do |method|
