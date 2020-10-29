@@ -54,6 +54,7 @@ export default {
       if(localStorage.access_token){
         console.log("fetch user model");
         this.fetchUserModel();
+        this.$store.dispatch("achievement/fetchAchievements");
       }
       else{
         console.log("sign up");

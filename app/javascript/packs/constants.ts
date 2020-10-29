@@ -57,6 +57,13 @@ const Constants = {
     bossFloorFrequency: 100,
     bossLoseRewindFloor: 3,
   },
+  achievements: {
+    ids: {
+      clickFieldCharacter: 25,
+      signIn: 26,
+      openLog: 27,
+    }
+  },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 2,
   itemsPerPage: 50,

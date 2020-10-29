@@ -13,10 +13,12 @@
       img.spica(
         :src="spicaImagePath"
         :style="{transform: `translate(${characters.spica.position}px, ${characters.spica.verticalPosition}px) scale(${characters.spica.direction}, 1)`}"
+        @click="clickCharacter"
       )
       img.tirol(
         :src="tirolImagePath"
         :style="{transform: `translate(${characters.tirol.position}px, ${characters.tirol.verticalPosition}px) scale(${characters.tirol.direction}, 1)`}"
+        @click="clickCharacter"
       )
     .background.view3(
       :style="viewStyle(3)"
@@ -155,6 +157,15 @@ export default {
         opacity: opacity,
       }
     },
+    clickCharacter(){
+      const achievementId = Constants.achievements.ids.clickFieldCharacter;
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.achievements[achievementId]?.progress >= 1 ){
+        return;
+      }
+      this.$store.dispatch('achievement/sendClientAchievement', "click_field_character").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+      });
+    },
   },
   computed: {
     spicaImagePath(){
@@ -178,6 +189,7 @@ export default {
     background-size: cover;
     background-position: -500px 0;
     image-rendering: pixelated;
+    pointer-events: none;
   }
   .ground{
     position: absolute;
