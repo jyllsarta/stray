@@ -23,7 +23,6 @@ export default {
         const path = `/users/${user_id}/achievements.json`;
         ax.get(path)
           .then((results) => {
-            console.log(results.data);
             commit("updateAchievements", results.data);
             resolve();
           })

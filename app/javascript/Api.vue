@@ -54,7 +54,8 @@ export default {
       if(localStorage.access_token){
         console.log("fetch user model");
         this.fetchUserModel();
-        this.$store.dispatch("achievement/fetchAchievements");
+        this.fetchAchievements();
+        this.sendSignInAchievement();
       }
       else{
         console.log("sign up");
@@ -130,6 +131,20 @@ export default {
           console.warn("NG");
         });
     },
+    fetchAchievements(){
+      this.$store.dispatch("achievement/fetchAchievements").then(()=>{
+        this.sendSignInAchievement();
+      });
+    },
+    sendSignInAchievement(){
+      const achievementId = Constants.achievements.ids.signIn;
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.achievements[achievementId]?.progress >= 1 ){
+        return;
+      }
+      this.$store.dispatch('achievement/sendClientAchievement', "sign_in").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+      });
+    }
   },
   watch: {
     // storeのイベントタイマーを監視して、0秒になったタイミングで追加のイベントを取得しに行く
