@@ -39,12 +39,13 @@ class User::Item < ApplicationRecord
     item.base_rank + rank
   end
 
-  def rank_up!(count)
+  # 自身のuser を使ってしまうと achievement_logger インスタンスを作り直してしまうので、引数からuserオブジェクトをもらってくる...
+  def rank_up!(user_, count)
     raise InsufficientRank if max_rank < (rank + count)
     with_lock do
-      user.status.consume_coin!(rank_up_cost(count))
+      user_.status.consume_coin!(rank_up_cost(count))
       self.increment!(:rank, count)
-      user.achievement_logger.post(Achievement::Event::ItemRankUp.new(item_id, rank + count))
+      user_.achievement_logger.post(Achievement::Event::ItemRankUp.new(item_id, rank + count))
     end
   end
 

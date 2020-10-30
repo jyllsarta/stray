@@ -80,7 +80,7 @@ RSpec.describe User::Item, type: :model do
 
   describe "#rank_up!" do
     let(:user){ User.create }
-    subject { user_item.rank_up!(count) }
+    subject { user_item.rank_up!(user, count) }
     let(:count){ 1 }
 
     context "succeeds" do
