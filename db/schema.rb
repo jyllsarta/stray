@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "progress", null: false
     t.string "title", null: false
     t.string "description", null: false
+    t.string "icon_image_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["achievement_id"], name: "index_achievement_steps_on_achievement_id"

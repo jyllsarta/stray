@@ -2,13 +2,14 @@
 #
 # Table name: achievement_steps
 #
-#  id             :bigint           not null, primary key
-#  description    :string(255)      not null
-#  progress       :integer          not null
-#  title          :string(255)      not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  achievement_id :bigint
+#  id              :bigint           not null, primary key
+#  description     :string(255)      not null
+#  icon_image_path :string(255)
+#  progress        :integer          not null
+#  title           :string(255)      not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  achievement_id  :bigint
 #
 # Indexes
 #
