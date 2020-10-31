@@ -18,20 +18,22 @@
               :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
               :key="achievementStep.id"
             )
-              .height_block
-              .icon.item
-                img(src="/images/icons/achievements/treasure.gif")
-              .title.item
-                | {{achievementStep.title}}
-              .progress.item
-                .current
-                  | {{userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) : 0}}
-                .sep
-                  | /
-                .target
-                  | {{achievementStep.progress}}
-              .receive.item
-                | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
+              .body
+                .height_block
+                .icon.item
+                  img(src="/images/icons/achievements/treasure.gif")
+                .title.item
+                  | {{achievementStep.title}}
+                .progress.item
+                  .current
+                    | {{userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) : 0}}
+                  .sep
+                    | /
+                  .target
+                    | {{achievementStep.progress}}
+                .receive.item
+                  | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
+              .under_bar(:style="{width: (userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) / achievementStep.progress : 0) * 100 + '%'}")
         .details
           .summary
             .label
@@ -240,51 +242,57 @@
       .achievement{
         margin: $thin_space / 2;
         width: calc(100% - 8px);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .height_block{
-          height: 40px; // achievement 全体の高さをこいつで決めている
+        .under_bar{
+          height: 1px;
+          background-color: $yellow;
         }
-        .item{
-          margin-left: $thin_space;
-          margin-right: $thin_space;
-        }
-        .icon{
-          width: 24px;
-          height: 24px;
-        }
-        .title{
-          flex-grow: 1;
-          font-size: 18px; // ここも妙に通常サイズだと小さく見えるので特異なサイズにする...
-        }
-        .progress{
-          .current, .target{
-            display: inline-block;
-            min-width: 3rem;
-            text-align: right;
+        .body{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .height_block{
+            height: 40px; // achievement 全体の高さをこいつで決めている
           }
-          .sep{
-            display: inline-block;
-            width: 1rem;
-            text-align: center;
+          .item{
+            margin-left: $thin_space;
+            margin-right: $thin_space;
           }
-        }
-        .reward_icon{
-          width: 20px;
-          height: 20px;
-          img{
-            width: 100%;
-            height: 100%;
+          .icon{
+            width: 24px;
+            height: 24px;
           }
-        }
-        .amount{
-          width: 20px;
-        }
-        .receive{
-          @include centering($height: 30px);
-          width: 60px;
-          margin-right: 20px;
+          .title{
+            flex-grow: 1;
+            font-size: 18px; // ここも妙に通常サイズだと小さく見えるので特異なサイズにする...
+          }
+          .progress{
+            .current, .target{
+              display: inline-block;
+              min-width: 3rem;
+              text-align: right;
+            }
+            .sep{
+              display: inline-block;
+              width: 1rem;
+              text-align: center;
+            }
+          }
+          .reward_icon{
+            width: 20px;
+            height: 20px;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .amount{
+            width: 20px;
+          }
+          .receive{
+            @include centering($height: 30px);
+            width: 60px;
+            margin-right: 20px;
+          }
         }
       }
     }
