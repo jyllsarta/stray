@@ -25,7 +25,7 @@
                 | {{achievementStep.title}}
               .progress.item
                 .current
-                  | {{userAchievements[achievementStep.achievement_id] ? userAchievements[achievementStep.achievement_id].progress : 0}}
+                  | {{userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) : 0}}
                 .sep
                   | /
                 .target
