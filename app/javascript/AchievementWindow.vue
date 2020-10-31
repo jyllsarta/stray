@@ -21,7 +21,7 @@
               .body
                 .height_block
                 .icon.item
-                  img(src="/images/icons/achievements/treasure.gif")
+                  img(:src="`/images/icons/achievements/${achievementStep.icon_image_path}`")
                 .title.item
                   | {{achievementStep.title}}
                 .progress.item
@@ -45,7 +45,7 @@
               | 選択中の実績：
             .titles
               .icon
-                img(src="/images/icons/achievements/treasure.gif")
+                img(:src="`/images/icons/achievements/${selectingAchievementStep.icon_image_path}`")
               .title
                | {{selectingAchievementStep.title}}
             .description
@@ -123,6 +123,7 @@
           title: "-",
           description: "",
           progress: "-",
+          icon_image_path: "coin.gif",
           rewards: [
             {
               amount: "-"
