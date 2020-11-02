@@ -12,7 +12,7 @@ export default {
     battle_prepare: false,
     quest: false,
     equip_skill: false,
-    achievement: true,
+    achievement: false,
     transition_frame: false,
     loading_frame: true,
     session_expired_frame: false,

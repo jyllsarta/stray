@@ -45,11 +45,12 @@ export default {
     },
     sendLogAchievement(){
       const achievementId = Constants.achievements.ids.openLog;
-      if( this.$store.state.achievement.loading || this.$store.state.achievement.achievements[achievementId]?.progress >= 1 ){
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
         return;
       }
       this.$store.dispatch('achievement/sendClientAchievement', "open_log").then(()=>{
         this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
       });
     },
   },

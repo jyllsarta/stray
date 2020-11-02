@@ -64,6 +64,7 @@ export default {
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
           this.$store.commit("event_illust/showEventIllust", "resurrect");
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.warn(error.response);

@@ -9,6 +9,7 @@
       Velocity
       Log
       EventIllust
+      AchievementCompleteFlash
       TransitionFrame(v-if="$store.state.window.transition_frame")
       transition(name="open_window")
         AccountWindow(v-if="$store.state.window.account")
@@ -50,6 +51,7 @@ import Velocity from "./Velocity.vue";
 import Log from './Log'
 import Status from './Status'
 import EventIllust from './EventIllust'
+import AchievementCompleteFlash from './AchievementCompleteFlash'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
@@ -81,6 +83,7 @@ export default {
     Log,
     Status,
     EventIllust,
+    AchievementCompleteFlash,
     AccountWindow,
     EquipWindow,
     EquipDetailWindow,

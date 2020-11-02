@@ -159,11 +159,12 @@ export default {
     },
     clickCharacter(){
       const achievementId = Constants.achievements.ids.clickFieldCharacter;
-      if( this.$store.state.achievement.loading || this.$store.state.achievement.achievements[achievementId]?.progress >= 1 ){
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
         return;
       }
       this.$store.dispatch('achievement/sendClientAchievement', "click_field_character").then(()=>{
         this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
       });
     },
   },

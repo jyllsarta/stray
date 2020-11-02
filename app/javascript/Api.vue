@@ -99,6 +99,7 @@ export default {
             this.$store.commit("event/setVersion", results.data.version);
           }
           this.$store.commit("event/queueEvents", results.data);
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.warn(error.response);
@@ -138,11 +139,12 @@ export default {
     },
     sendSignInAchievement(){
       const achievementId = Constants.achievements.ids.signIn;
-      if( this.$store.state.achievement.loading || this.$store.state.achievement.achievements[achievementId]?.progress >= 1 ){
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
         return;
       }
       this.$store.dispatch('achievement/sendClientAchievement', "sign_in").then(()=>{
         this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
       });
     }
   },
