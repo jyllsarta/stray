@@ -80,6 +80,7 @@ Rails.application.routes.draw do
 
   resources :achievements, only: [] do
     post :complete, on: :collection
+    get :cache, on: :collection
   end
 
   if Rails.env.development?
