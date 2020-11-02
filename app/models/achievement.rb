@@ -11,4 +11,5 @@
 #
 
 class Achievement < ApplicationRecord
+  has_many :achievement_steps
 end
