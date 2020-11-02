@@ -35,7 +35,7 @@ export default {
         if(newVal.length !== 0){
           this.showing = true;
           this.title = this.$store.state.masterdata.achievement_steps[newVal[0]]?.title;
-          clearInterval(this.timerHandler);
+          clearTimeout(this.timerHandler);
           this.timerHandler = setTimeout(this.remove, 6000);
         }
       }
