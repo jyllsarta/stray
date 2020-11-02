@@ -18,6 +18,7 @@ export default {
     return {
       showing: false,
       title: "",
+      timerHandler: 0,
     };
   },
   store,
@@ -34,7 +35,8 @@ export default {
         if(newVal.length !== 0){
           this.showing = true;
           this.title = this.$store.state.masterdata.achievement_steps[newVal[0]]?.title;
-          setTimeout(this.remove, 4000);　// TODO 追加で実績達成したら猶予時間をリセットする
+          clearInterval(this.timerHandler);
+          this.timerHandler = setTimeout(this.remove, 6000);
         }
       }
     }
