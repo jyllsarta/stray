@@ -100,6 +100,8 @@ export default {
           console.log(results);
           this.register.message = "成功しました！";
           this.register.status = "completed";
+          this.$store.dispatch("achievement/fetchAchievements");
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.log(error.response);
