@@ -42,7 +42,7 @@
     )
       img.icon(src="/images/icons/right_menu/achievement.gif")
       .text
-        | 実績
+        | {{achievementText}}
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
@@ -64,6 +64,16 @@ export default {
   store,
   mounted(){
   },
+  computed: {
+    achievementText(){
+      let text = "実績";
+      const receivableAchievementCount = this.$store.getters["achievement/receivableAchievementCount"];
+      if(receivableAchievementCount > 0){
+        text += ` (${receivableAchievementCount})`
+      }
+      return text;
+    }
+  },
   methods: {
     resurrect(){
       if(this.$store.getters['event/isDequeueMode']){
@@ -79,6 +89,7 @@ export default {
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
           this.$store.commit("event_illust/showEventIllust", "resurrect");
+          this.$store.dispatch("achievement/fetchAchievements");
           this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {

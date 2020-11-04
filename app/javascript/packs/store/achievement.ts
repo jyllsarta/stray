@@ -10,6 +10,16 @@ export default {
     user_completed_achievement_steps: [],
   },
   getters: {
+    receivableAchievementCount: (state, getters, rootState, rootGetters) => {
+      const achcievementStepMaster = Object.values(rootState.masterdata.achievement_steps);
+      let receivableCount = 0;
+      for(let achievementStep of achcievementStepMaster){
+        if(state.user_achievements[achievementStep.achievement_id]?.progress >= achievementStep.progress && !state.user_achievement_steps[achievementStep.id]){
+          receivableCount += 1;
+        }
+      }
+      return receivableCount;
+    }
   },
   mutations: {
     updateAchievements(state, payload) {

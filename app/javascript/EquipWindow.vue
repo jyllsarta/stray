@@ -285,6 +285,7 @@ export default {
         .then((results) => {
           console.log(results);
           this.$store.dispatch("achievement/fetchAchievementCache");
+          this.$store.dispatch("achievement/fetchAchievements");
         })
         .catch((error) => {
           console.warn(error.response);

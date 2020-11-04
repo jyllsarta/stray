@@ -1,9 +1,9 @@
 <template lang="pug">
   .menu
-    .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: false})")
+    .back(@click="closeWindow")
     .window.content
       .title_area
-        .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: false})")
+        .back_button.clickable(@click="closeWindow")
         .title
           | 実績
       .description
@@ -217,6 +217,11 @@
             console.warn("NG");
           }
         );
+      },
+      closeWindow(){
+        this.$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: false})
+        this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
       },
     }
   }
