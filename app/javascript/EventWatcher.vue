@@ -40,8 +40,6 @@ export default {
       },
     }
   },
-  mounted(){
-  },
   methods: {
     updatePartialUserStatus(partialStatus){
       this.$store.commit("user/updateUserModelEventPartial", partialStatus);
