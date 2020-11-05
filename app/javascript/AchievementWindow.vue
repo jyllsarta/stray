@@ -207,6 +207,7 @@
             this.$store.dispatch('user/fetchUserModel');
             // 受け取り済み扱いにする
             this.$set(this.userAchievementSteps, achievement_step_id, {achievement_step_id: achievement_step_id});
+            this.$store.commit("event/addEventLog", {message: `実績：${this.$store.state.masterdata.achievement_steps[achievement_step_id]?.title}の報酬を回収した！`});
             // 画面中で一番上に来るやつを選択し直す
             this.selectAchievementStep(this.sortedAchievementSteps()[0].id);
             this.isReceiving = false;
