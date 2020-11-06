@@ -37,6 +37,12 @@ export default {
           this.title = this.$store.state.masterdata.achievement_steps[newVal[0]]?.title;
           clearTimeout(this.timerHandler);
           this.timerHandler = setTimeout(this.remove, 6000);
+          for(let step_id of newVal){
+            if(!this.$store.state.masterdata.achievement_steps[step_id]?.title){
+              continue;
+            }
+            this.$store.commit("event/addEventLog", {message: `実績：${this.$store.state.masterdata.achievement_steps[step_id]?.title}を達成した！`});
+          }
         }
       }
     }
