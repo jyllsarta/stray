@@ -153,7 +153,7 @@ export default {
       const opacity = viewId === 3 ? Math.abs(Math.sin(this.layerStatus[viewId] / 20)) * 0.7 + 0.3 : 1;
       return {
         backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${viewId}.png")`,
-        backgroundPosition: `-${this.layerStatus[viewId]}px 0`,
+        backgroundPosition: `-${Math.floor(this.layerStatus[viewId])}px 0`,
         opacity: opacity,
       }
     },
@@ -198,7 +198,7 @@ export default {
     height: 200px;
     left: 50%;
     img{
-      image-rendering: crisp-edges;
+      image-rendering: pixelated;
       position: absolute;
       height: 200px;
     }
