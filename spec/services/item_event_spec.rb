@@ -60,6 +60,20 @@ RSpec.describe ItemEvent, type: :model do
       it "アイテムが何かしら一個増える" do
         expect{subject}.to change(user.items, :count).by(1)
       end
+      it "ログメッセージは「拾った」" do
+        subject
+        expect(event.logs[0][:message].include?("拾った")).to eq(true)
+      end
+      
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end
     end
 
     context "持ってるアイテムが選ばれた時" do
@@ -73,6 +87,10 @@ RSpec.describe ItemEvent, type: :model do
           subject
           expect(user.items.find(user_item.id).rank).to eq(1 + 2)
           expect(user.status.coin).to eq(0)
+        end
+        it "まとめて強化ログを吐く" do
+          subject
+          expect(event.logs[0][:message].include?("まとめて")).to eq(true)
         end
       end
       context "それがすでに最大ランクだったら" do
@@ -91,13 +109,17 @@ RSpec.describe ItemEvent, type: :model do
         end
       end
       context "amountがランク最大値にかぶるような値になった時" do
-        let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: Constants.item.default_max_rank - 2)}
+        let!(:user_item){ create(:user_item, user: user, item_id: event.detail[:id], rank: Constants.item.default_max_rank - 1)}
         before do
-          allow_any_instance_of(ItemEvent).to receive(:amount).and_return(5)
+          allow_any_instance_of(ItemEvent).to receive(:amount).and_return(3)
         end
         it "ランク最大値まで上昇し、それ以上は捨てられる" do
           subject
           expect(user.items.find(user_item.id).rank).to eq(Constants.item.default_max_rank)
+        end
+        it "ログメッセージは+1だけ" do
+          subject
+          expect(event.logs[0][:message].include?("まとめて")).to eq(false)
         end
       end
     end

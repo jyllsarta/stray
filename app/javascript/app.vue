@@ -9,6 +9,7 @@
       Velocity
       Log
       EventIllust
+      AchievementCompleteFlash
       TransitionFrame(v-if="$store.state.window.transition_frame")
       transition(name="open_window")
         AccountWindow(v-if="$store.state.window.account")
@@ -26,6 +27,8 @@
         BattlePrepareWindow(v-if="$store.state.window.battle_prepare")
       transition(name="open_window")
         EquipSkillWindow(v-if="$store.state.window.equip_skill")
+      transition(name="open_window")
+        AchievementWindow(v-if="$store.state.window.achievement")
       transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
       Api(ref="api")
@@ -48,6 +51,7 @@ import Velocity from "./Velocity.vue";
 import Log from './Log'
 import Status from './Status'
 import EventIllust from './EventIllust'
+import AchievementCompleteFlash from './AchievementCompleteFlash'
 import AccountWindow from './AccountWindow'
 import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
@@ -64,10 +68,12 @@ import TransitionFrame from "./TransitionFrame.vue";
 import LoadingFrame from "./LoadingFrame.vue";
 import SessionExpiredFrame from "./SessionExpiredFrame.vue";
 import ClickEffect from "./ClickEffect.vue";
+import AchievementWindow from "./AchievementWindow.vue";
 
 export default {
   store,
   components: {
+    AchievementWindow,
     Api,
     Guide,
     Field,
@@ -77,6 +83,7 @@ export default {
     Log,
     Status,
     EventIllust,
+    AchievementCompleteFlash,
     AccountWindow,
     EquipWindow,
     EquipDetailWindow,

@@ -80,7 +80,7 @@ RSpec.describe User::Item, type: :model do
 
   describe "#rank_up!" do
     let(:user){ User.create }
-    subject { user_item.rank_up!(count) }
+    subject { user_item.rank_up!(user, count) }
     let(:count){ 1 }
 
     context "succeeds" do
@@ -97,6 +97,16 @@ RSpec.describe User::Item, type: :model do
       it "uses coin" do
         subject
         expect(user.status.reload.coin).to eq(0)
+      end
+      
+      context "achievement" do
+        before do
+          allow(Achievement::Event::ItemRankUp).to receive(:new).and_call_original
+        end
+        it "posts achievement" do
+          subject
+          expect(Achievement::Event::ItemRankUp).to have_received(:new)
+        end
       end
     end
 

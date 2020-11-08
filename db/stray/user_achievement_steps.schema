@@ -1,0 +1,6 @@
+create_table "user_achievement_steps", force: :cascade  do |t|
+  t.belongs_to :user
+  t.belongs_to :achievement_step
+  t.boolean :received, null: false, default: false
+  t.timestamps
+end

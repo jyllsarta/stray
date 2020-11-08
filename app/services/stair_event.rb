@@ -27,6 +27,7 @@ class StairEvent < Event
     user.status.increment(:current_dungeon_depth, 1)
     user.status.current_dungeon_progress.dig_to(user.status.current_dungeon_depth)
     @max_depth_dug = user.status.current_dungeon_progress.max_depth
+    user.achievement_logger.post(Achievement::Event::StairEvent.new(user, self))
   end
 
   def consume_time(user)

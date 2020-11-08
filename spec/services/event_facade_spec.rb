@@ -27,10 +27,20 @@ RSpec.describe EventFacade, type: :model do
         user.status.update!(event_updated_at: at)
         allow(Time).to receive(:now).and_return(at)
       end
-      it "picks resurrect event" do
+      it "picks no event" do
         expect(subject).to eq([])
         expect(event).to_not have_received(:execute)
       end
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end
+  
     end
 
     context "some events" do

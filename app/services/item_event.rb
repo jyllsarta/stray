@@ -1,4 +1,5 @@
 class ItemEvent < Event
+  attr_reader :item_id
   class NotYet < StandardError; end
 
   def initialize(rank=1, at=Time.now)
@@ -37,18 +38,25 @@ class ItemEvent < Event
   def execute(user)
     user_item = find_or_build_user_item(user, @item_id)
     @user = user
+    @rank_delta = [[Constants.item.default_max_rank - user_item.rank, 0].max, amount].min
     @_message = get_message(user_item)
 
     # 最大強化済ならコインが代わりに貰える
-    user.status.add_coin(coin_amount) if user_item.rank >= Constants.item.default_max_rank
-
-    user_item.rank = [user_item.rank + amount, Constants.item.default_max_rank].min if user_item.rank < Constants.item.default_max_rank
-    @rank = user_item.rank
+    if user_item.rank >= Constants.item.default_max_rank
+      user.status.add_coin(coin_amount)
+    else
+      user_item.rank += @rank_delta
+    end
     @done = true
+    user.achievement_logger.post(Achievement::Event::ItemEvent.new(user, self))
   end
 
   def consume_time(user)
     [Constants.default_event_interval_seconds - user.status.event_wait_reduction_seconds, Constants.minimum_event_interval_seconds].max
+  end
+
+  def item
+    ::Item.indexed_hash[@item_id]
   end
 
 private
@@ -61,10 +69,6 @@ private
 
   def coin_amount
     @rank
-  end
-
-  def item
-    ::Item.indexed_hash[@item_id]
   end
 
   def lot_item_rarity!
@@ -92,10 +96,10 @@ private
   def get_message(user_item)
     if user_item.rank == 0
       "#{item.name}を拾った！"
-    elsif user_item.rank < Constants.item.default_max_rank && amount > 1
-      "#{item.name}を+#{user_item.rank + amount}に強化した！(まとめて+#{amount}強化した！)"
+    elsif user_item.rank < Constants.item.default_max_rank && @rank_delta > 1
+      "#{item.name}を+#{user_item.rank + @rank_delta}に強化した！(まとめて+#{@rank_delta}強化した！)"
     elsif user_item.rank < Constants.item.default_max_rank
-      "#{item.name}を+#{user_item.rank + amount}に強化した！"
+      "#{item.name}を+#{user_item.rank + 1}に強化した！"
     else
       "#{item.name}を拾った！(+#{Constants.item.default_max_rank}以上だったので#{coin_amount}コインに変換した！)"
     end

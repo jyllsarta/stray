@@ -34,6 +34,7 @@ class User::Character < ApplicationRecord
       # 空き枠がnilになるのは意図通り
       equip.update!(user_item: user.items.find_by(item_id: item_ids[i]))
     end
+    user.achievement_logger.post(Achievement::Event::EditEquip.new(user))
   end
 
   def damage(value)

@@ -1,4 +1,4 @@
-version: 0.4.0
+version: 0.4.1
 
 default_event_interval_seconds: <%= Rails.env.production? ? 30 : 30 %>
 minimum_event_interval_seconds: 4
@@ -10,6 +10,7 @@ user:
   velocity:
     min: 100
     # 内部的には350を最大値として保持するが、UI上では333が最大かのように見せる
+    ui_max: 333
     max: 350
 
 character:
@@ -53,6 +54,7 @@ equip:
 event:
   attenuate_velocity_per_event: 1
   attenuate_increase_threshold: 250
+  long_time_absent_threshold_seconds: <%= 3600*6 %>
   item:
     max_rarity: 5
     # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり

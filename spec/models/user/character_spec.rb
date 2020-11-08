@@ -67,6 +67,16 @@ RSpec.describe User::Character, type: :model do
         subject
         expect(character.reload.equip_item_ids).to eq([item.id, nil])
       end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end
     end
 
     context "no equip" do

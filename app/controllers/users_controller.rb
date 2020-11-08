@@ -49,6 +49,11 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def achievements
+    @achievements = current_user.achievements.index_by(&:achievement_id)
+    @achievement_steps = current_user.achievement_steps.index_by(&:achievement_step_id)
+  end
+
   def register_name
     current_user.register_name(name: params[:name], password: params[:password])
   end

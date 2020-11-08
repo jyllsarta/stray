@@ -482,6 +482,8 @@ export default {
           else{
             this.outcome = "lose";
           }
+          this.$store.dispatch("achievement/fetchAchievements");
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.warn(error.response);

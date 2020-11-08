@@ -1,5 +1,5 @@
 <template lang="pug">
-  .log.window(ref="log", :class="foldClass" @click="folded = !folded")
+  .log.window(ref="log", :class="foldClass" @click="switchFoldStatus")
     transition-group(name="show-in")
       .item(v-for="log in logs", :key="log.pseudo_id")
         .at
@@ -38,7 +38,21 @@ export default {
     },
     scrollToBottom(){
       this.$refs.log.scrollTo(0, this.$refs.log.scrollHeight);
-    }
+    },
+    switchFoldStatus(){
+      this.folded = !this.folded;
+      this.sendLogAchievement();
+    },
+    sendLogAchievement(){
+      const achievementId = Constants.achievements.ids.openLog;
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
+        return;
+      }
+      this.$store.dispatch('achievement/sendClientAchievement', "open_log").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
+      });
+    },
   },
   watch: {
     "$store.state.event.events": {

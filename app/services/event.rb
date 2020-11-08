@@ -1,5 +1,6 @@
 class Event
   attr_reader :status
+  attr_reader :at
 
   def type
     raise NotImplementedError

@@ -164,7 +164,7 @@ export default {
         margin-left: 2rem;
         width: 190px;
         background-color: #93baeb;
-        height: 0.3px;
+        height: 1px;
       }
     }
   }

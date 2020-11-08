@@ -29,7 +29,7 @@ link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:300|Roboto:
 = stylesheet_link_tag 'reset'
 = stylesheet_link_tag 'stray'
 
-script src="#{webpack_target_path}"
+script src="#{webpack_target_path}?version=#{ @version }"
 
 - if Rails.env.development?
   = render partial: "debug"

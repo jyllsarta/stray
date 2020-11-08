@@ -18,6 +18,8 @@ class User < ApplicationRecord
   has_many :skills
   has_many :won_enemies
   has_many :random_item_receive_histories
+  has_many :achievements
+  has_many :achievement_steps
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end
@@ -53,6 +55,7 @@ class User < ApplicationRecord
     raise EmptyPassword if password.blank?
     raise AlreadyUsed if User.same_name_user_exists?(self.id, name)
     self.update!(name: name, password_hash: User.hash_method(password))
+    achievement_logger.post(::Achievement::Event::RegisterUsername.new)
   end
 
   def self.regenerate_token(name: nil, password: nil)
@@ -74,6 +77,10 @@ class User < ApplicationRecord
     ::Item.all.each do |item|
       items.find_or_create_by(item: item)
     end
+  end
+
+  def achievement_logger
+    @_logger ||= ::Achievement::Logger.new(self)
   end
 
   private

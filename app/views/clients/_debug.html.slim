@@ -37,3 +37,11 @@ p
   = hidden_field_tag :user_id, 0, id: nil
   = select_tag :reset_quest_id, options_from_collection_for_select(Quest.all, :id, :name)
   = submit_tag 'クエストの進行をリセット'
+= form_tag set_achievement_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = select_tag :achievement_id, options_from_collection_for_select(Achievement.all, :id, :description)
+  = text_field_tag :progress, 100
+  = submit_tag '実績の進捗度をこの値にする'
+= form_tag clear_achievement_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag '実績を全部リセット'

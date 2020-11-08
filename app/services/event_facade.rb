@@ -7,6 +7,7 @@ class EventFacade
     events = []
     preload_associations!(user)
     user.with_lock do
+      user.achievement_logger.post(Achievement::Event::LongTimeAbsent.new(user, user.status.event_remain_time(Time.now)))
       calibrate_event = needs_calibrate?(user) ? CalibrateEvent.new(Time.now, user.status.current_dungeon_rank).execute(user) : nil
       event = pick_next_event(user)
       while next_event_available?(user, event)

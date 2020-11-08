@@ -1,0 +1,8 @@
+create_table "achievement_steps", force: :cascade  do |t|
+  t.belongs_to :achievement
+  t.integer :progress, null: false
+  t.string :title, null: false
+  t.string :description, null: false
+  t.string :icon_image_path
+  t.timestamps
+end

@@ -1,0 +1,7 @@
+create_table "achievement_step_rewards", force: :cascade  do |t|
+  t.belongs_to :achievement_step
+  t.string     :giftable_type, null: false
+  t.integer    :giftable_id
+  t.integer    :amount,        null: false, default: 0
+  t.timestamps
+end

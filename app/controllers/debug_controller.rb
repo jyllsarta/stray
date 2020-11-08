@@ -56,6 +56,19 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def set_achievement
+    achievement = current_user.achievements.find_or_initialize_by(achievement_id: params[:achievement_id])
+    achievement.progress = params[:progress]
+    achievement.save!
+    redirect_to clients_path
+  end
+
+  def clear_achievement
+    current_user.achievements.destroy_all
+    current_user.achievement_steps.destroy_all
+    redirect_to clients_path
+  end
+
   private
 
   def current_user

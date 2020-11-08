@@ -13,10 +13,12 @@
       img.spica(
         :src="spicaImagePath"
         :style="{transform: `translate(${characters.spica.position}px, ${characters.spica.verticalPosition}px) scale(${characters.spica.direction}, 1)`}"
+        @click="clickCharacter"
       )
       img.tirol(
         :src="tirolImagePath"
         :style="{transform: `translate(${characters.tirol.position}px, ${characters.tirol.verticalPosition}px) scale(${characters.tirol.direction}, 1)`}"
+        @click="clickCharacter"
       )
     .background.view3(
       :style="viewStyle(3)"
@@ -151,9 +153,19 @@ export default {
       const opacity = viewId === 3 ? Math.abs(Math.sin(this.layerStatus[viewId] / 20)) * 0.7 + 0.3 : 1;
       return {
         backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${viewId}.png")`,
-        backgroundPosition: `-${this.layerStatus[viewId]}px 0`,
+        backgroundPosition: `-${Math.floor(this.layerStatus[viewId])}px 0`,
         opacity: opacity,
       }
+    },
+    clickCharacter(){
+      const achievementId = Constants.achievements.ids.clickFieldCharacter;
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
+        return;
+      }
+      this.$store.dispatch('achievement/sendClientAchievement', "click_field_character").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
+      });
     },
   },
   computed: {
@@ -178,6 +190,7 @@ export default {
     background-size: cover;
     background-position: -500px 0;
     image-rendering: pixelated;
+    pointer-events: none;
   }
   .ground{
     position: absolute;
@@ -185,7 +198,7 @@ export default {
     height: 200px;
     left: 50%;
     img{
-      image-rendering: crisp-edges;
+      image-rendering: pixelated;
       position: absolute;
       height: 200px;
     }

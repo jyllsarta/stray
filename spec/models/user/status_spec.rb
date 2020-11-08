@@ -218,6 +218,15 @@ RSpec.describe User::Status, type: :model do
       subject
       expect(user.characters.first.hp).to eq(user.characters.first.hp_max)
     end
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
+    end
   end
 
   describe "#start_resurrect_timer" do
@@ -293,6 +302,16 @@ RSpec.describe User::Status, type: :model do
     it "increments coin" do
       expect{subject}.to change(status, :coin).by(amount)
     end
+
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
+    end
   end
 
   describe "#consume_coin!" do
@@ -304,6 +323,15 @@ RSpec.describe User::Status, type: :model do
       end
       it "decrements coin" do
         expect{subject}.to change(status, :coin).by(-amount)
+      end
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
       end
     end
     context "insufficient" do
@@ -329,6 +357,16 @@ RSpec.describe User::Status, type: :model do
     let(:amount){100}
     it "increments star" do
       expect{subject}.to change(status, :star).by(amount)
+    end
+
+    context "achievement" do
+      before do
+        allow(user).to receive_message_chain(:achievement_logger, :post)
+      end
+      it "posts achievement" do
+        subject
+        expect(user).to have_received(:achievement_logger)
+      end
     end
   end
 
@@ -502,6 +540,10 @@ RSpec.describe User::Status, type: :model do
     let!(:equip1){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item1)}
     let!(:equip2){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item2)}
     let(:user){ User.create }
+
+    before do
+      user.characters.reload
+    end
 
     subject { user.status.average_item_rank }
     it "4" do

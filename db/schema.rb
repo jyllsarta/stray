@@ -12,6 +12,35 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
+  create_table "achievement_step_rewards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "achievement_step_id"
+    t.string "giftable_type", null: false
+    t.integer "giftable_id"
+    t.integer "amount", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_step_id"], name: "index_achievement_step_rewards_on_achievement_step_id"
+  end
+
+  create_table "achievement_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "achievement_id"
+    t.integer "progress", null: false
+    t.string "title", null: false
+    t.string "description", null: false
+    t.string "icon_image_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_id"], name: "index_achievement_steps_on_achievement_id"
+  end
+
+  create_table "achievements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "type", null: false
+    t.integer "target_id"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "power", default: 0
@@ -168,6 +197,26 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_achievement_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "achievement_step_id"
+    t.boolean "received", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_step_id"], name: "index_user_achievement_steps_on_achievement_step_id"
+    t.index ["user_id"], name: "index_user_achievement_steps_on_user_id"
+  end
+
+  create_table "user_achievements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "achievement_id", null: false
+    t.integer "progress", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_id"], name: "index_user_achievements_on_achievement_id"
+    t.index ["user_id"], name: "index_user_achievements_on_user_id"
   end
 
   create_table "user_character_equips", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

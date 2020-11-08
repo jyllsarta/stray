@@ -23,6 +23,7 @@ RSpec.describe DeckBuilder, type: :model do
   before do
     user.characters.spica.first.force_set_equips([item1.id, item2.id])
     user.characters.tirol.first.force_set_equips([item3.id, item4.id])
+    user.characters.reload
   end
 
   describe "#deck" do

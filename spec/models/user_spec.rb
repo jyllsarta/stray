@@ -40,6 +40,7 @@ RSpec.describe User, type: :model do
       User.delete_all
     end
     let(:user){ create(:user) }
+    let!(:user_status){ create(:user_status, user: user) }
     subject { user.register_name(name: name, password: password) }
     let(:name){ "Taro" }
     let(:password){ "my secret password" }
@@ -48,6 +49,16 @@ RSpec.describe User, type: :model do
         expect{ subject }.to_not raise_error
         expect(user.reload.name).to eq(name)
         expect(user.password_hash.present?).to be_truthy
+      end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
       end
     end
     context "error" do
@@ -115,6 +126,14 @@ RSpec.describe User, type: :model do
       it "succeeds" do
         expect(subject).to be_falsey
       end
+    end
+  end
+
+  describe "#achievement_logger" do
+    let(:user){ create(:user) }
+    subject { user.achievement_logger }
+    it "returns achievement logger" do
+      expect(subject.class).to eq(Achievement::Logger)
     end
   end
 end

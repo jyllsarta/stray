@@ -18,8 +18,21 @@ export default {
     // 画面読み込み時など最初に順番を制御して読み込みたいAPI群を制御するコンポーネント
     this.init();
     this.fillDebugUserId();
+    // next_event_atの監視は通常 GET /events の方で管理されるけど、通信エラーとかが起きたときにそれが止まるのでゆーっくり監視を走らせる
+    // 1分に1回とかでいい
+    setInterval(this.watchEventTimer, 60 * 1000);
   },
   methods: {
+    watchEventTimer(){
+      const now = new Date().getTime() / 1000;
+      const next_event_at = this.$store.state.event.next_event_at;
+      if(now - next_event_at < 60){
+        return; // 60秒以上イベントを溜め込まなかったのであれば、正常
+      }
+      // 本来イベントが有るはずの時刻から60秒以上経っているのはおかしいので、再取得を試みさせる
+      console.log("はっ　寝てた！？");
+      this.retryFetchLatestEvents();
+    },
     fillDebugUserId(){
       if (process.env.NODE_ENV === 'production') {
         return;
@@ -54,6 +67,8 @@ export default {
       if(localStorage.access_token){
         console.log("fetch user model");
         this.fetchUserModel();
+        this.fetchAchievements();
+        this.sendSignInAchievement();
       }
       else{
         console.log("sign up");
@@ -97,6 +112,8 @@ export default {
             this.$store.commit("event/setVersion", results.data.version);
           }
           this.$store.commit("event/queueEvents", results.data);
+          this.$store.dispatch("achievement/fetchAchievements");
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.warn(error.response);
@@ -129,6 +146,21 @@ export default {
           console.warn("NG");
         });
     },
+    fetchAchievements(){
+      this.$store.dispatch("achievement/fetchAchievements").then(()=>{
+        this.sendSignInAchievement();
+      });
+    },
+    sendSignInAchievement(){
+      const achievementId = Constants.achievements.ids.signIn;
+      if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
+        return;
+      }
+      this.$store.dispatch('achievement/sendClientAchievement', "sign_in").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
+      });
+    }
   },
   watch: {
     // storeのイベントタイマーを監視して、0秒になったタイミングで追加のイベントを取得しに行く

@@ -4,32 +4,52 @@
       @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
       @click="resurrect"
     )
-      | 回復
+      img.icon(src="/images/icons/right_menu/heal.gif")
+      .text
+        | 回復
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '装備メニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'equip', state: true})"
     )
-      | 装備
+      img.icon(src="/images/icons/right_menu/equip.gif")
+      .text
+        | 装備
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
     )
-      | ダンジョン切り替え
+      img.icon(src="/images/icons/right_menu/dungeon.gif")
+      .text
+        | ダンジョン
+        | 切り替え
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
     )
-      | 能力解放
+      img.icon(src="/images/icons/right_menu/relic.gif")
+      .text
+        | 能力解放
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
     )
-      | クエスト
+      img.icon(src="/images/icons/right_menu/quest.gif")
+      .text
+        | クエスト
+    .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
+    )
+      img.icon(src="/images/icons/right_menu/achievement.gif")
+      .text
+        | {{achievementText}}
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )
-      | 引き継ぎ設定
+      img.icon(src="/images/icons/right_menu/register.gif")
+      .text
+        | 引き継ぎ設定
 </template>
 
 <script lang="ts">
@@ -43,6 +63,16 @@ export default {
   },
   store,
   mounted(){
+  },
+  computed: {
+    achievementText(){
+      let text = "実績";
+      const receivableAchievementCount = this.$store.getters["achievement/receivableAchievementCount"];
+      if(receivableAchievementCount > 0){
+        text += ` (${receivableAchievementCount})`
+      }
+      return text;
+    }
   },
   methods: {
     resurrect(){
@@ -59,6 +89,8 @@ export default {
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
           this.$store.commit("event_illust/showEventIllust", "resurrect");
+          this.$store.dispatch("achievement/fetchAchievements");
+          this.$store.dispatch("achievement/fetchAchievementCache");
         })
         .catch((error) => {
           console.warn(error.response);
@@ -79,13 +111,18 @@ export default {
   flex-direction: column;
   font-size: $font-size-normal;
   .item{
+    .text{
+      margin-left: $space;
+      white-space: pre;
+    }
     width: 100%;
     height: 40px;
     margin-top: $thin_space / 2;
     margin-bottom: $thin_space / 2;
     line-height: 100%;
-    padding-top: (40px - $font-size-normal) / 2;
     padding-left: $space;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
