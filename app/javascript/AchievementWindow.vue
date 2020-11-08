@@ -31,6 +31,12 @@
                     | /
                   .target
                     | {{achievementStep.progress}}
+                .reward.item
+                  .value
+                    .icon
+                      img(src="/images/ui/star.png")
+                  .amount
+                    | x{{achievementStep.rewards[0] ? achievementStep.rewards[0].amount : 0}}
                 .receive.item
                   | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
               .under_bar(:style="{width: (userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) / achievementStep.progress : 0) * 100 + '%'}")
@@ -284,16 +290,24 @@
               text-align: center;
             }
           }
-          .reward_icon{
-            width: 20px;
-            height: 20px;
-            img{
-              width: 100%;
-              height: 100%;
+          .reward{
+            width: 50px;
+            .value{
+              display: inline-block;
+              padding-left: $thin_space;
             }
-          }
-          .amount{
-            width: 20px;
+            .icon{
+              display: inline-block;
+              width: 14px;
+              height: 14px;
+              img{
+                width: 100%;
+                height: 100%;
+              }
+            }
+            .amount{
+              display: inline-block;
+            }
           }
           .receive{
             @include centering($height: 30px);
