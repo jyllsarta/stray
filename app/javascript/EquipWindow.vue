@@ -10,12 +10,13 @@
         .title
           | 装備
       .body
-        .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}")
+        .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}", :key="$store.state.equip_window.main_character_id")
           img.sub_character_image(
             :src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'"
             @click="$store.commit('equip_window/switchMainCharacter')"
           )
-        .chara(:style="{transform: `translateY(${main_character_position}px)`}")
+        // key被り回避のためのハック用 +1
+        .chara(:style="{transform: `translateY(${main_character_position}px)`}", :key="$store.state.equip_window.main_character_id + 1")
           img.character_image(
             :src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'"
             @click="$store.commit('equip_window/switchMainCharacter')"
@@ -435,6 +436,25 @@ export default {
     }
     .sub_character_image{
       width: 160px;
+    }
+
+    .chara {
+      animation: main-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+    }
+    @keyframes main-character-animation {
+      0% {
+        transform: translateX(40px);
+        opacity: 0.5;
+      }
+    }
+    .sub_chara {
+      animation: sub-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+    }
+    @keyframes sub-character-animation {
+      0% {
+        transform: translateX(-40px);
+        opacity: 0.5;
+      }
     }
 
     .str{
