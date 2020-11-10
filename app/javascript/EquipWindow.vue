@@ -440,6 +440,7 @@ export default {
 
     .chara {
       animation: main-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+      cursor: pointer;
     }
     @keyframes main-character-animation {
       0% {
@@ -449,6 +450,7 @@ export default {
     }
     .sub_chara {
       animation: sub-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+      cursor: pointer;
     }
     @keyframes sub-character-animation {
       0% {
@@ -604,6 +606,7 @@ export default {
 
     .item{
       padding: $thin_space;
+      cursor: pointer;
       .param_area{
         display: flex;
         flex-direction: row;
@@ -645,6 +648,7 @@ export default {
           padding: $thin_space;
           color: $gray1;
           font-size: $font-size-large;
+          cursor: pointer;
           &:hover{
             filter: brightness(120%);
             transform: scale(1.2);
@@ -789,6 +793,7 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            cursor: pointer;
             &:nth-child(1){
               padding-left: 8px;
             }

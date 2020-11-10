@@ -201,6 +201,7 @@ export default {
       image-rendering: pixelated;
       position: absolute;
       height: 200px;
+      cursor: pointer;
     }
   }
   .view3{

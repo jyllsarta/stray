@@ -9,6 +9,7 @@
   color: $white;
   font-family: "Roboto", 'M PLUS Rounded 1c', sans-serif;
   font-size: 16px;
+  cursor: default;
   .game{
     position: relative;
     width: $window-width;
@@ -95,6 +96,7 @@
     filter: brightness(115%);
     transform: scale(1.04);
   }
+  cursor: pointer;
 }
 
 .hoverable{
@@ -136,4 +138,5 @@
     background-color: $gray3;
     border: 1px solid $yellow;
   }
+  cursor: pointer;
 }

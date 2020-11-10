@@ -1,5 +1,5 @@
 <template lang="pug">
-  .log.window(ref="log", :class="foldClass" @click="switchFoldStatus")
+  .window.log(ref="log", :class="foldClass" @click="switchFoldStatus")
     transition-group(name="show-in")
       .item(v-for="log in logs", :key="log.pseudo_id")
         .at
@@ -85,6 +85,7 @@ export default {
   flex-direction: column;
   font-size: $font-size-mini;
   overflow-y: scroll;
+  cursor: pointer;
   &::-webkit-scrollbar{
     width: 10px;
   }

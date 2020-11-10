@@ -11,7 +11,7 @@
       .body
         .field
           .relics
-            .relic(
+            .relic.selectable(
               v-for="relic in $store.state.masterdata.relics"
               :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
               @click="selectRelic(relic.id)"

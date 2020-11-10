@@ -126,16 +126,20 @@ export default {
   .selected{
     background-color: $gray3;
     border: 1px solid $yellow;
+    cursor: pointer;
   }
   .disabled{
     background-color: $gray3-opacity;
     opacity: 0.5;
+    cursor: default;
   }
   .used{
     opacity: 0.25;
+    cursor: default;
   }
   .available{
     background-color: $gray3-opacity;
+    cursor: pointer;
   }
   .selected, .available{
     &:hover{

@@ -703,9 +703,11 @@ export default {
   &.startable{
     border: 1px solid $yellow;
     background-color: $gray3;
+    cursor: pointer;
   }
   &.disabled{
     opacity: 0.5;
+    cursor: default;
   }
 }
 
