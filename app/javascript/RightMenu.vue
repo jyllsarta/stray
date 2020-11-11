@@ -44,6 +44,13 @@
       .text
         | {{achievementText}}
     .item.clickable(
+      @mouseover="$store.commit('guide/updateGuide', '冒険のあゆみを表示します。')",
+      @click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: true})"
+    )
+      img.icon(src="/images/icons/right_menu/profile.gif")
+      .text
+        | 冒険のあゆみ
+    .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
       @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
     )

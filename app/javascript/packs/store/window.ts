@@ -8,6 +8,7 @@ export default {
     equip_detail: false,
     switch_dungeon: false,
     relic: false,
+    profile: true,
     battle: false,
     battle_prepare: false,
     quest: false,
