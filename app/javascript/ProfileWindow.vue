@@ -7,8 +7,8 @@
         .title
           | 〜　冒険のあゆみ　〜
       .body
-        .spica.character
-          img(src="/images/characters/spica.png")
+        .character
+          img.spica(src="/images/characters/spica.png")
         .main
           .total_rank
             .judgement
@@ -17,50 +17,49 @@
               .value
                 | SS+
             .details
-              .detail
+              .detail.sheet_mini
                 .key
                   | 累計コイン獲得数
                 .value
                   | 1234567890
-              .detail
+              .detail.sheet_mini
                 .key
                   | 実績クリア数
                 .value
                   | 144
-              .detail
+              .detail.sheet_mini
                 .key
                   | 討伐済みの敵
                 .value
                   | 36
-              .detail
+              .detail.sheet_mini
                 .key
                   | アイテム収集数
                 .value
                   | 1131
-              .detail
+              .detail.sheet_mini
                 .key
                   | 能力解放数
                 .value
                   | 88
-              .detail
+              .detail.sheet_mini
                 .key
                   | 総ログイン時間
                 .value
                   | 11日 13:44:12
-              .detail
+              .detail.sheet_mini
                 .key
                   | イベントプレイ数
                 .value
                   | 1234567
-              .detail
+              .detail.sheet_mini
                 .key
                   | 最高到達階
                 .value
                   | 4884312F
-          .hr
           .strengthes
             .strength.spica
-              .chunk.equips
+              .equips
                 .equip
                   | にぎにぎ+4
                 .equip
@@ -69,29 +68,29 @@
                   | ◆はてなようせい+111
                 .equip
                   | *スリセルのロザリオ
-              .chunk.statuses
-                .status
+              .statuses
+                .status.sheet_mini
                   .key
                     | STR
                   .value
                     | 41
-                .status
+                .status.sheet_mini
                   .key
                     | DEX
                   .value
                     | 33
-                .status
+                .status.sheet_mini
                   .key
                     | DEF
                   .value
                     | 9875
-                .status
+                .status.sheet_mini
                   .key
                     | AGI
                   .value
                     | 2231
             .strength.tirol
-              .chunk.equips
+              .equips
                 .equip
                   | ◆銀色の狂戦士のコップ+987987
                 .equip
@@ -100,29 +99,29 @@
                   | ◆狂戦士のコップ+987987
                 .equip
                   | ◆狂戦士のコップ+987987
-              .chunk.statuses
-                .status
+              .statuses
+                .status.sheet_mini
                   .key
                     | STR
                   .value
                     | 976534678
-                .status
+                .status.sheet_mini
                   .key
                     | DEX
                   .value
                     | 976534678
-                .status
+                .status.sheet_mini
                   .key
                     | DEF
                   .value
                     | 976534678
-                .status
+                .status.sheet_mini
                   .key
                     | AGI
                   .value
                     | 976534678
-        .tirol.character
-          img(src="/images/characters/tirol.png")
+        .character
+          img.tirol(src="/images/characters/tirol.png")
 
 </template>
 
@@ -170,37 +169,62 @@ export default {
   }
   .body{
     display: flex;
-    padding-top: 2%;
-    height: 90%;
+    height: 92%;
     .character{
-      width: 20%;
+      width: 16%;
       height: 100%;
       z-index: 100;
       img{
         margin-top: 20%;
         height: 90%;
       }
+      .tirol{
+        position: relative;
+        left: -40px;
+      }
     }
     .main{
-      width: 60%;
+      width: 68%;
       height: 100%;
       z-index: 200;
       display: flex;
       flex-direction: column;
-      line-height: 160%;
       .strengthes{
         display: flex;
         .spica{
+          .equips{
+            .equip{
+              &:nth-child(1){
+                padding-left: 8px;
+              }
+              &:nth-child(2){
+                padding-left: 16px;
+              }
+              &:nth-child(3){
+                padding-left: 24px;
+              }
+              &:nth-child(4){
+                padding-left: 32px;
+              }
+            }
+          }
         }
         .tirol{
           .equips{
             .equip{
               text-align: right;
-            }
-          }
-          .statuses{
-            .status{
-              text-align: right;
+              &:nth-child(1){
+                padding-right: 8px;
+              }
+              &:nth-child(2){
+                padding-right: 16px;
+              }
+              &:nth-child(3){
+                padding-right: 24px;
+              }
+              &:nth-child(4){
+                padding-right: 32px;
+              }
             }
           }
         }
@@ -208,23 +232,35 @@ export default {
           width: 50%;
           .equips{
             .equip{
+              width: calc(100% - #{$thin_space} * 3);
               background-color: $background_with_opacity;
               border-radius: $radius;
+              padding: $space;
+              line-height: 100%;
+              margin: $subtle_space;
+              border-top: 1px solid $gray3;
+              border-bottom: 1px solid $gray3;
+              border-right: 4px solid $gray3;
+              border-left: 4px solid $gray3;
             }
           }
           .statuses {
+            display: flex;
+            flex-wrap: wrap;
             .status {
               background-color: $background_with_opacity;
               border-radius: $radius;
+              margin: $subtle_space;
+              width: calc(50% - #{$subtle_space} * 3);
               .key, .value {
                 display: inline-block;
-                width: 100%;
               }
               .key{
-                width: 15%;
+                width: 25%;
               }
               .value{
-                width: 60%;
+                width: 70%;
+                text-align: right;
               }
             }
           }
@@ -250,7 +286,8 @@ export default {
           flex-wrap: wrap;
           width: 100%;
           .detail{
-            width: 50%;
+            margin: $thin_space;
+            width: calc(50% - #{$thin_space} * 3);
             .key, .value{
               display: inline-block;
             }
@@ -266,5 +303,13 @@ export default {
         }
       }
     }
+  }
+
+  .sheet_mini{
+    padding: $space;
+    background-color: $gray3-opacity;
+    border-top: 1px solid $gray3;
+    border-bottom: 1px solid $gray3;
+    line-height: 100%;
   }
 </style>
