@@ -180,28 +180,7 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)).to match_json_expression(
                                                {
-                                                   profile: {
-                                                       parameters: {
-                                                           spica: {
-                                                               str: Integer,
-                                                               dex: Integer,
-                                                               def: Integer,
-                                                               agi: Integer,
-                                                           },
-                                                           tirol: {
-                                                               str: Integer,
-                                                               dex: Integer,
-                                                               def: Integer,
-                                                               agi: Integer,
-                                                           },
-                                                       },
-                                                       equips: {
-
-                                                       },
-                                                       achievements: {
-
-                                                       }
-                                                   }
+                                                   profile: Hash, # ProfileBuilder で細かく検証するのでこっちでは雑でOK
                                                }
                                            )
     end
