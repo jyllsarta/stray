@@ -167,6 +167,46 @@ RSpec.describe "Users", type: :request do
     end
   end
 
+  describe "GET /users/:id/profile" do
+    include_context("stub_current_user")
+    let(:user){ User.create }
+    let(:do_get) { get user_profile_path(user_id: user.id) + ".json" }
+    subject do
+      do_get
+      response
+    end
+    it 'succeeds' do
+      subject
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   profile: {
+                                                       parameters: {
+                                                           spica: {
+                                                               str: Integer,
+                                                               dex: Integer,
+                                                               def: Integer,
+                                                               agi: Integer,
+                                                           },
+                                                           tirol: {
+                                                               str: Integer,
+                                                               dex: Integer,
+                                                               def: Integer,
+                                                               agi: Integer,
+                                                           },
+                                                       },
+                                                       equips: {
+
+                                                       },
+                                                       achievements: {
+
+                                                       }
+                                                   }
+                                               }
+                                           )
+    end
+  end
+
   describe "GET /users/:id/deck" do
     include_context("stub_current_user")
     let(:user){ User.create }

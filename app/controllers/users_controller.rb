@@ -39,6 +39,10 @@ class UsersController < ApplicationController
     }
   end
 
+  def profile
+    @profile = ProfileBuilder.new(current_user)
+  end
+
   def deck
     @user = current_user
     @class_cards = DeckBuilder.new(current_user).class_cards
