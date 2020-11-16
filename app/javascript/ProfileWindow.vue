@@ -21,105 +21,67 @@
                 .key
                   | 累計コイン獲得数
                 .value
-                  | 1234567890
+                  | {{profile.achievements.total_coin}}
               .detail.sheet_mini
                 .key
                   | 実績クリア数
                 .value
-                  | 144
+                  | {{profile.achievements.cleared_achievements}}
               .detail.sheet_mini
                 .key
                   | 討伐済みの敵
                 .value
-                  | 36
+                  | {{profile.achievements.won_enemy_count}}
               .detail.sheet_mini
                 .key
                   | アイテム収集数
                 .value
-                  | 1131
+                  | {{profile.achievements.unique_item_count}}
               .detail.sheet_mini
                 .key
                   | 能力解放数
                 .value
-                  | 88
+                  | {{profile.achievements.relics}}
               .detail.sheet_mini
                 .key
                   | 総ログイン時間
                 .value
-                  | 11日 13:44:12
+                  | {{playTimeString}}
               .detail.sheet_mini
                 .key
                   | イベントプレイ数
                 .value
-                  | 1234567
+                  | {{profile.achievements.total_event}}
               .detail.sheet_mini
                 .key
                   | 最高到達階
                 .value
-                  | 4884312F
+                  | {{profile.achievements.deepest_floor}}F
           .strengthes
             .strength.spica
               .equips
-                .equip
-                  | にぎにぎ+4
-                .equip
-                  | ◆銀のうなぎ+41
-                .equip
-                  | ◆はてなようせい+111
-                .equip
-                  | *スリセルのロザリオ
+                .equip(v-for="equip in profile.equips.spica")
+                  | {{equip.name}}
+                .equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
+                  | -
               .statuses
-                .status.sheet_mini
+                .status.sheet_mini(v-for="param in ['str', 'dex', 'def', 'agi']")
                   .key
-                    | STR
+                    | {{param.toUpperCase()}}
                   .value
-                    | 41
-                .status.sheet_mini
-                  .key
-                    | DEX
-                  .value
-                    | 33
-                .status.sheet_mini
-                  .key
-                    | DEF
-                  .value
-                    | 9875
-                .status.sheet_mini
-                  .key
-                    | AGI
-                  .value
-                    | 2231
+                    | {{profile.parameters.spica[param]}}
             .strength.tirol
               .equips
-                .equip
-                  | ◆銀色の狂戦士のコップ+987987
-                .equip
-                  | ◆狂戦士のコップ+987987
-                .equip
-                  | ◆狂戦士のコップ+987987
-                .equip
-                  | ◆狂戦士のコップ+987987
+                .equip(v-for="equip in profile.equips.tirol")
+                  | {{equip.name}}
+                .equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
+                  | -
               .statuses
-                .status.sheet_mini
+                .status.sheet_mini(v-for="param in ['str', 'dex', 'def', 'agi']")
                   .key
-                    | STR
+                    | {{param.toUpperCase()}}
                   .value
-                    | 976534678
-                .status.sheet_mini
-                  .key
-                    | DEX
-                  .value
-                    | 976534678
-                .status.sheet_mini
-                  .key
-                    | DEF
-                  .value
-                    | 976534678
-                .status.sheet_mini
-                  .key
-                    | AGI
-                  .value
-                    | 976534678
+                    | {{profile.parameters.tirol[param]}}
         .character
           img.tirol(src="/images/characters/tirol.png")
 
@@ -134,16 +96,50 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      profile: {
+        achievements:{
+          total_play_time: 0,
+        },
+        equips: {
+          spica: [],
+          tirol: [],
+        },
+        parameters: {
+          spica: [],
+          tirol: [],
+        },
+      },
+      maxEquipCount: Constants.maxEquipCount,
     };
   },
   props: {
   },
   store,
   mounted(){
+    this.fetchProfile();
   },
   computed: {
+    playTimeString(){
+      const seconds = this.profile.achievements.total_play_time;
+      const hour = Math.floor(seconds / 60 / 60);
+      const minutes = Math.floor(seconds % 3600 / 60);
+      return `${hour}:${minutes}`
+    }
   },
   methods: {
+    fetchProfile(){
+      const user_id = localStorage.user_id;
+      const path = `/users/${user_id}/profile.json`;
+      ax.get(path)
+        .then((results) => {
+          console.log(results);
+          this.profile = results.data.profile;
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+        });
+    },
   }
 }
 </script>
