@@ -17,42 +17,42 @@
               .value
                 | SS+
             .details
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 累計コイン獲得数
                 .value
                   | {{profile.achievements.total_coin}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 実績クリア数
                 .value
                   | {{profile.achievements.cleared_achievements}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 討伐済みの敵
                 .value
                   | {{profile.achievements.won_enemy_count}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | アイテム収集数
                 .value
                   | {{profile.achievements.unique_item_count}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 能力解放数
                 .value
                   | {{profile.achievements.relics}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 総ログイン時間
                 .value
                   | {{playTimeString}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | イベントプレイ数
                 .value
                   | {{profile.achievements.total_event}}
-              .detail.sheet_mini
+              .detail.list_item_large
                 .key
                   | 最高到達階
                 .value
@@ -65,7 +65,7 @@
                 .equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
                   | -
               .statuses
-                .status.sheet_mini(v-for="param in ['str', 'dex', 'def', 'agi']")
+                .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
                   .key
                     | {{param.toUpperCase()}}
                   .value
@@ -77,7 +77,7 @@
                 .equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
                   | -
               .statuses
-                .status.sheet_mini(v-for="param in ['str', 'dex', 'def', 'agi']")
+                .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
                   .key
                     | {{param.toUpperCase()}}
                   .value
@@ -244,8 +244,6 @@ export default {
             display: flex;
             flex-wrap: wrap;
             .status {
-              background-color: $background_with_opacity;
-              border-radius: $radius;
               margin: $subtle_space;
               width: calc(50% - #{$subtle_space} * 3);
               .key, .value {
@@ -299,13 +297,5 @@ export default {
         }
       }
     }
-  }
-
-  .sheet_mini{
-    padding: $space;
-    background-color: $gray3-opacity;
-    border-top: 1px solid $gray3;
-    border-bottom: 1px solid $gray3;
-    line-height: 100%;
   }
 </style>

@@ -140,3 +140,20 @@
   }
   cursor: pointer;
 }
+
+.list_item_large{
+  padding: $space;
+  background-color: $gray3-opacity;
+  border-top: 1px solid $gray3;
+  border-bottom: 1px solid $gray3;
+  line-height: 100%;
+}
+
+.list_item_medium{
+  padding: $space;
+  background-color: $background_with_opacity;
+  border-radius: $radius;
+  border-top: 1px solid $gray3;
+  border-bottom: 1px solid $gray3;
+  line-height: 100%;
+}
