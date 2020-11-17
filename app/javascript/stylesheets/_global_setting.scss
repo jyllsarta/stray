@@ -157,3 +157,14 @@
   border-bottom: 1px solid $gray3;
   line-height: 100%;
 }
+
+.character_equip{
+  background-color: $background_with_opacity;
+  border-radius: $radius;
+  padding: $space;
+  line-height: 100%;
+  border-top: 1px solid $gray3;
+  border-bottom: 1px solid $gray3;
+  border-right: 4px solid $gray3;
+  border-left: 4px solid $gray3;
+}

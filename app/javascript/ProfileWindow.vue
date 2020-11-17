@@ -60,9 +60,9 @@
           .strengthes
             .strength.spica
               .equips
-                .equip(v-for="equip in profile.equips.spica")
+                .equip.character_equip(v-for="equip in profile.equips.spica")
                   | {{equip.name}}
-                .equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
+                .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
                   | -
               .statuses
                 .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
@@ -72,9 +72,9 @@
                     | {{profile.parameters.spica[param]}}
             .strength.tirol
               .equips
-                .equip(v-for="equip in profile.equips.tirol")
+                .equip.character_equip(v-for="equip in profile.equips.tirol")
                   | {{equip.name}}
-                .equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
+                .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
                   | -
               .statuses
                 .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
@@ -187,40 +187,10 @@ export default {
       flex-direction: column;
       .strengthes{
         display: flex;
-        .spica{
-          .equips{
-            .equip{
-              &:nth-child(1){
-                padding-left: 8px;
-              }
-              &:nth-child(2){
-                padding-left: 16px;
-              }
-              &:nth-child(3){
-                padding-left: 24px;
-              }
-              &:nth-child(4){
-                padding-left: 32px;
-              }
-            }
-          }
-        }
         .tirol{
           .equips{
             .equip{
               text-align: right;
-              &:nth-child(1){
-                padding-right: 8px;
-              }
-              &:nth-child(2){
-                padding-right: 16px;
-              }
-              &:nth-child(3){
-                padding-right: 24px;
-              }
-              &:nth-child(4){
-                padding-right: 32px;
-              }
             }
           }
         }
@@ -229,15 +199,7 @@ export default {
           .equips{
             .equip{
               width: calc(100% - #{$thin_space} * 3);
-              background-color: $background_with_opacity;
-              border-radius: $radius;
-              padding: $space;
-              line-height: 100%;
               margin: $subtle_space;
-              border-top: 1px solid $gray3;
-              border-bottom: 1px solid $gray3;
-              border-right: 4px solid $gray3;
-              border-left: 4px solid $gray3;
             }
           }
           .statuses {

@@ -31,16 +31,6 @@
             | 平均装備ランク
           .rank
             NumeratableNumber(:number="averageItemRank", :speed="0.4")
-        .reinforcements.block
-          .label
-            | 加護
-          .reinforcement_list(v-if="false")
-            // 一旦加護実装まで封印
-            .reinforcement
-              | 先制Lv2
-          .no-reinforcement(v-else="false")
-            .message
-              | 加護がありません
         .sub_chara_status.block
           .label
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
@@ -51,14 +41,14 @@
               span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param))]")
                 | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param)}})
           .equips
-            .equip(
+            .equip.character_equip(
               v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               :class="[rarityClass(item)]"
             )
               | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
             // 空枠を埋める
-            .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
+            .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
               | -
         .item_list_main.block
           .label
@@ -166,7 +156,7 @@
             .around_block
               | 周辺の敵ATK:{{aroundEnemyAtk}}
             .equips
-              .equip.hoverable.item(
+              .equip.character_equip.hoverable.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
@@ -180,7 +170,7 @@
                     :class="param"
                     :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
-              .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
+              .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
               .status(v-for="param in ['str', 'dex', 'def', 'agi']")
@@ -404,13 +394,12 @@ export default {
   // 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
 
   $detail-width: 180px;
-  $character-width: 200px;
+  $character-width: 170px;
   $character-height: 380px;
   $sub-character-width: 100px;
   $sub-character-height: 200px;
   $main-chara-equip-height: 170px;
   $item_list-main-width:400px;
-  $reinforcement-list-height: 200px;
 
   .content{
     overflow: hidden;
@@ -479,7 +468,7 @@ export default {
     }
 
     .bar_area{
-      width: 80%;
+      width: 89%;
       height: 1px;
       display: flex;
       opacity: 0.9;
@@ -555,43 +544,16 @@ export default {
       }
     }
 
-    .reinforcements{
-      .reinforcement_list{
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        height: $reinforcement-list-height - $font-size-large;
-        padding: $thin_space;
-        .reinforcement{
-          margin: $thin_space;
-          border-bottom: 1px solid $gray3;
-          width: 45%;
-          text-align: center;
-          &::before{
-            content: "◇";
-          }
-        }
-      }
-      .no-reinforcement{
-        display: flex;
-        height: $reinforcement-list-height - $font-size-large;
-        justify-content: space-around;
-        flex-direction: column;
-        .message{
-          font-size: $font-size-mini;
-          width: 100%;
-          height: $font-size-normal;
-          line-height: 100%;
-          text-align: center;
-        }
-      }
-    }
-
     .sub_chara_status{
       font-size: $font-size-mini;
       padding-bottom: $space;
+      padding-top: 30px;
       .status{
-        padding: $thin_space;
+        padding: $space;
+        .param{
+          padding: $space;
+          font-size: $font-size-normal;
+        }
       }
       .equips{
         display: flex;
@@ -599,7 +561,9 @@ export default {
         justify-content: space-around;
         padding-left: $thin_space;
         .equip{
+          margin-top: $thin_space;
           font-size: $font-size-mini;
+          padding-right: 0;
         }
       }
     }
@@ -617,11 +581,11 @@ export default {
           width: 90%;
           .item_name{
             display: inline-block;
-            width: 77%;
+            width: 71%;
           }
           .value{
             display: inline-block;
-            width: 23%;
+            width: 29%;
             text-align: right;
             padding-right: $thin_space;
           }
@@ -768,12 +732,11 @@ export default {
           }
           .upper{
             top: 10px;
-            left: 565px;
-
+            left: 585px;
           }
           .downer{
             top: 75px;
-            left: 565px;
+            left: 585px;
           }
         }
         .around_block{
@@ -787,25 +750,14 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: space-around;
+          margin: $subtle_space;
           .equip{
-            padding: 2px;
-            flex-grow: 1;
+            padding: $space;
             display: flex;
             flex-direction: column;
             justify-content: center;
             cursor: pointer;
-            &:nth-child(1){
-              padding-left: 8px;
-            }
-            &:nth-child(2){
-              padding-left: 16px;
-            }
-            &:nth-child(3){
-              padding-left: 24px;
-            }
-            &:nth-child(4){
-              padding-left: 32px;
-            }
+            height: $font-size-normal + 1px + $space * 2;
           }
         }
         .current_parameters{
@@ -888,23 +840,16 @@ export default {
     .sub_chara{
       position: absolute;
       bottom: 250px;
-      left: 100px;
+      left: 80px;
       width: $sub-character-width;
       height: $sub-character-height;
     }
-    .reinforcements{
-      position: absolute;
-      top: $thin_space;
-      left: $character-width;
-      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: $reinforcement-list-height;
-    }
     .sub_chara_status{
       position: absolute;
-      top: $reinforcement-list-height + $thin_space * 2;
+      top: $thin_space * 2 + 64px;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: calc(100% - #{$main-chara-equip-height} - #{$reinforcement-list-height} - #{$thin_space * 5});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
     }
     .item_list_main{
       position: absolute;
