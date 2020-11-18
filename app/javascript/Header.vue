@@ -1,5 +1,5 @@
 <template lang="pug">
-  .header.window
+  .header.window.floating_window
     .clock.header_content(v-if="!$store.getters['event/isDequeueMode']")
       CurrentClock
     .clock.header_content(v-if="$store.getters['event/isDequeueMode']")

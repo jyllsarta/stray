@@ -1,5 +1,5 @@
 <template lang="pug">
-  .velocity.window
+  .velocity.window.floating_window
     .background(:class="velocityRankClass")
     .values
       .index

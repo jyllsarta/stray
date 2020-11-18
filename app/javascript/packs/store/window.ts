@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     account: false,
-    equip: true,
+    equip: false,
     equip_detail: false,
     switch_dungeon: false,
     relic: false,

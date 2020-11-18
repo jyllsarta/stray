@@ -1,5 +1,5 @@
 <template lang="pug">
-  .window.log(ref="log", :class="foldClass" @click="switchFoldStatus")
+  .window.floating_window.log(ref="log", :class="foldClass" @click="switchFoldStatus")
     transition-group(name="show-in")
       .item(v-for="log in logs", :key="log.pseudo_id")
         .at

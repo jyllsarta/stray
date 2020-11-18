@@ -40,7 +40,7 @@
   border: 1px solid $gray3;
   border-radius: $radius;
   padding: $thin_space;
-  background-color: $background_with_opacity;
+  background-color: $background;
 }
 
 .menu{
@@ -82,9 +82,12 @@
     background-color: $background;
     top: $space * 2;
     left: $space * 2;
-    opacity: $opacity;
     padding: $space;
   }
+}
+
+.floating_window{
+  background-color: $background_with_opacity;
 }
 
 .clickable{

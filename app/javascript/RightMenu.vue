@@ -1,5 +1,5 @@
 <template lang="pug">
-  .right_menu.window
+  .right_menu.window.floating_window
     .item.clickable(
       @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
       @click="resurrect"
