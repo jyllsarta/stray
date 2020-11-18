@@ -572,12 +572,12 @@ export default {
     }
 
     .item{
-      padding: $thin_space;
+      padding: $space 0 0 0;
       cursor: pointer;
       .param_area{
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-end;
         height: 20px;
         .param{
           display: inline-block;
@@ -594,7 +594,7 @@ export default {
           }
         }
         .go_to_detail{
-          @include centering($height:30px);
+          @include centering($height:28px);
           width: 10%;
         }
       }
