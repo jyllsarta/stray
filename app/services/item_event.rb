@@ -17,7 +17,7 @@ class ItemEvent < Event
   def detail
     {
       id: @item_id,
-      rank: @rank
+      rank: @after_rank
     }
   end
 
@@ -47,6 +47,7 @@ class ItemEvent < Event
     else
       user_item.rank += @rank_delta
     end
+    @after_rank = user_item.rank
     @done = true
     user.achievement_logger.post(Achievement::Event::ItemEvent.new(user, self))
   end
