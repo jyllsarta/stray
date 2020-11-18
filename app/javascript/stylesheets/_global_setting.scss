@@ -168,3 +168,13 @@
   border-right: 4px solid $gray3;
   border-left: 4px solid $gray3;
 }
+
+.topic_medium{
+  background-color: $gray3-opacity;
+  line-height: 100%;
+  padding: $thin_space;
+  border-left: 6px solid $gray3;
+  border-right: 1px solid $gray3;
+  border-top: 1px solid $gray3;
+  border-bottom: 1px solid $gray3;
+}

@@ -4,11 +4,11 @@ export default {
   namespaced: true,
   state: {
     account: false,
-    equip: false,
+    equip: true,
     equip_detail: false,
     switch_dungeon: false,
     relic: false,
-    profile: true,
+    profile: false,
     battle: false,
     battle_prepare: false,
     quest: false,

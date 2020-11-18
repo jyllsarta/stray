@@ -32,7 +32,7 @@
           .rank
             NumeratableNumber(:number="averageItemRank", :speed="0.4")
         .sub_chara_status.block
-          .label
+          .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
           .status
             .param(v-for="param in ['atk', 'def']")
@@ -51,7 +51,7 @@
             .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
               | -
         .item_list_main.block
-          .label
+          .label.topic_medium
             | アイテム
           .misc
             .pager_button(@click="changePage(-1)")
@@ -102,7 +102,7 @@
                   :style="{width: 0}"
                 )
         .detail.block
-          .label
+          .label.topic_medium
             | 詳細
           .item_name
             | {{currentItem ? currentItem.name : "-"}}
@@ -142,13 +142,17 @@
         .main_chara_equips.block
           .label_box
             .label
-              | {{$store.getters['equip_window/getMainCharacterJapaneseName']}}のステータス
+              .topic_medium
+                | {{$store.getters['equip_window/getMainCharacterJapaneseName']}}のステータス
             .current_parameters_label
-              | ステータス
+              .topic_medium
+                | ステータス
             .this_item_label
-              | 選択中の装備
+              .topic_medium
+                | 選択中の装備
             .to_status_label
-              | 効果値
+              .topic_medium
+                | 効果値
           .main
             .kos
               img.ko.upper(src="images/ui/ko.png")
@@ -414,11 +418,6 @@ export default {
       border-radius: $radius;
     }
 
-    .label{
-      font-size: $font-size-normal;
-      color: $accent-color;
-      line-height: 100%;
-    }
     .character_image{
       width: 220px;
       transform: scale(-1,1);
@@ -548,6 +547,10 @@ export default {
       font-size: $font-size-mini;
       padding-bottom: $space;
       padding-top: 30px;
+      .label{
+        font-size: $font-size-normal;
+        display: inline-block;
+      }
       .status{
         padding: $space;
         .param{
@@ -598,6 +601,9 @@ export default {
     }
 
     .item_list_main{
+      .label{
+        display: inline-block;
+      }
       .misc{
         height: 50px;
         border-bottom: 1px solid $gray3;
@@ -663,6 +669,10 @@ export default {
 
     .detail{
       font-size: $font-size-mini;
+      .label{
+        font-size: $font-size-normal;
+        display: inline-block;
+      }
       .item_name{
         margin: $thin_space;
         height: 25px;
@@ -692,7 +702,7 @@ export default {
       .flavor_text{
         line-height: 115%;
         margin: $thin_space;
-        height: 135px;
+        height: 130px;
       }
       .open_detail_window{
         margin: $thin_space;
@@ -704,19 +714,21 @@ export default {
       .label_box{
         display: flex;
         flex-direction: row;
-        color: $accent-color;
         align-content: flex-end;
+        .topic_medium{
+          display: inline-block;
+        }
         .label{
-          width: 43%;
+          width: 40%;
         }
         .current_parameters_label{
-          width: 17%;
+          width: 20%;
         }
         .this_item_label{
-          width: 17%;
+          width: 20%;
         }
         .to_status_label{
-          width: 17%;
+          width: 20%;
         }
       }
       .main{
@@ -746,7 +758,7 @@ export default {
           font-size: $font-size-mini;
         }
         .equips{
-          width: 43%;
+          width: 40%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -808,7 +820,7 @@ export default {
         }
         .to_status{
           margin: $space 0 $space*3 0;
-          width: 17%;
+          width: 20%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -849,21 +861,21 @@ export default {
       top: $thin_space * 2 + 64px;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
     }
     .item_list_main{
       position: absolute;
       top: $thin_space;
       right: $detail-width + $thin_space * 2;
       width: $item-list-main-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
     }
     .detail{
       position: absolute;
       top: $thin_space;
       right: $thin_space;
       width: $detail-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
     }
     .main_chara_equips{
       position: absolute;
