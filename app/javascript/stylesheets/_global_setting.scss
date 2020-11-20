@@ -91,21 +91,20 @@
 }
 
 .clickable{
-  background-color: $clickable-color;
+  background: linear-gradient(to bottom, $clickable-highlight-color, $clickable-color 5%, $clickable-color 90%, $clickable-highlight-color);
   border-radius: $radius;
   border: 1px solid $gray1;
   &:hover{
-    background-color: $clickable-hover-color;
+    background: linear-gradient(to bottom, $clickable-highlight-color, $clickable-color 25%, $clickable-color 65%, $clickable-highlight-color);
     filter: brightness(115%);
-    transform: scale(1.04);
+    transform: scale(1.10);
   }
   cursor: pointer;
 }
 
 .hoverable{
   &:hover{
-    filter: brightness(120%);
-    background-color: $gray3;
+    filter: brightness(180%);
   }
 }
 

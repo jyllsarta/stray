@@ -573,6 +573,7 @@ export default {
 
     .item{
       padding: $space 0 0 0;
+      background-color: $background;
       cursor: pointer;
       .param_area{
         display: flex;
