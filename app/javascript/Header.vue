@@ -23,7 +23,7 @@
           | /
         .depth
           | {{$store.getters['masterdata/getCurrentDungeon'].depth}}
-        .sep
+        .floor_label
           | F
     .resources
       .line
@@ -89,6 +89,7 @@ export default {
       width: 100%;
       height: 40%;
       font-size: 14px;
+      border-bottom: 1px solid $gray3;
       &::after{
         content: "：";
       }
@@ -97,7 +98,6 @@ export default {
       width: 100%;
       height: 60%;
       font-size: 18px;
-      padding-right: $space;
       padding-top: $space;
       text-align: right;
       line-height: 100%;
@@ -107,19 +107,19 @@ export default {
     width: 22%;
   }
   .until_next_event{
-    width: 20%;
+    width: 18%;
   }
   .rest_event_time{
-    width: 20%;
+    width: 18%;
   }
   .dungeon_name{
-    width: 15%;
+    width: 18%;
   }
   .dungeon_depth{
-    width: 20%;
+    width: 18%;
   }
   .resources{
-    width: 15%;
+    width: 16%;
   }
   .floor{
     .current{
@@ -127,6 +127,11 @@ export default {
     }
     .sep{
       padding: 0 $thin_space 0 $thin_space;
+      display: inline-block;
+      font-size: $font-size-mini;
+    }
+    .floor_label{
+      padding-left: $thin_space;
       display: inline-block;
       font-size: $font-size-mini;
     }
@@ -144,6 +149,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-left: 1px solid $gray3;
+    padding-left: $space;
+    padding-right: $space;
     padding-top: $thin_space;
     padding-bottom: $thin_space;
     .line{

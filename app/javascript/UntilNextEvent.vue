@@ -32,6 +32,7 @@ export default {
     width: 100%;
     height: 40%;
     font-size: 14px;
+    border-bottom: 1px solid $gray3;
     &::after{
       content: "：";
     }
@@ -40,7 +41,6 @@ export default {
     width: 100%;
     height: 60%;
     font-size: 18px;
-    padding-right: $space;
     padding-top: $space;
     text-align: right;
     line-height: 100%;
