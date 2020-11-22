@@ -37,7 +37,18 @@
 
 @mixin checker_background{
   background-color: #1b2132;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='48' viewBox='0 0 60 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='fancy-rectangles' fill='%23262f47' fill-opacity='0.64'%3E%3Cpath d='M6 12h6v12H6V12zm12 0h6v12h-6V12zm6-12h6v12h-6V0zM12 0h6v12h-6V0zm0 24h6v12h-6V24zM0 0h6v12H0V0zm6 36h6v12H6V36zm12 0h6v12h-6V36zm12-12h6v12h-6V24zM42 0h6v12h-6V0zm-6 12h6v12h-6V12zm12 0h6v12h-6V12zM36 36h6v12h-6V36zm12 0h6v12h-6V36zm-6-12h6v12h-6V24zm12 0h6v12h-6V24z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");  background-repeat: repeat;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='48' viewBox='0 0 60 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='fancy-rectangles' fill='%23262f47' fill-opacity='0.64'%3E%3Cpath d='M6 12h6v12H6V12zm12 0h6v12h-6V12zm6-12h6v12h-6V0zM12 0h6v12h-6V0zm0 24h6v12h-6V24zM0 0h6v12H0V0zm6 36h6v12H6V36zm12 0h6v12h-6V36zm12-12h6v12h-6V24zM42 0h6v12h-6V0zm-6 12h6v12h-6V12zm12 0h6v12h-6V12zM36 36h6v12h-6V36zm12 0h6v12h-6V36zm-6-12h6v12h-6V24zm12 0h6v12h-6V24z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+@mixin tile_background{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23262f47' fill-opacity='0.6'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to bottom, #3b3e5f 0%, $background 40%);
+  background-repeat: repeat;
+}
+
+@mixin static_tile_background{
+  background-image: linear-gradient(to right, $accent-color-opacity 60%, $background 100%);
+  background-repeat: repeat;
 }
 
 .window{
@@ -165,7 +176,7 @@
 }
 
 .character_equip{
-  background-color: $background_with_opacity;
+  @include tile_background;
   border-radius: $radius;
   padding: $space;
   line-height: 100%;
@@ -176,10 +187,10 @@
 }
 
 .topic_medium{
-  background-color: $gray3-opacity;
+  @include static_tile_background;
   line-height: 100%;
   padding: $thin_space;
-  border-left: 6px solid $gray3;
+  border-left: 4px solid $gray3;
   border-right: 1px solid $gray3;
   border-top: 1px solid $gray3;
   border-bottom: 1px solid $gray3;
