@@ -51,23 +51,25 @@
             .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
               | -
         .item_list_main.block
-          .label.topic_medium
-            | アイテム
-          .misc
-            .pager_button(@click="changePage(-1)")
-              | ◀
-            .state
-              | {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
-            .pager_button(@click="changePage(1)")
-              | ▶
-            .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
-              | {{$store.getters['equip_window/getCurrentSortName']}}
-          transition(name="open_window")
-            .select_order(v-if="showing_select_order_window")
-              .close(@click="toggleSelectOrderWindow")
-              .in_window.window
-                .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", @click="onClickChangeSortLambdaButton(i)")
-                  | {{$store.getters['equip_window/sortLambdas'](i).name}}
+          .misc_area
+            .label_block
+              .label.topic_medium
+                | アイテム
+            .misc
+              .pager_button(@click="changePage(-1)")
+                | ◀
+              .state
+                | {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
+              .pager_button(@click="changePage(1)")
+                | ▶
+              .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
+                | {{$store.getters['equip_window/getCurrentSortName']}}
+              transition(name="open_window")
+                .select_order(v-if="showing_select_order_window")
+                  .close(@click="toggleSelectOrderWindow")
+                  .in_window.window
+                    .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", @click="onClickChangeSortLambdaButton(i)")
+                      | {{$store.getters['equip_window/sortLambdas'](i).name}}
           .item_list.scrollable(ref="item_list")
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
@@ -528,9 +530,11 @@ export default {
       padding: 2px;
       border: 1px solid $gray3;
       border-radius: $radius;
+      @include checker_background;
       .desc{
         font-size: $font-size-mini;
         line-height: 105%;
+        border-bottom: 1px solid $gray3;
       }
       .rank{
         font-size: $font-size-large;
@@ -571,6 +575,7 @@ export default {
 
     .item{
       padding: $space 0 0 0;
+      @include checker_background;
       cursor: pointer;
       .param_area{
         display: flex;
@@ -599,56 +604,60 @@ export default {
     }
 
     .item_list_main{
-      .label{
-        display: inline-block;
-      }
-      .misc{
-        height: 50px;
-        border-bottom: 1px solid $gray3;
+      .misc_area{
         display: flex;
-        width: 400px;
-        padding: $thin_space;
-        align-items: baseline;
-        justify-content: center;
-        .pager_button{
-          text-align: center;
-          width: 70px;
-          padding: $thin_space;
-          color: $gray1;
-          font-size: $font-size-large;
-          cursor: pointer;
-          &:hover{
-            filter: brightness(120%);
-            transform: scale(1.2);
+        border-bottom: 1px solid $gray3;
+        .label_block{
+          height: 50px;
+          width: 77px;
+          .label{
+            display: inline-block;
           }
         }
-        .state{
-        }
-      }
-      .order{
-        @include centering($height: 36px);
-        width: 100px;
-      }
-      .select_order{
-        position: absolute;
-        top: 65px;
-        left: 100px;
-        .close{
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-        .in_window{
-          position: absolute;
-          z-index: 1;
-          padding: $thin_space;
-          width: 230px;
+        .misc{
+          height: 50px;
           display: flex;
-          flex-wrap: wrap;
-          .order{
-            margin: $thin_space;
+          width: 300px;
+          align-items: center;
+          justify-content: center;
+          .pager_button{
+            text-align: center;
+            width: 70px;
+            padding: $thin_space;
+            color: $gray1;
+            font-size: 30px;
+            cursor: pointer;
+            &:hover{
+              filter: brightness(120%);
+              transform: scale(1.2);
+            }
+          }
+        }
+        .order{
+          @include centering($height: 36px);
+          width: 100px;
+        }
+        .select_order{
+          position: absolute;
+          top: 65px;
+          left: 100px;
+          .close{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+          .in_window{
+            position: absolute;
+            z-index: 1;
+            padding: $thin_space;
+            width: 230px;
+            display: flex;
+            flex-wrap: wrap;
+            .order{
+              margin: $thin_space;
+            }
           }
         }
       }
@@ -656,7 +665,7 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: column;
-        height: calc(100% - 50px - #{$font-size-normal});
+        height: calc(100% - 50px);
         padding: $thin_space;
       }
     }
@@ -867,7 +876,7 @@ export default {
       top: $thin_space;
       right: $detail-width + $thin_space * 2;
       width: $item-list-main-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
     }
     .detail{
       position: absolute;
