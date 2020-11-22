@@ -413,9 +413,6 @@ export default {
   .body{
     .block{
       border-left: 1px solid $gray3;
-      background-color: $background_with_opacity;
-      opacity: $opacity;
-      border-radius: $radius;
     }
 
     .character_image{
@@ -544,6 +541,7 @@ export default {
     }
 
     .sub_chara_status{
+      @include checker-background;
       font-size: $font-size-mini;
       padding-bottom: $space;
       padding-top: 30px;
@@ -573,7 +571,6 @@ export default {
 
     .item{
       padding: $space 0 0 0;
-      background-color: $background;
       cursor: pointer;
       .param_area{
         display: flex;
@@ -647,7 +644,6 @@ export default {
           position: absolute;
           z-index: 1;
           padding: $thin_space;
-          background-color: $background_with_opacity;
           width: 230px;
           display: flex;
           flex-wrap: wrap;
@@ -703,7 +699,7 @@ export default {
       .flavor_text{
         line-height: 115%;
         margin: $thin_space;
-        height: 130px;
+        height: 126px;
       }
       .open_detail_window{
         margin: $thin_space;
@@ -716,11 +712,12 @@ export default {
         display: flex;
         flex-direction: row;
         align-content: flex-end;
+        justify-content: space-between;
         .topic_medium{
           display: inline-block;
         }
         .label{
-          width: 40%;
+          width: 36%;
         }
         .current_parameters_label{
           width: 20%;
@@ -735,6 +732,7 @@ export default {
       .main{
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         height: calc(100% - #{$font-size-large});
         .kos{
           position: absolute;
@@ -759,7 +757,7 @@ export default {
           font-size: $font-size-mini;
         }
         .equips{
-          width: 40%;
+          width: 36%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
