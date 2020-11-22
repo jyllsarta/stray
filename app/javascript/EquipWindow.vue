@@ -413,10 +413,6 @@ export default {
 
   // 通常のスタイル定義
   .body{
-    .block{
-      border-left: 1px solid $gray3;
-    }
-
     .character_image{
       width: 220px;
       transform: scale(-1,1);
@@ -608,14 +604,14 @@ export default {
         display: flex;
         border-bottom: 1px solid $gray3;
         .label_block{
-          height: 50px;
-          width: 77px;
+          height: 52px;
+          width: 80px;
           .label{
             display: inline-block;
           }
         }
         .misc{
-          height: 50px;
+          height: 52px;
           display: flex;
           width: 300px;
           align-items: center;
@@ -665,7 +661,7 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: column;
-        height: calc(100% - 50px);
+        height: calc(100% - 54px);
         padding: $thin_space;
       }
     }
