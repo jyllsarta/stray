@@ -125,15 +125,15 @@
               .value
                 | {{currentItem ? currentItem.effectValueOf(param) : ''}}
             .parameter
-              .index.power
-                | 力
+              .index
+                span.power
+                  | 力
+                span.sep
+                  | /
+                span.tech
+                  | 技
               .value
-                | {{currentItem ? currentItem.power() : ''}}
-            .parameter
-              .index.tech
-                | 技
-              .value
-                | {{currentItem ? currentItem.tech() : ''}}
+                | {{currentItem ? `${currentItem.power()} / ${currentItem.tech()}` : ''}}
           .flavor_text
             | {{currentItem ? currentItem.flavor_text : "-"}}
           .open_detail_window.clickable(
@@ -635,8 +635,8 @@ export default {
         }
         .select_order{
           position: absolute;
-          top: 65px;
-          left: 100px;
+          top: 53px;
+          left: 140px;
           .close{
             position: fixed;
             top: 0;
@@ -648,6 +648,7 @@ export default {
             position: absolute;
             z-index: 1;
             padding: $thin_space;
+            @include checker_background;
             width: 230px;
             display: flex;
             flex-wrap: wrap;
@@ -694,6 +695,11 @@ export default {
           .index{
             display: inline-block;
             width: 30%;
+            .sep{
+              display: inline-block;
+              width: 1rem;
+              text-align: center;
+            }
           }
           .value{
             display: inline-block;
