@@ -344,43 +344,57 @@ export default {
       this.battle?.selectSkill(skillIndex);
     },
 
-    playTurn(){
-      if(!this.isDecidable){
-        console.log("ちゃんと3まいきっかり選んで");
-        return;
-      }
+    playPlayerSkillPhase(){
+      return new Promise((resolve) => {
+        // プレイヤー魔法を使っていなかったらスルー
+        if(this.battle.player.selectingSkillIndex === null){
+          resolve();
+          return;
+        }
+        setTimeout( ()=>{
+          this.battle.invokePlayerMagic();
+          this.skillName = "プレイヤー魔法";
+          resolve();
+        }, 0);
+      });
+    },
 
-      this.battle.onTurnStart();
+    playEnemySkillPhase(){
+      return new Promise((resolve) => {
+        // 敵が魔法を使っていなかったらスルー
+        if(this.battle.enemy.selectingSkillIndex === null){
+          resolve();
+          return;
+        }
+        setTimeout(()=>{
+          this.battle.invokeEnemyMagic();
+          this.skillName = "敵魔法";
+          resolve();
+        }, 800);
+      });
+    },
 
-      Promise.resolve()
-        .then(()=>{
-          return new Promise((resolve) => {
-            // プレイヤー魔法を使っていなかったらスルー
-            if(this.battle.player.selectingSkillIndex === null){
-              resolve();
-              return;
-            }
-            setTimeout( ()=>{
-              this.battle.invokePlayerMagic();
-              this.skillName = "プレイヤー魔法";
-              resolve();
-            }, 0);
-          });
-        })
-        .then(()=>{
-          return new Promise((resolve) => {
-            // 敵が魔法を使っていなかったらスルー
-            if(this.battle.enemy.selectingSkillIndex === null){
-              resolve();
-              return;
-            }
-            setTimeout(()=>{
-              this.battle.invokeEnemyMagic();
-              this.skillName = "敵魔法";
-              resolve();
-            }, 800);
-          });
-        })
+    playEndPhase(){
+      return new Promise((resolve) => {
+        setTimeout(()=>{
+          this.battle.onTurnEnd();
+          resolve();
+        }, 900);
+      });
+    },
+
+    playCheckGameEndPhase(){
+      return new Promise((resolve) => {
+        setTimeout(()=>{
+          this.checkGameEnd();
+          resolve();
+        }, 10);
+      });
+    },
+
+    playAttackPhase(){
+      return new Promise((resolve) => {
+        Promise.resolve()
         .then(()=>{
           return new Promise((resolve) => {
             setTimeout(()=>{
@@ -414,20 +428,34 @@ export default {
           });
         })
         .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.battle.onTurnEnd();
-              resolve();
-            }, 900);
-          });
+          resolve(); // めちゃわかりにくいけど親promiseのresolve
+        })
+      });
+    },
+
+    playTurn(){
+      if(!this.isDecidable){
+        console.log("ちゃんと3まいきっかり選んで");
+        return;
+      }
+
+      this.battle.onTurnStart();
+
+      Promise.resolve()
+        .then(()=>{
+          return this.playPlayerSkillPhase();
         })
         .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.checkGameEnd();
-              resolve();
-            }, 10);
-          });
+          return this.playEnemySkillPhase();
+        })
+        .then(()=>{
+          return this.playAttackPhase();
+        })
+        .then(()=>{
+          return this.playEndPhase();
+        })
+        .then(()=>{
+          return this.playCheckGameEndPhase();
         });
     },
 
