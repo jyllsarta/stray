@@ -320,6 +320,11 @@ export default {
     }
   },
   methods: {
+
+    // **
+    // Controllers
+    // **
+
     localBattleStart(){
       if(!this.input){
         console.warn("まだエンゲージしてない");
@@ -343,6 +348,23 @@ export default {
       const skillIndex = emittedObject.skillIndex;
       this.battle?.selectSkill(skillIndex);
     },
+
+    retire(){
+      this.outcome = "retired";
+      this.endGame();
+    },
+
+    endGame(){
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
+        this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
+        this.$store.dispatch('user/fetchUserModel'); // 報酬の反映
+    },
+
+    // **
+    // Turn Sequences
+    // ** 
 
     playPlayerSkillPhase(){
       return new Promise((resolve) => {
@@ -438,9 +460,7 @@ export default {
         console.log("ちゃんと3まいきっかり選んで");
         return;
       }
-
       this.battle.onTurnStart();
-
       Promise.resolve()
         .then(()=>{
           return this.playPlayerSkillPhase();
@@ -459,14 +479,10 @@ export default {
         });
     },
 
-    checkGameEnd(){
-      if(this.battle.isGameEnd()){
-        console.log("決着！ショーダウン!");
-        console.log(this.input.seed);
-        console.log(this.battle.battleLog);
-        this.postShowdown();
-      }
-    },
+
+    // **
+    // API calls
+    // **
 
     postEngage(){
       const enemyId = this.$store.state.battle.enemy_id;
@@ -519,17 +535,17 @@ export default {
         });
     },
 
-    retire(){
-        this.outcome = "retired";
-        this.endGame();
-    },
+    // **
+    // Private Utility
+    // **
 
-    endGame(){
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
-        this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
-        this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
-        this.$store.dispatch('user/fetchUserModel'); // 報酬の反映
+    checkGameEnd(){
+      if(this.battle.isGameEnd()){
+        console.log("決着！ショーダウン!");
+        console.log(this.input.seed);
+        console.log(this.battle.battleLog);
+        this.postShowdown();
+      }
     },
 
     getLogMessage(){
