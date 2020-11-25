@@ -1,7 +1,9 @@
 <template lang="pug">
-.bar(:class="sliderClass" :style="{width: width}")
-  .on(:style="{width: mainWidth, height: height, backgroundColor: mainColor}")
-  .blank(:style="{width: mainWidth, height: height, backgroundColor: blankColor}")
+.bar(:style="{width: width, height: height}")
+  .on(:class="sliderClass")
+    .active(:style="{width: mainWidth, backgroundColor: mainColor}")
+    .damage(:style="{width: damageWidth, backgroundColor: '#FFFFFF'}")
+  .blank(:style="{width: width, backgroundColor: blankColor}")
 </template>
 
 <script lang="ts">
@@ -14,16 +16,55 @@ export default {
     blankColor: String,
     reversed: Boolean,
   },
+  data() {
+    return {
+      ratioFluctuation: 0,
+      updateRatio: 0.1, // 毎フレーム何％目標値に近づけるか
+    };
+  },
   computed: {
     mainWidth(){
       if(this.ratio < 0){
-          return 0;
+        return 0;
+      }
+      if(this.ratio > 1){
+        return this.width;
       }
       return this.width * this.ratio;
+    },
+    damageWidth(){
+      if(this.ratioFluctuation < 0){
+        return 0;
+      }
+      if(this.ratioFluctuation > 1){
+        return this.width;
+      }
+      return this.width * this.ratioFluctuation;
     },
     sliderClass(){
       if(this.reversed){
         return "reversed";
+      }
+    }
+  },
+  watch: {
+    "ratio": {
+      handler: function(newVal, oldVal){
+        if(newVal < oldVal){
+          this.ratioFluctuation += oldVal - newVal;
+        }
+        setTimeout(()=>this.react(), 300);
+      }
+    },
+  },
+  methods:{
+    react(){
+      this.ratioFluctuation = this.ratioFluctuation * (1 - this.updateRatio);
+      if(this.ratioFluctuation < 0.01){
+        this.ratioFluctuation = 0;
+      }
+      else{
+        setTimeout(()=>this.react(), 20);
       }
     }
   }
@@ -32,12 +73,18 @@ export default {
 
 <style lang="scss" scoped>
   .bar{
-    display: flex;
-    border-radius: 1px;
+    position: relative;
     .on{
+      position: absolute;
+      display: flex;
       height: 100%;
+      width: 100%;
+      .active, .damage{
+        height: 100%;
+      }
     }
     .blank{
+      position: absolute;
       height: 100%;
       flex: 1;
     }
