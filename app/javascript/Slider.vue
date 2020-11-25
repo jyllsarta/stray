@@ -50,6 +50,11 @@ export default {
   watch: {
     "ratio": {
       handler: function(newVal, oldVal){
+        // 外側から外側への移動は関与しなくて良い
+        if((newVal < 0 && oldVal <= 0) || (newVal > 1 && oldVal >= 1)){
+          return;
+        }
+        // 減ったら減った分だけマイナスの履歴を残す
         if(newVal < oldVal){
           this.ratioFluctuation += oldVal - newVal;
         }
