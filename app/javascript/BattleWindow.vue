@@ -121,8 +121,8 @@
           Slider(:width="250", :height="1", :ratio="enemyMpRatio - 1", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
         .damage_parameters
           DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
-      BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
-      BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
+      SkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
+      SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -146,7 +146,7 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
-import BattleSkillList from "./BattleSkillList.vue";
+import SkillList from "./SkillList.vue";
 import CardList from "./CardList.vue";
 import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
@@ -156,7 +156,7 @@ import NumeratableNumber from "./NumeratableNumber.vue";
 
 export default {
   components: {
-    BattleSkillList,
+    SkillList,
     CardList,
     Slider,
     DamageParameters,

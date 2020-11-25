@@ -1,10 +1,10 @@
 <template lang="pug">
   .skill_list(:class="sideClass")
     .skill(
-      v-for="(skill,index) in skills"
-      @click="$emit('onClick', {skillId: skill.id, skillIndex: index})"
-      @mouseover="onPoint(skill.id)"
-      :class="clickable ? 'clickable' : ''"
+      v-for="(skill, index) in skills"
+        @click="$emit('onClick', {skillId: skill.id, skillIndex: index})"
+        @mouseover="onPoint(skill.id)"
+        :class="skillClass(index)"
       )
       .upper
         img.icon(:src="iconImagePath(skill.id)")
@@ -23,6 +23,7 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
+import Battle from "./packs/quest/battle"
 
 export default {
   data: function () {
@@ -34,6 +35,7 @@ export default {
     isPlayer: Boolean,
     skills: Array,
     clickable: Boolean,
+    battle: Object,
   },
   store,
   mounted(){
@@ -48,6 +50,37 @@ export default {
       this.$emit('onPoint', skillId);
       this.$store.commit('guide/updateGuide', this.$store.state.masterdata.skills[skillId]?.description);
     },
+    skillClass(skillIndex) {
+      if(!this.battle){
+        return this.clickable ? 'clickable' : '';
+      }
+      if (this.isPlayer) {
+        return this.skillClassPlayer(skillIndex);
+      } else {
+        return this.skillClassEnemy(skillIndex);
+      }
+    },
+    skillClassPlayer(skillIndex){
+      const skill = this.battle.player.skills[skillIndex];
+      if(!skill.reusable && this.battle.operationHistory.map((x)=>x.skillIndex).includes(skillIndex)) {
+          return 'used';
+      }
+      if(!this.battle.canUseSkill(skillIndex)){
+        return 'disabled';
+      }
+      return this.battle.player.selectingSkillIndex === skillIndex ? 'selected' : 'available';
+    },
+    skillClassEnemy(skillIndex){
+      const skill = this.battle.enemy.skills[skillIndex];
+      if(!skill.reusable && this.battle.enemyOperationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
+        return 'used';
+      }
+
+      if(!this.battle.canEnemyUseSkill(skillIndex)){
+        return 'disabled';
+      }
+      return this.battle.enemy.selectingSkillIndex == skillIndex ? 'selected' : 'available';
+    },
     iconImagePath(skillId){
       if(!this.$store.state.masterdata?.skills[skillId]){
         return "/images/icons/skill/default.gif";
@@ -60,7 +93,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
-
 .skill_list{
   display: flex;
   .skill{
@@ -94,18 +126,31 @@ export default {
         text-align: center;
       }
     }
-    .selected{
-      background-color: $gray3;
-      border: 1px solid $yellow;
-    }
-    .disabled{
-      opacity: 0.5;
-    }
+
   }
-  .clickable{
-    // ↑の .skill についてるborderがグローバルセッティングの .clickable についている border を打ち消してしまう
-    // 今回は .clickable の方に勝ってほしいのでここで再定義する(ダサい...)
-    border: 1px solid $gray1;
+  .selected{
+    background-color: $gray3;
+    border: 1px solid $yellow;
+    cursor: pointer;
+  }
+  .disabled{
+    background-color: $gray3-opacity;
+    opacity: 0.5;
+    cursor: default;
+  }
+  .used{
+    opacity: 0.25;
+    cursor: default;
+  }
+  .available{
+    background-color: $gray3-opacity;
+    cursor: pointer;
+  }
+  .selected, .available{
+    &:hover{
+      border: 1px solid $yellow;
+      transform: scale(1.1);
+    }
   }
 }
 
