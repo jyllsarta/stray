@@ -56,7 +56,9 @@ export default {
         }
         // 減ったら減った分だけマイナスの履歴を残す
         if(newVal < oldVal){
-          this.ratioFluctuation += oldVal - newVal;
+          const before = Math.min(oldVal, 1);
+          const after = Math.max(newVal, 0);
+          this.ratioFluctuation += before - after;
         }
         setTimeout(()=>this.react(), 300);
       }
