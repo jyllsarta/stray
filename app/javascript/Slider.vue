@@ -1,8 +1,10 @@
 <template lang="pug">
 .bar(:style="{width: width, height: height}")
   .on(:class="sliderClass")
-    .active(:style="{width: mainWidth, backgroundColor: mainColor}")
-    .damage(:style="{width: damageWidth, backgroundColor: '#FFFFFF'}")
+    .active(:style="{width: mainWidth, backgroundColor: mainColor }")
+    // プラス領域を光らせるならこれ
+    //.plus(:style="{width: plusWidth, backgroundColor: mainColor }")
+    .damage(:style="{width: damageWidth, backgroundColor: damageColor}")
   .blank(:style="{width: width, backgroundColor: blankColor}")
 </template>
 
@@ -14,13 +16,20 @@ export default {
     ratio: Number,
     mainColor: String,
     blankColor: String,
+    damageColor: String,
     reversed: Boolean,
+    updateDelayms: Number, 
+    updateRatio: Number,
   },
   data() {
     return {
-      ratioFluctuation: 0,
-      updateRatio: 0.1, // 毎フレーム何％目標値に近づけるか
+      damageRatioFluctuation: 0,
+      plusRatioFluctuation: 0,
+      tickHandler: 0,
     };
+  },
+  beforeDestroy(){
+    clearInterval(this.tickHandler);
   },
   computed: {
     mainWidth(){
@@ -30,16 +39,27 @@ export default {
       if(this.ratio > 1){
         return this.width;
       }
-      return this.width * this.ratio;
+      return this.width * (this.ratio - this.plusRatioFluctuation);
     },
     damageWidth(){
-      if(this.ratioFluctuation < 0){
+      const fluctuation = this.damageRatioFluctuation;
+      if(fluctuation < 0){
         return 0;
       }
-      if(this.ratioFluctuation > 1){
+      if(fluctuation > 1){
         return this.width;
       }
-      return this.width * this.ratioFluctuation;
+      return this.width * fluctuation;
+    },
+    plusWidth(){
+      const fluctuation = this.plusRatioFluctuation;
+      if(fluctuation < 0){
+        return 0;
+      }
+      if(fluctuation > 1){
+        return this.width;
+      }
+      return this.width * fluctuation;
     },
     sliderClass(){
       if(this.reversed){
@@ -58,20 +78,31 @@ export default {
         if(newVal < oldVal){
           const before = Math.min(oldVal, 1);
           const after = Math.max(newVal, 0);
-          this.ratioFluctuation += before - after;
+          this.damageRatioFluctuation += before - after;
         }
-        setTimeout(()=>this.react(), 300);
+        // 増えたらプラスの履歴を残す
+        if(newVal > oldVal){
+          const before = Math.max(oldVal, 0);
+          const after = Math.min(newVal, 1);
+          this.plusRatioFluctuation += after - before;
+        }
+        clearInterval(this.tickHandler);
+        this.tickHandler = setTimeout(()=>this.react(), this.updateDelayms || 300);
       }
     },
   },
   methods:{
     react(){
-      this.ratioFluctuation = this.ratioFluctuation * (1 - this.updateRatio);
-      if(this.ratioFluctuation < 0.01){
-        this.ratioFluctuation = 0;
+      this.damageRatioFluctuation = this.damageRatioFluctuation * (1 - (this.updateRatio || 0.1));
+      this.plusRatioFluctuation = this.plusRatioFluctuation * (1 - (this.updateRatio || 0.1));
+      if(this.damageRatioFluctuation < 0.01){
+        this.damageRatioFluctuation = 0;
       }
-      else{
-        setTimeout(()=>this.react(), 20);
+      if(this.plusRatioFluctuation < 0.01){
+        this.plusRatioFluctuation = 0;
+      }
+      if(this.damageRatioFluctuation > 0 || this.plusRatioFluctuation > 0){
+        this.tickHandler = setTimeout(()=>this.react(), 20);
       }
     }
   }
@@ -86,7 +117,7 @@ export default {
       display: flex;
       height: 100%;
       width: 100%;
-      .active, .damage{
+      .active, .damage, .plus{
         height: 100%;
       }
     }
