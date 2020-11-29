@@ -60,7 +60,7 @@
           .strengthes
             .strength.spica
               .equips
-                .equip.character_equip(v-for="equip in profile.equips.spica")
+                .equip.character_equip(v-for="equip in profile.equips.spica" :class="`rarity${equip.rarity}`")
                   | {{equip.name}}
                 .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
                   | -
@@ -149,6 +149,22 @@ export default {
   * {
     //outline: 1px solid #79f850;
   }
+
+  .rarity1{
+    color: $rarity1;
+  }
+  .rarity2{
+    color: $rarity2;
+  }
+  .rarity3{
+    color: $rarity3;
+  }
+  .rarity4{
+    color: $rarity4;
+  }
+  .rarity5{
+    color: $rarity5;
+  }
   .window{
     .title_area{
       .title{
@@ -198,6 +214,7 @@ export default {
           width: 50%;
           .equips{
             .equip{
+              background-color: $background;
               width: calc(100% - #{$thin_space} * 3);
               margin: $subtle_space;
             }
