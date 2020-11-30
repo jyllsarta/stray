@@ -72,7 +72,7 @@
                     | {{profile.parameters.spica[param]}}
             .strength.tirol
               .equips
-                .equip.character_equip(v-for="equip in profile.equips.tirol")
+                .equip.character_equip(v-for="equip in profile.equips.tirol" :class="`rarity${equip.rarity}`")
                   | {{equip.name}}
                 .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
                   | -
