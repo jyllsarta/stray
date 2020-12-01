@@ -5,6 +5,10 @@
     transition(name="showing")
       img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
+      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+    transition(name="showing")
+      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+    transition(name="showing")
       img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
       img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
@@ -27,6 +31,8 @@ export default {
     images: {
       normal: String,
       attack: String,
+      attack2: String,
+      attack3: String,
       draw: String,
       lose: String,
       magic: String,
@@ -56,10 +62,22 @@ export default {
         return `/images/battle/characters/${this.characterName}_${this.images.normal}.png`
     },
     attackImagePath(){
-        if(!this.images.attack){
-            return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
-        }
-        return `/images/battle/characters/${this.characterName}_${this.images.attack}.png`
+      if(!this.images.attack){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack}.png`
+    },
+    attack2ImagePath(){
+      if(!this.images.attack2){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack2}.png`
+    },
+    attack3ImagePath(){
+      if(!this.images.attack3){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack3}.png`
     },
     drawImagePath(){
         if(!this.images.draw){
@@ -85,6 +103,10 @@ export default {
                 return 30;
             case "attack":
                 return 175;
+            case "attack2":
+                return 175;
+            case "attack3":
+                return 175;
             case "draw":
                 return 50;
             case "lose":
@@ -98,6 +120,10 @@ export default {
             case "normal":
                 return -30;
             case "attack":
+                return -175;
+            case "attack2":
+                return -175;
+            case "attack3":
                 return -175;
             case "draw":
                 return -50;
@@ -151,6 +177,12 @@ export default {
     left: 0;
   }
   .player.attack{
+    left: 145px;
+  }
+  .player.attack2{
+    left: 145px;
+  }
+  .player.attack3{
     left: 145px;
   }
   .player.draw{

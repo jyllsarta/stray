@@ -24,7 +24,7 @@
         .spica
           BattleCharacter(
             :character-name="'spica'"
-            :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}"
+            :images="{normal: 'normal', attack:'attack',  attack2:'attack2',  attack3:'attack3', draw:'draw', lose:'lose', default: 'default'}"
             :status="spicaStatus"
             :isPlayer="true"
             :currentSkillName="skillName"

@@ -146,7 +146,7 @@ module.exports = class Battle{
             this.enemy.damage(this.player.damageAt("tech"));
             this.player.addMp(5);
             this.enemy.addMp(10);
-            this.characterStatus.spica = 'attack';
+            this.characterStatus.spica = 'attack2';
             this.characterStatus.enemy = 'lose';
 
         }
@@ -173,7 +173,7 @@ module.exports = class Battle{
             this.enemy.damage(this.player.damageAt("special"));
             this.player.addMp(5);
             this.enemy.addMp(10);
-            this.characterStatus.spica = 'attack';
+            this.characterStatus.spica = 'attack3';
             this.characterStatus.enemy = 'lose';
         }
         else if(powerResult === "lose" && techResult === "lose"){
