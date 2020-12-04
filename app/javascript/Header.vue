@@ -119,19 +119,19 @@ export default {
     width: 18%;
   }
   .resources{
-    width: 16%;
+    width: 17%;
   }
   .floor{
     .current{
       display: inline-block;
     }
     .sep{
-      padding: 0 $thin_space 0 $thin_space;
+      padding: 0 $subtle_space 0 $subtle_space;
       display: inline-block;
       font-size: $font-size-mini;
     }
     .floor_label{
-      padding-left: $thin_space;
+      padding-left: $subtle_space;
       display: inline-block;
       font-size: $font-size-mini;
     }
@@ -177,7 +177,7 @@ export default {
       }
       .value{
         text-align: right;
-        width: 6rem;
+        width: 7rem;
       }
     }
   }
