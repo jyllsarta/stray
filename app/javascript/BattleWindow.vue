@@ -199,6 +199,8 @@
           DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
       SkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
+      .fragments
+        TurnStart(v-if="$store.state.battle.fragments.turn_start")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -228,6 +230,7 @@ import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
+import TurnStart from "./fragments/TurnStart.vue";
 
 
 export default {
@@ -238,6 +241,7 @@ export default {
     DamageParameters,
     BattleCharacter,
     NumeratableNumber,
+    TurnStart,
   },
   data: function () {
     return {
@@ -447,6 +451,15 @@ export default {
     // Turn Sequences
     // ** 
 
+    playTurnStartPhase(){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "turn_start");
+        setTimeout( ()=>{
+          resolve();
+        }, 500);
+      });
+    },
+
     playPlayerSkillPhase(){
       return new Promise((resolve) => {
         // プレイヤー魔法を使っていなかったらスルー
@@ -543,6 +556,9 @@ export default {
       }
       this.battle.onTurnStart();
       Promise.resolve()
+        .then(()=>{
+          return this.playTurnStartPhase();
+        })
         .then(()=>{
           return this.playPlayerSkillPhase();
         })
@@ -886,6 +902,15 @@ export default {
   .damage_parameters{
     width: 100%;
   }
+}
+
+.fragments{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 .result_popup{
