@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="closeWindow")
+          .arrow
         .title
           | 実績
       .description

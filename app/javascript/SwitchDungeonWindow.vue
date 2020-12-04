@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})")
+          .arrow
         .title
           | ダンジョン切り替え
       .description

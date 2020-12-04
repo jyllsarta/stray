@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: false})")
+          .arrow
         .title
           | クエスト
       .description

@@ -7,6 +7,7 @@
           @click="closeWindow"
           @mouseover="$store.commit('guide/updateGuide', '編集を確定してメニューを閉じます。')",
         )
+          .arrow
         .title
           | 装備
       .body

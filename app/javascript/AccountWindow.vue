@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
+          .arrow
         .title
           | アカウント管理
       .account
