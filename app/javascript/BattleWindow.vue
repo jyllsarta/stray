@@ -1,6 +1,8 @@
 <template lang="pug">
   .menu
     .full_covered_window(@click.right.prevent="removeLastCard")
+      .background_fields
+        img.background_field(src="/images/battle/background.png" :class="isTurnInProgress ? 'zoomed' : 'normal'")
       transition(name="open_window")
         .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
           | メニュー
@@ -272,6 +274,9 @@ export default {
   },
   computed: {
     isPlayerCardLocked(){
+      return this.battle?.turnInProgress;
+    },
+    isTurnInProgress(){
       return this.battle?.turnInProgress;
     },
     turnStatus(){
@@ -734,6 +739,28 @@ export default {
       @include centering($height:35px);
       margin-bottom: $thin_space;
     }
+  }
+}
+
+.background_fields{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .background_field {
+    position: absolute;
+    width:70%;
+    left: 15%;
+    top: -50%;
+    transform-origin: bottom;
+  }
+  .zoomed{
+    transition: transform 0.3s;
+    transform: scale(1.3);
+  }
+  .normal{
+    transition: transform 0.3s;
+    transform: scale(1);
   }
 }
 
