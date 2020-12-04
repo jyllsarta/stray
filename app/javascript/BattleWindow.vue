@@ -459,9 +459,7 @@ export default {
     playTurnStartPhase(){
       return new Promise((resolve) => {
         this.$store.commit("battle/showFragment", "turn_start");
-        setTimeout( ()=>{
-          resolve();
-        }, 500);
+        resolve();
       });
     },
 
@@ -476,7 +474,7 @@ export default {
           this.battle.invokePlayerMagic();
           this.skillName = "プレイヤー魔法";
           resolve();
-        }, 0);
+        }, 600);
       });
     },
 
@@ -491,25 +489,7 @@ export default {
           this.battle.invokeEnemyMagic();
           this.skillName = "敵魔法";
           resolve();
-        }, 800);
-      });
-    },
-
-    playEndPhase(){
-      return new Promise((resolve) => {
-        setTimeout(()=>{
-          this.battle.onTurnEnd();
-          resolve();
-        }, 900);
-      });
-    },
-
-    playCheckGameEndPhase(){
-      return new Promise((resolve) => {
-        setTimeout(()=>{
-          this.checkGameEnd();
-          resolve();
-        }, 10);
+        }, 1200);
       });
     },
 
@@ -522,7 +502,7 @@ export default {
               this.battle.invokePowerAttack();
               this.skillName = "力判定！";
               resolve();
-            }, 900);
+            }, 1200);
           });
         })
         .then(()=>{
@@ -531,7 +511,7 @@ export default {
               this.battle.invokeTechAttack();
               this.skillName = "技判定！";
               resolve();
-            }, 900);
+            }, 700);
           });
         })
         .then(()=>{
@@ -545,12 +525,30 @@ export default {
               this.battle.invokeSPAttack();
               this.skillName = "SPアタック！";
               resolve();
-            }, 900);
+            }, 700);
           });
         })
         .then(()=>{
           resolve(); // めちゃわかりにくいけど親promiseのresolve
         })
+      });
+    },
+
+    playEndPhase(){
+      return new Promise((resolve) => {
+        setTimeout(()=>{
+          this.battle.onTurnEnd();
+          resolve();
+        }, 700);
+      });
+    },
+
+    playCheckGameEndPhase(){
+      return new Promise((resolve) => {
+        setTimeout(()=>{
+          this.checkGameEnd();
+          resolve();
+        }, 10);
       });
     },
 
