@@ -755,11 +755,11 @@ export default {
     transform-origin: bottom;
   }
   .zoomed{
-    transition: transform 0.3s;
+    transition: transform 0.6s;
     transform: scale(1.3);
   }
   .normal{
-    transition: transform 0.3s;
+    transition: transform 0.6s;
     transform: scale(1);
   }
 }
@@ -776,7 +776,7 @@ export default {
     width: 256px;
     height: 256px;
     position: absolute;
-    left: -70px;
+    left: -50px;
   }
 }
 
@@ -1054,7 +1054,7 @@ export default {
 .enemy_character{
   position: absolute;
   top: 0;
-  right: 200px;
+  right: 180px;
   width: 256px;
   height: 256px;
 }

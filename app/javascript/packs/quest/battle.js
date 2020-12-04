@@ -12,7 +12,7 @@ module.exports = class Battle{
         this.turnInProgress = false;
         this.turnStatus = "selectCard";
 
-        this.resetCharacterStatus();
+        this.setCharacterStatusAll("waiting");
 
         // デッキ回りの初期化はバトルがやるの違うのかもなと思いつつも、一旦ここ意外に役割を持たせるとそれはそれで歪むので別の需要が出てくるまで待つ
         this.player.deck.setSeededDice(this.dice);
@@ -94,7 +94,7 @@ module.exports = class Battle{
 
     invokeEnemyMagic(){
         this.turnStatus = "enemyMagic";
-        this.resetCharacterStatus();
+        this.setCharacterStatusAll("normal");
         const skillIndex = this.enemy.selectingSkillIndex;
         if(skillIndex === null || skillIndex === undefined){
             return;
@@ -195,7 +195,7 @@ module.exports = class Battle{
     }
 
     onTurnEnd(){
-        this.resetCharacterStatus();
+        this.setCharacterStatusAll("waiting");
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
         this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndex});
         this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndex});
@@ -269,6 +269,7 @@ module.exports = class Battle{
     onTurnStart(){
         this.turnInProgress = true;
         this.validateSelectingCardIds();
+        this.setCharacterStatusAll("normal");
     }
 
     pickEnemyCards(){
@@ -328,11 +329,11 @@ module.exports = class Battle{
         return !this.player.isAlive() || !this.enemy.isAlive();
     }
 
-    resetCharacterStatus(){
+    setCharacterStatusAll(state){
         this.characterStatus = {
-            spica: 'normal',
-            tirol: 'normal',
-            enemy: 'normal',
+            spica: state,
+            tirol: state,
+            enemy: state,
         };
     }
 };

@@ -1,6 +1,8 @@
 <template lang="pug">
   .images
     transition(name="showing")
+      img.showing.character.waiting.stay(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDelay: delay + 's', animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
+    transition(name="showing")
       img.showing.character.normal.stay(:src="normalImagePath" v-if="status === 'normal'" :style="{animationDelay: delay + 's', animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
     transition(name="showing")
       img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
@@ -51,8 +53,8 @@ export default {
     }
   },
   mounted() {
-    this.delay = Math.random() * 2;
-    this.duration = Math.random() + 3;
+    this.delay = (Math.random() - 0.5) * 2;
+    this.duration = (Math.random() - 0.5) + 3;
   },
   computed: {
     normalImagePath(){
@@ -99,38 +101,42 @@ export default {
     },
     playerBarrierPosition(){
         switch(this.status){
-            case "normal":
-                return 30;
-            case "attack":
-                return 175;
-            case "attack2":
-                return 175;
-            case "attack3":
-                return 175;
-            case "draw":
-                return 50;
-            case "lose":
-                return -10;
-            case "magic":
-                return 30;
+          case "waiting":
+            return 30;
+          case "normal":
+            return 30;
+          case "attack":
+            return 175;
+          case "attack2":
+            return 175;
+          case "attack3":
+            return 175;
+          case "draw":
+            return 50;
+          case "lose":
+            return -10;
+          case "magic":
+            return 30;
         }
     },
     enemyBarrierPosition(){
         switch(this.status){
-            case "normal":
-                return -30;
-            case "attack":
-                return -175;
-            case "attack2":
-                return -175;
-            case "attack3":
-                return -175;
-            case "draw":
-                return -50;
-            case "lose":
-                return 10;
-            case "magic":
-                return -30;
+          case "waiting":
+            return -30;
+          case "normal":
+            return -30;
+          case "attack":
+            return -175;
+          case "attack2":
+            return -175;
+          case "attack3":
+            return -175;
+          case "draw":
+            return -50;
+          case "lose":
+            return 10;
+          case "magic":
+            return -30;
         }
     }
   }
@@ -145,6 +151,11 @@ export default {
     height: 256px;
     image-rendering: pixelated;
   }
+
+  .waiting{
+    width: 180px;
+    height: 180px;
+  }
   .shield{
     position: absolute;
     width: 256px;
@@ -154,7 +165,6 @@ export default {
   .stay{
     animation-name: waving;
     animation-iteration-count: infinite;
-
   }
 
   @keyframes waving {
@@ -173,6 +183,10 @@ export default {
   }
 
   // 多少冗長だけど、まあこれでいいか
+  .player.waiting{
+    left: -20px;
+    top: 70px;
+  }
   .player.normal{
     left: 0;
   }
@@ -197,6 +211,11 @@ export default {
   .player.shield{
     left: 20px;
   }
+
+  .enemy.waiting{
+    left: 40px;
+    top: 70px;
+  }
   .enemy.normal{
     left: 0;
   }
@@ -218,14 +237,14 @@ export default {
 }
 
 .showing-enter-active {
-  transition: all .3s;
+  transition: all .4s;
 }
 .showing-leave-active {
-  transition: all .3s;
+  transition: all .4s;
 }
 .showing-enter{
   transform: translateX(-30px);
-  opacity: 0;
+  opacity: -0.5;
 }
 .showing-leave-to{
   transform: translateX(-30px);
