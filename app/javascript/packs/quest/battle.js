@@ -67,7 +67,9 @@ module.exports = class Battle{
     playTurn(){
         this.onTurnStart();
         this.invokePlayerMagic();
+        if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
         this.invokeEnemyMagic();
+        if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
         this.invokePowerAttack();
         this.invokeTechAttack();
         this.invokeSPAttack();

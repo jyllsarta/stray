@@ -240,7 +240,6 @@ import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/PlayerSkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 
-
 export default {
   components: {
     SkillList,
@@ -499,6 +498,10 @@ export default {
           resolve();
           return;
         }
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
         this.$store.commit("battle/showFragment", "enemy_skill");
         this.skillName = "敵スキル発動！";
         setTimeout( ()=>{
@@ -512,6 +515,11 @@ export default {
 
     playAttackPhase(){
       return new Promise((resolve) => {
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+
         Promise.resolve()
         .then(()=>{
           return new Promise((resolve) => {
@@ -559,7 +567,7 @@ export default {
         this.battle.onTurnEnd();
         setTimeout(()=>{
           resolve();
-        }, 700);
+        }, 100);
       });
     },
 
