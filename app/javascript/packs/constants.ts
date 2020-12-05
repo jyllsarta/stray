@@ -79,81 +79,100 @@ const Constants = {
         draw:    'draw',
         lose:    'lose',
         default: 'normal',
+        scaleType: 1, // is normal
       },
       tirol: {
-        normal:  'tirol',
+        normal:  'normal',
         magic:   'magic',
         default: 'normal',
+        scaleType: 1,
       },
       maoh: {
         normal:  'normal',
         lose:    'lose',
         magic:   'magic',
         default: 'normal',
+        scaleType: 1,
       },
       faily: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 3, // is tiny and hovering
       },
       faily_eleki: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 3,
       },
       faily_book: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 3,
       },
       faily_queen: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 3,
       },
       kani: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2, // is mini
       },
       kani_gold: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       kani_mage: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       kani_white: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       nya: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       nya_black: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       nya_blue: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       nya_king: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       gob: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       gob_rance: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       gob_mage: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
       gob_fighter: {
         normal:  'normal',
         default: 'normal',
+        scaleType: 2,
       },
     }
   }

@@ -18,7 +18,7 @@
         .tirol
           BattleCharacter(
             :character-name="'tirol'"
-            :images="{normal: 'normal', magic:'magic', default: 'default'}"
+            :images="tirolImageLibrary"
             :status="tirolStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -26,7 +26,7 @@
         .spica
           BattleCharacter(
             :character-name="'spica'"
-            :images="{normal: 'normal', attack:'attack',  attack2:'attack2',  attack3:'attack3', draw:'draw', lose:'lose', default: 'default'}"
+            :images="spicaImageLibrary"
             :status="spicaStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -297,6 +297,12 @@ export default {
     },
     enemyImageName(){
       return this.battle?.enemy?.imageName || "faily";
+    },
+    spicaImageLibrary(){
+      return Constants.battleCharacter.imageLibrary.spica || {};
+    },
+    tirolImageLibrary(){
+      return Constants.battleCharacter.imageLibrary.tirol || {};
     },
     enemyImageLibrary(){
       return Constants.battleCharacter.imageLibrary[this.enemyImageName] || {};

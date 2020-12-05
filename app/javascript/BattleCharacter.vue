@@ -39,6 +39,7 @@ export default {
       lose: String,
       magic: String,
       default: String,
+      scaleType: Number,
     },
     reversed: Boolean,
     shield: Boolean,
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     characterClass(){
-      return `${this.isPlayer ? 'player' : 'enemy'}`
+      return `${this.isPlayer ? 'player' : 'enemy'} scale_${this.images.scaleType || 1}`
     },
     normalImagePath(){
         if(!this.images.normal){
@@ -149,9 +150,24 @@ export default {
 .images{
   .character{
     position: absolute;
+    image-rendering: pixelated;
+  }
+
+  .scale_1{
     width: 256px;
     height: 256px;
-    image-rendering: pixelated;
+  }
+
+  .scale_2{
+    top: 40px;
+    width: 220px;
+    height: 220px;
+  }
+
+  .scale_3{
+    top: 60px;
+    width: 180px;
+    height:180px;
   }
 
   .shield{
@@ -210,9 +226,17 @@ export default {
     left: 20px;
   }
 
-  .enemy.waiting{
+  .enemy.waiting.scale_1{
     left: 40px;
-    top: 50px;
+    top: 30px;
+  }
+  .enemy.waiting.scale_2{
+    left: 40px;
+    top: 90px;
+  }
+  .enemy.waiting.scale_3{
+    left: 40px;
+    top: 60px;
   }
   .enemy.normal{
     left: 0;
