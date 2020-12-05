@@ -203,6 +203,8 @@
       SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       .fragments
         TurnStart(v-if="$store.state.battle.fragments.turn_start")
+        PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
+        EnemySkillCutin(v-if="$store.state.battle.fragments.player_skill")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -233,6 +235,8 @@ import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
+import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
+import EnemySkillCutin from "./fragments/PlayerSkillCutin.vue";
 
 
 export default {
@@ -244,6 +248,8 @@ export default {
     BattleCharacter,
     NumeratableNumber,
     TurnStart,
+    PlayerSkillCutin,
+    EnemySkillCutin,
   },
   data: function () {
     return {
@@ -472,11 +478,14 @@ export default {
           resolve();
           return;
         }
-        this.battle.invokePlayerMagic();
-        this.skillName = "プレイヤー魔法";
+        this.$store.commit("battle/showFragment", "player_skill");
+        this.skillName = "スキル発動！";
         setTimeout( ()=>{
-          resolve();
-        }, 1000);
+          this.battle.invokePlayerMagic();
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
       });
     },
 
@@ -487,11 +496,14 @@ export default {
           resolve();
           return;
         }
-        this.battle.invokeEnemyMagic();
-        this.skillName = "敵魔法";
-        setTimeout(()=>{
-          resolve();
-        }, 1000);
+        this.$store.commit("battle/showFragment", "enemy_skill");
+        this.skillName = "敵スキル発動！";
+        setTimeout( ()=>{
+          this.battle.invokeEnemyMagic();
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
       });
     },
 

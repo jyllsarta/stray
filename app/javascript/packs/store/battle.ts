@@ -6,6 +6,8 @@ export default {
     enemy_id: 0,
     fragments: {
       turn_start: false,
+      player_skill: false,
+      enemy_skill: false,
     }
   },
   getters: {
