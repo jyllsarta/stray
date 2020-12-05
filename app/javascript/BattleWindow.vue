@@ -90,7 +90,7 @@
             | {{playerShield}}
         .hps
           .hp
-            NumeratableNumber(:number="playerHp")
+            ZeroPaddingedNumeratableNumber(:number="playerHp", :digits="2")
           .hp_max
             | / {{playerHpMax}}
         .mp
@@ -150,7 +150,7 @@
             | {{enemyShield}}
         .hps
           .hp
-            NumeratableNumber(:number="enemyHp")
+            ZeroPaddingedNumeratableNumber(:number="enemyHp", :digits="2")
           .hp_max
             | / {{enemyHpMax}}
         .mp
@@ -239,9 +239,11 @@ import TurnStart from "./fragments/TurnStart.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/PlayerSkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
+import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
 
 export default {
   components: {
+    ZeroPaddingedNumeratableNumber,
     SkillList,
     CardList,
     Slider,
@@ -303,13 +305,13 @@ export default {
       return this.battle?.player?.hp || 0;
     },
     playerHpMax(){
-      return this.battle?.player?.hp_max || 0;
+      return ("00" + this.battle?.player?.hp_max).slice(-2) || "00";
     },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
     },
     enemyHpMax(){
-      return this.battle?.enemy?.hp_max || 0;
+      return ("00" + this.battle?.enemy?.hp_max).slice(-2) || "00";
     },
     playerShield(){
       return this.battle?.player?.tempBuffs?.shield || 0;

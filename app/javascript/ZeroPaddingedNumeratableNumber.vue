@@ -1,11 +1,15 @@
 <template lang="pug">
 .number
-  | {{Math.floor(currentNumber)}}
+  span.zeros
+    | {{zeros}}
+  span.num
+    | {{mainNumber}}
 </template>
 
 <script lang="ts">
 export default {
   props: {
+    digits: Number,
     number: Number,
     speed: Number
   },
@@ -16,6 +20,14 @@ export default {
     }
   },
   computed: {
+    zeros() {
+      const mainDigits = this.currentNumber > 0 ? Math.floor(this.currentNumber).toString().length : 0;
+      const zeroCount = this.digits - mainDigits;
+      return "0".repeat(zeroCount);
+    },
+    mainNumber(){
+      return this.currentNumber > 0 ?  Math.floor(this.currentNumber) : "";
+    }
   },
   mounted() {
     this.currentNumber = this.number;
@@ -43,4 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .zeros{
+    opacity: 0.5;
+  }
 </style>
