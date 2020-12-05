@@ -237,7 +237,7 @@ import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
-import EnemySkillCutin from "./fragments/PlayerSkillCutin.vue";
+import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
 
