@@ -1,21 +1,21 @@
 <template lang="pug">
   .images
     transition(name="showing")
-      img.showing.character.waiting(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.waiting(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDuration: duration + 's'}" :class="characterClass")
     transition(name="showing")
-      img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="characterClass")
     transition(name="showing")
-      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
       img.shield(
         v-if="shield"
@@ -56,6 +56,9 @@ export default {
     this.duration = (Math.random() - 0.5) * multiplier + 3;
   },
   computed: {
+    characterClass(){
+      return `${this.isPlayer ? 'player' : 'enemy'}`
+    },
     normalImagePath(){
         if(!this.images.normal){
             return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
