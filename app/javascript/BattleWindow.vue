@@ -404,13 +404,13 @@ export default {
       return this.battle.enemy?.skills;
     },
     spicaStatus(){
-      return this.battle?.characterStatus?.spica || 'normal';
+      return this.battle?.characterStatus?.spica || 'waiting';
     },
     tirolStatus(){
-      return this.battle?.characterStatus?.tirol || 'normal';
+      return this.battle?.characterStatus?.tirol || 'waiting';
     },
     enemyStatus(){
-      return this.battle?.characterStatus?.enemy || 'normal';
+      return this.battle?.characterStatus?.enemy || "waiting";
     },
     isDecidable(){
       return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;

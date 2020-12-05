@@ -1,9 +1,9 @@
 <template lang="pug">
   .images
     transition(name="showing")
-      img.showing.character.waiting.stay(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDelay: delay + 's', animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.waiting(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
     transition(name="showing")
-      img.showing.character.normal.stay(:src="normalImagePath" v-if="status === 'normal'" :style="{animationDelay: delay + 's', animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="isPlayer ? 'player' : 'enemy'")
     transition(name="showing")
       img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
     transition(name="showing")
@@ -48,13 +48,12 @@ export default {
   },
   data: () => {
     return {
-      delay: 2,
       duration: 4
     }
   },
   mounted() {
-    this.delay = (Math.random() - 0.5) * 2;
-    this.duration = (Math.random() - 0.5) + 3;
+    const multiplier = this.isPlayer ? 1 : 4;
+    this.duration = (Math.random() - 0.5) * multiplier + 3;
   },
   computed: {
     normalImagePath(){
@@ -152,40 +151,36 @@ export default {
     image-rendering: pixelated;
   }
 
-  .waiting{
-    width: 180px;
-    height: 180px;
-  }
   .shield{
     position: absolute;
     width: 256px;
     height: 256px;
   }
 
-  .stay{
+  .waiting{
     animation-name: waving;
     animation-iteration-count: infinite;
   }
 
   @keyframes waving {
     0% {
-      transform: translateY(0px);
+      transform: translateY(0px) scale(0.7);
     }
     25% {
-      transform: translateY(1px);
+      transform: translateY(1px) scale(0.7);
     }
     75% {
-      transform: translateY(-1px);
+      transform: translateY(-1px) scale(0.7);
     }
     100% {
-      transform: translateY(0px);
+      transform: translateY(0px) scale(0.7);
     }
   }
 
   // 多少冗長だけど、まあこれでいいか
   .player.waiting{
     left: -20px;
-    top: 70px;
+    top: 40px;
   }
   .player.normal{
     left: 0;
@@ -214,7 +209,7 @@ export default {
 
   .enemy.waiting{
     left: 40px;
-    top: 70px;
+    top: 50px;
   }
   .enemy.normal{
     left: 0;
