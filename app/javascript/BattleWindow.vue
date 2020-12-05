@@ -459,7 +459,9 @@ export default {
     playTurnStartPhase(){
       return new Promise((resolve) => {
         this.$store.commit("battle/showFragment", "turn_start");
-        resolve();
+        setTimeout( ()=>{
+          resolve();
+        }, 800);
       });
     },
 
@@ -470,11 +472,11 @@ export default {
           resolve();
           return;
         }
+        this.battle.invokePlayerMagic();
+        this.skillName = "プレイヤー魔法";
         setTimeout( ()=>{
-          this.battle.invokePlayerMagic();
-          this.skillName = "プレイヤー魔法";
           resolve();
-        }, 600);
+        }, 1000);
       });
     },
 
@@ -485,11 +487,11 @@ export default {
           resolve();
           return;
         }
+        this.battle.invokeEnemyMagic();
+        this.skillName = "敵魔法";
         setTimeout(()=>{
-          this.battle.invokeEnemyMagic();
-          this.skillName = "敵魔法";
           resolve();
-        }, 1200);
+        }, 1000);
       });
     },
 
@@ -498,18 +500,18 @@ export default {
         Promise.resolve()
         .then(()=>{
           return new Promise((resolve) => {
+            this.battle.invokePowerAttack();
+            this.skillName = "力判定！";
             setTimeout(()=>{
-              this.battle.invokePowerAttack();
-              this.skillName = "力判定！";
               resolve();
-            }, 1200);
+            }, 700);
           });
         })
         .then(()=>{
           return new Promise((resolve) => {
+            this.battle.invokeTechAttack();
+            this.skillName = "技判定！";
             setTimeout(()=>{
-              this.battle.invokeTechAttack();
-              this.skillName = "技判定！";
               resolve();
             }, 700);
           });
@@ -521,9 +523,9 @@ export default {
               return;
             }
 
+            this.battle.invokeSPAttack();
+            this.skillName = "SPアタック！";
             setTimeout(()=>{
-              this.battle.invokeSPAttack();
-              this.skillName = "SPアタック！";
               resolve();
             }, 700);
           });
@@ -536,8 +538,8 @@ export default {
 
     playEndPhase(){
       return new Promise((resolve) => {
+        this.battle.onTurnEnd();
         setTimeout(()=>{
-          this.battle.onTurnEnd();
           resolve();
         }, 700);
       });
@@ -545,10 +547,8 @@ export default {
 
     playCheckGameEndPhase(){
       return new Promise((resolve) => {
-        setTimeout(()=>{
-          this.checkGameEnd();
-          resolve();
-        }, 10);
+        this.checkGameEnd();
+        resolve();
       });
     },
 
