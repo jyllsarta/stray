@@ -124,7 +124,7 @@ export default {
       const seconds = this.profile.achievements.total_play_time;
       const hour = Math.floor(seconds / 60 / 60);
       const minutes = Math.floor(seconds % 3600 / 60);
-      return `${hour}:${minutes}`
+      return `${hour}h${minutes}m`
     }
   },
   methods: {
