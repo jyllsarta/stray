@@ -8,6 +8,7 @@ export default {
       turn_start: false,
       player_skill: false,
       enemy_skill: false,
+      battle_outcome: false,
     }
   },
   getters: {

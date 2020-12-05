@@ -204,7 +204,8 @@
       .fragments
         TurnStart(v-if="$store.state.battle.fragments.turn_start")
         PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
-        EnemySkillCutin(v-if="$store.state.battle.fragments.player_skill")
+        EnemySkillCutin(v-if="$store.state.battle.fragments.enemy_skill")
+        OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -237,6 +238,7 @@ import NumeratableNumber from "./NumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/PlayerSkillCutin.vue";
+import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 
 
 export default {
@@ -250,6 +252,7 @@ export default {
     TurnStart,
     PlayerSkillCutin,
     EnemySkillCutin,
+    OutcomeCutin,
   },
   data: function () {
     return {
@@ -513,6 +516,7 @@ export default {
         .then(()=>{
           return new Promise((resolve) => {
             this.battle.invokePowerAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
             this.skillName = "力判定！";
             setTimeout(()=>{
               resolve();
@@ -522,6 +526,7 @@ export default {
         .then(()=>{
           return new Promise((resolve) => {
             this.battle.invokeTechAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
             this.skillName = "技判定！";
             setTimeout(()=>{
               resolve();
@@ -536,6 +541,7 @@ export default {
             }
 
             this.battle.invokeSPAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
             this.skillName = "SPアタック！";
             setTimeout(()=>{
               resolve();

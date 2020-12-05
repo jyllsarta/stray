@@ -13,6 +13,7 @@ module.exports = class Battle{
         this.turnStatus = "selectCard";
 
         this.setCharacterStatusAll("waiting");
+        this.lastAttackResult = "";
 
         // デッキ回りの初期化はバトルがやるの違うのかもなと思いつつも、一旦ここ意外に役割を持たせるとそれはそれで歪むので別の需要が出てくるまで待つ
         this.player.deck.setSeededDice(this.dice);
@@ -116,6 +117,7 @@ module.exports = class Battle{
     invokePowerAttack(){
         this.turnStatus = "powerAttack";
         const result = this.powerMeetResult();
+        this.lastAttackResult = result;
         if(result === "win"){
             this.enemy.damage(this.player.damageAt("power"));
             this.player.addMp(5);
@@ -142,13 +144,13 @@ module.exports = class Battle{
     invokeTechAttack(){
         this.turnStatus = "techAttack";
         const result = this.techMeetResult();
+        this.lastAttackResult = result;
         if(result === "win"){
             this.enemy.damage(this.player.damageAt("tech"));
             this.player.addMp(5);
             this.enemy.addMp(10);
             this.characterStatus.spica = 'attack2';
             this.characterStatus.enemy = 'lose';
-
         }
         else if(result === "lose"){
             this.player.damage(this.enemy.damageAt("tech"));
@@ -170,6 +172,7 @@ module.exports = class Battle{
         const powerResult = this.powerMeetResult();
         const techResult = this.techMeetResult();
         if(powerResult === "win" && techResult === "win"){
+            this.lastAttackResult = "win";
             this.enemy.damage(this.player.damageAt("special"));
             this.player.addMp(5);
             this.enemy.addMp(10);
@@ -177,6 +180,7 @@ module.exports = class Battle{
             this.characterStatus.enemy = 'lose';
         }
         else if(powerResult === "lose" && techResult === "lose"){
+            this.lastAttackResult = "lose";
             this.player.damage(this.enemy.damageAt("special"));
             this.player.addMp(10);
             this.enemy.addMp(5);
@@ -196,6 +200,7 @@ module.exports = class Battle{
 
     onTurnEnd(){
         this.setCharacterStatusAll("waiting");
+        this.lastAttackResult = "";
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
         this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndex});
         this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndex});
