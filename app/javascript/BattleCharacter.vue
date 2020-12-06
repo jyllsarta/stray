@@ -7,15 +7,15 @@
     transition(name="showing")
       img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="characterClass" :key="currentSkillName")
+      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="characterClass")
     transition(name="showing")
-      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="characterClass" :key="currentSkillName")
+      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="characterClass")
     transition(name="showing")
       img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
       img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="characterClass" :key="currentSkillName")
+      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="characterClass")
     transition(name="showing")
       img.shield(
         v-if="shield"

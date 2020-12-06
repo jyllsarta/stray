@@ -512,6 +512,7 @@ export default {
         }
         this.$store.commit("battle/showFragment", "enemy_skill");
         this.skillName = "敵スキル発動！";
+        this.battle.setCharacterStatusAll("normal");
         setTimeout( ()=>{
           this.battle.invokeEnemyMagic();
           setTimeout(()=>{

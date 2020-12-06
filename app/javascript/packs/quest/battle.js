@@ -97,7 +97,6 @@ module.exports = class Battle{
 
     invokeEnemyMagic(){
         this.turnStatus = "enemyMagic";
-        this.setCharacterStatusAll("normal");
         const skillIndex = this.enemy.selectingSkillIndex;
         if(skillIndex === null || skillIndex === undefined){
             return;
@@ -113,7 +112,6 @@ module.exports = class Battle{
         }
         this.enemy.useMp(skill.cost);
         this.characterStatus.enemy = 'magic';
-        this.characterStatus.tirol = 'normal';
     }
 
     invokePowerAttack(){
