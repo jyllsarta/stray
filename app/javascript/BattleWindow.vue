@@ -206,6 +206,8 @@
         PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
         EnemySkillCutin(v-if="$store.state.battle.fragments.enemy_skill")
         OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
+        PlayerDamage(v-if="$store.state.battle.fragments.player_damage")
+        EnemyDamage(v-if="$store.state.battle.fragments.enemy_damage")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -235,25 +237,29 @@ import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
+import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
-import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
+import PlayerDamage from "./fragments/PlayerDamage.vue";
+import EnemyDamage from "./fragments/EnemyDamage.vue";
 
 export default {
   components: {
-    ZeroPaddingedNumeratableNumber,
     SkillList,
     CardList,
     Slider,
     DamageParameters,
     BattleCharacter,
     NumeratableNumber,
+    ZeroPaddingedNumeratableNumber,
     TurnStart,
     PlayerSkillCutin,
     EnemySkillCutin,
     OutcomeCutin,
+    PlayerDamage,
+    EnemyDamage,
   },
   data: function () {
     return {
@@ -424,6 +430,26 @@ export default {
     decideButtonClass(){
       return this.isDecidable ? "startable" : "disabled";
     }
+  },
+  watch: {
+    "battle.player.hp": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        this.$store.commit("battle/showFragment", "player_damage");
+        this.$store.commit("battle/setDamageDiff", {target: 'player', value: newVal - oldVal});
+      }
+    },
+    "battle.enemy.hp": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        this.$store.commit("battle/showFragment", "enemy_damage");
+        this.$store.commit("battle/setDamageDiff", {target: 'enemy', value: newVal - oldVal});
+      }
+    },
   },
   methods: {
 
