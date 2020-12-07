@@ -931,6 +931,9 @@ export default {
     border: 1px solid $yellow;
     background-color: $gray3;
     cursor: pointer;
+    &:hover{
+      transform: scale(1.1);
+    }
   }
   &.disabled{
     opacity: 0.5;
