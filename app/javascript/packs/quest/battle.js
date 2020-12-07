@@ -57,11 +57,11 @@ module.exports = class Battle{
         if(!this.canUseSkill(skillIndex)){
             return;
         }
-        if(this.player.selectingSkillIndex === skillIndex){
-            this.player.selectingSkillIndex = null;
+        if(this.player.selectingSkillIndexes.includes(skillIndex)){
+            this.player.removeSKillBySkillIndex(skillIndex);
             return;
         }
-        this.player.selectingSkillIndex = skillIndex;
+        this.player.selectingSkillIndexes.push(skillIndex);
     }
 
     playTurn(){
@@ -78,7 +78,7 @@ module.exports = class Battle{
 
     invokePlayerMagic(){
         this.turnStatus = "playerMagic";
-        const skillIndex = this.player.selectingSkillIndex;
+        const skillIndex = this.player.selectingSkillIndexes[0]; //TODO 順に発動するようにする
         if(skillIndex === null || skillIndex === undefined){
             return;
         }
@@ -86,7 +86,7 @@ module.exports = class Battle{
             console.warn(`不正なスキル指定です！ idx:${skillIndex}`);
             return;
         }
-        const skill = this.player.selectingSkill();
+        const skill = this.player.selectingSkills()[0];
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -97,7 +97,7 @@ module.exports = class Battle{
 
     invokeEnemyMagic(){
         this.turnStatus = "enemyMagic";
-        const skillIndex = this.enemy.selectingSkillIndex;
+        const skillIndex = this.enemy.selectingSkillIndexes[0];
         if(skillIndex === null || skillIndex === undefined){
             return;
         }
@@ -105,7 +105,7 @@ module.exports = class Battle{
             // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
             return;
         }
-        const skill = this.enemy.selectingSkill();
+        const skill = this.enemy.selectingSkills()[0];
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -202,17 +202,17 @@ module.exports = class Battle{
         this.setCharacterStatusAll("waiting");
         this.lastAttackResult = "";
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
-        this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndex});
-        this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndex});
+        this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndexes});
+        this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndexes});
 
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
         this.selectingCardIds = [];
-        this.player.selectingSkillIndex = null;
+        this.player.selectingSkillIndexes = [];
         this.player.deck.fillDraw(this.player.totalHandCardCount());
 
         this.enemyCardIds = [];
-        this.enemy.selectingSkillIndex = null;
+        this.enemy.selectingSkillIndexes = [];
         this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
         this.pickEnemyCards();
         this.pickEnemySkill();
@@ -284,7 +284,7 @@ module.exports = class Battle{
     pickEnemySkill(){
         for(let i=0; i<this.enemy.skills.length; i++){
             if(this.canEnemyUseSkill(i)){
-                this.enemy.selectingSkillIndex = i;
+                this.enemy.selectingSkillIndexes.push(i);
                 return;
             }
         }

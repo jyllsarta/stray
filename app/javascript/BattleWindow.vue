@@ -510,7 +510,7 @@ export default {
     playPlayerSkillPhase(){
       return new Promise((resolve) => {
         // プレイヤー魔法を使っていなかったらスルー
-        if(this.battle.player.selectingSkillIndex === null){
+        if(this.battle.player.selectingSkillIndexes.length === 0){
           resolve();
           return;
         }
@@ -528,7 +528,7 @@ export default {
     playEnemySkillPhase(){
       return new Promise((resolve) => {
         // 敵が魔法を使っていなかったらスルー
-        if(this.battle.enemy.selectingSkillIndex === null){
+        if(this.battle.enemy.selectingSkillIndexes.length === 0){
           resolve();
           return;
         }

@@ -13,11 +13,15 @@ module.exports = class Character{
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
-        this.selectingSkillIndex = null;
+        this.selectingSkillIndexes = [];
     }
 
-    selectingSkill(){
-        return this.skills[this.selectingSkillIndex];
+    selectingSkills(){
+        return this.selectingSkillIndexes.map(x=>this.skills[x]);
+    }
+
+    removeSKillBySkillIndex(index){
+        this.selectingSkillIndexes = this.selectingSkillIndexes.filter(x=>x!==index);
     }
 
     isAlive(){

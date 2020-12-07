@@ -63,8 +63,8 @@ export default {
     skillClassPlayer(skillIndex){
       const skill = this.battle.player.skills[skillIndex];
       let usedSkills = this.battle.operationHistory.map((x)=>x.skillIndex)
-      if(this.battle.phaseIndex() >= 1 && this.battle.player.selectingSkillIndex){ // is プレイヤースキル発動フェーズ
-          usedSkills.push(this.battle.player.selectingSkillIndex)
+      if(this.battle.phaseIndex() >= 1 && this.battle.player.selectingSkillIndexes.length > 0){ // is プレイヤースキル発動フェーズ
+          usedSkills.concat(this.battle.player.selectingSkillIndexes)
       }
       if(!skill.reusable && usedSkills.includes(skillIndex)) {
           return 'used';
@@ -72,13 +72,13 @@ export default {
       if(!this.battle.canUseSkill(skillIndex)){
         return 'disabled';
       }
-      return this.battle.player.selectingSkillIndex === skillIndex ? 'animation_selected' : 'available';
+      return this.battle.player.selectingSkillIndexes.includes(skillIndex) ? 'animation_selected' : 'available';
     },
     skillClassEnemy(skillIndex){
       const skill = this.battle.enemy.skills[skillIndex];
       let usedSkills = this.battle.enemyOperationHistory.map((x)=>x.skillIndex)
-      if(this.battle.phaseIndex() >= 2 && this.battle.enemy.selectingSkillIndex){ // is エネミースキル発動フェーズ
-          usedSkills.push(this.battle.enemy.selectingSkillIndex)
+      if(this.battle.phaseIndex() >= 2 && this.battle.enemy.selectingSkillIndexes.length > 0){ // is エネミースキル発動フェーズ
+          usedSkills.concat(this.battle.enemy.selectingSkillIndexes)
       }
       if(!skill.reusable && usedSkills.includes(skillIndex)) {
           return 'used';
@@ -86,7 +86,7 @@ export default {
       if(!this.battle.canEnemyUseSkill(skillIndex)){
         return 'disabled';
       }
-      return this.battle.enemy.selectingSkillIndex == skillIndex ? 'animation_selected' : 'available';
+      return this.battle.enemy.selectingSkillIndexes.includes(skillIndex) ? 'animation_selected' : 'available';
     },
     iconImagePath(skillId){
       if(!this.$store.state.masterdata?.skills[skillId]){
