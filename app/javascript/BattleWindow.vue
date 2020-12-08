@@ -537,6 +537,7 @@ export default {
 
     playPlayerSkillPhase(){
       return new Promise((resolve) => {
+        this.battle.invokePlayerMagicStart();
         // プレイヤー魔法を使っていなかったらスルー
         if(this.battle.player.selectingSkillIndexes.length === 0){
           resolve();
@@ -556,6 +557,7 @@ export default {
 
     playEnemySkillPhase(){
       return new Promise((resolve) => {
+        this.battle.invokeEnemyMagicStart();
         // 敵が魔法を使っていなかったらスルー
         if(this.battle.enemy.selectingSkillIndexes.length === 0){
           resolve();

@@ -80,8 +80,11 @@ module.exports = class Battle{
         this.onTurnEnd();
     }
 
-    invokePlayerMagic(skillIndex){
+    invokePlayerMagicStart(){
         this.turnStatus = "playerMagic";
+    }
+
+    invokePlayerMagic(skillIndex){
         if(!this.canUseSkill(skillIndex)){
             console.warn(`不正なスキル指定です！ idx:${skillIndex}`);
             return;
@@ -95,8 +98,11 @@ module.exports = class Battle{
         this.characterStatus.tirol = 'magic';
     }
 
-    invokeEnemyMagic(skillIndex){
+    invokeEnemyMagicStart(){
         this.turnStatus = "enemyMagic";
+    }
+
+    invokeEnemyMagic(skillIndex){
         if(!this.canEnemyUseSkill(skillIndex)){
             // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
             return;
@@ -245,7 +251,7 @@ module.exports = class Battle{
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
+        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
             return false;
         }
         return true;
@@ -261,7 +267,7 @@ module.exports = class Battle{
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skillIndex).includes(skillIndex)){
+        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
             return false;
         }
         return true;

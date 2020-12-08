@@ -62,12 +62,12 @@ export default {
     },
     skillClassPlayer(skillIndex){
       const skill = this.battle.player.skills[skillIndex];
-      let usedSkills = this.battle.operationHistory.map((x)=>x.skillIndex)
-      if(this.battle.phaseIndex() >= 1 && this.battle.player.selectingSkillIndexes.length > 0){ // is プレイヤースキル発動フェーズ
-          usedSkills.concat(this.battle.player.selectingSkillIndexes)
+      let usedSkills = this.battle.operationHistory.map((x)=>x.skillIndex);
+      if(this.battle.phaseIndex() > 1 && this.battle.player.selectingSkillIndexes.length > 0){ // is プレイヤースキル発動フェーズ
+        usedSkills = usedSkills.concat(this.battle.player.selectingSkillIndexes);
       }
-      if(!skill.reusable && usedSkills.includes(skillIndex)) {
-          return 'used';
+      if(!skill.reusable && usedSkills.flat().includes(skillIndex)) {
+        return 'used';
       }
       if(!this.battle.canUseSkill(skillIndex)){
         return 'disabled';
@@ -76,12 +76,12 @@ export default {
     },
     skillClassEnemy(skillIndex){
       const skill = this.battle.enemy.skills[skillIndex];
-      let usedSkills = this.battle.enemyOperationHistory.map((x)=>x.skillIndex)
-      if(this.battle.phaseIndex() >= 2 && this.battle.enemy.selectingSkillIndexes.length > 0){ // is エネミースキル発動フェーズ
-          usedSkills.concat(this.battle.enemy.selectingSkillIndexes)
+      let usedSkills = this.battle.enemyOperationHistory.map((x)=>x.skillIndex);
+      if(this.battle.phaseIndex() > 2 && this.battle.enemy.selectingSkillIndexes.length > 0){ // is エネミースキル発動フェーズ
+        usedSkills = usedSkills.concat(this.battle.enemy.selectingSkillIndexes);
       }
-      if(!skill.reusable && usedSkills.includes(skillIndex)) {
-          return 'used';
+      if(!skill.reusable && usedSkills.flat().includes(skillIndex)) {
+        return 'used';
       }
       if(!this.battle.canEnemyUseSkill(skillIndex)){
         return 'disabled';
