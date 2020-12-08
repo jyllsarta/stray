@@ -6,6 +6,8 @@
         @mouseover="onPoint(skill.id)"
         :class="skillClass(index)"
       )
+      .mimi(v-if="skillActivationOrder(index)")
+        | {{skillActivationOrder(index)}}
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost
@@ -43,7 +45,7 @@ export default {
   computed: {
     sideClass(){
       return this.isPlayer ? "player_skill_list" : "enemy_skill_list";
-    }
+    },
   },
   methods: {
     onPoint(skillId){
@@ -93,7 +95,14 @@ export default {
         return "/images/icons/skill/default.gif";
       }
       return `/images/icons/skill/${this.$store.state.masterdata.skills[skillId]?.icon_image_path}`;
-    }
+    },
+    skillActivationOrder(skillIndex){
+      if(!this.battle || !this.isPlayer || this.battle.player.selectingSkillIndexes.length < 2){
+        return;
+      }
+      const idx = this.battle.player.selectingSkillIndexes.indexOf(skillIndex);
+      return idx == -1 ? null : (idx + 1);
+    },
   },
 }
 </script>
@@ -103,6 +112,7 @@ export default {
 .skill_list{
   display: flex;
   .skill{
+    position: relative;
     margin: $thin_space / 2;
     padding: $thin_space / 2;
     display: flex;
@@ -112,6 +122,19 @@ export default {
     border-radius: $radius;
     width: 90px;
     height: 60px;
+    .mimi{
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      line-height: 100%;
+      border-radius: $radius;
+      height: 20px;
+      width: 20px;
+      text-align: center;
+      padding-top: 2px;
+      background-color: $background;
+      border: 1px solid $gray2;
+    }
     .upper{
       text-align: center;
       .icon{
