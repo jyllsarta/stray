@@ -507,6 +507,34 @@ export default {
       });
     },
 
+    playPlayerSingleSkill(skillIndex){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "player_skill");
+        this.skillName = "スキル発動！";
+        this.battle.setCharacterStatusAll("normal");
+        setTimeout( ()=>{
+          this.battle.invokePlayerMagic(skillIndex);
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+      });
+    },
+
+    playEnemySingleSkill(skillIndex){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "enemy_skill");
+        this.skillName = "敵スキル発動！";
+        this.battle.setCharacterStatusAll("normal");
+        setTimeout( ()=>{
+          this.battle.invokeEnemyMagic(skillIndex);
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+      });
+    },
+
     playPlayerSkillPhase(){
       return new Promise((resolve) => {
         // プレイヤー魔法を使っていなかったらスルー
@@ -514,14 +542,15 @@ export default {
           resolve();
           return;
         }
-        this.$store.commit("battle/showFragment", "player_skill");
-        this.skillName = "スキル発動！";
-        setTimeout( ()=>{
-          this.battle.invokePlayerMagic();
-          setTimeout(()=>{
-            resolve();
-          }, 1000);
-        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+
+        this.battle.player.selectingSkillIndexes.reduce((acc, cur)=>{
+          return acc.then(()=>{
+            return this.playPlayerSingleSkill(cur);
+          })
+        }, Promise.resolve())
+        .then(()=>{
+          resolve();
+        });
       });
     },
 
@@ -536,15 +565,14 @@ export default {
           resolve();
           return;
         }
-        this.$store.commit("battle/showFragment", "enemy_skill");
-        this.skillName = "敵スキル発動！";
-        this.battle.setCharacterStatusAll("normal");
-        setTimeout( ()=>{
-          this.battle.invokeEnemyMagic();
-          setTimeout(()=>{
-            resolve();
-          }, 1000);
-        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+        this.battle.enemy.selectingSkillIndexes.reduce((acc, cur)=>{
+          return acc.then(()=>{
+            return this.playEnemySingleSkill(cur);
+          })
+        }, Promise.resolve())
+        .then(()=>{
+          resolve();
+        });
       });
     },
 

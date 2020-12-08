@@ -66,9 +66,13 @@ module.exports = class Battle{
 
     playTurn(){
         this.onTurnStart();
-        this.invokePlayerMagic();
+        for(let i of this.player.selectingSkillIndexes){
+            this.invokePlayerMagic(i);
+        }
         if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
-        this.invokeEnemyMagic();
+        for(let i of this.enemy.selectingSkillIndexes){
+            this.invokeEnemyMagic(i);
+        }
         if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
         this.invokePowerAttack();
         this.invokeTechAttack();
@@ -76,17 +80,13 @@ module.exports = class Battle{
         this.onTurnEnd();
     }
 
-    invokePlayerMagic(){
+    invokePlayerMagic(skillIndex){
         this.turnStatus = "playerMagic";
-        const skillIndex = this.player.selectingSkillIndexes[0]; //TODO 順に発動するようにする
-        if(skillIndex === null || skillIndex === undefined){
-            return;
-        }
         if(!this.canUseSkill(skillIndex)){
             console.warn(`不正なスキル指定です！ idx:${skillIndex}`);
             return;
         }
-        const skill = this.player.selectingSkills()[0];
+        const skill = this.player.skills[skillIndex];
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -95,17 +95,13 @@ module.exports = class Battle{
         this.characterStatus.tirol = 'magic';
     }
 
-    invokeEnemyMagic(){
+    invokeEnemyMagic(skillIndex){
         this.turnStatus = "enemyMagic";
-        const skillIndex = this.enemy.selectingSkillIndexes[0];
-        if(skillIndex === null || skillIndex === undefined){
-            return;
-        }
         if(!this.canEnemyUseSkill(skillIndex)){
             // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
             return;
         }
-        const skill = this.enemy.selectingSkills()[0];
+        const skill = this.enemy.skills[skillIndex];
         const effects = skill.effects;
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
@@ -284,6 +280,7 @@ module.exports = class Battle{
     pickEnemySkill(){
         for(let i=0; i<this.enemy.skills.length; i++){
             if(this.canEnemyUseSkill(i)){
+                // 敵は同時に一つだけスキルを使う
                 this.enemy.selectingSkillIndexes.push(i);
                 return;
             }
