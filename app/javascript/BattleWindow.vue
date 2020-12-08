@@ -94,7 +94,7 @@
           .hp_max
             | / {{playerHpMax}}
         .mp
-          NumeratableNumber(:number="playerMp")
+          NumeratableNumber(:number="playerMpBudget")
         .bars
           Slider(
             :width="400",
@@ -110,10 +110,10 @@
           Slider(
             :width="250",
             :height="4",
-            :ratio="playerMpRatio",
+            :ratio="playerMpBudgetRatio",
             :reversed="true",
-            :main-color="colors.mpColor",
-            :blank-color="colors.mpBlankColor",
+            :main-color="playerMpBarColor",
+            :blank-color="playerMpBarBlankColor",
             :damage-color="colors.damageColor",
             :update-delayms="1",
             :update-ratio="parameters.updateRatio",
@@ -133,10 +133,10 @@
           Slider(
             :width="250",
             :height="1",
-            :ratio="playerMpRatio - 1",
+            :ratio="playerMpBudgetRatio - 1",
             :reversed="true",
-            :main-color="colors.mpColor",
-            :blank-color="colors.mpBlankColor"
+            :main-color="playerMpBarColor",
+            :blank-color="playerMpBarBlankColor"
             :damage-color="colors.damageColor",
             :update-delayms="1",
             :update-ratio="parameters.updateRatio",
@@ -274,6 +274,8 @@ export default {
         hpColor: "rgba(255,192,145,0.99)",
         hpBlankColor: "rgba(255,192,145,0.32)",
         mpColor: "rgba(145,229,255,0.99)",
+        mpBudgetColor: "rgba(138,255,143,0.99)",
+        mpBudgetBlankColor: "rgba(145,229,255,0.43)",
         mpBlankColor: "rgba(145,229,255,0.32)",
         damageColor: "rgba(255,255,255,1)",
       },
@@ -348,6 +350,36 @@ export default {
     },
     enemyMp(){
       return this.battle?.enemy?.mp || 0;
+    },
+    playerMpBudget(){
+      if(!this.battle?.phaseIndex){
+        return 0;
+      }
+      if(this.battle.phaseIndex() === 0){
+        const consumeMp = this.battle.player.selectingSkills().reduce((a,b)=>a+b.cost, 0);
+        return (this.battle?.player?.mp || 0) - consumeMp;
+      }
+      else{
+        return this.battle?.player?.mp || 0;
+      }
+    },
+    playerMpBudgetRatio(){
+      if(!this.battle?.phaseIndex){
+        return 0;
+      }
+      if(this.battle.phaseIndex() === 0){
+        const consumeMp = this.battle.player.selectingSkills().reduce((a,b)=>a+b.cost, 0);
+        return ((this.battle?.player?.mp || 0) - consumeMp) / (this.battle?.player?.mp_max || 1);
+      }
+      else{
+        return this.battle?.player?.mpRatio() || 0;
+      }
+    },
+    playerMpBarColor(){
+      return (this.battle.player?.selectingSkillIndexes?.length > 0 && this.battle?.phaseIndex() === 0) ?  this.colors.mpBudgetColor : this.colors.mpColor;
+    },
+    playerMpBarBlankColor(){
+      return (this.battle.player?.selectingSkillIndexes?.length > 0 && this.battle?.phaseIndex() === 0) ?  this.colors.mpBudgetBlankColor : this.colors.mpBlankColor;
     },
     playerHands(){
       return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];

@@ -237,7 +237,7 @@ module.exports = class Battle{
     // 以下privateのつもり
 
     phaseIndex(){
-        return ["selectCard", "playerMagic", "enemyMagic", "powerAttack", "techAttack", "SPAttack"].indexOf(this.turnStatus);
+        return ["selectCard", "turnStarted", "playerMagic", "enemyMagic", "powerAttack", "techAttack", "SPAttack"].indexOf(this.turnStatus);
     }
 
     // こうして条件を書いていくと operationHistory は character の持つべきロジックだった感がある
@@ -277,6 +277,7 @@ module.exports = class Battle{
         this.turnInProgress = true;
         this.validateSelectingCardIds();
         this.setCharacterStatusAll("normal");
+        this.turnStatus = "turnStarted";
     }
 
     pickEnemyCards(){
