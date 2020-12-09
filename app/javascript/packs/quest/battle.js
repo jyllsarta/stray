@@ -57,10 +57,19 @@ module.exports = class Battle{
         if(!this.canUseSkill(skillIndex)){
             return;
         }
+
+        // 消すのは予算判定しなくてOK
         if(this.player.selectingSkillIndexes.includes(skillIndex)){
             this.player.removeSKillBySkillIndex(skillIndex);
             return;
         }
+
+        //スキルを積む場合は予算判定を通っていないとダメ
+        const consumeMp = this.player.consumingMp() + this.player.skills[skillIndex].cost;
+        if(this.player.mp < consumeMp){
+            return;
+        }
+
         this.player.selectingSkillIndexes.push(skillIndex);
     }
 

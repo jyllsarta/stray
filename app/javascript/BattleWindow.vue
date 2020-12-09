@@ -355,7 +355,7 @@ export default {
       return this.battle?.enemy?.mp || 0;
     },
     consumeMp(){
-      return this.battle?.player?.selectingSkills()?.reduce((a,b)=>a+b.cost, 0) || 0;
+      return this.battle?.player?.consumingMp() || 0;
     },
     playerHands(){
       return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];

@@ -20,6 +20,10 @@ module.exports = class Character{
         return this.selectingSkillIndexes.map(x=>this.skills[x]);
     }
 
+    consumingMp(){
+        return this.selectingSkills().reduce((a,b)=>a+b.cost, 0);
+    }
+
     removeSKillBySkillIndex(index){
         this.selectingSkillIndexes = this.selectingSkillIndexes.filter(x=>x!==index);
     }
