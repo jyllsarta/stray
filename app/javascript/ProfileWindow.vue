@@ -3,7 +3,10 @@
     .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: false})")
     .window.content
       .title_area
-        .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: false})")
+        .back_button.clickable(
+          @click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: false})"
+          @mouseover="$store.commit('guide/updateGuide', 'ウィンドウを閉じる。')"
+        )
           .arrow
         .title
           | 〜　冒険のあゆみ　〜
@@ -18,42 +21,42 @@
               .value
                 | SS+
             .details
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で獲得したコイン枚数。')")
                 .key
                   | 累計コイン獲得数
                 .value
                   | {{profile.achievements.total_coin}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計でクリアした実績の総数。')")
                 .key
                   | 実績クリア数
                 .value
                   | {{profile.achievements.cleared_achievements}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してからクエストで倒した敵の種類の数。')")
                 .key
                   | 討伐済みの敵
                 .value
                   | {{profile.achievements.won_enemy_count}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で獲得したアイテムの種類の数。')")
                 .key
                   | アイテム収集数
                 .value
                   | {{profile.achievements.unique_item_count}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で解放した能力の数。')")
                 .key
                   | 能力解放数
                 .value
                   | {{profile.achievements.relics}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから、ウィンドウをつけっぱなしにした時間。')")
                 .key
                   | 総ログイン時間
                 .value
                   | {{playTimeString}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で発生したイベント数。')")
                 .key
                   | イベントプレイ数
                 .value
                   | {{profile.achievements.total_event}}
-              .detail.list_item_large
+              .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', '一番遠くまで行った階層。')")
                 .key
                   | 最高到達階
                 .value
