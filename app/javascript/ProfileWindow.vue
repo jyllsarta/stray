@@ -191,14 +191,31 @@ export default {
       height: 100%;
       z-index: 100;
       img{
-        margin-top: 20%;
-        height: 90%;
+        margin-top: -20%;
+        height: 110%;
+        animation: character-animation 8s infinite;
+      }
+      .spica{
+        position: relative;
+        left: -40px;
+        animation-delay: 0.5s;
       }
       .tirol{
         position: relative;
         left: -40px;
+        animation-delay: 0.5s;
       }
     }
+
+    @keyframes character-animation {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
     .main{
       width: 68%;
       height: 100%;
