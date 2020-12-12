@@ -44,7 +44,7 @@ module.exports = class Battle{
             this.selectingCardIds = this.selectingCardIds.filter(n => n !== cardId);
             return;
         }
-        if(this.selectingCardIds.length === 3){
+        if(this.selectingCardIds.length === 2){
             return;
         }
         this.selectingCardIds.push(cardId);
@@ -290,7 +290,7 @@ module.exports = class Battle{
     }
 
     pickEnemyCards(){
-        this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 3);
+        this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 2);
     }
 
     pickEnemySkill(){
@@ -305,7 +305,7 @@ module.exports = class Battle{
 
     validateSelectingCardIds(){
         const uniqueCardIds = this.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);
-        if(uniqueCardIds.length !== 3){
+        if(uniqueCardIds.length !== 2){
             console.error("selecting cards number is not exactly three");
         }
         if(!uniqueCardIds.every((x)=>this.player.deck.handCardIds)){

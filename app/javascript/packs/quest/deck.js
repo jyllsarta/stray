@@ -30,8 +30,8 @@ module.exports = class Deck {
     }
 
     fillDraw(cardCount){
-        if(cardCount < 3){
-            cardCount = 3 // 手札枚数は絶対に3枚は確保される
+        if(cardCount < 2){
+            cardCount = 2 // 手札枚数は絶対に2枚は確保される
         }
         if(cardCount > 8){
             cardCount = 8 // 手札枚数は8枚が上限

@@ -433,7 +433,7 @@ export default {
       return this.battle?.characterStatus?.enemy || "waiting";
     },
     isDecidable(){
-      return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
+      return this.battle.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
       return this.isDecidable ? "startable" : "disabled";
