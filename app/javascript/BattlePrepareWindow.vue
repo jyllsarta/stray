@@ -39,8 +39,8 @@
             .rank
               | {{enemy.rank}}
         .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
-          | 敵IRに達していないため、
-          | 敵カードが強化されます。
+          | 敵ランクに達していないため、
+          | カードが{{rankNotificationText}}強化されます。
         .blank_card_notification(v-if="$store.getters['user/hasEmptySlot']" )
           | 装備枠に空きがあると
           | 「休憩」で埋まります。
@@ -49,7 +49,7 @@
             .player
               | {{averageItemRank}}
             .label
-              | 平均IR
+              | ランク
             .enemy
               | {{currentEnemy.rank}}
           .status
@@ -153,7 +153,7 @@
               return this.currentEnemyReward?.giftable_type?.toLowerCase() || 'coin';
           },
           currentEnemyRewardTypeMessage(){
-              let message = ""
+              let message = "";
               switch(this.currentEnemyRewardType){
                   case 'coin':
                       message = "コインがもらえる。";
@@ -185,7 +185,11 @@
           currentPlayerCards(){
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
               return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
-          }
+          },
+          rankNotificationText(){
+              const enemyRank = this.enemyList.find((x)=>x.id===this.selectingEnemyId)?.rank || 0;
+              return this.averageItemRank + Constants.enemy.plusValueThreshold < enemyRank ? "大幅に" : "";
+          },
       },
       methods: {
           selectEnemy(id){

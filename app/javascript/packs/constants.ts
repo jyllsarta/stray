@@ -69,6 +69,9 @@ const Constants = {
   itemsPerPage: 50,
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
+  enemy: {
+    plusValueThreshold: 30
+  },
   battleCharacter: {
     imageLibrary: {
       spica: {
