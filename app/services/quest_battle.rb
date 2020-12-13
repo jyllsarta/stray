@@ -40,7 +40,7 @@ class QuestBattle
         playerTech: 1,
         playerSpecial: 1,
         enemyId: @enemy.id,
-        enemyName: @enemy.name,
+        enemyName: @enemy.name_with_plus(player_rank),
         enemyImageName: @enemy.image_name,
         enemyHp: @enemy.hp,
         enemyPower: @enemy.power,
@@ -80,7 +80,11 @@ class QuestBattle
   end
 
   def enemy_cards
-    @enemy.cards(@user.status.average_item_rank).each_with_index{|x, i| x.merge!(id: i+1)}
+    @enemy.cards(player_rank).each_with_index{|x, i| x.merge!(id: i+1)}
+  end
+
+  def player_rank
+    @_player_rank ||= @user.status.average_item_rank
   end
 
   def node_command(cache, operation_history)

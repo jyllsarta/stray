@@ -22,6 +22,30 @@
 require 'rails_helper'
 
 RSpec.describe Enemy, type: :model do
+
+  describe "#name_with_plus" do
+    let(:enemy){ create(:enemy, rank: 50) }
+    subject { enemy.name_with_plus(player_rank) }
+    context "rank win" do
+      let(:player_rank){ 50 }
+      it do
+        expect(subject).to eq("ゴーレム")
+      end
+    end
+    context "rank lose" do
+      let(:player_rank){ 49 }
+      it do
+        expect(subject).to eq("ゴーレム+")
+      end
+    end
+    context "rank big lose" do
+      let(:player_rank){ 19 }
+      it do
+        expect(subject).to eq("ゴーレム++")
+      end
+    end
+  end
+
   describe "#cards" do
     let(:enemy){ create(:enemy, :with_card, rank: 10) }
     let(:card){ create(:card, name: "ぴよ", power: 7, tech: 2) }
@@ -41,7 +65,7 @@ RSpec.describe Enemy, type: :model do
       end
     end
 
-    context "player rank wins" do
+    context "enemy rank wins" do
       let(:player_rank){ 2 }
       it "returns multiplied cards" do
         expect(subject).to eq([
@@ -49,10 +73,38 @@ RSpec.describe Enemy, type: :model do
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
-                                  {:name=>"ぴよ", :power=>35, :tech=>10},
+                                  {:name=>"ぴよ", :power=>8, :tech=>2},
                               ])
       end
     end
+  end
 
+  describe "#plus_count" do
+    let(:enemy){ create(:enemy, rank: 50) }
+    subject { enemy.plus_count(player_rank) }
+    context "rank win" do
+      let(:player_rank){ 50 }
+      it do
+        expect(subject).to eq(0)
+      end
+    end
+    context "rank lose" do
+      let(:player_rank){ 49 }
+      it do
+        expect(subject).to eq(1)
+      end
+    end
+    context "rank lose" do
+      let(:player_rank){ 20 }
+      it do
+        expect(subject).to eq(1)
+      end
+    end
+    context "rank big lose" do
+      let(:player_rank){ 19 }
+      it do
+        expect(subject).to eq(2)
+      end
+    end
   end
 end

@@ -25,11 +25,20 @@ class Enemy < ApplicationRecord
   has_many :enemy_skills
   has_many :enemy_rewards
 
+  def name_with_plus(player_rank)
+    name + ("+" * plus_count(player_rank))
+  end
+
   def cards(player_rank)
     preload_associations!
-    player_rank = 1 if player_rank.zero? # avoid ZeroDivisionError
-    rank_ratio = [1, rank / player_rank.to_f].max
-    enemy_cards.map(&:card).map{|card| card.to_card(rank_ratio)}
+    multiplier = Constants.enemy.card_strength_multiplier[self.plus_count(player_rank)]
+    enemy_cards.map(&:card).map{|card| card.to_card(multiplier)}
+  end
+
+  def plus_count(player_rank)
+    rank_diff = rank - player_rank
+    return 0 if rank_diff <= 0
+    rank_diff <= Constants.enemy.plus_value_threshold ? 1 : 2
   end
 
   private

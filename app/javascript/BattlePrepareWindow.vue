@@ -371,6 +371,7 @@
         @include centering($height: 30px);
         margin: 2px;
         width: calc(100% - 15px);
+        font-size: $font-size-mini;
         .name, .rank{
           display: inline-block;
           text-align: left;
