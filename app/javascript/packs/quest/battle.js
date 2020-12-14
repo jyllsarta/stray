@@ -285,6 +285,7 @@ module.exports = class Battle{
     onTurnStart(){
         this.turnInProgress = true;
         this.validateSelectingCardIds();
+        this.validateSelectingSkillIds();
         this.setCharacterStatusAll("normal");
         this.turnStatus = "turnStarted";
     }
@@ -307,9 +308,23 @@ module.exports = class Battle{
         const uniqueCardIds = this.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);
         if(uniqueCardIds.length !== 2){
             console.error("selecting cards number is not exactly three");
+            throw new Error();
         }
         if(!uniqueCardIds.every((x)=>this.player.deck.handCardIds)){
             console.error("using hand that player do not have");
+            throw new Error();
+        }
+    }
+
+    validateSelectingSkillIds(){
+        const skillIndice = this.player.selectingSkillIndexes;
+        if(skillIndice.length !== new Set(skillIndice).size){
+            console.error("selecting skills is not unique");
+            throw new Error();
+        }
+        if(this.player.consumingMp() > this.player.mp){
+            console.error("selecting skills over cost");
+            throw new Error();
         }
     }
 
