@@ -1,5 +1,6 @@
 let SeededRandom = require("./seeded_random");
 let SkillResolver = require("./skill_resolver");
+let StateLibrary = require("./state_library");
 
 module.exports = class Battle{
     constructor(player, enemy, seed) {
@@ -34,6 +35,8 @@ module.exports = class Battle{
 
         this.pickEnemyCards();
         this.pickEnemySkill();
+
+        this.stateLibrary = new StateLibrary();
     }
 
     selectCard(cardId){
