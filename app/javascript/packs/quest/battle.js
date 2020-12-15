@@ -1,6 +1,7 @@
 let SeededRandom = require("./seeded_random");
 let SkillResolver = require("./skill_resolver");
 let StateLibrary = require("./state_library");
+let StateInstance = require("./state_instance");
 
 module.exports = class Battle{
     constructor(player, enemy, seed) {
@@ -349,6 +350,18 @@ module.exports = class Battle{
             return "lose";
         }
         return "draw";
+    }
+
+    addState(isPlayer, stateId){
+        const owner = isPlayer ? this.player : this.enemy;
+        const opponent = isPlayer ? this.enemy : this.player;
+        const master = this.stateLibrary.findState(stateId);
+        if(!master){
+            console.error(`undefined state ${stateId} is set`);
+            return;
+        }
+        const state = new StateInstance(stateId, master, this, owner, opponent);
+        owner.addState(state);
     }
 
     // 生存して相手が死んでれば勝ち

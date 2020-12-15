@@ -1,8 +1,13 @@
 class Poison {
   constructor() {
     this.id = 1;
+    this.ttl = 3;
     this.icon = "default.png";
     this.guideMessage = "毒状態。毎ターン終了時に1ダメージを受ける。";
+  }
+
+  getInitialCondition(){
+    return {};
   }
 
   onAdd(state){}

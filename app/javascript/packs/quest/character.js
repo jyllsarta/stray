@@ -14,6 +14,7 @@ module.exports = class Character{
         this.skills = skills;
         this.resetTempBuffs();
         this.selectingSkillIndexes = [];
+        this.states = [];
     }
 
     selectingSkills(){
@@ -137,5 +138,9 @@ module.exports = class Character{
             return 0;
         }
         return cards.map((c)=>c.tech).reduce((a,b)=>(a+b)) + this.tempBuffs.tech;
+    }
+
+    addState(stateInstance){
+        this.states.push(stateInstance);
     }
 };
