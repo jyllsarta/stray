@@ -146,8 +146,15 @@
             :update-delayms="1",
             :update-ratio="parameters.updateRatio",
           )
-        .damage_parameters
-          DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
+        .etc
+          .states
+            StateInstance(
+              v-for="state in playerStates"
+              :state-instance="state"
+              :key="state.id"
+            )
+          .damage_parameters
+            DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
       .enemy_status.status
         .shield(v-if="enemyShield > 0")
           img.icon(src="/images/icons/misc/shield.gif")
@@ -202,8 +209,15 @@
             :update-delayms="1",
             :update-ratio="parameters.updateRatio",
           )
-        .damage_parameters
-          DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
+        .etc
+          .damage_parameters
+            DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
+          .states
+            StateInstance(
+              v-for="state in enemyStates"
+              :state-instance="state"
+              :key="state.id"
+            )
       SkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
       .fragments
@@ -249,6 +263,7 @@ import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import PlayerDamage from "./fragments/PlayerDamage.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
+import StateInstance from "./StateInstance.vue";
 
 export default {
   components: {
@@ -265,6 +280,7 @@ export default {
     OutcomeCutin,
     PlayerDamage,
     EnemyDamage,
+    StateInstance,
   },
   data: function () {
     return {
@@ -356,6 +372,12 @@ export default {
     },
     consumeMp(){
       return this.battle?.player?.consumingMp() || 0;
+    },
+    playerStates(){
+      return this.battle?.player?.states || [];
+    },
+    enemyStates(){
+      return this.battle?.enemy?.states || [];
     },
     playerHands(){
       return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];
@@ -940,7 +962,7 @@ export default {
   }
   .mp{
     position: absolute;
-    top: 20px;
+    top: 18px;
     font-size: $font-size-normal;
     display: flex;
     .diff{
@@ -1003,10 +1025,24 @@ export default {
     right: 90px;
     align-items: flex-end;
   }
-  .damage_parameters{
-    width: 100%;
+  .etc{
+    position: relative;
+    top: -4px;
     display: flex;
-    flex-direction: row-reverse;
+    width: 100%;
+    justify-content: flex-end;
+    .damage_parameters{
+      padding-top: 4px;
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    .states{
+      height: 24px;
+      width: 200px;
+      display: flex;
+      flex-direction: row-reverse;
+      margin-right: $space;
+    }
   }
 }
 
@@ -1030,8 +1066,21 @@ export default {
     left: 90px;
     align-items: flex-start;
   }
-  .damage_parameters{
+  .etc{
+    position: relative;
+    top: -4px;
+    display: flex;
     width: 100%;
+    .damage_parameters{
+      padding-top: 4px;
+      display: flex;
+    }
+    .states{
+      height: 24px;
+      width: 200px;
+      display: flex;
+      margin-right: $space;
+    }
   }
 }
 
@@ -1089,7 +1138,6 @@ export default {
       }
     }
   }
-
 }
 
 @keyframes skill-name {
@@ -1217,14 +1265,14 @@ export default {
 }
 .player_status{
   position: absolute;
-  top: 420px;
+  top: 410px;
   left: 20px;
   width: 470px;
   height: 50px;
 }
 .enemy_status{
   position: absolute;
-  top: 420px;
+  top: 410px;
   right: 20px;
   width: 470px;
   height: 50px;

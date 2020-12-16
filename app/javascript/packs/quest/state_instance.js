@@ -7,6 +7,7 @@ module.exports = class StateInstance {
     this.opponent = opponent;
     this.ttl = this.stateMaster.ttl;
     this.condition = this.stateMaster.getInitialCondition();
-    this.showParameter = (()=>{ return this.stateMaster.showParameter(this) })
+    this.showParameter = (()=>{ return this.stateMaster.showParameter(this) });
+    this.id = Math.floor(Math.random() * 1000000000);
   }
 };

@@ -2,7 +2,7 @@ class Regenerate {
   constructor() {
     this.id = 2;
     this.ttl = 5;
-    this.icon = "default.png";
+    this.icon = "regenerate.gif";
     this.guideMessage = "リジェネ状態。毎ターン終了時に2回復。";
   }
 

@@ -2,7 +2,7 @@ class Poison {
   constructor() {
     this.id = 1;
     this.ttl = 3;
-    this.icon = "default.png";
+    this.icon = "poison.gif";
     this.guideMessage = "毒状態。毎ターン終了時に1ダメージを受ける。";
   }
 
