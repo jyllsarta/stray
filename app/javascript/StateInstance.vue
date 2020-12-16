@@ -1,5 +1,5 @@
 <template lang="pug">
-  .state
+  .state(@mouseover="$store.commit('guide/updateGuide', stateInstance.stateMaster.description)")
     img.icon(:src="`/images/icons/states/${stateInstance.stateMaster.icon}`")
     .count
       | {{stateInstance.showParameter()}}
