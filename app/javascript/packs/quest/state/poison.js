@@ -10,6 +10,10 @@ class Poison {
     return {};
   }
 
+  showParameter(state){
+    return state.ttl;
+  }
+
   onAdd(state){}
   onTurnStart(state){}
   onDamage(state, damageAmount){}

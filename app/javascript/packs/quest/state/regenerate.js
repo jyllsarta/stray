@@ -6,6 +6,14 @@ class Regenerate {
     this.guideMessage = "リジェネ状態。毎ターン終了時に2回復。";
   }
 
+  getInitialCondition(){
+    return {};
+  }
+
+  showParameter(state){
+    return state.ttl;
+  }
+
   onAdd(state){}
   onTurnStart(state){}
   onDamage(state, damageAmount){}
