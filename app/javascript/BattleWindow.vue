@@ -657,6 +657,15 @@ export default {
       });
     },
 
+    playTurnEndStateEffectPhase(){
+      return new Promise((resolve) => {
+        this.battle.invokeTurnEndStateEffect();
+        setTimeout(()=>{
+          resolve();
+        }, 100);
+      });
+    },
+
     playEndPhase(){
       return new Promise((resolve) => {
         this.battle.onTurnEnd();
@@ -691,6 +700,9 @@ export default {
         })
         .then(()=>{
           return this.playAttackPhase();
+        })
+        .then(()=>{
+          return this.playTurnEndStateEffectPhase();
         })
         .then(()=>{
           return this.playEndPhase();

@@ -213,6 +213,15 @@ module.exports = class Battle{
         return (powerResult === "win" && techResult === "win") || (powerResult === "lose" && techResult === "lose");
     }
 
+    invokeTurnEndStateEffect(){
+        for(let stateInstance of this.player.states){
+            stateInstance.stateMaster.onTurnEnd(stateInstance);
+        }
+        for(let stateInstance of this.enemy.states){
+            stateInstance.stateMaster.onTurnEnd(stateInstance);
+        }
+    }
+
     onTurnEnd(){
         this.setCharacterStatusAll("waiting");
         this.lastAttackResult = "";
