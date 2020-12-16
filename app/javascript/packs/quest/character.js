@@ -143,4 +143,11 @@ module.exports = class Character{
     addState(stateInstance){
         this.states.push(stateInstance);
     }
+
+    attenuateAndSweepStates(){
+        for(let state of this.states){
+            state.ttl -= 1;
+        }
+        this.states = this.states.filter(state=>state.ttl>0);
+    }
 };

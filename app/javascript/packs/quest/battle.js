@@ -234,6 +234,10 @@ module.exports = class Battle{
 
         this.player.resetTempBuffs();
         this.enemy.resetTempBuffs();
+
+        this.player.attenuateAndSweepStates();
+        this.enemy.attenuateAndSweepStates();
+
         this.turnInProgress = false;
         this.turnStatus = "selectCard";
     }
