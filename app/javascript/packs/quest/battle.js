@@ -90,6 +90,7 @@ module.exports = class Battle{
         this.invokePowerAttack();
         this.invokeTechAttack();
         this.invokeSPAttack();
+        this.invokeTurnEndStateEffect();
         this.onTurnEnd();
     }
 
