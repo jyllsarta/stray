@@ -3,7 +3,13 @@ class Poison {
     this.id = 1;
     this.ttl = 3;
     this.icon = "poison.gif";
-    this.description = "毒状態。毎ターン終了時に1ダメージを受ける。";
+    this.description = "毒状態。ターン開始時・ダメージ時・ターン終了時に1ダメージを受ける。";
+    // これダサい！可能ならやめたい
+    this.callbacks = {
+      onTurnStart: true,
+      onTurnEnd: true,
+      onDamage: true,
+    }
   }
 
   getInitialCondition(){
@@ -14,12 +20,15 @@ class Poison {
     return state.ttl;
   }
 
-  onAdd(state){}
-  onTurnStart(state){}
-  onDamage(state, damageAmount){}
+  onTurnStart(state){
+    state.owner.hp -= 1;
+  }
+  onDamage(state, damageAmount){
+    state.owner.hp -= 1;
+  }
   onTurnEnd(state){
     state.owner.hp -= 1;
   }
-};
+}
 
 module.exports = new Poison();

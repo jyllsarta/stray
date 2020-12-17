@@ -150,4 +150,13 @@ module.exports = class Character{
         }
         this.states = this.states.filter(state=>state.ttl>0);
     }
+
+    hasSpecificCallbackState(callbackName){
+        for(let state of this.states){
+            if(state.stateMaster.callbacks[callbackName]){
+               return true;
+            }
+        }
+        return false;
+    }
 };

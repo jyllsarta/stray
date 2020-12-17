@@ -4,6 +4,11 @@ class Regenerate {
     this.ttl = 5;
     this.icon = "regenerate.gif";
     this.description = "リジェネ状態。毎ターン終了時に2回復。";
+    this.callbacks = {
+      onTurnStart: false,
+      onTurnEnd: true,
+      onDamage: false,
+    }
   }
 
   getInitialCondition(){
@@ -14,12 +19,11 @@ class Regenerate {
     return state.ttl;
   }
 
-  onAdd(state){}
   onTurnStart(state){}
   onDamage(state, damageAmount){}
   onTurnEnd(state){
     state.owner.hp += 2;
   }
-};
+}
 
 module.exports = new Regenerate();

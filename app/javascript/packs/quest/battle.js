@@ -79,6 +79,7 @@ module.exports = class Battle{
 
     playTurn(){
         this.onTurnStart();
+        this.invokeTurnStartStateEffect();
         for(let i of this.player.selectingSkillIndexes){
             this.invokePlayerMagic(i);
         }
@@ -92,6 +93,15 @@ module.exports = class Battle{
         this.invokeSPAttack();
         this.invokeTurnEndStateEffect();
         this.onTurnEnd();
+    }
+
+    invokeTurnStartStateEffect(){
+        for(let stateInstance of this.player.states){
+            stateInstance.stateMaster.onTurnEnd(stateInstance);
+        }
+        for(let stateInstance of this.enemy.states){
+            stateInstance.stateMaster.onTurnEnd(stateInstance);
+        }
     }
 
     invokePlayerMagicStart(){

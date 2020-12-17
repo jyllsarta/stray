@@ -537,6 +537,19 @@ export default {
       });
     },
 
+    playTurnStartStateEffectPhase(){
+      return new Promise((resolve) => {
+        this.battle.invokeTurnStartStateEffect();
+        let timeout = 10;
+        if(this.battle.player.hasSpecificCallbackState("onTurnStart") || this.battle.enemy.hasSpecificCallbackState("onTurnStart")){
+          timeout = 600;
+        }
+        setTimeout(()=>{
+          resolve();
+        }, timeout);
+      });
+    },
+
     playPlayerSingleSkill(skillIndex){
       return new Promise((resolve) => {
         this.$store.commit("battle/showFragment", "player_skill");
@@ -660,9 +673,13 @@ export default {
     playTurnEndStateEffectPhase(){
       return new Promise((resolve) => {
         this.battle.invokeTurnEndStateEffect();
+        let timeout = 10;
+        if(this.battle.player.hasSpecificCallbackState("onTurnEnd") || this.battle.enemy.hasSpecificCallbackState("onTurnEnd")){
+          timeout = 600;
+        }
         setTimeout(()=>{
           resolve();
-        }, 100);
+        }, timeout);
       });
     },
 
@@ -691,6 +708,9 @@ export default {
       Promise.resolve()
         .then(()=>{
           return this.playTurnStartPhase();
+        })
+        .then(()=>{
+          return this.playTurnStartStateEffectPhase();
         })
         .then(()=>{
           return this.playPlayerSkillPhase();
