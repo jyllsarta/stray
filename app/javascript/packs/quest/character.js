@@ -113,6 +113,11 @@ module.exports = class Character{
                 this.tempBuffs.shield = 0;
             }
         }
+        if(value > 0){
+            for(let state of this.states){
+                state.stateMaster.onDamage(state);
+            }
+        }
         this.hp -= value;
     }
 

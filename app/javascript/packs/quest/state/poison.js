@@ -24,7 +24,7 @@ class Poison {
     state.owner.hp -= 1;
   }
   onDamage(state, damageAmount){
-    state.owner.hp -= 1;
+    state.owner.hp -= 1; // onDamage で damage すると無限ループする
   }
   onTurnEnd(state){
     state.owner.hp -= 1;
