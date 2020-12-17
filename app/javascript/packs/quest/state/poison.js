@@ -22,12 +22,15 @@ class Poison {
 
   onTurnStart(state){
     state.owner.hp -= 1;
+    state.flash();
   }
   onDamage(state, damageAmount){
     state.owner.hp -= 1; // onDamage で damage すると無限ループする
+    state.flash();
   }
   onTurnEnd(state){
     state.owner.hp -= 1;
+    state.flash();
   }
 }
 

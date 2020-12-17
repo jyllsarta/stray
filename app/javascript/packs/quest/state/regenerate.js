@@ -23,6 +23,7 @@ class Regenerate {
   onDamage(state, damageAmount){}
   onTurnEnd(state){
     state.owner.hp += 2;
+    state.flash();
   }
 }
 
