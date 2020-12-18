@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "name"
     t.string "description"
     t.integer "parent_quest_id"
+    t.integer "field_effect_state_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
