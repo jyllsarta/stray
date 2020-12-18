@@ -115,7 +115,8 @@ RSpec.describe "Enemies", type: :request do
 
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy) }
+    let!(:quest) { create(:quest) }
+    let!(:enemy) { create(:enemy, quest: quest) }
     let(:user){ User.create }
     let(:do_post) { post enemy_engage_path(enemy_id: enemy.id)}
     let(:params) do
@@ -149,6 +150,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerSkills: Array,
                                                      enemyCards: Array,
                                                      enemySkills: Array,
+                                                     fieldEffectStateId: Integer,
                                                      seed: Integer,
                                                  }
                                              )

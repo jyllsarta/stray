@@ -50,6 +50,7 @@ class QuestBattle
         playerSkills: @user.skills.order(skill_id: :asc).equipped.map(&:skill).map(&:to_battle_skill),
         enemyCards: enemy_cards,
         enemySkills: @enemy.enemy_skills.order(order: :asc).map(&:skill).map(&:to_battle_skill),
+        fieldEffectStateId: @enemy.quest&.field_effect_state_id,
     }.to_json
   end
 
