@@ -31,7 +31,7 @@
             .descriptions
               .quest_title(:key="selectingQuestId")
                 | {{ selectingQuest.name }}
-              .description
+              .descri
                 | {{ selectingQuest.description }}
               .progress
                 .field_effect
@@ -66,7 +66,7 @@ export default {
       defaultState: {
         icon: null,
         title: "なし",
-        description: "-"
+        description: "",
       }
     };
   },
@@ -196,22 +196,34 @@ export default {
           border-bottom: 1px solid $gray3;
           height: calc($font-size-lage + $thin_space * 2);
         }
-        .description{
+        .descri{
+          height: 114px;
           font-size: $font-size-mini;
-          height: 50%;
+          border-bottom: 1px solid $gray3;
+          padding: $space;
         }
         .progress{
           padding: $space;
           display: flex;
           justify-content: flex-end;
           align-items: flex-end;
-          flex-grow: 1;
+          height: 86px;
           .field_effect{
             height: 100%;
+            .index{
+              display: flex;
+              align-items: center;
+              height: 24px;
+              min-width: 1px;
+              margin-bottom: 2px;
+            }
             .desc{
               width: 340px;
               line-height: 120%;
               font-size: $font-size-mini;
+            }
+            .icon{
+              margin-right: $thin_space;
             }
             padding-right: $thin_space;
           }
