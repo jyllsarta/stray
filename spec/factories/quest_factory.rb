@@ -15,5 +15,6 @@ FactoryBot.define do
   factory :quest, class: 'Quest' do
     name { "無限回廊" }
     description { "クエストの説明だ！" }
+    field_effect_state_id { 1 }
   end
 end

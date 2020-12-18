@@ -30,6 +30,7 @@ RSpec.describe "Quest", type: :request do
                                                              id: Integer,
                                                              name: String,
                                                              description: String,
+                                                             field_effect_state_id: Integer,
                                                              enemy_count: Integer,
                                                              won_enemy_count: Integer
                                                          }
