@@ -4,12 +4,14 @@ let StateLibrary = require("./state_library");
 let StateInstance = require("./state_instance");
 
 module.exports = class Battle{
-    constructor(player, enemy, seed) {
+    constructor(player, enemy, seed, fieldEffectStateId) {
         this.seed = seed;
         this.dice = new SeededRandom(seed);
         this.skillResolver = new SkillResolver(this);
+        this.stateLibrary = new StateLibrary();
         this.player = player;
         this.enemy = enemy;
+        this.setFieldEffectStateInstance(fieldEffectStateId);
 
         this.turnInProgress = false;
         this.turnStatus = "selectCard";
@@ -37,7 +39,6 @@ module.exports = class Battle{
         this.pickEnemyCards();
         this.pickEnemySkill();
 
-        this.stateLibrary = new StateLibrary();
     }
 
     selectCard(cardId){
@@ -386,6 +387,20 @@ module.exports = class Battle{
         }
         const state = new StateInstance(stateId, master, this, owner, opponent);
         owner.addState(state);
+    }
+
+    setFieldEffectStateInstance(stateId){
+        if(!stateId){
+            return;
+        }
+        const master = this.stateLibrary.findState(stateId);
+        if(!master){
+            console.error(`undefined state ${stateId} is set`);
+            return;
+        }
+        // fieldEffectのownerは常にplayerとして扱う
+        const state = new StateInstance(stateId, master, this, this.player, this.enemy);
+        this.fieldEffectState = state;
     }
 
     // 生存して相手が死んでれば勝ち

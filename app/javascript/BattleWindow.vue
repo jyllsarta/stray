@@ -14,6 +14,8 @@
               | メニューをとじる
             .item.clickable(@click="retire()")
               | 諦める
+      .field_effect_area
+        FieldEffect(:field-effect-state="battle.fieldEffectState")
       .player_character
         .tirol
           BattleCharacter(
@@ -264,6 +266,7 @@ import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import PlayerDamage from "./fragments/PlayerDamage.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
+import FieldEffect from "./FieldEffect.vue";
 
 export default {
   components: {
@@ -281,6 +284,7 @@ export default {
     PlayerDamage,
     EnemyDamage,
     StateInstance,
+    FieldEffect,
   },
   data: function () {
     return {
@@ -913,6 +917,12 @@ export default {
     transition: transform 0.6s;
     transform: scale(1);
   }
+}
+
+.field_effect_area{
+  position: absolute;
+  top: $space;
+  left: $space;
 }
 
 .player_character{

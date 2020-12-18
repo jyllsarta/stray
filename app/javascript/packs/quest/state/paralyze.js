@@ -4,7 +4,7 @@ class Paralyze {
     this.ttl = -1;
     this.title = "雷痺";
     this.icon = "paralyze.gif";
-    this.description = "ダメージを受けるたびに雷痺ポイント+1。5点蓄積でスタンし、そのターン中の力技が0になる。ターン終了時にノーダメージなら雷痺を1点回復。";
+    this.description = "5回ダメージを受けるとスタンし、そのターン中の力技が0になる。ダメージを受けなかったらターン終了時にカウント-1。";
     // これダサい！可能ならやめたい
     this.callbacks = {
       onTurnStart: false,
