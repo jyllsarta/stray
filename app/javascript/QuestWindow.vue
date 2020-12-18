@@ -34,6 +34,16 @@
               .description
                 | {{ selectingQuest.description }}
               .progress
+                .field_effect
+                  .index
+                    span
+                      | フィールドエフェクト：
+                    span.icon
+                      img(:src="`/images/icons/states/default.gif`")
+                    span
+                      | {{"なし"}}
+                  .desc
+                    | ダメージを受けるたびに雷痺ポイント+1。5点蓄積でスタンし、そのターン中の力技が0になる。ターン終了時にノーダメージなら雷痺を1点回復。
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
                 .go.button.clickable(@click="openBattlePrepareWindow")
@@ -158,13 +168,17 @@ export default {
     .controls{
       margin-top: $space;
       height: 232px;
+      margin-right: $space;
       .descriptions{
-        padding: $thin_space;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         .quest_title{
           padding-left: $space;
+          padding-bottom: $thin_space;
           font-size: $font-size-large;
           border-bottom: 1px solid $gray3;
-          height: 20%;
+          height: calc($font-size-lage + $thin_space * 2);
         }
         .description{
           font-size: $font-size-mini;
@@ -175,10 +189,20 @@ export default {
           display: flex;
           justify-content: flex-end;
           align-items: flex-end;
-          height: 30%;
+          flex-grow: 1;
+          .field_effect{
+            height: 100%;
+            .desc{
+              width: 340px;
+              line-height: 120%;
+              font-size: $font-size-mini;
+            }
+            padding-right: $thin_space;
+          }
           .text{
             font-size: $font-size-large;
             padding-right: $space;
+            width: 130px;
           }
           .go{
             height: 50px;
