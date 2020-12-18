@@ -1,6 +1,9 @@
 let states = [
   require("./state/poison"),
   require("./state/regenerate"),
+  require("./state/burning"),
+  require("./state/paralyze"),
+  require("./state/morphing"),
 ]
 
 module.exports = class StateLibrary {

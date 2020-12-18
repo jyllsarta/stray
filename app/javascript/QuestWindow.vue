@@ -38,12 +38,12 @@
                   .index
                     span
                       | フィールドエフェクト：
-                    span.icon
-                      img(:src="`/images/icons/states/default.gif`")
+                    span.icon(v-if="currenFieldEffectState.icon")
+                      img(:src="`/images/icons/states/${currenFieldEffectState.icon}`")
                     span
-                      | {{"なし"}}
+                      | {{currenFieldEffectState.title}}
                   .desc
-                    | ダメージを受けるたびに雷痺ポイント+1。5点蓄積でスタンし、そのターン中の力技が0になる。ターン終了時にノーダメージなら雷痺を1点回復。
+                    | {{currenFieldEffectState.description}}
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
                 .go.button.clickable(@click="openBattlePrepareWindow")
@@ -56,11 +56,18 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
+import StateLibrary from './packs/quest/state_library'
 
 export default {
   data: function () {
     return {
       quests: [],
+      stateLibrary: null,
+      defaultState: {
+        icon: null,
+        title: "なし",
+        description: "-"
+      }
     };
   },
   props: {
@@ -68,6 +75,7 @@ export default {
   store,
   mounted(){
     this.fetchPlayerQuests();
+    this.stateLibrary = new StateLibrary();
   },
   computed: {
     selectingQuestId(){
@@ -76,6 +84,14 @@ export default {
     selectingQuest(){
       return this.quests.find((x)=>x.id===this.selectingQuestId) || {};
     },
+    currenFieldEffectState(){
+      const stateId = this.quests.find((x)=>x.id===this.selectingQuestId)?.field_effect_state_id
+      if(!this.stateLibrary || !stateId){
+        return this.defaultState;
+      }
+      const state = this.stateLibrary.findState(stateId);
+      return state || this.defaultState;
+    }
   },
   methods: {
     selectQuest(questId){

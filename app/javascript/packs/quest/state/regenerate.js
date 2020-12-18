@@ -2,6 +2,7 @@ class Regenerate {
   constructor() {
     this.id = 2;
     this.ttl = 5;
+    this.title = "リジェネ";
     this.icon = "regenerate.gif";
     this.description = "リジェネ状態。毎ターン終了時に2回復。";
     this.callbacks = {
