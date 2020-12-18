@@ -190,6 +190,7 @@ export default {
       width: 16%;
       height: 100%;
       z-index: 100;
+      pointer-events: none;
       img{
         margin-top: -20%;
         height: 110%;
