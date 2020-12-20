@@ -24,7 +24,7 @@ class BurningEntity {
     return state.condition.damageCount;
   }
 
-  onAdd(){}
+  onAdd(state){}
   onTurnStart(state){}
   onDamage(state, damageAmount){
     state.condition.damageCount += 1;

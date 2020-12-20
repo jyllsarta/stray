@@ -147,7 +147,9 @@ module.exports = class Character{
 
     addState(stateInstance){
         this.states.push(stateInstance);
-        stateInstance.stateMaster.onAdd(stateInstance);
+        if(stateInstance.stateMaster.callbacks.onAdd){
+            stateInstance.stateMaster.onAdd(stateInstance);
+        }
     }
 
     attenuateAndSweepStates(){

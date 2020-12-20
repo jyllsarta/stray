@@ -758,6 +758,7 @@ export default {
           }
         })
         .catch((error) => {
+          console.warn(error);
           console.warn(error.response);
           console.warn("NG");
         });

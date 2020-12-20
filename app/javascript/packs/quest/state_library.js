@@ -4,6 +4,7 @@ let states = [
   require("./state/burning"),
   require("./state/burning_entity"),
   require("./state/paralyze"),
+  require("./state/paralyze_entity"),
   require("./state/morphing"),
 ]
 

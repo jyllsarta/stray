@@ -22,7 +22,7 @@ class Morphing {
     return state.ttl;
   }
 
-  onAdd(){}
+  onAdd(state){}
   onTurnStart(state){
     let SkillResolver = require("../skill_resolver");
     const resolver = new SkillResolver(state.battle);
