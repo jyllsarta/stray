@@ -2,9 +2,9 @@ class BurningEntity {
   constructor() {
     this.id = 1001;
     this.ttl = -1;
-    this.title = "炎風(ステート)";
+    this.title = "炎風";
     this.icon = "burning.gif";
-    this.description = "(本体)ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
+    this.description = "ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
     // これダサい！可能ならやめたい
     this.callbacks = {
       onAdd: false,
