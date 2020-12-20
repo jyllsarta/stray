@@ -545,7 +545,7 @@ export default {
       return new Promise((resolve) => {
         this.battle.invokeTurnStartStateEffect();
         let timeout = 10;
-        if(this.battle.player.hasSpecificCallbackState("onTurnStart") || this.battle.enemy.hasSpecificCallbackState("onTurnStart")){
+        if(this.battle.shouldStopWith('onTurnStart')){
           timeout = 600;
         }
         setTimeout(()=>{
@@ -678,7 +678,7 @@ export default {
       return new Promise((resolve) => {
         this.battle.invokeTurnEndStateEffect();
         let timeout = 10;
-        if(this.battle.player.hasSpecificCallbackState("onTurnEnd") || this.battle.enemy.hasSpecificCallbackState("onTurnEnd")){
+        if(this.battle.shouldStopWith("onTurnEnd")){
           timeout = 600;
         }
         setTimeout(()=>{

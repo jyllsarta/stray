@@ -7,7 +7,7 @@ class Morphing {
     this.description = "ターン開始時、力と技の低い方に+10の補正。";
     // これダサい！可能ならやめたい
     this.callbacks = {
-      onTurnStart: false,
+      onTurnStart: true,
       onTurnEnd: false,
       onDamage: false,
     }
@@ -22,6 +22,9 @@ class Morphing {
   }
 
   onTurnStart(state){
+    let SkillResolver = require("../skill_resolver");
+    const resolver = new SkillResolver(state.battle);
+    resolver.resolveAddPointToWeaker(state.owner, state.opponent, true, 10);
   }
   onDamage(state, damageAmount){
   }

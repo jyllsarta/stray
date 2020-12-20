@@ -97,11 +97,14 @@ module.exports = class Battle{
     }
 
     invokeTurnStartStateEffect(){
+        if(this.fieldEffectState){
+            this.fieldEffectState.stateMaster.onTurnStart(this.fieldEffectState);
+        }
         for(let stateInstance of this.player.states){
-            stateInstance.stateMaster.onTurnEnd(stateInstance);
+            stateInstance.stateMaster.onTurnStart(stateInstance);
         }
         for(let stateInstance of this.enemy.states){
-            stateInstance.stateMaster.onTurnEnd(stateInstance);
+            stateInstance.stateMaster.onTurnStart(stateInstance);
         }
     }
 
@@ -309,6 +312,10 @@ module.exports = class Battle{
             return false;
         }
         return true;
+    }
+
+    shouldStopWith(callbackName){
+        return this.fieldEffectState.stateMaster.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
     }
 
     onTurnStart(){
