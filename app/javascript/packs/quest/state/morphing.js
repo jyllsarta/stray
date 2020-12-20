@@ -27,6 +27,7 @@ class Morphing {
     let SkillResolver = require("../skill_resolver");
     const resolver = new SkillResolver(state.battle);
     resolver.resolveAddPointToWeaker(state.owner, state.opponent, true, 10);
+    state.flash();
   }
   onDamage(state, damageAmount){
   }
