@@ -7,6 +7,7 @@ class Poison {
     this.description = "毒状態。ターン開始時・ダメージ時・ターン終了時に1ダメージを受ける。";
     // これダサい！可能ならやめたい
     this.callbacks = {
+      onAdd: false,
       onTurnStart: true,
       onTurnEnd: true,
       onDamage: true,
@@ -21,6 +22,7 @@ class Poison {
     return state.ttl;
   }
 
+  onAdd(){}
   onTurnStart(state){
     state.owner.hp -= 1;
     state.flash();

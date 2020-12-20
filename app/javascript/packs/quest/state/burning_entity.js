@@ -1,0 +1,41 @@
+class BurningEntity {
+  constructor() {
+    this.id = 1001;
+    this.ttl = -1;
+    this.title = "炎風(ステート)";
+    this.icon = "burning.gif";
+    this.description = "(本体)ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
+    // これダサい！可能ならやめたい
+    this.callbacks = {
+      onAdd: false,
+      onTurnStart: false,
+      onTurnEnd: true,
+      onDamage: true,
+    }
+  }
+
+  getInitialCondition(){
+    return {
+      damageCount: 0,
+    };
+  }
+
+  showParameter(state){
+    return state.condition.damageCount;
+  }
+
+  onAdd(){}
+  onTurnStart(state){}
+  onDamage(state, damageAmount){
+    state.condition.damageCount += 1;
+  }
+  onTurnEnd(state){
+    if(state.condition.damageCount >= 2){
+      state.owner.damage(2);
+      state.flash();
+    }
+    state.condition.damageCount = 0;
+  }
+}
+
+module.exports = new BurningEntity();

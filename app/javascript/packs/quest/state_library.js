@@ -2,6 +2,7 @@ let states = [
   require("./state/poison"),
   require("./state/regenerate"),
   require("./state/burning"),
+  require("./state/burning_entity"),
   require("./state/paralyze"),
   require("./state/morphing"),
 ]

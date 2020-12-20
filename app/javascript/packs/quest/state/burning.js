@@ -7,6 +7,7 @@ class Burning {
     this.description = "ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
     // これダサい！可能ならやめたい
     this.callbacks = {
+      onAdd: true,
       onTurnStart: false,
       onTurnEnd: false,
       onDamage: false,
@@ -14,19 +15,22 @@ class Burning {
   }
 
   getInitialCondition(){
-    return {};
+    return {
+    };
   }
 
   showParameter(state){
     return state.ttl;
   }
 
-  onTurnStart(state){
+  onAdd(state){
+    const burningStateId = 1001;
+    state.battle.addState(true, burningStateId);
+    state.battle.addState(false, burningStateId);
   }
-  onDamage(state, damageAmount){
-  }
-  onTurnEnd(state){
-  }
+  onTurnStart(state){}
+  onDamage(state, damageAmount){}
+  onTurnEnd(state){}
 }
 
 module.exports = new Burning();

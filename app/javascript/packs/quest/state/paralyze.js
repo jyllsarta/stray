@@ -7,6 +7,7 @@ class Paralyze {
     this.description = "5回ダメージを受けるとスタンし、そのターン中の力技が0になる。ダメージを受けなかったらターン終了時にカウント-1。";
     // これダサい！可能ならやめたい
     this.callbacks = {
+      onAdd: false,
       onTurnStart: false,
       onTurnEnd: false,
       onDamage: false,
@@ -21,6 +22,7 @@ class Paralyze {
     return state.ttl;
   }
 
+  onAdd(){}
   onTurnStart(state){
   }
   onDamage(state, damageAmount){

@@ -151,9 +151,11 @@ module.exports = class Character{
 
     attenuateAndSweepStates(){
         for(let state of this.states){
-            state.ttl -= 1;
+            if(state.ttl > 0){
+                state.ttl -= 1;
+            }
         }
-        this.states = this.states.filter(state=>state.ttl>0);
+        this.states = this.states.filter(state=>state.ttl!==0);
     }
 
     hasSpecificCallbackState(callbackName){

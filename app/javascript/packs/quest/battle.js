@@ -39,6 +39,7 @@ module.exports = class Battle{
         this.pickEnemyCards();
         this.pickEnemySkill();
 
+        this.fieldEffectState?.stateMaster?.onAdd(this.fieldEffectState);
     }
 
     selectCard(cardId){
