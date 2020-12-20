@@ -73,18 +73,30 @@ export default {
       if(this.battle.phaseIndex() >= 2 && this.battle.player.selectingSkillIndexes.length > 1){ // is プレイヤースキル発動フェーズ
         usedSkills = usedSkills.concat(this.battle.player.selectingSkillIndexes);
       }
+
+      // MEMO: パッシブ・イグゾースト・HP条件のスキルはそれぞれ canUseSkill で状態が制御される
+
+      // すでに使用してもう使えないスキルは一番暗い色になる
       if(!skill.reusable && usedSkills.flat().includes(skillIndex)) {
         return 'used';
       }
+
+      // スキルを単純に使えないときは暗くなる
       if(!this.battle.canUseSkill(skillIndex)){
         return 'disabled';
       }
+
+      // このターン選んでいるスキルは明るくなる 
       if(this.battle.player.selectingSkillIndexes.includes(skillIndex)){
         return 'animation_selected';
       }
+
+      // 同ターンの予算編成的にもう選べないスキルは暗くなる
       if(!this.skillCostSufficient(skill.cost)){
         return 'disabled';
       }
+
+      // 全ての選べない条件を回避し、かつ今選んでいないスキルは通常表記となる
       return 'available';
     },
     skillClassEnemy(skillIndex){
