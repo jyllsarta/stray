@@ -28,6 +28,8 @@ FactoryBot.define do
   factory :skill, class: 'Skill' do
     name { "ファイア" }
     description { "基本の魔法" }
+    is_defence { false }
+    is_exhaust { false }
     effect1_category { "Damage" }
     effect1_to_self { false }
     effect1_value { 1 }

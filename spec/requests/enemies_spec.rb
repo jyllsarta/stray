@@ -71,6 +71,7 @@ RSpec.describe "Enemies", type: :request do
                                                              name: String,
                                                              description: String,
                                                              reusable: Boolean,
+                                                             is_exhaust: Boolean,
                                                              is_defence: Boolean,
                                                              cost: Integer,
                                                              effect1_category: String,

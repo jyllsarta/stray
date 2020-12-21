@@ -76,6 +76,7 @@ RSpec.describe Skill, type: :model do
                                    "effect3_value" => 5,
                                    "id"=>Integer,
                                    "is_defence"=>false,
+                                   "is_exhaust"=>false,
                                    "name"=>"ファイア",
                                    "reusable"=>false
                                })  # 適当なので、モデル変更などでわずらわしくなったタイミングでちゃんと書き直す
