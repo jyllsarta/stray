@@ -12,8 +12,8 @@
         img.icon(:src="iconImagePath(skill.id)")
         .cost
           | {{skill.cost}}
-        .infinite
-          | {{skill.reusable ? '∞' : ''}}
+        .additional_text
+          | {{additionalText(skill)}}
       .downer
         .name
           | {{skill.name}}
@@ -126,6 +126,16 @@ export default {
       const idx = this.battle.player.selectingSkillIndexes.indexOf(skillIndex);
       return idx == -1 ? null : (idx + 1);
     },
+    additionalText(skill){
+      let text = "";
+      if(skill.reusable){
+        text += "∞";
+      }
+      if(skill.is_exhaust){
+        text += "X";
+      }
+      return text;
+    }
   },
 }
 </script>
@@ -170,7 +180,7 @@ export default {
         display: inline-block;
         margin-right: 2px;
       }
-      .infinite{
+      .additional_text{
         display: inline-block;
       }
     }

@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "icon_image_path"
     t.boolean "for_player", default: true, null: false
     t.boolean "reusable", default: false, null: false
+    t.boolean "is_exhaust", default: false, null: false
     t.boolean "is_defence", default: false, null: false
     t.integer "cost", default: 0, null: false
     t.string "effect1_category"
