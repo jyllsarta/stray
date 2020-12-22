@@ -38,9 +38,18 @@
                   | 使用回数
                 .value
                   | {{pointingSkill.reusable ? '∞' : '1'}}
-              .detail(v-if="pointingSkill.is_defence===true")
+              .detail(
+                v-if="pointingSkill.is_defence===true"
+                @mouseover="$store.commit('guide/updateGuide', '防御スキルの使用ターンはMPが増加しない。')"
+                )
                 .key
                   | 防御スキル
+              .detail(
+                v-if="pointingSkill.is_exhaust===true"
+                @mouseover="$store.commit('guide/updateGuide', 'イグゾーストスキルはMPがマイナスでなければいつでも使用できる。')"
+                )
+                .key
+                  | イグゾースト
                 .value
                   |
               .descri
