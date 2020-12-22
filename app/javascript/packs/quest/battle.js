@@ -71,8 +71,8 @@ module.exports = class Battle{
         }
 
         //スキルを積む場合は予算判定を通っていないとダメ
-        const consumeMp = this.player.consumingMp() + this.player.skills[skillIndex].cost;
-        if(this.player.mp < consumeMp){
+        const remainMp = this.player.mp - this.player.consumingMp();
+        if(!this.player.skills[skillIndex].isMpSufficient(remainMp)){
             return;
         }
 
@@ -289,7 +289,7 @@ module.exports = class Battle{
             return false;
         }
         // MPが足りてないとダメ
-        if (this.player.mp < (skill.cost) ){
+        if (!skill.isMpSufficient(this.player.mp)){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
@@ -305,7 +305,7 @@ module.exports = class Battle{
             return false;
         }
         // MPが足りてないとダメ
-        if (this.enemy.mp < (skill.cost) ){
+        if (!skill.isMpSufficient(this.enemy.mp)){
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
@@ -316,7 +316,7 @@ module.exports = class Battle{
     }
 
     shouldStopWith(callbackName){
-        return this.fieldEffectState.stateMaster.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
+        return this.fieldEffectState?.stateMaster?.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
     }
 
     onTurnStart(){
@@ -333,7 +333,8 @@ module.exports = class Battle{
 
     pickEnemySkill(){
         for(let i=0; i<this.enemy.skills.length; i++){
-            if(this.canEnemyUseSkill(i)){
+            // 敵は canEnemyUseSkill かつ MPが十分に溜まったスキルを使う(イグゾーストスキルでもMPがマイナスになるような積み方はしない)
+            if(this.canEnemyUseSkill(i) && this.enemy.mp >= this.enemy.skills[i].cost){
                 // 敵は同時に一つだけスキルを使う
                 this.enemy.selectingSkillIndexes.push(i);
                 return;
@@ -357,10 +358,6 @@ module.exports = class Battle{
         const skillIndice = this.player.selectingSkillIndexes;
         if(skillIndice.length !== new Set(skillIndice).size){
             console.error("selecting skills is not unique");
-            throw new Error();
-        }
-        if(this.player.consumingMp() > this.player.mp){
-            console.error("selecting skills over cost");
             throw new Error();
         }
     }

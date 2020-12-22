@@ -56,16 +56,16 @@ export default {
       if(!this.battle){
         return this.clickable ? 'clickable' : '';
       }
-      if (this.isPlayer) {
+      if(this.isPlayer){
         return this.skillClassPlayer(skillIndex);
-      } else {
+      }else{
         return this.skillClassEnemy(skillIndex);
       }
     },
-    skillCostSufficient(cost){
+    skillCostSufficient(skill){
       const consumeMp = this.battle.player.selectingSkills().reduce((a,b)=>a+b.cost, 0);
       const remainingMp = this.battle.player.mp - consumeMp;
-      return remainingMp >= cost;
+      return skill.isMpSufficient(remainingMp);
     },
     skillClassPlayer(skillIndex){
       const skill = this.battle.player.skills[skillIndex];
@@ -92,7 +92,7 @@ export default {
       }
 
       // 同ターンの予算編成的にもう選べないスキルは暗くなる
-      if(!this.skillCostSufficient(skill.cost)){
+      if(!this.skillCostSufficient(skill)){
         return 'disabled';
       }
 
