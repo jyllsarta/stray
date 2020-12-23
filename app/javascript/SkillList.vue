@@ -10,8 +10,10 @@
         | {{skillActivationOrder(index)}}
       .upper
         img.icon(:src="iconImagePath(skill.id)")
-        .cost
+        .cost(v-if="!skill.threshold_hp")
           | {{skill.cost}}
+        .cost(v-if="skill.threshold_hp")
+          | {{skill.threshold_hp}}≦HP
         .additional_text
           | {{additionalText(skill)}}
       .downer
