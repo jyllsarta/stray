@@ -20,6 +20,7 @@
 #  is_exhaust       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null
+#  threshold_hp     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -77,6 +78,7 @@ RSpec.describe Skill, type: :model do
                                    "id"=>Integer,
                                    "is_defence"=>false,
                                    "is_exhaust"=>false,
+                                   "threshold_hp"=>nil,
                                    "name"=>"ファイア",
                                    "reusable"=>false
                                })  # 適当なので、モデル変更などでわずらわしくなったタイミングでちゃんと書き直す

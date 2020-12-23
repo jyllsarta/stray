@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "is_exhaust", default: false, null: false
     t.boolean "is_defence", default: false, null: false
     t.integer "cost", default: 0, null: false
+    t.integer "threshold_hp"
     t.string "effect1_category"
     t.boolean "effect1_to_self"
     t.integer "effect1_value"

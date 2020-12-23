@@ -35,6 +35,7 @@ RSpec.describe "Skill", type: :request do
                                                                           is_defence: Boolean,
                                                                           is_exhaust: Boolean,
                                                                           cost: Integer,
+                                                                          threshold_hp: nil,
                                                                           effect1_category: String,
                                                                           effect1_to_self: Boolean,
                                                                           effect1_value: Integer,

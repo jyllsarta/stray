@@ -20,6 +20,7 @@
 #  is_exhaust       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null
+#  threshold_hp     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

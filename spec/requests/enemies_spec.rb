@@ -74,6 +74,7 @@ RSpec.describe "Enemies", type: :request do
                                                              is_exhaust: Boolean,
                                                              is_defence: Boolean,
                                                              cost: Integer,
+                                                             threshold_hp: nil,
                                                              effect1_category: String,
                                                              effect1_to_self: Boolean,
                                                              effect1_value: Integer,

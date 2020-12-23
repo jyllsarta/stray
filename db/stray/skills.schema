@@ -7,6 +7,7 @@ create_table "skills", force: :cascade  do |t|
   t.boolean :is_exhaust      , null: false, default: false
   t.boolean :is_defence      , null: false, default: false
   t.integer :cost            , null: false, default: 0
+  t.integer :threshold_hp
   t.string  :effect1_category
   t.boolean :effect1_to_self
   t.integer :effect1_value
