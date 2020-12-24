@@ -296,6 +296,11 @@ module.exports = class Battle{
         if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
             return false;
         }
+
+        // HP条件があるときはそれを満たしていないとダメ
+        if ( skill.threshold_hp && skill.threshold_hp < this.player.hp ) {
+            return false;
+        }
         return true;
     }
 
@@ -310,6 +315,11 @@ module.exports = class Battle{
         }
         // reusable = false のスキルは一回使ってたらダメ
         if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
+            return false;
+        }
+
+        // HP条件があるときはそれを満たしていないとダメ
+        if ( skill.threshold_hp && skill.threshold_hp < this.enemy.hp ) {
             return false;
         }
         return true;
