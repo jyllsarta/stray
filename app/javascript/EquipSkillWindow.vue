@@ -39,6 +39,14 @@
                 .value
                   | {{pointingSkill.reusable ? '∞' : '1'}}
               .detail(
+                v-if="pointingSkill.threshold_hp"
+                @mouseover="$store.commit('guide/updateGuide', '特定HP以下になると発動可能。')"
+              )
+                .key
+                  | 条件
+                .value
+                  | {{pointingSkill.threshold_hp}}≦HP
+              .detail(
                 v-if="pointingSkill.is_defence===true"
                 @mouseover="$store.commit('guide/updateGuide', '防御スキルの使用ターンはMPが増加しない。')"
                 )
