@@ -767,7 +767,7 @@ export default {
     postShowdown(){
       const path = `/enemies/-1/showdown.json`;
       const params = {
-        operation_history: this.battle.operationHistory
+        operation_history: this.battle.player.operationHistory
       };
       ax.post(path, params)
         .then((results) => {

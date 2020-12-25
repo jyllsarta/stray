@@ -71,7 +71,7 @@ export default {
     },
     skillClassPlayer(skillIndex){
       const skill = this.battle.player.skills[skillIndex];
-      let usedSkills = this.battle.operationHistory.map((x)=>x.skillIndex);
+      let usedSkills = this.battle.player.operationHistory.map((x)=>x.skillIndex);
       if(this.battle.phaseIndex() >= 2 && this.battle.player.selectingSkillIndexes.length > 1){ // is プレイヤースキル発動フェーズ
         usedSkills = usedSkills.concat(this.battle.player.selectingSkillIndexes);
       }
@@ -103,7 +103,7 @@ export default {
     },
     skillClassEnemy(skillIndex){
       const skill = this.battle.enemy.skills[skillIndex];
-      let usedSkills = this.battle.enemyOperationHistory.map((x)=>x.skillIndex);
+      let usedSkills = this.battle.enemy.operationHistory.map((x)=>x.skillIndex);
       if(this.battle.phaseIndex() >= 3 && this.battle.enemy.selectingSkillIndexes.length > 1){ // is エネミースキル発動フェーズ
         usedSkills = usedSkills.concat(this.battle.enemy.selectingSkillIndexes);
       }

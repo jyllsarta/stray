@@ -15,7 +15,10 @@ module.exports = class Character{
         this.resetTempBuffs();
         this.selectingSkillIndexes = [];
         this.states = [];
+        this.operationHistory = [];
     }
+
+    
 
     selectingSkills(){
         return this.selectingSkillIndexes.map(x=>this.skills[x]);

@@ -29,8 +29,6 @@ module.exports = class Battle{
         this.player.deck.fillDraw(this.player.totalHandCardCount());
         this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
 
-        this.operationHistory = [];
-        this.enemyOperationHistory = [];
         this.selectingCardIds = [];
         this.enemyCardIds = [];
 
@@ -242,8 +240,8 @@ module.exports = class Battle{
         this.setCharacterStatusAll("waiting");
         this.lastAttackResult = "";
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
-        this.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndexes});
-        this.enemyOperationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndexes});
+        this.player.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndexes});
+        this.enemy.operationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndexes});
 
         this.player.deck.consumeCards(this.selectingCardIds);
         this.enemy.deck.consumeCards(this.enemyCardIds);
@@ -282,7 +280,6 @@ module.exports = class Battle{
         return ["selectCard", "turnStarted", "playerMagic", "enemyMagic", "powerAttack", "techAttack", "SPAttack"].indexOf(this.turnStatus);
     }
 
-    // こうして条件を書いていくと operationHistory は character の持つべきロジックだった感がある
     canUseSkill(skillIndex){
         const skill = this.player.skills[skillIndex];
         if(!skill){
@@ -293,7 +290,7 @@ module.exports = class Battle{
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
+        if ( !skill.reusable && this.player.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
             return false;
         }
 
@@ -314,7 +311,7 @@ module.exports = class Battle{
             return false;
         }
         // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.enemyOperationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
+        if ( !skill.reusable && this.enemy.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
             return false;
         }
 
