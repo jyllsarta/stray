@@ -35,7 +35,7 @@ RSpec.describe User::Character, type: :model do
     subject { character.equip_item_ids }
     context "when no equip" do
       before do
-        allow(character).to receive_message_chain(:equips, :map).and_return([nil, nil, nil, nil])
+        allow(character).to receive_message_chain(:equips, :reload, :map).and_return([nil, nil, nil, nil])
       end
       it "returns list of nil" do
         expect(subject).to eq([nil, nil, nil, nil])
@@ -46,7 +46,7 @@ RSpec.describe User::Character, type: :model do
       let(:item){create(:item)}
       let(:user_item){ create(:user_item, item_id: item.id, user: user)}
       before do
-        allow(character).to receive_message_chain(:equips, :map).and_return([user_item, nil, nil, nil])
+        allow(character).to receive_message_chain(:equips, :reload, :map).and_return([user_item, nil, nil, nil])
       end
       it "returns list of item_ids" do
         expect(subject).to eq([item.id, nil, nil, nil])
