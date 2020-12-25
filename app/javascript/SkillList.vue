@@ -84,7 +84,7 @@ export default {
       }
 
       // スキルを単純に使えないときは暗くなる
-      if(!this.battle.canUseSkill(skillIndex)){
+      if(!this.battle.player.canUseSkill(skillIndex)){
         return 'disabled';
       }
 
@@ -110,7 +110,7 @@ export default {
       if(!skill.reusable && usedSkills.flat().includes(skillIndex)) {
         return 'used';
       }
-      if(!this.battle.canEnemyUseSkill(skillIndex)){
+      if(!this.battle.enemy.canUseSkill(skillIndex)){
         return 'disabled';
       }
       return this.battle.enemy.selectingSkillIndexes.includes(skillIndex) ? 'animation_selected' : 'available';

@@ -58,7 +58,7 @@ module.exports = class Battle{
         if(this.turnInProgress){
             return;
         }
-        if(!this.canUseSkill(skillIndex)){
+        if(!this.player.canUseSkill(skillIndex)){
             return;
         }
 
@@ -112,7 +112,7 @@ module.exports = class Battle{
     }
 
     invokePlayerMagic(skillIndex){
-        if(!this.canUseSkill(skillIndex)){
+        if(!this.player.canUseSkill(skillIndex)){
             console.warn(`不正なスキル指定です！ idx:${skillIndex}`);
             return;
         }
@@ -130,7 +130,7 @@ module.exports = class Battle{
     }
 
     invokeEnemyMagic(skillIndex){
-        if(!this.canEnemyUseSkill(skillIndex)){
+        if(!this.enemy.canUseSkill(skillIndex)){
             // damageMpにより、使おうと思ったスキルをすかされる可能性が出たのでワーニングは表示しない
             return;
         }
@@ -280,48 +280,6 @@ module.exports = class Battle{
         return ["selectCard", "turnStarted", "playerMagic", "enemyMagic", "powerAttack", "techAttack", "SPAttack"].indexOf(this.turnStatus);
     }
 
-    canUseSkill(skillIndex){
-        const skill = this.player.skills[skillIndex];
-        if(!skill){
-            return false;
-        }
-        // MPが足りてないとダメ
-        if (!skill.isMpSufficient(this.player.mp)){
-            return false;
-        }
-        // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.player.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
-            return false;
-        }
-
-        // HP条件があるときはそれを満たしていないとダメ
-        if ( skill.threshold_hp && skill.threshold_hp < this.player.hp ) {
-            return false;
-        }
-        return true;
-    }
-
-    canEnemyUseSkill(skillIndex){
-        const skill = this.enemy.skills[skillIndex];
-        if(!skill){
-            return false;
-        }
-        // MPが足りてないとダメ
-        if (!skill.isMpSufficient(this.enemy.mp)){
-            return false;
-        }
-        // reusable = false のスキルは一回使ってたらダメ
-        if ( !skill.reusable && this.enemy.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
-            return false;
-        }
-
-        // HP条件があるときはそれを満たしていないとダメ
-        if ( skill.threshold_hp && skill.threshold_hp < this.enemy.hp ) {
-            return false;
-        }
-        return true;
-    }
-
     shouldStopWith(callbackName){
         return this.fieldEffectState?.stateMaster?.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
     }
@@ -340,8 +298,8 @@ module.exports = class Battle{
 
     pickEnemySkill(){
         for(let i=0; i<this.enemy.skills.length; i++){
-            // 敵は canEnemyUseSkill かつ MPが十分に溜まったスキルを使う(イグゾーストスキルでもMPがマイナスになるような積み方はしない)
-            if(this.canEnemyUseSkill(i) && this.enemy.mp >= this.enemy.skills[i].cost){
+            // 敵は canUseSkill かつ MPが十分に溜まったスキルを使う(イグゾーストスキルでもMPがマイナスになるような積み方はしない)
+            if(this.enemy.canUseSkill(i) && this.enemy.mp >= this.enemy.skills[i].cost){
                 // 敵は同時に一つだけスキルを使う
                 this.enemy.selectingSkillIndexes.push(i);
                 return;

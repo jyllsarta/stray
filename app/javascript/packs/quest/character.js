@@ -18,7 +18,29 @@ module.exports = class Character{
         this.operationHistory = [];
     }
 
-    
+    canUseSkill(skillIndex){
+        const skill = this.skills[skillIndex];
+
+        if(!skill){
+            return false;
+        }
+
+        // MPが足りてないとダメ
+        if (!skill.isMpSufficient(this.mp)){
+            return false;
+        }
+
+        // reusable = false のスキルは一回使ってたらダメ
+        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
+            return false;
+        }
+
+        // HP条件があるときはそれを満たしていないとダメ
+        if ( skill.threshold_hp && skill.threshold_hp < this.hp ) {
+            return false;
+        }
+        return true;
+    }
 
     selectingSkills(){
         return this.selectingSkillIndexes.map(x=>this.skills[x]);
