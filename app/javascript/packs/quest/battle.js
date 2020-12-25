@@ -40,6 +40,10 @@ module.exports = class Battle{
         this.fieldEffectState?.stateMaster?.onAdd(this.fieldEffectState);
     }
 
+    // ***********************************************************************
+    // controller
+    // ***********************************************************************
+
     selectCard(cardId){
         if(this.turnInProgress){
             return;
@@ -94,6 +98,10 @@ module.exports = class Battle{
         this.invokeTurnEndStateEffect();
         this.onTurnEnd();
     }
+
+    // ***********************************************************************
+    // ターンのイベント再生処理でトリガーされるメソッドたち
+    // ***********************************************************************
 
     invokeTurnStartStateEffect(){
         if(this.fieldEffectState){
@@ -221,12 +229,6 @@ module.exports = class Battle{
         }
     }
 
-    isSPAttackWillHappen(){
-        const powerResult = this.powerMeetResult();
-        const techResult = this.techMeetResult();
-        return (powerResult === "win" && techResult === "win") || (powerResult === "lose" && techResult === "lose");
-    }
-
     invokeTurnEndStateEffect(){
         for(let stateInstance of this.player.states){
             stateInstance.stateMaster.onTurnEnd(stateInstance);
@@ -234,6 +236,14 @@ module.exports = class Battle{
         for(let stateInstance of this.enemy.states){
             stateInstance.stateMaster.onTurnEnd(stateInstance);
         }
+    }
+
+    onTurnStart(){
+        this.turnInProgress = true;
+        this.validateSelectingCardIds();
+        this.validateSelectingSkillIds();
+        this.setCharacterStatusAll("normal");
+        this.turnStatus = "turnStarted";
     }
 
     onTurnEnd(){
@@ -274,7 +284,9 @@ module.exports = class Battle{
         }
     }
 
-    // 以下privateのつもり
+    // ***********************************************************************
+    // private 的な処理
+    // ***********************************************************************
 
     phaseIndex(){
         return ["selectCard", "turnStarted", "playerMagic", "enemyMagic", "powerAttack", "techAttack", "SPAttack"].indexOf(this.turnStatus);
@@ -282,14 +294,6 @@ module.exports = class Battle{
 
     shouldStopWith(callbackName){
         return this.fieldEffectState?.stateMaster?.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
-    }
-
-    onTurnStart(){
-        this.turnInProgress = true;
-        this.validateSelectingCardIds();
-        this.validateSelectingSkillIds();
-        this.setCharacterStatusAll("normal");
-        this.turnStatus = "turnStarted";
     }
 
     pickEnemyCards(){
@@ -325,6 +329,12 @@ module.exports = class Battle{
             console.error("selecting skills is not unique");
             throw new Error();
         }
+    }
+
+    isSPAttackWillHappen(){
+        const powerResult = this.powerMeetResult();
+        const techResult = this.techMeetResult();
+        return (powerResult === "win" && techResult === "win") || (powerResult === "lose" && techResult === "lose");
     }
 
     powerMeetResult(category){
