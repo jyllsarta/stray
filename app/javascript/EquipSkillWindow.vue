@@ -53,6 +53,12 @@
                 .key
                   | 防御スキル
               .detail(
+                v-if="pointingSkill.is_passive===true"
+                @mouseover="$store.commit('guide/updateGuide', 'パッシブスキル。バトル開始時に自動発動する。')"
+                )
+                .key
+                  | パッシブ
+              .detail(
                 v-if="pointingSkill.is_exhaust===true"
                 @mouseover="$store.commit('guide/updateGuide', 'イグゾーストスキルはMPがマイナスでなければいつでも使用できる。')"
                 )
