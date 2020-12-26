@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "reusable", default: false, null: false
     t.boolean "is_exhaust", default: false, null: false
     t.boolean "is_defence", default: false, null: false
+    t.boolean "is_passive", default: false, null: false
     t.integer "cost", default: 0, null: false
     t.integer "threshold_hp"
     t.string "effect1_category"
