@@ -4,7 +4,7 @@
       v-for="(skill, index) in skills"
         @click="$emit('onClick', {skillId: skill.id, skillIndex: index})"
         @mouseover="onPoint(skill.id)"
-        :class="skillClass(index)"
+        :class="`${skillClass(index)} ${isPassiveSkill(skill)}`"
       )
       .mimi(v-if="skillActivationOrder(index)")
         | {{skillActivationOrder(index)}}
@@ -140,6 +140,9 @@ export default {
         text += "X";
       }
       return text;
+    },
+    isPassiveSkill(skill){
+      return skill.is_passive ? "passive" : "";
     }
   },
 }
@@ -217,7 +220,6 @@ export default {
     border: 1px solid $yellow;
     background-repeat: repeat;
   }  
-
   .disabled{
     background-color: $gray3-opacity;
     opacity: 0.5;
@@ -235,6 +237,13 @@ export default {
     &:hover{
       border: 1px solid $yellow;
       transform: scale(1.1);
+    }
+  }
+  .passive{
+    border-radius: 20px 0 20px 0;
+    background-color: transparent;
+    .downer{
+      color: $accent-color;
     }
   }
 }
