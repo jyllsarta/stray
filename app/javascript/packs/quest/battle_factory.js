@@ -37,7 +37,7 @@ module.exports = class BattleFactory{
                     effects.push(new Effect(skill[`effect${i}_category`], skill[`effect${i}_to_self`], skill[`effect${i}_value`]));
                 }
             }
-            skills.push(new Skill(skill.id, skill.name, skill.cost, skill.reusable, skill.is_defence, skill.is_exhaust, skill.threshold_hp, effects));
+            skills.push(new Skill(skill.id, skill.name, skill.cost, skill.reusable, skill.is_defence, skill.is_exhaust, skill.is_passive, skill.threshold_hp, effects));
         }
         return skills;
     }

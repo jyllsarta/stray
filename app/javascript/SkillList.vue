@@ -130,6 +130,9 @@ export default {
     },
     additionalText(skill){
       let text = "";
+      if(skill.is_passive){
+        text += "P";
+      }
       if(skill.reusable){
         text += "∞";
       }

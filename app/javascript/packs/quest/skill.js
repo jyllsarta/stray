@@ -1,11 +1,12 @@
 module.exports = class Skill {
-    constructor(id, name, cost, reusable, is_defence, is_exhaust, threshold_hp, effects) {
+    constructor(id, name, cost, reusable, is_defence, is_exhaust, is_passive, threshold_hp, effects) {
         this.id = id;
         this.name = name;
         this.cost = cost;
         this.reusable = reusable;
         this.is_defence = is_defence;
         this.is_exhaust = is_exhaust;
+        this.is_passive = is_passive;
         this.threshold_hp = threshold_hp;
         this.effects = effects;
     }
