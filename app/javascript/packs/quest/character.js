@@ -25,6 +25,11 @@ module.exports = class Character{
             return false;
         }
 
+        // パッシブスキルは能動的に発動できない
+        if (skill.is_passive){
+            return false;
+        }
+
         // MPが足りてないとダメ
         if (!skill.isMpSufficient(this.mp)){
             return false;
