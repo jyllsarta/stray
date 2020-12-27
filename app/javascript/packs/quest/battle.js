@@ -38,6 +38,7 @@ module.exports = class Battle{
         this.pickEnemySkill();
 
         this.fieldEffectState?.stateMaster?.onAdd(this.fieldEffectState);
+        this.invokePassiveSkills();
     }
 
     // ***********************************************************************
@@ -102,6 +103,21 @@ module.exports = class Battle{
     // ***********************************************************************
     // ターンのイベント再生処理でトリガーされるメソッドたち
     // ***********************************************************************
+
+    invokePassiveSkills(){
+        for(let skill of this.player.skills.filter(x=>x.is_passive)){
+            const effects = skill.effects;
+            for(let effect of effects){
+                this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
+            }    
+        }
+        for(let skill of this.enemy.skills.filter(x=>x.is_passive)){
+            const effects = skill.effects;
+            for(let effect of effects){
+                this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
+            }    
+        }
+    }
 
     invokeTurnStartStateEffect(){
         if(this.fieldEffectState){

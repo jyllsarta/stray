@@ -45,6 +45,11 @@ SkillResolver {
         main.addMp(value);
     }
 
+    resolveAddHpOverflow(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.hp += value;
+    }
+
     resolveAddMpOverflow(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.mp += value;
