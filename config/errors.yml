@@ -43,4 +43,6 @@ Relic::AlreadyObtained:
 User::Skill::TooManySkill:
   status: bad_request
   message: 不正なスキル指定です。
-
+ActionController::RoutingError:
+  status: bad_request
+  message: RoutingErrorですね
