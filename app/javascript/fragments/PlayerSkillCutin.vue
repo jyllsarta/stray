@@ -58,7 +58,7 @@ export default {
         .background{
           width: 100%;
           height: 100%;
-          background: linear-gradient(to right, #805462 0%, $background 160%);
+          background: linear-gradient(to right, #581b41 0%, transparent 160%);
         }
         .image{
           position: absolute;
@@ -93,11 +93,11 @@ export default {
     30% {
       opacity: 1;
       transform: translateX(0px);
-      background-color: #80546257;
+      background-color: #75233d57;
     }
     50%{
-      border-top: 2px solid #d15e82;
-      border-bottom: 2px solid #d15e82;
+      border-top: 2px solid #e5abec;
+      border-bottom: 2px solid #e5abec;
     }
     70% {
       opacity: 1;
