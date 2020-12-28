@@ -15,6 +15,10 @@ export default {
     damageDiffs: {
       player: 0,
       enemy: 0,
+    },
+    currentBattleSkillCutinDetail: {
+      name: "インビンシブル",
+      description: "とにかく無敵になる。",
     }
   },
   getters: {
@@ -25,6 +29,9 @@ export default {
     },
     setDamageDiff(state, payload){
       state.damageDiffs[payload.target] = payload.value;
+    },
+    setSkillCutinDetail(state, payload){
+      state.currentBattleSkillCutinDetail = payload;
     },
     showFragment(state, fragmentName){
       state.fragments[fragmentName] = true;

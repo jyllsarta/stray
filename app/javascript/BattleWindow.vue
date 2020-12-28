@@ -557,6 +557,8 @@ export default {
     playPlayerSingleSkill(skillIndex){
       return new Promise((resolve) => {
         this.$store.commit("battle/showFragment", "player_skill");
+        const skill = this.battle.player.skills[skillIndex];
+        this.$store.commit("battle/setSkillCutinDetail", {name: skill.name, description: skill.description});
         this.skillName = "スキル発動！";
         this.battle.setCharacterStatusAll("normal");
         setTimeout( ()=>{

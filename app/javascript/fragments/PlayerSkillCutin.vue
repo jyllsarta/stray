@@ -3,12 +3,12 @@ transition(name="anim")
   .skill_cutin
     .base
       .head
-        | ファイア
+        | {{$store.state.battle.currentBattleSkillCutinDetail.name}}
       .images
         .background
         .image
       .descri
-        | 敵に5点ダメージ。
+        | {{$store.state.battle.currentBattleSkillCutinDetail.description}}
 </template>
 
 <script lang="ts">
@@ -76,6 +76,8 @@ export default {
         bottom: 0;
         right: 0;
         font-style: italic;
+        text-align: right;
+        width: 75%;
       }
     }
   }
