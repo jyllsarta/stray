@@ -42,9 +42,9 @@ export default {
   @import "../stylesheets/constants";
   .skill_cutin{
     position: absolute;
-    top: calc(30% - 100px);
+    top: calc(25% - 75px);
     left: calc(50% - 300px);
-    height: 200px;
+    height: 150px;
     width: 600px;
     opacity: 0;
     border-top: 2px solid transparent;
@@ -73,7 +73,7 @@ export default {
           bottom: $thin_space;
           right: $space;
           height: calc(100% - #{$thin_space} * 2);
-          width: 65%;
+          width: 50%;
           background-position: 70% 50%;
           background-size: cover;
         }
