@@ -573,6 +573,8 @@ export default {
     playEnemySingleSkill(skillIndex){
       return new Promise((resolve) => {
         this.$store.commit("battle/showFragment", "enemy_skill");
+        const skill = this.battle.enemy.skills[skillIndex];
+        this.$store.commit("battle/setSkillCutinDetail", {name: skill.name, description: skill.description});
         this.skillName = "敵スキル発動！";
         this.battle.setCharacterStatusAll("normal");
         setTimeout( ()=>{
@@ -753,6 +755,7 @@ export default {
         .then((results) => {
           console.log(results);
           this.input = results.data;
+          this.$store.commit("battle/setEnemyImageName", this.input.enemyImageName);
           this.localBattleStart();
           // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
           if (process.env.NODE_ENV !== 'production') {

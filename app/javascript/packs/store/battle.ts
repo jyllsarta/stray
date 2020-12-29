@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     enemy_id: 0,
+    enemy_image_name: "kani",
     fragments: {
       turn_start: false,
       player_skill: false,
@@ -26,6 +27,9 @@ export default {
   mutations: {
     setEnemyId(state, payload){
       state.enemy_id = payload;
+    },
+    setEnemyImageName(state, payload){
+      state.enemy_image_name = payload;
     },
     setDamageDiff(state, payload){
       state.damageDiffs[payload.target] = payload.value;
