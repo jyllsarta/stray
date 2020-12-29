@@ -42,13 +42,14 @@ export default {
     opacity: 0;
     border-top: 2px solid transparent;
     border-bottom: 2px solid transparent;
+    background: linear-gradient(to right, rgba(194, 194, 103, 0.623) 0%, #581b41 30%, transparent 85%, transparent 100%);
+    background-size: 300% 100%;
     .base{
       width: 100%;
       height: 100%;
       .head{
         width: 100%;
         font-size: $font-size-large;
-        margin-bottom: $space;
         text-align: center;
       }
       .images{
@@ -73,7 +74,7 @@ export default {
       }
       .descri{
         position: absolute;
-        bottom: 0;
+        bottom: $space;
         right: 0;
         font-style: italic;
         text-align: right;
@@ -87,31 +88,29 @@ export default {
   @keyframes anim {
     0% {
       opacity: 0;
-      transform: translateX(-10px);
-      background-color: transparent;
+      transform: translate(-10px, 0px);
       border-top: 2px solid transparent;
       border-bottom: 2px solid transparent;
+      background-position: 100% 0;
     }
     30% {
       opacity: 1;
-      transform: translateX(0px);
-      background-color: #75233d57;
+      transform: translate(0, 0);
     }
     50%{
-      border-top: 2px solid #e5abec;
-      border-bottom: 2px solid #e5abec;
+      border-top: 2px solid #ffa2be;
+      border-bottom: 2px solid #ffa2be;
     }
     70% {
       opacity: 1;
-      transform: translateX(0px);
+      transform: translate(0, 0);
     }
     100% {
       opacity: 0;
-      transform: translateX(30px);
-      background-position-x: 0%;
-      background-color: transparent;
-      border-top: 2px solid transparent;
-      border-bottom: 2px solid transparent;
+      transform: translate(30px, 0px);
+      border-top: 2px solid #ffa2be00;
+      border-bottom: 2px solid #ffa2be00;
+      background-position: 0 0;
     }
   }
 </style>
