@@ -644,7 +644,7 @@ export default {
             this.skillName = "力判定！";
             setTimeout(()=>{
               resolve();
-            }, 700);
+            }, 550);
           });
         })
         .then(()=>{
@@ -654,7 +654,7 @@ export default {
             this.skillName = "技判定！";
             setTimeout(()=>{
               resolve();
-            }, 700);
+            }, 550);
           });
         })
         .then(()=>{
@@ -669,7 +669,7 @@ export default {
             this.skillName = "SPアタック！";
             setTimeout(()=>{
               resolve();
-            }, 700);
+            }, 550);
           });
         })
         .then(()=>{

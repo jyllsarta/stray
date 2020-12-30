@@ -6,9 +6,9 @@
       img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="characterClass")
     transition(name="showing")
       img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="characterClass" :key="currentSkillName")
-    transition(name="showing")
+    transition(name="upper_attack")
       img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="characterClass")
-    transition(name="showing")
+    transition(name="down_attack")
       img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="characterClass")
     transition(name="showing")
       img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="characterClass" :key="currentSkillName")
@@ -273,4 +273,30 @@ export default {
   opacity: 0;
 }
 
+.upper_attack-enter-active {
+  transition: all .4s;
+}
+.upper_attack-leave-active {
+  transition: all .4s;
+}
+.upper_attack-enter{
+  transform: translateY(30px);
+  opacity: 0;
+}
+.upper_attack-leave-to{
+  opacity: 0;
+}
+.down_attack-enter-active {
+  transition: all .4s;
+}
+.down_attack-leave-active {
+  transition: all .4s;
+}
+.down_attack-enter{
+  transform: translateY(-30px);
+  opacity: 0;
+}
+.down_attack-leave-to{
+  opacity: 0;
+}
 </style>
