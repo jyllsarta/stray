@@ -1,6 +1,6 @@
 <template lang="pug">
 transition(name="anim")
-  .turn_start.topic_medium
+  .turn_start
     .text
       | ターン開始！
 </template>
@@ -29,34 +29,43 @@ export default {
 <style lang="scss" scoped>
   .turn_start{
     position: absolute;
-    top: calc(40% - 25px);
+    top: calc(40% - 15px);
     left: calc(50% - 200px);
-    height: 50px;
+    height: 30px;
     width: 400px;
     opacity: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    background-color: #fff7fa20;
   }
   .anim-leave-active {
-    animation: anim 1.2s;
+    animation: anim 0.8s;
   }
   @keyframes anim {
     0% {
       opacity: 0;
-      transform: translateX(-10px);
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      transform:  scale(1.3);
     }
     30% {
       opacity: 1;
-      transform: translateX(0px);
+      transform:  scale(1);
+    }
+    50%{
+      border-top: 1px solid #fff7fa;
+      border-bottom: 1px solid #fff7fa;
     }
     70% {
       opacity: 1;
-      transform: translateX(0px);
     }
     100% {
       opacity: 0;
-      transform: translateX(30px);
+      border-top: 1px solid #fff7fa00;
+      border-bottom: 1px solid #fff7fa00;
     }
   }
 </style>

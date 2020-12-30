@@ -62,11 +62,11 @@ export default {
   @keyframes anim {
     0% {
       opacity: 0;
-      transform: translateX(-10px);
+      transform: translateX(-10px) scale(1.3);
     }
     20% {
       opacity: 1;
-      transform: translateX(0px);
+      transform: translateX(0px) scale(1);
     }
     80% {
       opacity: 1;
