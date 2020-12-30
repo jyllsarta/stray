@@ -748,7 +748,7 @@ export default {
     // **
 
     postEngage(){
-      const enemyId = this.$store.state.battle.enemy_id;
+      const enemyId = this.$store.state.battle.enemy_id || 101;
       const path = `/enemies/${enemyId}/engage.json`;
       const params = {
         enemy_id: enemyId
