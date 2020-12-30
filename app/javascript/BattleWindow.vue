@@ -8,7 +8,7 @@
           | メニュー
       transition(name="open_window")
         .battle_menu(v-if="showMenu")
-          .back(@click="showMenu = false")
+          ._back(@click="showMenu = false")
           .items
             .item.clickable(@click="showMenu = false")
               | メニューをとじる
@@ -885,9 +885,10 @@ export default {
   top: $space;
   right: $space;
   width: 160px;
-  .back{
+  ._back{
     position: absolute;
-    left: -1000px; // 起点がダメすぎてきつい宣言になった...
+    // 画面横幅のなにもない領域 - 20px まで当たり判定を持つ
+    right: calc((#{$window-width} - 100vw + 20px)/2);
     top: -100px;
     width: 100vw;
     height: 100vh;
