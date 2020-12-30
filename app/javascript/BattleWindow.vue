@@ -1,8 +1,8 @@
 <template lang="pug">
   .menu
     .full_covered_window(@click.right.prevent="removeLastCard")
-      .background_fields
-        img.background_field(src="/images/battle/background.png" :class="isTurnInProgress ? 'zoomed' : 'normal'")
+      .battle_background
+        BattleBackground(:turn-in-progress="isTurnInProgress")
       transition(name="open_window")
         .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
           | メニュー
@@ -267,6 +267,7 @@ import PlayerDamage from "./fragments/PlayerDamage.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
+import BattleBackground from "./BattleBackground.vue";
 
 export default {
   components: {
@@ -285,6 +286,7 @@ export default {
     EnemyDamage,
     StateInstance,
     FieldEffect,
+    BattleBackground,
   },
   data: function () {
     return {
@@ -903,26 +905,11 @@ export default {
   }
 }
 
-.background_fields{
+.battle_background{
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  .background_field {
-    position: absolute;
-    width:70%;
-    left: 15%;
-    top: -50%;
-    transform-origin: bottom;
-  }
-  .zoomed{
-    transition: transform 0.6s;
-    transform: scale(1.3);
-  }
-  .normal{
-    transition: transform 0.6s;
-    transform: scale(1);
-  }
 }
 
 .field_effect_area{
