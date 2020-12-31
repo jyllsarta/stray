@@ -27,14 +27,14 @@ export default {
   width: 100%;
   height: 100%;
   .floor {
-    background-color: rgb(69, 60, 83);
     position: absolute;
-    width:70%;
+    width: 70%;
     height: 70%;
     left: 15%;
     top: -25%;
-    transform: perspective(1000px) rotateX(82deg) ;
+    transform: perspective(1000px) rotateX(85deg);
     transform-origin: bottom center;
+    background-image: linear-gradient(to bottom, $background 30%, $gray3 100%);
   }
 }
 
