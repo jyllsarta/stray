@@ -26,11 +26,14 @@ export default {
   },
   store,
   mounted(){
-    setInterval(this.addParticle, 2000);
+    setInterval(this.addParticle, 400);
   },
   methods: {
     addParticle(){
-      this.particles = [];
+      const maxParticleCount = 5;
+      if(this.particles.length > maxParticleCount){
+        this.particles = this.particles.slice(-maxParticleCount)
+      }
       const id = Math.floor(Math.random() * 999999999);
       const x = Math.floor(Math.random() * 600) + 212;
       const y = Math.floor(Math.random() * 100) + 50;
