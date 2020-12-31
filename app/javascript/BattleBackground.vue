@@ -1,7 +1,13 @@
 <template lang="pug">
   .background_fields(:class="turnInProgress ? 'zoomed' : 'normal'")
-    .particles
     .floor
+    .particles
+      transition-group(name="particle-anim")
+        .particle(
+          v-for="particle in particles",
+          :key="particle.id",
+          :style="{left: particle.x, top: particle.y}"
+        )
 
 </template>
 
@@ -14,9 +20,23 @@ export default {
     turnInProgress: Boolean
   },
   data: function () {
-    return {};
+    return {
+      particles: []
+    };
   },
   store,
+  mounted(){
+    setInterval(this.addParticle, 2000);
+  },
+  methods: {
+    addParticle(){
+      this.particles = [];
+      const id = Math.floor(Math.random() * 999999999);
+      const x = Math.floor(Math.random() * 600) + 212;
+      const y = Math.floor(Math.random() * 100) + 50;
+      this.particles.push({id: id, x: x, y: y})
+    },
+  }
 }
 </script>
 
@@ -36,6 +56,14 @@ export default {
     transform-origin: bottom center;
     background-image: linear-gradient(to bottom, $background 30%, $gray3 100%);
   }
+  .particles{
+    .particle{
+      position: absolute;
+      width: 2px;
+      height: 60px;
+      background-color: $gray1;
+    }
+  }
 }
 
 .zoomed{
@@ -45,6 +73,18 @@ export default {
 .normal{
   transition: transform 0.6s;
   transform: scale(1);
+}
+
+.particle-anim-enter-active, .particle-anim-leave-active {
+  transition: all 4s;
+}
+.particle-anim-enter {
+  opacity: 0;
+  transform: translateY(100px) scale(0, 1);
+}
+.particle-anim-leave-to {
+  opacity: 0;
+  transform: translateY(-100px) scale(0, 3);
 }
 
 </style>
