@@ -1,21 +1,11 @@
 <template lang="pug">
   .menu
     .full_covered_window(@click.right.prevent="removeLastCard")
+
+      // キャラ
+
       .battle_background
         BattleBackground(:turn-in-progress="isTurnInProgress")
-      transition(name="open_window")
-        .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
-          | メニュー
-      transition(name="open_window")
-        .battle_menu(v-if="showMenu")
-          ._back(@click="showMenu = false")
-          .items
-            .item.clickable(@click="showMenu = false")
-              | メニューをとじる
-            .item.clickable(@click="retire()")
-              | 諦める
-      .field_effect_area
-        FieldEffect(:field-effect-state="battle.fieldEffectState")
       .player_character
         .tirol
           BattleCharacter(
@@ -43,6 +33,24 @@
           :currentSkillName="skillName"
           :shield="enemyShield > 0"
         )
+      .battle_foreground
+        BattleForeground(:turn-in-progress="isTurnInProgress")
+
+      // UI
+
+      transition(name="open_window")
+        .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
+          | メニュー
+      transition(name="open_window")
+        .battle_menu(v-if="showMenu")
+          ._back(@click="showMenu = false")
+          .items
+            .item.clickable(@click="showMenu = false")
+              | メニューをとじる
+            .item.clickable(@click="retire()")
+              | 諦める
+      .field_effect_area
+        FieldEffect(:field-effect-state="battle.fieldEffectState")
       CardList.player_hands(
         :cards="playerHands"
         :right-side="false"
@@ -222,6 +230,9 @@
             )
       SkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
       SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
+
+      // 表に出したいエフェクト
+
       .fragments
         TurnStart(v-if="$store.state.battle.fragments.turn_start")
         PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
@@ -268,6 +279,7 @@ import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
 import BattleBackground from "./BattleBackground.vue";
+import BattleForeground from "./BattleForeground.vue";
 
 export default {
   components: {
@@ -287,6 +299,7 @@ export default {
     StateInstance,
     FieldEffect,
     BattleBackground,
+    BattleForeground,
   },
   data: function () {
     return {
@@ -907,6 +920,13 @@ export default {
 }
 
 .battle_background{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.battle_foreground{
   position: absolute;
   width: 100%;
   height: 100%;
