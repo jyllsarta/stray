@@ -23,6 +23,11 @@ class User::AccessToken < ApplicationRecord
     self.find_by!(token: self.hash_method(raw_token))&.user
   end
 
+  def self.fetch_user_id(raw_token)
+    return nil unless raw_token
+    self.find_by(token: self.hash_method(raw_token))&.user_id
+  end
+
 private
   def self.hash_method(token)
     Digest::SHA256.hexdigest(token + ENV["PASSWORD_SALT"])
