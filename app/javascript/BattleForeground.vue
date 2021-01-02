@@ -29,6 +29,9 @@ export default {
   },
   methods: {
     addParticle(){
+      if(document.visibilityState !== "visible"){
+        return;
+      }
       const maxParticleCount = 2;
       if(this.particles.length > maxParticleCount){
         this.particles = this.particles.slice(-maxParticleCount)
