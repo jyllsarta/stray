@@ -17,9 +17,11 @@
           .total_rank
             .judgement
               .key
-                | トータル冒険評価
+                | トータル冒険ランク
               .value
-                | SS+
+                | {{profile.total_rank.rank}}
+              .descri
+                | {{profile.total_rank.description}}
             .details
               .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で獲得したコイン枚数。')")
                 .key
@@ -127,7 +129,7 @@ export default {
       const seconds = this.profile.achievements.total_play_time;
       const hour = Math.floor(seconds / 60 / 60);
       const minutes = Math.floor(seconds % 3600 / 60);
-      return `${hour}h${minutes}m`
+      return `${hour}:${minutes}:00`
     }
   },
   methods: {
@@ -172,8 +174,10 @@ export default {
   .window{
     .title_area{
       .title{
-        width: 82%;
+        position: absolute;
+        width: calc(100% - #{$space} * 2);
         text-align: center;
+        pointer-events: none;
       }
     }
     overflow: hidden;
@@ -265,7 +269,7 @@ export default {
         line-height: 150%;
         .judgement{
           width: 100%;
-          .key, .value{
+          .key, .value, .descri{
             width: 100%;
             text-align: center;
           }
@@ -274,6 +278,9 @@ export default {
           }
           .value{
             font-size: $font-size-large;
+          }
+          .descri{
+            font-size: $font-size-normal;
           }
         }
         .details{
