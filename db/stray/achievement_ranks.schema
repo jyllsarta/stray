@@ -1,0 +1,6 @@
+create_table "achievement_ranks", force: :cascade  do |t|
+  t.integer :step_count, null: false, unique: true
+  t.string :rank, null: false
+  t.string :description, null: false
+  t.timestamps
+end

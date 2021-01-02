@@ -12,6 +12,14 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
+  create_table "achievement_ranks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "step_count", null: false
+    t.string "rank", null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "achievement_step_rewards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "achievement_step_id"
     t.string "giftable_type", null: false
