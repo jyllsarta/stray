@@ -7,6 +7,7 @@ RSpec.describe ProfileBuilder, type: :model do
   let!(:user_item){ create(:user_item, user: user, item: item)}
   let!(:item2){ create(:item, name: "チロルのアイテム", rarity: 3) }
   let!(:user_item2){ create(:user_item, user: user, item: item2)}
+  let!(:achievement_rank){ create(:achievement_rank) }
 
   before do
     user.characters.spica.first.force_set_equips([item.id])
@@ -55,8 +56,11 @@ RSpec.describe ProfileBuilder, type: :model do
                                                        won_enemy_count: Integer,
                                                        relics: Integer,
                                                        cleared_achievements: Integer,
-
-                                                   }
+                                                   },
+                                                   total_rank: {
+                                                        rank: String,
+                                                        description: String,
+                                                    }
                                                })
     end
   end

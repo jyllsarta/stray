@@ -13,4 +13,40 @@
 require 'rails_helper'
 
 RSpec.describe AchievementRank, type: :model do
+  describe "#rank_at" do
+    subject { AchievementRank.rank_at(rank) }
+
+    # 他のテストで作ったレコードに引っ張られちゃうので全部消す
+    before do
+      AchievementRank.delete_all
+    end
+  
+    let!(:achievement_rank){ create(:achievement_rank, step_count: 0) }
+    let!(:achievement_rank2){ create(:achievement_rank, step_count: 20) }
+  
+    context do
+      let(:rank){ 0 }
+      it "returns collect model object" do
+        expect(subject.id).to eq(achievement_rank.id)
+      end
+    end
+    context do
+      let(:rank){ 19 }
+      it "returns collect model object" do
+        expect(subject.id).to eq(achievement_rank.id)
+      end
+    end
+    context do
+      let(:rank){ 20 }
+      it "returns collect model object" do
+        expect(subject.id).to eq(achievement_rank2.id)
+      end
+    end
+    context do
+      let(:rank){ 1000 }
+      it "returns collect model object" do
+        expect(subject.id).to eq(achievement_rank2.id)
+      end
+    end
+  end
 end

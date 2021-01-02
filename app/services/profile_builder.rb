@@ -4,6 +4,7 @@ class ProfileBuilder
   end
 
   def extract
+    achievement_rank = AchievementRank.rank_at(@user.achievement_steps.count)
     {
       parameters: {
         spica: @user.characters.spica.first.parameters,
@@ -23,6 +24,10 @@ class ProfileBuilder
           relics: @user.relics.count,
           cleared_achievements: @user.achievement_steps.count,
       },
+      total_rank: {
+        rank: achievement_rank.rank,
+        description: achievement_rank.description
+      }
     }
   end
 end

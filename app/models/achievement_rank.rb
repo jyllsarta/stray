@@ -11,4 +11,7 @@
 #
 
 class AchievementRank < ApplicationRecord
+  def self.rank_at(cleared_step_count)
+    where("step_count <= #{cleared_step_count}").order(step_count: :desc).first
+  end
 end
