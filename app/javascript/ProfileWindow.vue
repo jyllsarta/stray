@@ -19,9 +19,9 @@
               .key
                 | トータル冒険ランク
               .value
-                | {{profile.total_rank.rank}}
+                | {{profile.total_rank ? profile.total_rank.rank : "-"}}
               .descri
-                | {{profile.total_rank.description}}
+                | {{profile.total_rank ? profile.total_rank.description : "-"}}
             .details
               .detail.list_item_large(@mouseover="$store.commit('guide/updateGuide', 'ゲームを開始してから累計で獲得したコイン枚数。')")
                 .key
