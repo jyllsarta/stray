@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     remove(){
-      console.log("hide turn start fragment");
       this.$store.commit("battle/hideFragment", "turn_start");
     },
   },
