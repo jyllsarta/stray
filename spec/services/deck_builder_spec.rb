@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe DeckBuilder, type: :model do
+
+  before do
+    ClassCard.delete_all    
+  end
+
   let(:deck_builder){ DeckBuilder.new(user) }
   let!(:dungeon){ Dungeon.create }
   let!(:item1){ create(:item, str: 100, def: 100, dex: 100, agi: 100) }

@@ -1,9 +1,12 @@
 create_table "user_characters", force: :cascade  do |t|
-  t.integer :user_id, default: 0
-  t.integer :character_id, default: 0 #1:spica, 2:tirol
-  t.integer :hp, default: 0
-  t.integer :hp_max, default: 0
-  t.integer :level, default: 0
-  t.integer :exp, default: 0
+  t.integer :user_id,      null: false
+  t.integer :character_id, null: false, default: 0 #1:spica, 2:tirol
+  t.integer :hp,           null: false, default: 0
+  t.integer :hp_max,       null: false, default: 0
+  t.integer :level,        null: false, default: 0
+  t.integer :exp,          null: false, default: 0
   t.timestamps
 end
+
+# 有効にしたらspecがuser_character重複させまくってて死んだ
+# add_index :user_characters, [:user_id, :character_id], unique: true

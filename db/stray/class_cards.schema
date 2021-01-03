@@ -1,7 +1,9 @@
 create_table "class_cards", force: :cascade  do |t|
   t.integer :character_id
-  t.integer :rank
-  t.integer :order
-  t.belongs_to :card
+  t.integer :rank,    null: false, default: 0
+  t.integer :order,   null: false
+  t.belongs_to :card, null: false
   t.timestamps
 end
+
+add_index :class_cards, [:character_id, :rank, :order], unique: true

@@ -1,6 +1,6 @@
 create_table "user_character_equips", force: :cascade  do |t|
-  t.integer :user_character_id, default: 0
-  t.integer :user_item_id, default: nil # 装備枠は空なことがありえる
-  t.integer :position, default: 0
+  t.integer :user_character_id, null: false
+  t.integer :user_item_id,                   default: nil # 装備枠は空なことがありえる
+  t.integer :position,                       null: false, default: 0
   t.timestamps
 end

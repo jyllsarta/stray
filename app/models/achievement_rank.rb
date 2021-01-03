@@ -9,6 +9,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_achievement_ranks_on_step_count  (step_count) UNIQUE
+#
 
 class AchievementRank < ApplicationRecord
   def self.rank_at(cleared_step_count)

@@ -12,7 +12,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
-#  user_id               :integer          default(0), not null
+#  user_id               :integer          not null
 #
 
 require 'rails_helper'

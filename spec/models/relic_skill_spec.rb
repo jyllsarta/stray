@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  relic_id   :bigint
-#  skill_id   :bigint
+#  relic_id   :bigint           not null
+#  skill_id   :bigint           not null
 #
 # Indexes
 #

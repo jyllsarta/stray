@@ -1,11 +1,11 @@
 create_table "enemies", force: :cascade  do |t|
-  t.string :name
+  t.string :name 
   t.string :image_name
-  t.belongs_to :quest
-  t.integer :hp, default: 0
-  t.integer :power, default: 0
-  t.integer :tech, default: 0
-  t.integer :special, default: 0
-  t.integer :rank, default: 1
+  t.belongs_to :quest,  null: false 
+  t.integer :hp,        null: false, default: 0
+  t.integer :power,     null: false, default: 0
+  t.integer :tech,      null: false, default: 0
+  t.integer :special,   null: false, default: 0
+  t.integer :rank,      null: false, default: 1
   t.timestamps
 end

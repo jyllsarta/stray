@@ -6,3 +6,5 @@ create_table "achievement_steps", force: :cascade  do |t|
   t.string :icon_image_path
   t.timestamps
 end
+
+add_index :achievement_steps, [:achievement_id, :progress], unique: true

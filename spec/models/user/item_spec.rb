@@ -9,6 +9,10 @@
 #  item_id    :integer          default(0)
 #  user_id    :integer          default(0)
 #
+# Indexes
+#
+#  index_user_items_on_user_id_and_item_id  (user_id,item_id) UNIQUE
+#
 
 require 'rails_helper'
 

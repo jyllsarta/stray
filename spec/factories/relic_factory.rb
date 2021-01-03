@@ -4,7 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  category        :integer          default(NULL)
-#  cost            :integer          default(0)
+#  cost            :integer          default(0), not null
 #  description     :string(255)
 #  name            :string(255)
 #  rank            :integer          default(0)

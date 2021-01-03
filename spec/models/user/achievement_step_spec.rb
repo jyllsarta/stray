@@ -6,8 +6,8 @@
 #  received            :boolean          default(FALSE), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  achievement_step_id :bigint
-#  user_id             :bigint
+#  achievement_step_id :bigint           not null
+#  user_id             :bigint           not null
 #
 # Indexes
 #
