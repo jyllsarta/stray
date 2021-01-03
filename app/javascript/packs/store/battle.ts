@@ -12,6 +12,7 @@ export default {
       battle_outcome: false,
       player_damage: false,
       enemy_damage: false,
+      paralyze_effect: false,
     },
     damageDiffs: {
       player: 0,

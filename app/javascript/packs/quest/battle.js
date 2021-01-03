@@ -39,6 +39,7 @@ module.exports = class Battle{
 
         this.fieldEffectState?.stateMaster?.onAdd(this.fieldEffectState);
         this.invokePassiveSkills();
+        this.shouldShowParalyzeEffect = false;
     }
 
     // ***********************************************************************
@@ -419,5 +420,9 @@ module.exports = class Battle{
             tirol: state,
             enemy: state,
         };
+    }
+
+    flashPalalyzeEffect(){
+        this.shouldShowParalyzeEffect = true;
     }
 };

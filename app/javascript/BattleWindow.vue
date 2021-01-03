@@ -240,6 +240,8 @@
         OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
         PlayerDamage(v-if="$store.state.battle.fragments.player_damage")
         EnemyDamage(v-if="$store.state.battle.fragments.enemy_damage")
+        ParalyzeEffect(v-if="$store.state.battle.fragments.paralyze_effect")
+        ParalyzeEffectWatcher(:battle="battle")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -280,6 +282,8 @@ import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
 import BattleBackground from "./BattleBackground.vue";
 import BattleForeground from "./BattleForeground.vue";
+import ParalyzeEffectWatcher from "./fragments/ParalyzeEffectWatcher.vue";
+import ParalyzeEffect from "./fragments/ParalyzeEffect.vue";
 
 export default {
   components: {
@@ -300,6 +304,8 @@ export default {
     FieldEffect,
     BattleBackground,
     BattleForeground,
+    ParalyzeEffectWatcher,
+    ParalyzeEffect,
   },
   data: function () {
     return {
@@ -761,7 +767,7 @@ export default {
     // **
 
     postEngage(){
-      const enemyId = this.$store.state.battle.enemy_id || 101;
+      const enemyId = this.$store.state.battle.enemy_id || 201;
       const path = `/enemies/${enemyId}/engage.json`;
       const params = {
         enemy_id: enemyId

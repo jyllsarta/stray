@@ -36,6 +36,7 @@ class ParalyzeEntity {
       state.owner.tempBuffs.techAlterTo = 0;
       state.condition.count = 0;
       state.flash();
+      state.battle.flashPalalyzeEffect();
     }
   }
   onTurnEnd(state){
