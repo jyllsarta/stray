@@ -14,7 +14,7 @@
           .skill_select_area
             .head
               | 所持スキル
-            .all_skills.skills
+            .all_skills.skills.scrollable
               SkillList(:isPlayer="true", :skills="remainingSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
             .head
               | 装備中のスキル
@@ -198,12 +198,17 @@
         .all_skills{
           height: 230px;
           .skill_list{
+            height: 100%;
+            align-items: flex-start;
             flex-wrap: wrap;
+            align-content: flex-start;
           }
         }
         .selected_skills{
           height: 70px;
           .skill_list{
+            height: 100%;
+            align-items: flex-start;
             flex-wrap: wrap;
           }
         }
