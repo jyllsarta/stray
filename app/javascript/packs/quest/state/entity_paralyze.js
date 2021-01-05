@@ -1,6 +1,6 @@
-class ParalyzeEntity {
+class EntityParalyze {
   constructor() {
-    this.id = 1000;
+    this.id = 1004;
     this.ttl = -1;
     this.title = "雷痺";
     this.icon = "paralyze.gif";
@@ -47,4 +47,4 @@ class ParalyzeEntity {
   }
 }
 
-module.exports = new ParalyzeEntity();
+module.exports = new EntityParalyze();

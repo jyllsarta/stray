@@ -1,6 +1,6 @@
-class Paralyze {
+class FieldEffectParalyze {
   constructor() {
-    this.id = 100;
+    this.id = 104;
     this.ttl = -1;
     this.title = "雷痺";
     this.icon = "paralyze.gif";
@@ -24,13 +24,13 @@ class Paralyze {
   }
 
   onAdd(state){
-    const paralyzeStateId = 1000;
-    state.battle.addState(true, paralyzeStateId);
-    state.battle.addState(false, paralyzeStateId);
+    const stateId = 1004;
+    state.battle.addState(true, stateId);
+    state.battle.addState(false, stateId);
   }
   onTurnStart(state){}
   onDamage(state, damageAmount){}
   onTurnEnd(state){}
 }
 
-module.exports = new Paralyze();
+module.exports = new FieldEffectParalyze();

@@ -1,10 +1,10 @@
-class Burning {
+class FieldEffectWoodRegenerate {
   constructor() {
-    this.id = 101;
+    this.id = 102;
     this.ttl = -1;
-    this.title = "炎風";
-    this.icon = "burning.gif";
-    this.description = "ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
+    this.title = "翠癒";
+    this.icon = "default.gif";
+    this.description = "ダメージを受けなかったターンの終了時、HPを1回復する。";
     // これダサい！可能ならやめたい
     this.callbacks = {
       onAdd: true,
@@ -24,13 +24,13 @@ class Burning {
   }
 
   onAdd(state){
-    const burningStateId = 1001;
-    state.battle.addState(true, burningStateId);
-    state.battle.addState(false, burningStateId);
+    const stateId = 1002;
+    state.battle.addState(true, stateId);
+    state.battle.addState(false, stateId);
   }
   onTurnStart(state){}
   onDamage(state, damageAmount){}
   onTurnEnd(state){}
 }
 
-module.exports = new Burning();
+module.exports = new FieldEffectWoodRegenerate();
