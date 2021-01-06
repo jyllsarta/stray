@@ -10,7 +10,7 @@
       .description
         | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
       .body
-        .dungeon_list_tab
+        .dungeon_list_tab.scrollable
           .dungeon.hoverable.selectable(
             v-for="dungeon in visibleDungeons"
             @click="selectDungeon(dungeon.id)"
@@ -170,7 +170,7 @@ export default {
     display: flex;
   }
   .dungeon_list_tab{
-    padding: $space;
+    margin: $thin_space;
     display: flex;
     flex-direction: column;
     height: 430px;
@@ -178,7 +178,7 @@ export default {
     .dungeon{
       margin: $thin_space;
       padding: $space;
-      width: 100%;
+      width: calc(100% - 10px);
       .name{
         display: inline-block;
         width: 60%;

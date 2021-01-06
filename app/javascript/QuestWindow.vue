@@ -10,7 +10,7 @@
       .description
         | 強敵と戦い、クエストを進行させます。
       .body
-        .quest_list_tab
+        .quest_list_tab.scrollable
           .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
@@ -138,7 +138,7 @@ export default {
     display: flex;
   }
   .quest_list_tab{
-    padding: $space;
+    margin: $thin_space;
     display: flex;
     flex-direction: column;
     height: 430px;
@@ -146,7 +146,7 @@ export default {
     .quest{
       margin: $thin_space;
       padding: $space;
-      width: 100%;
+      width: calc(100% - 10px);
       .name{
         display: inline-block;
         width: 70%;
