@@ -37,19 +37,20 @@ RSpec.describe Quest, type: :model do
   describe "#cleared?" do
     let(:quest) { create(:quest) }
     let!(:enemy1) { create(:enemy, quest: quest) }
-    let!(:enemy2) { create(:enemy, quest: quest) }
+    let!(:enemy2) { create(:enemy, quest: quest, is_boss: true) }
+    let!(:enemy3) { create(:enemy, quest: quest, is_boss: false) } # ボスじゃないのでクリア条件に影響しない
     let(:user) { create(:user) }
     subject { quest.cleared?(user) }
 
     let!(:won_enemy1){ create(:user_won_enemy, user: user, enemy: enemy1) }
 
-    context "not cleared" do
+    context "boss not cleared" do
       it "false" do
         expect(subject).to eq(false)
       end
     end
 
-    context "all enemy cleared" do
+    context "boss cleared" do
       let!(:won_enemy2){ create(:user_won_enemy, user: user, enemy: enemy2) }
       it "true" do
         expect(subject).to eq(true)
@@ -59,7 +60,7 @@ RSpec.describe Quest, type: :model do
 
   describe "#visible?" do
     let(:quest) { create(:quest) }
-    let!(:enemy) { create(:enemy, quest: quest) }
+    let!(:enemy) { create(:enemy, quest: quest, is_boss: true) }
     let(:user) { create(:user) }
 
     let(:child_quest) { create(:quest, parent_quest_id: quest.id) }

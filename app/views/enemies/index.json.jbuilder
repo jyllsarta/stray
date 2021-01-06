@@ -2,6 +2,7 @@ json.enemies do
   json.array! @enemies do |enemy|
     json.id enemy.id
     json.name enemy.name_with_plus(@user.status.average_item_rank)
+    json.is_boss enemy.is_boss
     json.image_name enemy.image_name
     json.hp enemy.hp
     json.power enemy.power

@@ -5,6 +5,7 @@
 #  id         :bigint           not null, primary key
 #  hp         :integer          default(0), not null
 #  image_name :string(255)
+#  is_boss    :boolean          not null
 #  name       :string(255)
 #  power      :integer          default(0), not null
 #  rank       :integer          default(1), not null
@@ -25,6 +26,7 @@ FactoryBot.define do
     image_name { "golem" }
     hp { 5 }
     rank { 1 }
+    is_boss { false }
 
     association :quest, factory: :quest, strategy: :create
     trait :with_card do

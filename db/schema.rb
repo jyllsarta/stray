@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "name"
     t.string "image_name"
     t.bigint "quest_id", null: false
+    t.boolean "is_boss", null: false
     t.integer "hp", default: 0, null: false
     t.integer "power", default: 0, null: false
     t.integer "tech", default: 0, null: false

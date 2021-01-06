@@ -35,7 +35,7 @@
         .enemy_list.scrollable
           .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
-              | {{enemy.name}}
+              | {{enemy.is_boss ?  "★" : ""}}{{enemy.name}}
             .rank
               | {{enemy.rank}}
         .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
@@ -374,7 +374,7 @@
       .enemy{
         @include centering($height: 30px);
         margin: 2px;
-        width: calc(100% - 15px);
+        width: calc(100% - 6px);
         font-size: $font-size-mini;
         .name, .rank{
           display: inline-block;
