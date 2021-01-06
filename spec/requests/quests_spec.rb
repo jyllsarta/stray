@@ -42,7 +42,7 @@ RSpec.describe "Quest", type: :request do
       context "親クエストをクリアしていない場合は一覧に表示しない" do
         let!(:quest) { create(:quest) }
         let!(:child_quest) { create(:quest, parent_quest_id: quest.id) }
-        let!(:enemy){ create(:enemy, quest: quest) }
+        let!(:enemy){ create(:enemy, quest: quest, is_boss: true) }
         context "クリアしてないとき" do
           it '子クエストは配信されない' do
             expect(subject).to have_http_status(200)

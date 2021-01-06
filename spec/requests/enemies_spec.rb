@@ -38,6 +38,7 @@ RSpec.describe "Enemies", type: :request do
                                                      id: Integer,
                                                      name: String,
                                                      image_name: String,
+                                                     is_boss: Boolean,
                                                      hp: Integer,
                                                      power: Integer,
                                                      tech: Integer,
