@@ -145,11 +145,12 @@ SkillResolver {
         const main = to_self ? actor : target;
         const multiplier = value;
         for(let skill of main.skills){
-            skill.reusable = false;
             for(let effect of skill.effects) {
                 effect.value *= multiplier;
             }
         }
+        // カラミティ本体のID直接指定
+        this.battle.addState(to_self, 2001);
     }
 
     resolveAddPointToWeaker(actor, target, to_self, value){

@@ -14,6 +14,7 @@ let states = [
   require("./state/field_effect_magic_stream"),
   require("./state/entity_magic_stream"),
   require("./state/morphing"),
+  require("./state/lose_infinity_skill"),
 ]
 
 module.exports = class StateLibrary {
