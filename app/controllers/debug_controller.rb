@@ -69,6 +69,21 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def open_all_dungeons
+    Dungeon.all.each do |dungeon|
+      dp = current_user.status.dungeon_progresses.find_or_create_by(dungeon: dungeon)
+      dp.update!(cleared: true)
+    end
+    redirect_to clients_path
+  end
+
+  def open_all_quests
+    Enemy.where(is_boss: true).each do |enemy|
+      dp = current_user.won_enemies.find_or_create_by(enemy: enemy)
+    end
+    redirect_to clients_path
+  end
+
   private
 
   def current_user

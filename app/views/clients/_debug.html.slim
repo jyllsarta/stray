@@ -18,6 +18,9 @@ p
   = text_field_tag :star, 99999
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag '星のカケラをこの値にする'
+= form_tag open_all_dungeons_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag 'ダンジョンを全部オープン'
 = form_tag set_depth_debug_index_path
   = text_field_tag :depth, 999
   = hidden_field_tag :user_id, 0, id: nil
@@ -29,6 +32,9 @@ p
 = form_tag learn_all_user_skills_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag 'スキル全部習得'
+= form_tag open_all_quests_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag 'クエストを全部オープン'
 = form_tag clear_quest_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = select_tag :clear_quest_id, options_from_collection_for_select(Quest.all, :id, :name)
