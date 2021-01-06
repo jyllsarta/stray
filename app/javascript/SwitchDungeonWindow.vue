@@ -36,11 +36,11 @@
             .go_to_floor_label
               | 移動先：
             .top_floor
-              | 1F
-            .deepest_floor
               NumeratableNumber(:number="currentDungeonMaxDepth", :speed="0.4")
               .f
                 | F
+            .deepest_floor
+              | 1F
             .descriptions
               .dungeon_title(:key="selectingDungeon.name")
                 | {{selectingDungeon.name}}
@@ -95,7 +95,7 @@ export default {
       return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0;
     },
     sliderWidthPercent(){
-      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.5);
+      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.1);
       return Math.floor(ratio * 100) + "%";
     },
   },
@@ -212,12 +212,12 @@ export default {
       height: 232px;
       .depth_slider{
         position: absolute;
-        top: 0;
+        bottom: 0;
         left: 70px;
         width: 210px;
         height: 20px;
         transform-origin: left;
-        transform: rotate(90deg);
+        transform: rotate(-90deg);
         input{
           -webkit-appearance:none;
           width: 100%;
@@ -229,12 +229,14 @@ export default {
           -webkit-appearance:none;
           border-radius: $radius;
           border-right: 1px solid $gray2;
+          border-left: 1px solid $gray2;
+          background-color: $gray3-opacity;
           background-image: url("/images/ui/direction_tirol.png");
           background-size: contain;
           background-repeat: no-repeat;
-          background-position: bottom;
-          height: 135px;
-          width: 80px;
+          background-position: top;
+          height: 120px;
+          width: 45px;
         }
       }
       .go{
@@ -271,12 +273,12 @@ export default {
         position: absolute;
         top: $space;
         left: 100px;
+        display: flex;
       }
       .deepest_floor{
         position: absolute;
         bottom: $space;
         left: 100px;
-        display: flex;
       }
       .descriptions{
         position: absolute;
