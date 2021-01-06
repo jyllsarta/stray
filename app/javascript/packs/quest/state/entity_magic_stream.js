@@ -1,6 +1,6 @@
 class EntitymagicStream {
   constructor() {
-    this.id = 1005;
+    this.id = 1007;
     this.ttl = -1;
     this.title = "魔濁";
     this.icon = "default.gif";

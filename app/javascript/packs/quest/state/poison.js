@@ -1,6 +1,6 @@
 class Poison {
   constructor() {
-    this.id = 1;
+    this.id = 2003;
     this.ttl = 3;
     this.title = "毒";
     this.icon = "poison.gif";

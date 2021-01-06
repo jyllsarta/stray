@@ -1,6 +1,6 @@
 class Regenerate {
   constructor() {
-    this.id = 2;
+    this.id = 2004;
     this.ttl = 5;
     this.title = "リジェネ";
     this.icon = "regenerate.gif";

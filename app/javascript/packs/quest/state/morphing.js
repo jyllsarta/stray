@@ -1,6 +1,6 @@
 class Morphing {
   constructor() {
-    this.id = 102;
+    this.id = 2002;
     this.ttl = -1;
     this.title = "変幻";
     this.icon = "morphing.gif";
