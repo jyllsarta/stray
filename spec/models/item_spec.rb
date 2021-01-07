@@ -71,4 +71,17 @@ RSpec.describe Item, type: :model do
       )
     end
   end
+
+  describe "#max_rank" do
+    before do
+      Item.delete_all
+    end
+    subject { Item.max_rank }
+    let!(:item){ create :item, base_rank: 100}
+    let!(:item2){ create :item, base_rank: 105}
+    let!(:item3){ create :item, base_rank: 80}
+    it "returns string" do
+      expect(subject).to eq(105)
+    end
+  end
 end

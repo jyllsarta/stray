@@ -36,6 +36,7 @@ class Item < ApplicationRecord
   def self.reset_cache!
     @_rarity_map = nil
     @_indexed_hash = nil
+    @_max_rank = nil
   end
 
   def self.rarity_map
@@ -53,5 +54,9 @@ class Item < ApplicationRecord
 
   def self.indexed_hash
     @_indexed_hash ||= all.index_by(&:id)
+  end
+
+  def self.max_rank
+    @_max_rank ||= all.order(base_rank: :desc).first.base_rank
   end
 end

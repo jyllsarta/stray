@@ -38,15 +38,27 @@ class ItemEvent < Event
   def execute(user)
     user_item = find_or_build_user_item(user, @item_id)
     @user = user
-    @rank_delta = [[Constants.item.default_max_rank - user_item.rank, 0].max, amount].min
-    @_message = get_message(user_item)
 
-    # 最大強化済ならコインが代わりに貰える
-    if user_item.rank >= Constants.item.default_max_rank
-      user.status.add_coin(coin_amount)
+    if @rank <= Item.max_rank
+      @_rank_delta = [[Constants.item.default_max_rank - user_item.rank, 0].max, amount].min
+      @_message = get_message(user_item)
+      # 最大強化済ならコインが代わりに貰える
+      if user_item.rank >= Constants.item.default_max_rank
+        user.status.add_coin(coin_amount)
+      else
+        user_item.rank += @_rank_delta
+      end
     else
-      user_item.rank += @rank_delta
+      jittered_rank = @rank + Random.rand(Constants.item.higher_rank_jitter)
+      if item.base_rank + user_item.rank < jittered_rank
+        user_item.rank = @rank - item.base_rank
+        @_message = "#{item.name}を+#{user_item.rank}に強化した！"
+      else
+        user.status.add_coin(coin_amount)
+        @_message = "#{item.name}を拾って#{coin_amount}コインに変換した！"
+      end
     end
+
     @after_rank = user_item.rank
     @done = true
     user.achievement_logger.post(Achievement::Event::ItemEvent.new(user, self))
@@ -87,7 +99,7 @@ private
     return sample if sample.present?
 
     # サンプルの中に存在しないレアリティがピックされちゃった場合、それより前のid群からピックする
-    rarity_map.select{|id| id <= rank + Constants.event.item.id_range}.last
+    rarity_map.select{|id| id <= rank + Constants.event.item.id_range}.sample
   end
 
   def amount
@@ -97,8 +109,8 @@ private
   def get_message(user_item)
     if user_item.rank == 0
       "#{item.name}を拾った！"
-    elsif user_item.rank < Constants.item.default_max_rank && @rank_delta > 1
-      "#{item.name}を+#{user_item.rank + @rank_delta}に強化した！(まとめて+#{@rank_delta}強化した！)"
+    elsif user_item.rank < Constants.item.default_max_rank && @_rank_delta > 1
+      "#{item.name}を+#{user_item.rank + @_rank_delta}に強化した！(まとめて+#{@_rank_delta}強化した！)"
     elsif user_item.rank < Constants.item.default_max_rank
       "#{item.name}を+#{user_item.rank + 1}に強化した！"
     else
