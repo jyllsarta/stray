@@ -84,6 +84,11 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def set_all_item_rank
+    current_user.items.update_all(rank: params[:rank])
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
