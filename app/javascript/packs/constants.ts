@@ -44,7 +44,7 @@ const Constants = {
     maxLength: 300,
   },
   item: {
-    rankFactor: 1.015,
+    rankFactor: 1.01,
     rarityFactor: {
       1: 1.0,
       2: 1.1,

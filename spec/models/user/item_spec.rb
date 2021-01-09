@@ -59,24 +59,24 @@ RSpec.describe User::Item, type: :model do
 
       it "returns character's parameter" do
         expect(subject).to eq({
-                                  str: 16,
-                                  dex: 16,
-                                  def: 32,
+                                  str: 10,
+                                  dex: 10,
+                                  def: 20,
                                   agi: 0
                               })
       end
     end
 
     context "実在アイテム" do
-      let(:item){ create(:item, str: 201, dex: 104, def: 13, agi: 185, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
+      let(:item){ create(:item, str: 126, dex: 65, def: 65, agi: 160, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
       let(:user_item){ create(:user_item, user: user, item: item, rank: 0) }
 
       it "設計シート通りの値をビタで返すか" do
         expect(subject).to eq({
-                                  str: 1588,
-                                  dex: 821,
-                                  def: 102,
-                                  agi: 1462
+                                  str: 463,
+                                  dex: 239,
+                                  def: 239,
+                                  agi: 588
                               })
       end
     end
