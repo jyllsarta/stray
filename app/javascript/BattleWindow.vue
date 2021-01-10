@@ -51,6 +51,22 @@
               | 諦める
       .field_effect_area
         FieldEffect(:field-effect-state="battle.fieldEffectState")
+      BlankCardList.player_hands(
+        :right-side="false"
+        :max-item-count="parameters.maxHandCardCount"
+      )
+      BlankCardList.enemy_hands(
+        :right-side="true"
+        :max-item-count="parameters.maxHandCardCount"
+      )
+      BlankCardList.player_selecting_cards(
+        :right-side="false"
+        :max-item-count="2"
+      )
+      BlankCardList.enemy_selecting_cards(
+        :right-side="true"
+        :max-item-count="2"
+      )
       CardList.player_hands(
         :cards="playerHands"
         :right-side="false"
@@ -267,6 +283,7 @@ import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
 import SkillList from "./SkillList.vue";
 import CardList from "./CardList.vue";
+import BlankCardList from "./BlankCardList.vue";
 import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
@@ -289,6 +306,7 @@ export default {
   components: {
     SkillList,
     CardList,
+    BlankCardList,
     Slider,
     DamageParameters,
     BattleCharacter,
@@ -326,6 +344,7 @@ export default {
       parameters: {
         hpDelay: 100,
         updateRatio: 0.3,
+        maxHandCardCount: 8,
       },
       showMenu: false,
     };
