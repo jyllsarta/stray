@@ -61,11 +61,11 @@
       )
       BlankCardList.player_selecting_cards(
         :right-side="false"
-        :max-item-count="2"
+        :max-item-count="parameters.maxSelectCardCount"
       )
       BlankCardList.enemy_selecting_cards(
         :right-side="true"
-        :max-item-count="2"
+        :max-item-count="parameters.maxSelectCardCount"
       )
       CardList.player_hands(
         :cards="playerHands"
@@ -345,6 +345,7 @@ export default {
         hpDelay: 100,
         updateRatio: 0.3,
         maxHandCardCount: 8,
+        maxSelectCardCount: 2,
       },
       showMenu: false,
     };
