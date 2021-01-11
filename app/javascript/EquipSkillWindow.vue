@@ -50,22 +50,20 @@
                 v-if="pointingSkill.is_defence===true"
                 @mouseover="$store.commit('guide/updateGuide', '防御スキルの使用ターンはMPが増加しない。')"
                 )
-                .key
+                .center_key
                   | 防御スキル
               .detail(
                 v-if="pointingSkill.is_passive===true"
                 @mouseover="$store.commit('guide/updateGuide', 'パッシブスキル。バトル開始時に自動発動する。')"
                 )
-                .key
+                .center_key
                   | パッシブ
               .detail(
                 v-if="pointingSkill.is_exhaust===true"
                 @mouseover="$store.commit('guide/updateGuide', 'イグゾーストスキルはMPがマイナスでなければいつでも使用できる。')"
                 )
-                .key
+                .center_key
                   | イグゾースト
-                .value
-                  |
               .descri
                 | {{pointingSkill.description}}
         .decide_area
@@ -229,7 +227,6 @@
           height: 40px;
           display: flex;
           align-items: center;
-          margin-bottom: $space;
           .name{
             line-height: 100%;
             padding-top: 2px;
@@ -247,21 +244,21 @@
           .detail{
             display: flex;
             align-items: baseline;
-            padding: $space;
+            padding: $thin_space;
             border-bottom: 1px solid $gray3;
             .key{
               text-align: right;
               width: 50%;
-              height: $font-size-normal;
-              line-height: 100%;
-              padding-right: $space;
               border-right: 1px solid $gray3;
+              padding-right: $thin_space;
             }
             .value{
-              padding-left: $space;
               width: 50%;
-              height: $font-size-normal;
-              line-height: 100%;
+              padding-left: $thin_space;
+            }
+            .center_key{
+              width: 100%;
+              text-align: center;
             }
           }
         }
