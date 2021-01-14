@@ -42,6 +42,7 @@ class QuestBattle
         enemyId: @enemy.id,
         enemyName: @enemy.name_with_plus(player_rank),
         enemyImageName: @enemy.image_name,
+        enemyScaleType: @enemy.scale_type,
         enemyHp: @enemy.hp,
         enemyPower: @enemy.power,
         enemyTech: @enemy.tech,

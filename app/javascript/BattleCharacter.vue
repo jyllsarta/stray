@@ -39,8 +39,8 @@ export default {
       lose: String,
       magic: String,
       default: String,
-      scaleType: Number,
     },
+    scaleType: Number,
     reversed: Boolean,
     shield: Boolean,
     isPlayer: Boolean,
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     characterClass(){
-      return `${this.isPlayer ? 'player' : 'enemy'} scale_${this.images.scaleType || 1}`
+      return `${this.isPlayer ? 'player' : 'enemy'} scale_${this.scaleType || 1}`
     },
     normalImagePath(){
         if(!this.images.normal){

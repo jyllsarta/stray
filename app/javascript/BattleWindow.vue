@@ -11,6 +11,7 @@
           BattleCharacter(
             :character-name="'tirol'"
             :images="tirolImageLibrary"
+            :scale-type="1",
             :status="tirolStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -19,6 +20,7 @@
           BattleCharacter(
             :character-name="'spica'"
             :images="spicaImageLibrary"
+            :scale-type="1",
             :status="spicaStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -28,6 +30,7 @@
         BattleCharacter(
           :character-name="enemyImageName"
           :images="enemyImageLibrary",
+          :scale-type="enemyScaleType",
           :status="enemyStatus"
           :isPlayer="false"
           :currentSkillName="skillName"
@@ -377,7 +380,10 @@ export default {
       return Constants.battleCharacter.imageLibrary.tirol || {};
     },
     enemyImageLibrary(){
-      return Constants.battleCharacter.imageLibrary[this.enemyImageName] || {};
+      return Constants.battleCharacter.imageLibrary[this.enemyImageName] || Constants.battleCharacter.imageLibrary.default;
+    },
+    enemyScaleType(){
+      return this.battle?.enemy?.scaleType || 3;
     },
     playerHp(){
       return this.battle?.player?.hp || 0;

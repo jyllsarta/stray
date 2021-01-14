@@ -4,6 +4,7 @@ json.enemies do
     json.name enemy.name_with_plus(@user.status.average_item_rank)
     json.is_boss enemy.is_boss
     json.image_name enemy.image_name
+    json.scale_type enemy.scale_type
     json.hp enemy.hp
     json.power enemy.power
     json.tech enemy.tech
