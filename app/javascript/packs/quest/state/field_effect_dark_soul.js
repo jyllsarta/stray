@@ -5,13 +5,6 @@ class FieldEffectDarkSoul {
     this.title = "黒熱";
     this.icon = "default.gif";
     this.description = "全ダメージ+1。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: true,
-      onTurnStart: false,
-      onTurnEnd: false,
-      onDamage: false,
-    }
   }
 
   getInitialCondition(){
@@ -28,9 +21,6 @@ class FieldEffectDarkSoul {
     state.battle.addState(true, stateId);
     state.battle.addState(false, stateId);
   }
-  onTurnStart(state){}
-  onDamage(state, damageAmount){}
-  onTurnEnd(state){}
 }
 
 module.exports = new FieldEffectDarkSoul();

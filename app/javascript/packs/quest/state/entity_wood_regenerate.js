@@ -5,13 +5,6 @@ class EntityWoodRegenerate {
     this.title = "翠癒";
     this.icon = "default.gif";
     this.description = "ダメージを受けなかったターンの終了時、HPを1回復する。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: false,
-      onTurnStart: false,
-      onTurnEnd: true,
-      onDamage: true,
-    }
   }
 
   getInitialCondition(){
@@ -24,8 +17,6 @@ class EntityWoodRegenerate {
     return state.condition.damageCount;
   }
 
-  onAdd(state){}
-  onTurnStart(state){}
   onDamage(state, damageAmount){
     state.condition.damageCount += 1;
   }

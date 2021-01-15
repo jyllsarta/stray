@@ -146,7 +146,7 @@ module.exports = class Character{
         }
         if(value > 0){
             for(let state of this.states){
-                state.stateMaster.onDamage(state);
+                state.onDamage();
             }
         }
         this.hp -= value;
@@ -178,9 +178,7 @@ module.exports = class Character{
 
     addState(stateInstance){
         this.states.push(stateInstance);
-        if(stateInstance.stateMaster.callbacks.onAdd){
-            stateInstance.stateMaster.onAdd(stateInstance);
-        }
+        stateInstance.onAdd();
     }
 
     attenuateAndSweepStates(){
@@ -194,7 +192,7 @@ module.exports = class Character{
 
     hasSpecificCallbackState(callbackName){
         for(let state of this.states){
-            if(state.stateMaster.callbacks[callbackName]){
+            if(state.stateMaster[callbackName]){
                return true;
             }
         }

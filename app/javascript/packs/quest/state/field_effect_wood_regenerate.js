@@ -5,13 +5,6 @@ class FieldEffectWoodRegenerate {
     this.title = "翠癒";
     this.icon = "default.gif";
     this.description = "ダメージを受けなかったターンの終了時、HPを1回復する。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: true,
-      onTurnStart: false,
-      onTurnEnd: false,
-      onDamage: false,
-    }
   }
 
   getInitialCondition(){
@@ -28,9 +21,6 @@ class FieldEffectWoodRegenerate {
     state.battle.addState(true, stateId);
     state.battle.addState(false, stateId);
   }
-  onTurnStart(state){}
-  onDamage(state, damageAmount){}
-  onTurnEnd(state){}
 }
 
 module.exports = new FieldEffectWoodRegenerate();

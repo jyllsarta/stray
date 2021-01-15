@@ -5,13 +5,6 @@ class Poison {
     this.title = "毒";
     this.icon = "poison.gif";
     this.description = "毒状態。ターン開始時・ダメージ時・ターン終了時に1ダメージを受ける。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: false,
-      onTurnStart: true,
-      onTurnEnd: true,
-      onDamage: true,
-    }
   }
 
   getInitialCondition(){
@@ -22,7 +15,6 @@ class Poison {
     return state.ttl;
   }
 
-  onAdd(){}
   onTurnStart(state){
     state.owner.hp -= 1;
     state.flash();

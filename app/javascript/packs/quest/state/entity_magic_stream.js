@@ -5,13 +5,6 @@ class EntitymagicStream {
     this.title = "魔濁";
     this.icon = "default.gif";
     this.description = "ターン終了時にMP+20。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: false,
-      onTurnStart: false,
-      onTurnEnd: true,
-      onDamage: false,
-    }
   }
 
   getInitialCondition(){
@@ -24,9 +17,6 @@ class EntitymagicStream {
     return ""; //バグったらごめんって感じ
   }
 
-  onAdd(state){}
-  onTurnStart(state){}
-  onDamage(state, damageAmount){}
   onTurnEnd(state){
     state.owner.addMp(20);
   }

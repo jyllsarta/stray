@@ -5,13 +5,6 @@ class EntityDarkSoul {
     this.title = "黒熱";
     this.icon = "default.gif";
     this.description = "全ダメージ+1。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: false,
-      onTurnStart: false,
-      onTurnEnd: false,
-      onDamage: true,
-    }
   }
 
   getInitialCondition(){
@@ -24,12 +17,9 @@ class EntityDarkSoul {
     return state.condition.damageCount;
   }
 
-  onAdd(state){}
-  onTurnStart(state){}
   onDamage(state, damageAmount){
     state.owner.hp -= 1;
   }
-  onTurnEnd(state){}
 }
 
 module.exports = new EntityDarkSoul();

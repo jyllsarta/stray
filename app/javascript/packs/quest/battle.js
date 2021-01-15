@@ -37,7 +37,7 @@ module.exports = class Battle{
         this.pickEnemyCards();
         this.pickEnemySkill();
 
-        this.fieldEffectState?.stateMaster?.onAdd(this.fieldEffectState);
+        this.fieldEffectState?.onAdd();
         this.invokePassiveSkills();
         this.shouldShowParalyzeEffect = false;
     }
@@ -122,13 +122,13 @@ module.exports = class Battle{
 
     invokeTurnStartStateEffect(){
         if(this.fieldEffectState){
-            this.fieldEffectState.stateMaster.onTurnStart(this.fieldEffectState);
+            this.fieldEffectState.onTurnStart();
         }
         for(let stateInstance of this.player.states){
-            stateInstance.stateMaster.onTurnStart(stateInstance);
+            stateInstance.onTurnStart();
         }
         for(let stateInstance of this.enemy.states){
-            stateInstance.stateMaster.onTurnStart(stateInstance);
+            stateInstance.onTurnStart();
         }
     }
 
@@ -247,11 +247,14 @@ module.exports = class Battle{
     }
 
     invokeTurnEndStateEffect(){
+        if(this.fieldEffectState){
+            this.fieldEffectState.onTurnEnd();
+        }
         for(let stateInstance of this.player.states){
-            stateInstance.stateMaster.onTurnEnd(stateInstance);
+            stateInstance.onTurnEnd(stateInstance);
         }
         for(let stateInstance of this.enemy.states){
-            stateInstance.stateMaster.onTurnEnd(stateInstance);
+            stateInstance.onTurnEnd(stateInstance);
         }
     }
 
@@ -310,7 +313,7 @@ module.exports = class Battle{
     }
 
     shouldStopWith(callbackName){
-        return this.fieldEffectState?.stateMaster?.callbacks[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
+        return this.fieldEffectState?.stateMaster[callbackName] || this.player.hasSpecificCallbackState(callbackName) || this.enemy.hasSpecificCallbackState(callbackName);
     }
 
     pickEnemyCards(){

@@ -5,13 +5,6 @@ class EntityParalyze {
     this.title = "雷痺";
     this.icon = "paralyze.gif";
     this.description = "5回ダメージを受けるとスタンし、そのターン中の力技が0になる。ダメージを受けなかったらターン終了時にカウント-1。";
-    // これダサい！可能ならやめたい
-    this.callbacks = {
-      onAdd: false,
-      onTurnStart: false,
-      onTurnEnd: true,
-      onDamage: true,
-    }
   }
 
   getInitialCondition(){
@@ -25,9 +18,6 @@ class EntityParalyze {
     return state.condition.count;
   }
 
-  onAdd(state){}
-  onTurnStart(state){
-  }
   onDamage(state, damageAmount){
     state.condition.count += 1;
     state.condition.damagedThisTurn = true;

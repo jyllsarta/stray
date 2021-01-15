@@ -17,4 +17,29 @@ module.exports = class StateInstance {
     //実装を意識して具体的数値を書いちゃってるの悔しい
     setTimeout(()=>{ this.isFlashing =false; }, 300);
   }
+
+  onAdd(){
+    if(!this.stateMaster.onAdd){
+      return;
+    }
+    this.stateMaster.onAdd(this);
+  }
+  onTurnStart(){
+    if(!this.stateMaster.onTurnStart){
+      return;
+    }
+    this.stateMaster.onTurnStart(this);
+  }
+  onTurnEnd(){
+    if(!this.stateMaster.onTurnEnd){
+      return;
+    }
+    this.stateMaster.onTurnEnd(this);
+  }
+  onDamage(){
+    if(!this.stateMaster.onDamage){
+      return;
+    }
+    this.stateMaster.onDamage(this);
+  }
 };
