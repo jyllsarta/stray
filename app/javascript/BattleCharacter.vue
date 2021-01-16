@@ -232,7 +232,7 @@ export default {
   }
   .enemy.waiting.scale_2{
     left: 40px;
-    top: 90px;
+    top: 77px;
   }
   .enemy.waiting.scale_3{
     left: 40px;
