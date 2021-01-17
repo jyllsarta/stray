@@ -152,7 +152,7 @@ export default {
     viewStyle(viewId){
       const opacity = viewId === 3 ? Math.abs(Math.sin(this.layerStatus[viewId] / 20)) * 0.7 + 0.3 : 1;
       return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/1-${viewId}.png")`,
+        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${this.scapeId()}-${viewId}.png")`,
         backgroundPosition: `-${Math.floor(this.layerStatus[viewId])}px 0`,
         opacity: opacity,
       }
@@ -166,6 +166,9 @@ export default {
         this.$store.dispatch("achievement/fetchAchievements");
         this.$store.dispatch("achievement/fetchAchievementCache");
       });
+    },
+    scapeId(){
+      return (Math.floor(this.$store.state.user.status.current_dungeon_depth / 100) % 4 + 1) || 1;
     },
   },
   computed: {
