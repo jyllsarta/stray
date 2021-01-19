@@ -21,6 +21,7 @@ export default {
       coin: 0,
       star: 0,
       velocity: 100,
+      max_item_rank_for_rankup: 100,
     },
     characters: {
       spica: {},

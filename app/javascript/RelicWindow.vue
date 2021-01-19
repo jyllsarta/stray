@@ -378,6 +378,16 @@ export default {
   left: 540px;
 }
 
+.relic_98{
+  top:  182px;
+  left: 600px;
+}
+
+.relic_99{
+  top:  236px;
+  left: 600px;
+}
+
 // スピカスキル
 .relic_101{
   top:   20px;
