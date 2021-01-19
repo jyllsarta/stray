@@ -19,7 +19,7 @@ class Relic < ApplicationRecord
   class AlreadyObtained < StandardError; end
   has_one :parent, class_name: "::Relic", foreign_key: :id, primary_key: :parent_relic_id
   has_one :relic_skill
-  enum category: { event_time: 1, spica_rank: 2, tirol_rank: 3, skill: 4, hp: 5 }
+  enum category: { event_time: 1, spica_rank: 2, tirol_rank: 3, skill: 4, hp: 5, item_rank: 6 }
 
   def obtain!(user)
     user.with_lock do

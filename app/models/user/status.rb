@@ -162,6 +162,10 @@ class User::Status < ApplicationRecord
     @_event_wait_reduction_seconds ||= user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
+  def max_item_rank_for_rankup
+    @_max_item_rank_for_rankup ||= (user.relics.joins(:relic).where(relics: {category: :item_rank}).count * Constants.item.additional_item_rank_per_relic + Constants.item.default_max_rank)
+  end
+
   def quest_battle_additional_hp
     # HP追加レリックの個数そのものが性能
     user.relics.joins(:relic).where(relics: {category: :hp}).count

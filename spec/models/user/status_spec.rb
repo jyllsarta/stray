@@ -513,6 +513,22 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#max_item_rank_for_rankup" do
+    subject { status.max_item_rank_for_rankup }
+    context "without relic" do
+      it "100" do
+        expect(subject).to eq(100)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :item_rank) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      it "returns max rank" do
+        expect(subject).to eq(150)
+      end
+    end
+  end
+
   describe "#quest_battle_additional_hp" do
     subject { status.quest_battle_additional_hp }
     context "without relic" do
