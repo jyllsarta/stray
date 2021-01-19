@@ -40,10 +40,10 @@ class ItemEvent < Event
     @user = user
 
     if @rank <= Item.max_rank
-      @_rank_delta = [[Constants.item.default_max_rank - user_item.rank, 0].max, amount].min
+      @_rank_delta = [[max_rank - user_item.rank, 0].max, amount].min
       @_message = get_message(user_item)
       # 最大強化済ならコインが代わりに貰える
-      if user_item.rank >= Constants.item.default_max_rank
+      if user_item.rank >= max_rank
         user.status.add_coin(coin_amount)
       else
         user_item.rank += @_rank_delta
@@ -73,6 +73,10 @@ class ItemEvent < Event
   end
 
 private
+
+  def max_rank
+    @user.status.max_item_rank_for_rankup
+  end
 
   def find_or_build_user_item(user, item_id)
     item = user.status.memoized_items_hash[item_id]
@@ -109,12 +113,12 @@ private
   def get_message(user_item)
     if user_item.rank == 0
       "#{item.name}を拾った！"
-    elsif user_item.rank < Constants.item.default_max_rank && @_rank_delta > 1
+    elsif user_item.rank < max_rank && @_rank_delta > 1
       "#{item.name}を+#{user_item.rank + @_rank_delta}に強化した！(まとめて+#{@_rank_delta}強化した！)"
-    elsif user_item.rank < Constants.item.default_max_rank
+    elsif user_item.rank < max_rank
       "#{item.name}を+#{user_item.rank + 1}に強化した！"
     else
-      "#{item.name}を拾った！(+#{Constants.item.default_max_rank}以上だったので#{coin_amount}コインに変換した！)"
+      "#{item.name}を拾った！(+#{max_rank}以上だったので#{coin_amount}コインに変換した！)"
     end
   end
 end

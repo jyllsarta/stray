@@ -121,6 +121,16 @@ RSpec.describe ItemEvent, type: :model do
           subject
           expect(event.logs[0][:message].include?("まとめて")).to eq(false)
         end
+
+        context "ランク最大値付近でも上限突破していたら" do
+          before do
+            allow_any_instance_of(ItemEvent).to receive(:max_rank).and_return(150)
+          end
+          it "新しい上限までは取得できる" do
+            subject
+            expect(user.items.find(user_item.id).rank).to eq(102)
+          end
+        end
       end
     end
 
