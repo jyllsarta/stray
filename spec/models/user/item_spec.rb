@@ -1,3 +1,4 @@
+
 # == Schema Information
 #
 # Table name: user_items
@@ -129,17 +130,13 @@ RSpec.describe User::Item, type: :model do
 
     context "about rank" do
       let(:item){ create(:item, base_rank: 10) }
-      let(:user_item){ create(:user_item, user: user, item: item, rank: 19) }
+      let(:user_item){ create(:user_item, user: user, item: item, rank: 101) }
 
       before do
         user.status.add_coin!(1000000)
       end
 
       context "insufficient" do
-        before do
-          allow(user.status).to receive(:max_item_rank).and_return(19)
-        end
-
         it "raises error" do
           expect{subject}.to raise_error(User::Item::InsufficientRank)
         end
@@ -147,7 +144,7 @@ RSpec.describe User::Item, type: :model do
 
       context "sufficient" do
         before do
-          allow(user.status).to receive(:max_item_rank).and_return(20)
+          allow(user.status).to receive(:max_item_rank_for_rankup).and_return(150)
         end
         it "rank up" do
           expect{subject}.to change(user_item, :rank).by(1)

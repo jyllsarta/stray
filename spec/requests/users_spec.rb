@@ -152,6 +152,7 @@ RSpec.describe "Users", type: :request do
                                                            coin: Integer,
                                                            star: Integer,
                                                            velocity: Integer,
+                                                           max_item_rank_for_rankup: Integer,
                                                        },
                                                        characters: {
                                                            spica: Hash,

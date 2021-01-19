@@ -60,7 +60,7 @@ class User::Item < ApplicationRecord
   private
 
   def max_rank
-    [user.status.max_item_rank, 10].max
+    user.status.max_item_rank_for_rankup
   end
 
   def rank_up_cost(count)
