@@ -39,35 +39,6 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
-  describe "#at_boss_floor?" do
-    subject { status.at_boss_floor? }
-    context "not boss floor" do
-      before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 2)
-      end
-      it "returns false" do
-        expect(subject).to eq(false)
-      end
-    end
-    context "boss floor" do
-      before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 1)
-      end
-      it "returns true" do
-        expect(subject).to eq(true)
-      end
-
-      context "already reached" do
-        before do
-          status.current_dungeon_progress.update!(max_depth: Constants.dungeon.boss_floor_frequency + 1)
-        end
-        it "returns true" do
-          expect(subject).to eq(false)
-        end
-      end
-    end
-  end
-
   describe "#switch_dungeon!" do
     subject { status.switch_dungeon!(dungeon.id, depth) }
     context "move to floor 50" do

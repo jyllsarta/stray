@@ -38,11 +38,6 @@ class User::Status < ApplicationRecord
     dungeon.rank(current_dungeon_depth)
   end
 
-  def at_boss_floor?
-    # 「その次のフロアを踏んだことがない」ならばそのフロアのボスを倒していない
-    dungeon.is_boss_floor?(current_dungeon_depth) && current_dungeon_progress.unexplored?(current_dungeon_depth + 1)
-  end
-
   def switch_dungeon!(dungeon_id, depth)
     raise CannotSwitchDungeon unless can_switch_dungeon?(dungeon_id, depth)
 
