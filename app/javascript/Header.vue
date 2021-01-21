@@ -60,9 +60,6 @@ export default {
   store,
   computed: {
     floorColorClass(){
-      if(this.$store.getters['user/isNearBossFloor']){
-        return "boss_floor"
-      }
       if(this.$store.getters['user/isOverFloor']){
         return "over_floor";
       }
@@ -140,9 +137,6 @@ export default {
     }
     .over_floor{
       color: $yellow;
-    }
-    .boss_floor{
-      color: $plus;
     }
   }
   .resources{
