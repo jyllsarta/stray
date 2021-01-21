@@ -31,4 +31,8 @@ class User::DungeonProgress < ApplicationRecord
   def clear!
     self.update!(cleared: true)
   end
+
+  def cached_dungeon
+    @_dungeon ||= dungeon
+  end
 end
