@@ -142,6 +142,9 @@ export default {
       });
     },
     scroll(){
+      if(!this.$store.getters['user/isAliveCharacter']("spica") || !this.$store.getters['user/isAliveCharacter']("tirol")){
+        return;
+      }
       for(let i=0; i<5; ++i){
         this.layerStatus[i] += this.scrollAmount[i];
         if(this.layerStatus[i] > this.maxScrollPosition){
