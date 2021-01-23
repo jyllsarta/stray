@@ -33,9 +33,6 @@ export default {
     height: 40%;
     font-size: 14px;
     border-bottom: 1px solid $gray3;
-    &::after{
-      content: "：";
-    }
   }
   .content{
     width: 100%;
