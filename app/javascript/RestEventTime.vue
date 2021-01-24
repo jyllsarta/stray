@@ -3,7 +3,10 @@
     .label
       | 不在時イベント再生
     .content
-      | {{restSeconds}}秒
+      .main
+        | {{restSeconds}}
+      .sep
+        | 秒
 </template>
 
 <script lang="ts">
@@ -46,6 +49,14 @@ export default {
     text-align: right;
     line-height: 100%;
     color: $yellow;
+    .main{
+      display: inline-block;
+    }
+    .sep{
+      padding: 0 $subtle_space 0 $subtle_space;
+      display: inline-block;
+      font-size: $font-size-mini;
+    }
   }
 }
 </style>

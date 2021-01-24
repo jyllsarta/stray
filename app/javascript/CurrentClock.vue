@@ -3,7 +3,16 @@
     .label
       | 時刻
     .content
-      | {{month}}月{{date}}日 {{hours}}:{{minutes}}:{{seconds}}
+      .main
+        | {{month}}
+      .sep
+        | 月
+      .main
+        | {{date}}
+      .sep
+        | 日　
+      .main
+        | {{hours}}:{{minutes}}:{{seconds}}
 </template>
 
 <script lang="ts">
@@ -63,6 +72,14 @@ export default {
   padding-top: $space;
   text-align: right;
   line-height: 100%;
+  .main{
+    display: inline-block;
+  }
+  .sep{
+    padding: 0 $subtle_space 0 $subtle_space;
+    display: inline-block;
+    font-size: $font-size-mini;
+  }
 }
 
 </style>
