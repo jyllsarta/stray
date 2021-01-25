@@ -179,6 +179,9 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "relics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.integer "page", default: 0
+    t.integer "grid_x", default: 0
+    t.integer "grid_y", default: 0
     t.integer "category", default: 0
     t.integer "rank", default: 0
     t.integer "cost", default: 0, null: false

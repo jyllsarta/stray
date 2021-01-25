@@ -9,6 +9,7 @@
 #  name       :string(255)
 #  power      :integer          default(0), not null
 #  rank       :integer          default(1), not null
+#  scale_type :integer          default(1), not null
 #  special    :integer          default(0), not null
 #  tech       :integer          default(0), not null
 #  created_at :datetime         not null
