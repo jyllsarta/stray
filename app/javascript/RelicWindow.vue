@@ -11,6 +11,13 @@
         | 星のカケラを使って、新しい能力を解放します。
       .body
         .field
+          .tabs
+            .tab.selectable(:class="currentPage===1 ? 'selected' : ''", @click="currentPage=1")
+              | スピカのスキル
+            .tab.selectable(:class="currentPage===2 ? 'selected' : ''", @click="currentPage=2")
+              | チロルのスキル
+            .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="currentPage=3")
+              | なんでもスキル
           .relics
             .relic.selectable(
               v-for="relic in $store.state.masterdata.relics"
@@ -73,6 +80,7 @@ export default {
   data: function () {
     return {
       selectingRelicId: null,
+      currentPage: 1,
       relicLabels: {
         disabled: "取得不可",
         got: "取得済み",
@@ -169,8 +177,20 @@ export default {
     height: 300px;
     width: 100%;
     border-bottom: 1px solid $gray3;
+    display: flex;
+    .tabs{
+      width: 200px;
+      height: 100%;
+      padding: $thin_space;
+      .tab{
+        width: 100%;
+        height: 100px;
+        margin-bottom: $space;
+        @include centering($height: 60px);
+      }
+    }
     .relics{
-      position: absolute;
+      position: relative;
       .relic{
         position: absolute;
         width: 50px;
