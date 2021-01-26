@@ -36,9 +36,9 @@ class QuestBattle
     {
         seed: @seed,
         playerHp: 5 + @user.status.quest_battle_additional_hp,
-        playerPower: 1,
-        playerTech: 1,
-        playerSpecial: 1,
+        playerPower: 1 + @user.status.quest_battle_additional_power_tech_damage,
+        playerTech: 1 + @user.status.quest_battle_additional_power_tech_damage,
+        playerSpecial: 1 + @user.status.quest_battle_additional_special_damage,
         enemyId: @enemy.id,
         enemyName: @enemy.name_with_plus(player_rank),
         enemyImageName: @enemy.image_name,

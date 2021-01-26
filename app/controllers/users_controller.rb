@@ -33,9 +33,9 @@ class UsersController < ApplicationController
     @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
     @quest_battle_parameters = {
       hp: 5 + current_user.status.quest_battle_additional_hp,
-      power: 1,
-      tech: 1,
-      special: 1
+      power: 1 + current_user.status.quest_battle_additional_power_tech_damage,
+      tech: 1 + current_user.status.quest_battle_additional_power_tech_damage,
+      special: 1 + current_user.status.quest_battle_additional_special_damage,
     }
   end
 
