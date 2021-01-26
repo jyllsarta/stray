@@ -20,8 +20,9 @@
               | なんでもスキル
           .relics
             .relic.selectable(
-              v-for="relic in $store.state.masterdata.relics"
+              v-for="relic in displayRelics"
               :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
+              :style="relicStyle(relic)"
               @click="selectRelic(relic.id)"
               )
               img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
@@ -111,6 +112,9 @@ export default {
     hasSufficientStar(){
       return this.$store.state.user?.status?.star >= (this.selectingRelic.cost || 0);
     },
+    displayRelics(){
+      return Object.values(this.$store.state.masterdata.relics).filter(relic=>relic.page===this.currentPage);
+    }
   },
   methods: {
     relic(id){
@@ -160,6 +164,12 @@ export default {
     },
     selectingRelicClass(relicId){
       return relicId === this.selectingRelicId ? "selecting" : "";
+    },
+    relicStyle(relic){
+      return {
+        left: 10 + (relic.grid_x - 1) * 60,
+        top: 10 + (relic.grid_y - 1) * 60,
+      }
     }
   }
 }
@@ -332,135 +342,6 @@ export default {
     filter: brightness(150%);
   }
 }
-
-
-// 各レリックの場所定義
-// 置き方を自由に決めたいので、flexではなく全部absoluteでゴリ押す
-
-// イベント短縮
-.relic_31{
-  top:   20px;
-  left:  20px;
-}
-.relic_32{
-  top:   80px;
-  left:  20px;
-}
-.relic_33{
-  top:  140px;
-  left:  20px;
-}
-
-.relic_11{
-  top:  100px;
-  left: 100px;
-}
-
-.relic_12{
-  top:  180px;
-  left: 100px;
-}
-
-.relic_21{
-  top:  100px;
-  left: 320px;
-}
-
-.relic_22{
-  top:  180px;
-  left: 320px;
-}
-
-// HPレリック
-
-.relic_41{
-  top:   20px;
-  left: 540px;
-}
-
-.relic_42{
-  top:   74px;
-  left: 540px;
-}
-
-.relic_43{
-  top:  128px;
-  left: 540px;
-}
-
-.relic_44{
-  top:  182px;
-  left: 540px;
-}
-
-.relic_45{
-  top:  236px;
-  left: 540px;
-}
-
-.relic_98{
-  top:  182px;
-  left: 600px;
-}
-
-.relic_99{
-  top:  236px;
-  left: 600px;
-}
-
-// スピカスキル
-.relic_101{
-  top:   20px;
-  left: 170px;
-}
-.relic_102{
-  top:   20px;
-  left: 240px;
-}
-.relic_103{
-  top:  100px;
-  left: 170px;
-}
-.relic_104{
-  top:  100px;
-  left: 240px;
-}
-.relic_105{
-  top:  180px;
-  left: 170px;
-}
-.relic_106{
-  top:  180px;
-  left: 240px;
-}
-
-// チロルスキル
-.relic_201{
-  top:   20px;
-  left: 390px;
-}
-.relic_202{
-  top:   20px;
-  left: 460px;
-}
-.relic_203{
-  top:  100px;
-  left: 390px;
-}
-.relic_204{
-  top:  100px;
-  left: 460px;
-}
-.relic_205{
-  top:  180px;
-  left: 390px;
-}
-.relic_206{
-  top:  180px;
-  left: 460px;
-}
-
-
 
 @keyframes vertical-text-in {
   0% {
