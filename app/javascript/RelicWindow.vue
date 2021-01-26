@@ -12,11 +12,11 @@
       .body
         .field
           .tabs
-            .tab.selectable(:class="currentPage===1 ? 'selected' : ''", @click="currentPage=1")
+            .tab.selectable(:class="currentPage===1 ? 'selected' : ''", @click="switchPage(1)")
               | スピカのスキル
-            .tab.selectable(:class="currentPage===2 ? 'selected' : ''", @click="currentPage=2")
+            .tab.selectable(:class="currentPage===2 ? 'selected' : ''", @click="switchPage(2)")
               | チロルのスキル
-            .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="currentPage=3")
+            .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="switchPage(3)")
               | なんでもスキル
           .relics
             .relic.selectable(
@@ -170,6 +170,10 @@ export default {
         left: 10 + (relic.grid_x - 1) * 60,
         top: 10 + (relic.grid_y - 1) * 60,
       }
+    },
+    switchPage(toPage){
+      this.currentPage = toPage;
+      this.selectingRelicId = Object.values(this.$store.state.masterdata.relics).filter(relic=>relic.page===this.currentPage)[0].id;
     }
   }
 }
