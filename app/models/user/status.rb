@@ -166,6 +166,16 @@ class User::Status < ApplicationRecord
     user.relics.joins(:relic).where(relics: {category: :hp}).count
   end
 
+  def quest_battle_additional_power_tech_damage
+    # 力技追加レリックの個数そのものが性能
+    user.relics.joins(:relic).where(relics: {category: :power_tech_damage}).count
+  end
+
+  def quest_battle_additional_special_damage
+    # SP追加レリックの個数そのものが性能
+    user.relics.joins(:relic).where(relics: {category: :special_damage}).count
+  end
+
   def average_item_rank
     preload_item_associations!
     user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:item_rank).sum / (Constants.equip.max_count * 2)

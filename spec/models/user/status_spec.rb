@@ -518,6 +518,42 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#quest_battle_additional_power_tech_damage" do
+    subject { status.quest_battle_additional_power_tech_damage }
+    context "without relic" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :power_tech_damage) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      let(:relic2){ create(:relic, category: :power_tech_damage) }
+      let!(:user_relic2){ create(:user_relic, user: user, relic: relic2) }
+      it "returns max rank" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
+
+  describe "#quest_battle_additional_special_damage" do
+    subject { status.quest_battle_additional_special_damage }
+    context "without relic" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :special_damage) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      let(:relic2){ create(:relic, category: :special_damage) }
+      let!(:user_relic2){ create(:user_relic, user: user, relic: relic2) }
+      it "returns max rank" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
+
   describe "#average_item_rank" do
     let!(:dungeon){ create(:dungeon) }
     let!(:item1){ create(:item, str: 100, def: 100, dex: 100, agi: 100) }
