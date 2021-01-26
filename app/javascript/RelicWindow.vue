@@ -167,8 +167,8 @@ export default {
     },
     relicStyle(relic){
       return {
-        left: 10 + (relic.grid_x - 1) * 60,
-        top: 10 + (relic.grid_y - 1) * 60,
+        left: 8 + (relic.grid_x - 1) * 58,
+        top: 8 + (relic.grid_y - 1) * 58,
       }
     },
     switchPage(toPage){
