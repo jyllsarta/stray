@@ -36,10 +36,10 @@ module.exports = class StateInstance {
     }
     this.stateMaster.onTurnEnd(this);
   }
-  onDamage(){
+  onDamage(value){
     if(!this.stateMaster.onDamage){
       return;
     }
-    this.stateMaster.onDamage(this);
+    this.stateMaster.onDamage(this, value);
   }
 };

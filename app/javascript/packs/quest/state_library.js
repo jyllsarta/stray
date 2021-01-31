@@ -15,6 +15,16 @@ let states = [
   require("./state/entity_magic_stream"),
   require("./state/morphing"),
   require("./state/lose_infinity_skill"),
+  require("./state/2005_crample"),
+  require("./state/2006_twins"),
+  require("./state/2007_break"),
+  require("./state/2008_sakuramochi"),
+  require("./state/2009_fallin"),
+  require("./state/2011_reverie"),
+  require("./state/2012_hamburger"),
+  require("./state/2013_hamburger_debuff"),
+  require("./state/2014_mana_blur"),
+  require("./state/2015_onigiri"),
 ]
 
 module.exports = class StateLibrary {

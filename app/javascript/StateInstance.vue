@@ -40,9 +40,11 @@ export default {
   }
   .count{
     position: absolute;
-    background-color: $background;
+    background-color: $background_with_opacity;
     bottom: 0;
     right: 0;
+    line-height: 100%;
+    border-radius: $radius;
   }
 }
 
