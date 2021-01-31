@@ -143,10 +143,10 @@ module.exports = class Battle{
         }
         const skill = this.player.skills[skillIndex];
         const effects = skill.effects;
+        this.player.useMp(skill.cost);
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
-        this.player.useMp(skill.cost);
         this.characterStatus.tirol = 'magic';
     }
 
@@ -161,10 +161,10 @@ module.exports = class Battle{
         }
         const skill = this.enemy.skills[skillIndex];
         const effects = skill.effects;
+        this.enemy.useMp(skill.cost);
         for(let effect of effects){
             this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
         }
-        this.enemy.useMp(skill.cost);
         this.characterStatus.enemy = 'magic';
     }
 

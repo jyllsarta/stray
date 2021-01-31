@@ -79,18 +79,6 @@ module.exports = class Character{
         }
     }
 
-    hpRatio(){
-        return this.hp / this.hp_max;
-    }
-
-    hasMp(value){
-        return this.mp >= value
-    }
-
-    useMp(value){
-        this.mp -= value;
-    }
-
     addMp(value){
         if(this.tempBuffs.usedDefenceSkill){
             return; // 防御スキルを使ったターンはMPが回復しない
@@ -104,8 +92,28 @@ module.exports = class Character{
         }
     }
 
+    setHp(value){
+        this.hp = value;
+    }
+
+    setMp(value){
+        this.mp = value;
+    }
+
+    hpRatio(){
+        return this.hp / this.hp_max;
+    }
+
     mpRatio(){
         return this.mp / this.mp_max;
+    }
+
+    hasMp(value){
+        return this.mp >= value
+    }
+
+    useMp(value){
+        this.mp -= value;
     }
 
     addShield(value){

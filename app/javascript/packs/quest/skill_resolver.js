@@ -45,6 +45,16 @@ SkillResolver {
         main.addMp(value);
     }
 
+    resolveSetHp(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.setHp(value);
+    }
+
+    resolveSetMp(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.setMp(value);
+    }
+
     resolveAddHpOverflow(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.hp += value;
@@ -151,6 +161,30 @@ SkillResolver {
         }
         // カラミティ本体のID直接指定
         this.battle.addState(to_self, 2001);
+    }
+
+    resolveBrossom(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+
+        if(main.hp !== 1){
+            return;
+        }
+
+        //どうせガチガチ結合スキルなので、プレイヤー専用前提で作っちゃう
+        if(this.battle.powerMeetResult() !== "win" || this.battle.techMeetResult() !== "win"){
+            return;
+        }
+
+        for(let skill of main.skills){
+            if(skill.id === 10410){ // ガチガチ結合いやー！ 自身は再使用可能にならない
+                continue;
+            }
+            if(skill.is_passive){ // パッシブに∞つくのも邪魔なのでつけない
+                continue;
+            }
+            skill.reusable = true;
+        }
+        main.setMp(200);
     }
 
     resolveAddPointToWeaker(actor, target, to_self, value){
