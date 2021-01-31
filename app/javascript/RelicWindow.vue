@@ -57,7 +57,7 @@
                 | 消費
               .icon
               .value(:class="hasSufficientStar ? '' : 'red'")
-                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.2")
+                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.4")
           .button
             .get(
               :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']"
