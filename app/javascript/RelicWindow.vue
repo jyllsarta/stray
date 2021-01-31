@@ -24,6 +24,7 @@
               :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
               :style="relicStyle(relic)"
               @click="selectRelic(relic.id)"
+              :key="relic.id"
               )
               img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
         .detail
@@ -210,6 +211,7 @@ export default {
         width: 50px;
         height: 50px;
         background-color: #323749;
+        animation: relic-show-in 0.3s;
         &:hover{
           filter: brightness(150%);
         }
@@ -382,6 +384,13 @@ export default {
   100%{
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes relic-show-in {
+  0% {
+    transform: translate(0, -5px) scale(0.5);
+    opacity: 0;
   }
 }
 
