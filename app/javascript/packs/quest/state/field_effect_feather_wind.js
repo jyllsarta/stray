@@ -3,7 +3,7 @@ class FieldEffectFeatherWind {
     this.id = 105;
     this.ttl = -1;
     this.title = "翼風";
-    this.icon = "default.gif";
+    this.icon = "feather_wind.gif";
     this.description = "ダメージを与えるたびにMPを5回復。";
   }
 

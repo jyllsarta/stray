@@ -3,18 +3,16 @@ class EntityDarkSoul {
     this.id = 1006;
     this.ttl = -1;
     this.title = "黒熱";
-    this.icon = "default.gif";
+    this.icon = "dark_soul.gif";
     this.description = "全ダメージ+1。";
   }
 
   getInitialCondition(){
-    return {
-      damageCount: 0,
-    };
+    return {};
   }
 
   showParameter(state){
-    return state.condition.damageCount;
+    return "";
   }
 
   onDamage(state, damageAmount){

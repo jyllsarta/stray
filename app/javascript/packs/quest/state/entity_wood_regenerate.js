@@ -3,7 +3,7 @@ class EntityWoodRegenerate {
     this.id = 1002;
     this.ttl = -1;
     this.title = "翠癒";
-    this.icon = "default.gif";
+    this.icon = "wood_regenerate.gif";
     this.description = "ダメージを受けなかったターンの終了時、HPを1回復する。";
   }
 

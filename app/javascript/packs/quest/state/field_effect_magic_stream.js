@@ -3,7 +3,7 @@ class FieldEffectMagicStream {
     this.id = 107;
     this.ttl = -1;
     this.title = "魔濁";
-    this.icon = "default.gif";
+    this.icon = "magic_stream.gif";
     this.description = "ターン終了時にMP+20。";
   }
 

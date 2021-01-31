@@ -3,7 +3,7 @@ class FieldEffectDarkSoul {
     this.id = 106;
     this.ttl = -1;
     this.title = "黒熱";
-    this.icon = "default.gif";
+    this.icon = "dark_soul.gif";
     this.description = "全ダメージ+1。";
   }
 
