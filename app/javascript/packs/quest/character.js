@@ -189,6 +189,16 @@ module.exports = class Character{
         stateInstance.onAdd();
     }
 
+    // stateId 指定で states を検索し、見つかったら返す、なければnullを返す
+    findStateById(stateId){
+        for(let state of this.states){
+            if(state.stateId === stateId){
+                return state;
+            }
+        }
+        return null;
+    }
+
     attenuateAndSweepStates(){
         for(let state of this.states){
             if(state.ttl > 0){

@@ -380,6 +380,10 @@ module.exports = class Battle{
     addState(isPlayer, stateId){
         const owner = isPlayer ? this.player : this.enemy;
         const opponent = isPlayer ? this.enemy : this.player;
+        this.addStateToCharacter(owner, opponent, stateId);
+    }
+
+    addStateToCharacter(owner, opponent, stateId){
         const master = this.stateLibrary.findState(stateId);
         if(!master){
             console.error(`undefined state ${stateId} is set`);

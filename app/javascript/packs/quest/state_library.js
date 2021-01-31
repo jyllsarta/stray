@@ -20,6 +20,7 @@ let states = [
   require("./state/2007_break"),
   require("./state/2008_sakuramochi"),
   require("./state/2009_fallin"),
+  require("./state/2010_storm"),
   require("./state/2011_reverie"),
   require("./state/2012_hamburger"),
   require("./state/2013_hamburger_debuff"),

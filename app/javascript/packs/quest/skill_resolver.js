@@ -35,6 +35,40 @@ SkillResolver {
         main.damage(value);
     }
 
+    resolveFireDamage(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const stateId = 2007; // ブレイクのステートID
+        if(main.findStateById(stateId)){
+            value *= 2;
+        }
+        main.damage(value);
+    }
+
+    resolveStormDamage(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const opponent = to_self ? target : actor;
+        const stateId = 2010; // ストーム状態のステートID
+        // ストームダメージを食らう側から見た敵 = (大抵は)プレイヤー がストームのステートを持っているかどうか
+        const storm = opponent.findStateById(stateId);
+        const additionalDamage = storm ? storm.condition.value : 0;
+
+        main.damage(value + additionalDamage);
+    }
+
+    // ストームを持っていなければ付与、持っていればスタックを1増加
+    resolveCheckStorm(actor, target, to_self, value){
+        const owner = to_self ? actor : target;
+        const opponent = to_self ? target : actor;
+        const stateId = 2010; // ストーム状態のステートID
+        const storm = owner.findStateById(stateId)
+        if(!storm){
+            this.battle.addStateToCharacter(owner, opponent, stateId);
+        }
+        else{
+            storm.condition.value += 1;
+        }
+    }
+
     resolveAddHp(actor, target, to_self, value){
         const main = to_self ? actor : target;
         main.addHp(value);
