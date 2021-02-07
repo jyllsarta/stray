@@ -152,12 +152,12 @@ module.exports = class Character{
                 this.tempBuffs.shield = 0;
             }
         }
+        this.hp -= value;
         if(value > 0){
             for(let state of this.states){
                 state.onDamage(value);
             }
         }
-        this.hp -= value;
     }
 
     damageMp(value){

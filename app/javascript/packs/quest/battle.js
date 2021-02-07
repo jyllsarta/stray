@@ -173,16 +173,16 @@ module.exports = class Battle{
         const result = this.powerMeetResult();
         this.lastAttackResult = result;
         if(result === "win"){
-            this.enemy.damage(this.player.damageAt("power"));
             this.player.addMp(5);
             this.enemy.addMp(10);
+            this.enemy.damage(this.player.damageAt("power"));
             this.characterStatus.spica = 'attack';
             this.characterStatus.enemy = 'lose';
         }
         else if(result === "lose"){
-            this.player.damage(this.enemy.damageAt("power"));
             this.player.addMp(10);
             this.enemy.addMp(5);
+            this.player.damage(this.enemy.damageAt("power"));
             this.characterStatus.spica = 'lose';
             this.characterStatus.enemy = 'attack';
         }
@@ -200,16 +200,16 @@ module.exports = class Battle{
         const result = this.techMeetResult();
         this.lastAttackResult = result;
         if(result === "win"){
-            this.enemy.damage(this.player.damageAt("tech"));
             this.player.addMp(5);
             this.enemy.addMp(10);
+            this.enemy.damage(this.player.damageAt("tech"));
             this.characterStatus.spica = 'attack2';
             this.characterStatus.enemy = 'lose';
         }
         else if(result === "lose"){
-            this.player.damage(this.enemy.damageAt("tech"));
             this.player.addMp(10);
             this.enemy.addMp(5);
+            this.player.damage(this.enemy.damageAt("tech"));
             this.characterStatus.spica = 'lose';
             this.characterStatus.enemy = 'attack';
         }
@@ -227,17 +227,17 @@ module.exports = class Battle{
         const techResult = this.techMeetResult();
         if(powerResult === "win" && techResult === "win"){
             this.lastAttackResult = "win";
-            this.enemy.damage(this.player.damageAt("special"));
             this.player.addMp(5);
             this.enemy.addMp(10);
+            this.enemy.damage(this.player.damageAt("special"));
             this.characterStatus.spica = 'attack3';
             this.characterStatus.enemy = 'lose';
         }
         else if(powerResult === "lose" && techResult === "lose"){
             this.lastAttackResult = "lose";
-            this.player.damage(this.enemy.damageAt("special"));
             this.player.addMp(10);
             this.enemy.addMp(5);
+            this.player.damage(this.enemy.damageAt("special"));
             this.characterStatus.spica = 'lose';
             this.characterStatus.enemy = 'attack';
         }
