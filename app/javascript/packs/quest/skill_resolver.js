@@ -235,4 +235,30 @@ SkillResolver {
             main.tempBuffs.tech += value;
         }
     }
+
+    resolveReduceMaxHp(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        main.hp -= value;
+        main.hp_max -= value;
+    }
+
+    //なんかめんどいので敵専用スキルとして作る( selectingCardIds をキャラに持たせるのが良かった)
+    resolveCrashSelectingCardA(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const cardId = this.battle.selectingCardIds[0];
+        let card = this.battle.player.deck.findCard(cardId);
+        card.name = "破壊された！";
+        card.power = 0;
+        card.tech = 0;
+    }
+
+    //なんかめんどいので敵専用スキルとして作る( selectingCardIds をキャラに持たせるのが良かった)
+    resolveCrashSelectingCardB(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const cardId = this.battle.selectingCardIds[1];
+        let card = this.battle.player.deck.findCard(cardId);
+        card.name = "破壊された！";
+        card.power = 0;
+        card.tech = 0;
+    }
 };
