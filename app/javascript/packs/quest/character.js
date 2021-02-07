@@ -160,6 +160,16 @@ module.exports = class Character{
         this.hp -= value;
     }
 
+    damageMp(value){
+        if(this.mp < 0){
+            return;
+        }
+        this.mp -= value;
+        if(this.mp < 0){
+            this.mp = 0;
+        }
+    }
+
     powerAt(cardIds){
         if(this.tempBuffs.powerAlterTo !== null){
             return this.tempBuffs.powerAlterTo;

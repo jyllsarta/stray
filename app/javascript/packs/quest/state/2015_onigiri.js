@@ -17,7 +17,6 @@ class OriginalState {
 
   onDamage(state, damageAmount){
     // onDamage が「ダメージに際し」呼ばれるコールバックなので、実際にダメージが引かれるのはonDamageの解決後。死にそうなら死なない感じに回復する。
-    console.log(state.owner.hp);
     if((state.owner.hp - damageAmount) <= 0){
       state.owner.hp = 3 + damageAmount;
       state.flash();

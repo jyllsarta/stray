@@ -26,6 +26,21 @@ let states = [
   require("./state/2013_hamburger_debuff"),
   require("./state/2014_mana_blur"),
   require("./state/2015_onigiri"),
+  require("./state/2016_awa"),
+  require("./state/2017_rakuyo"),
+  require("./state/2018_autoheal"),
+  require("./state/2019_break"),
+  require("./state/2020_drain"),
+  require("./state/2021_autoheal2"),
+  require("./state/2022_curse"),
+  require("./state/2023_corrupting"),
+  require("./state/2024_flyburn"),
+  require("./state/2025_boost_paralyze"),
+  require("./state/2026_corrupting2"),
+  require("./state/2027_autoheal3"),
+  require("./state/2028_rakuyo2"),
+  require("./state/2029_curse2"),
+  require("./state/2030_dream_aura"),
 ]
 
 module.exports = class StateLibrary {

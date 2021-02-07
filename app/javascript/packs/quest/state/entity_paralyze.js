@@ -21,6 +21,16 @@ class EntityParalyze {
   onDamage(state, damageAmount){
     state.condition.count += 1;
     state.condition.damagedThisTurn = true;
+    this.checkParalyze(state);
+  }
+  onTurnEnd(state){
+    if(!state.condition.damagedThisTurn && state.condition.count > 0){
+      state.condition.count -= 1;
+    }
+    state.condition.damagedThisTurn =  false;
+  }
+
+  checkParalyze(state){
     if(state.condition.count === 5){
       state.owner.tempBuffs.powerAlterTo = 0;
       state.owner.tempBuffs.techAlterTo = 0;
@@ -28,12 +38,6 @@ class EntityParalyze {
       state.flash();
       state.battle.flashPalalyzeEffect();
     }
-  }
-  onTurnEnd(state){
-    if(!state.condition.damagedThisTurn && state.condition.count > 0){
-      state.condition.count -= 1;
-    }
-    state.condition.damagedThisTurn =  false;
   }
 }
 

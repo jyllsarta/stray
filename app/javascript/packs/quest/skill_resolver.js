@@ -37,8 +37,8 @@ SkillResolver {
 
     resolveFireDamage(actor, target, to_self, value){
         const main = to_self ? actor : target;
-        const stateId = 2007; // ブレイクのステートID
-        if(main.findStateById(stateId)){
+        const stateIds = [2007, 2019]; // ブレイクのステートID
+        if(stateIds.some(stateId=>main.findStateById(stateId))){
             value *= 2;
         }
         main.damage(value);
@@ -101,10 +101,7 @@ SkillResolver {
 
     resolveDamageMp(actor, target, to_self, value){
         const main = to_self ? actor : target;
-        main.mp -= value;
-        if(main.mp < 0){
-            main.mp = 0;
-        }
+        main.damageMp(value);
     }
 
     resolveAddShield(actor, target, to_self, value){
