@@ -31,7 +31,7 @@ class EntityParalyze {
   }
 
   checkParalyze(state){
-    if(state.condition.count === 5){
+    if(state.condition.count >= 5){
       state.owner.tempBuffs.powerAlterTo = 0;
       state.owner.tempBuffs.techAlterTo = 0;
       state.condition.count = 0;
