@@ -641,6 +641,11 @@ export default {
           resolve();
           return;
         }
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+
 
         this.battle.player.selectingSkillIndexes.reduce((acc, cur)=>{
           return acc.then(()=>{
@@ -727,6 +732,10 @@ export default {
 
     playTurnEndStateEffectPhase(){
       return new Promise((resolve) => {
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
         this.battle.invokeTurnEndStateEffect();
         let timeout = 10;
         if(this.battle.shouldStopWith("onTurnEnd")){

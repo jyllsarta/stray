@@ -86,6 +86,7 @@ module.exports = class Battle{
     playTurn(){
         this.onTurnStart();
         this.invokeTurnStartStateEffect();
+        if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
         for(let i of this.player.selectingSkillIndexes){
             this.invokePlayerMagic(i);
         }
@@ -97,6 +98,7 @@ module.exports = class Battle{
         this.invokePowerAttack();
         this.invokeTechAttack();
         this.invokeSPAttack();
+        if( this.isGameEnd() ){ this.onTurnEnd(); return; } // クライアントと同じタイミングで短絡終了する
         this.invokeTurnEndStateEffect();
         this.onTurnEnd();
     }
