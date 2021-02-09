@@ -10,7 +10,7 @@
         | {{skillActivationOrder(index)}}
       .upper
         img.icon(:src="iconImagePath(skill.id)")
-        .cost(v-if="!skill.threshold_hp")
+        .cost(v-if="!skill.threshold_hp && !skill.is_passive")
           | {{skill.cost}}
         .cost(v-if="skill.threshold_hp")
           | {{skill.threshold_hp}}≦HP
@@ -130,14 +130,11 @@ export default {
     },
     additionalText(skill){
       let text = "";
-      if(skill.is_passive){
-        text += "P";
-      }
       if(skill.reusable){
         text += "∞";
       }
       if(skill.is_exhaust){
-        text += "X";
+        text += "x";
       }
       return text;
     },
@@ -240,7 +237,7 @@ export default {
     }
   }
   .passive{
-    border-radius: 20px 0 20px 0;
+    border-radius: 24px 0 24px 0;
     background-color: transparent;
     .downer{
       color: $accent-color;
