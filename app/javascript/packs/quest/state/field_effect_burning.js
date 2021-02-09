@@ -4,7 +4,7 @@ class FieldEffectBurning {
     this.ttl = -1;
     this.title = "炎風";
     this.icon = "burning.gif";
-    this.description = "ダメージを2回以上受けたターンの終了時、追加で2ダメージを受ける。";
+    this.description = "ダメージを2回以上受けたターンの終了時、追加で【火】の2ダメージを受ける。";
   }
 
   getInitialCondition(){
