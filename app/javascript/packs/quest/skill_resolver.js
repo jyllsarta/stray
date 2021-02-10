@@ -27,7 +27,9 @@ SkillResolver {
     // private
 
     resolveAddState(actor, target, to_self, value){
-        this.battle.addState(to_self, value);
+        const owner = to_self ? actor : target;
+        const opponent = to_self ? target : actor;
+        this.battle.addStateToCharacter(owner, opponent, value);
     }
 
     resolveDamage(actor, target, to_self, value){
