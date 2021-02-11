@@ -8,6 +8,8 @@
       )
       .mimi(v-if="skillActivationOrder(index)")
         | {{skillActivationOrder(index)}}
+      .debug_rank(v-if="debugEnableShowSkillRank")
+        | {{skill.id % 10}}
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost(v-if="!skill.threshold_hp && !skill.is_passive")
@@ -48,6 +50,9 @@ export default {
     sideClass(){
       return this.isPlayer ? "player_skill_list" : "enemy_skill_list";
     },
+    debugEnableShowSkillRank(){
+      return process.env.NODE_ENV !== 'production';
+    }
   },
   methods: {
     onPoint(skillId){
@@ -160,6 +165,12 @@ export default {
     border-radius: $radius;
     width: 90px;
     height: 60px;
+    .debug_rank{
+      position: absolute;
+      top: 0;
+      right: 0;
+      line-height: 100%;
+    }
     .mimi{
       position: absolute;
       top: -4px;
