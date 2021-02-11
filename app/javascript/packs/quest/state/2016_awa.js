@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = -1;
     this.title = "封泡減力";
     this.icon = "1001052.gif";
-    this.description = "ダメージを受けたとき、MP-15。";
+    this.description = "ダメージを受けたとき、MP-5。";
   }
 
   getInitialCondition(){
@@ -16,7 +16,7 @@ class OriginalState {
   }
 
   onDamage(state, damageAmount){
-    state.owner.damageMp(15);
+    state.owner.damageMp(5);
     state.flash();
   }
 }
