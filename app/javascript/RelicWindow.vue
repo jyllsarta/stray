@@ -19,14 +19,17 @@
             .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="switchPage(3)")
               | なんでもスキル
           .relics
-            .relic.selectable(
-              v-for="relic in displayRelics"
-              :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
-              :style="relicStyle(relic)"
-              @click="selectRelic(relic.id)"
-              :key="relic.id"
+            .obtain_animation(
+                v-for="relic in displayRelics"
+                :class="obtainRelicClass(relic.id)"
+                @click="selectRelic(relic.id)"
+                :style="relicStyle(relic)"
+                :key="relic.id"
+            )
+              .relic.selectable(
+                :class="[`relic_${relic.id}`,relicStatus(relic.id), selectingRelicClass(relic.id)]"
               )
-              img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
+                img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
         .detail
           .relic_detail
             .title
@@ -206,19 +209,23 @@ export default {
     }
     .relics{
       position: relative;
-      .relic{
+      .obtain_animation{
         position: absolute;
         width: 50px;
         height: 50px;
-        background-color: #323749;
-        animation: relic-show-in 0.3s;
-        &:hover{
-          filter: brightness(150%);
-        }
-        .icon{
-          width: 48px;
-          height: 48px;
-          image-rendering: pixelated;
+        .relic{
+          width: 50px;
+          height: 50px;
+          background-color: #323749;
+          animation: relic-show-in 0.3s;
+          &:hover{
+            filter: brightness(150%);
+          }
+          .icon{
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+          }
         }
       }
     }
