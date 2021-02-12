@@ -41,6 +41,7 @@ let states = [
   require("./state/2028_rakuyo2"),
   require("./state/2029_curse2"),
   require("./state/2030_dream_aura"),
+  require("./state/2031_promote"),
 ]
 
 module.exports = class StateLibrary {
