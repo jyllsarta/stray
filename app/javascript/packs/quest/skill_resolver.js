@@ -37,6 +37,12 @@ SkillResolver {
         main.damage(value);
     }
 
+    resolveDamagePercent(actor, target, to_self, value){
+        const main = to_self ? actor : target;
+        const dmg = Math.floor(main.hp_max * value / 100);
+        main.damage(dmg);
+    }
+
     resolveFireDamage(actor, target, to_self, value){
         const main = to_self ? actor : target;
         const stateIds = [2007, 2019]; // ブレイクのステートID
