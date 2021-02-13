@@ -155,7 +155,7 @@ module.exports = class Character{
         }
         this.hp -= value;
         if(value > 0){
-            for(let state of this.states){
+            for(let state of this.states.slice().reverse()){
                 state.onDamage(value);
             }
         }

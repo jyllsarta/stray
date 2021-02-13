@@ -123,14 +123,18 @@ module.exports = class Battle{
     }
 
     invokeTurnStartStateEffect(){
+        // ・一部のFEがターン中のダメージ回数を参照する
+        // ・onTurnEndでダメージを与えるスキルが無数にある
+        // ・FEが最初に付与されることはほぼ保証されているし、ダメージ回数を参照する通常スキルはほぼない
+        // ということでコールバックの場合のステート効果解決順は逆順にする
+        for(let stateInstance of this.player.states.slice().reverse()){
+            stateInstance.onTurnStart();
+        }
+        for(let stateInstance of this.enemy.states.slice().reverse()){
+            stateInstance.onTurnStart();
+        }
         if(this.fieldEffectState){
             this.fieldEffectState.onTurnStart();
-        }
-        for(let stateInstance of this.player.states){
-            stateInstance.onTurnStart();
-        }
-        for(let stateInstance of this.enemy.states){
-            stateInstance.onTurnStart();
         }
     }
 
@@ -249,14 +253,18 @@ module.exports = class Battle{
     }
 
     invokeTurnEndStateEffect(){
+        // ・一部のFEがターン中のダメージ回数を参照する
+        // ・onTurnEndでダメージを与えるスキルが無数にある
+        // ・FEが最初に付与されることはほぼ保証されているし、ダメージ回数を参照する通常スキルはほぼない
+        // ということでコールバックの場合のステート効果解決順は逆順にする
+        for(let stateInstance of this.player.states.slice().reverse()){
+            stateInstance.onTurnEnd(stateInstance);
+        }
+        for(let stateInstance of this.enemy.states.slice().reverse()){
+            stateInstance.onTurnEnd(stateInstance);
+        }
         if(this.fieldEffectState){
             this.fieldEffectState.onTurnEnd();
-        }
-        for(let stateInstance of this.player.states){
-            stateInstance.onTurnEnd(stateInstance);
-        }
-        for(let stateInstance of this.enemy.states){
-            stateInstance.onTurnEnd(stateInstance);
         }
     }
 

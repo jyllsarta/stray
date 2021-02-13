@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = -1;
     this.title = "生命ノ形";
     this.icon = "30404.gif";
-    this.description = "致命的なダメージを受けた時、一度だけHP3で耐える。";
+    this.description = "致命的なダメージを受けた時、一度だけHP1で耐える。";
   }
 
   getInitialCondition(){
@@ -17,7 +17,7 @@ class OriginalState {
 
   onDamage(state, damageAmount){
     if(state.owner.hp <= 0){
-      state.owner.hp = 3;
+      state.owner.hp = 1;
       state.flash();
       this.removeThisState(state);
     }

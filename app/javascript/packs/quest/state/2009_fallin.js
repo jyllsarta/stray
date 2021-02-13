@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = 3;
     this.title = "フォーリン";
     this.icon = "20205.gif";
-    this.description = "ターン終了時に2ダメージ。";
+    this.description = "ターン終了時に3ダメージ。";
   }
 
   getInitialCondition(){
@@ -16,7 +16,7 @@ class OriginalState {
   }
 
   onTurnEnd(state){
-    state.owner.damage(2);
+    state.owner.damage(3);
     state.flash();
   }
 }
