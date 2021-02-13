@@ -4,7 +4,7 @@ SkillResolver {
         this.battle = battle;
     }
 
-    resolveSkillEffect(player_side, category, to_self, value, isDefenceSkill) {
+    resolveSkillEffect(player_side, category, to_self, value, skill, isDefenceSkill) {
         let actor;
         let target;
         if(player_side){
@@ -21,29 +21,29 @@ SkillResolver {
         }
 
         // 曲芸みたいなことしてんなという自覚はある
-        this[`resolve${category}`](actor, target, to_self, value);
+        this[`resolve${category}`](actor, target, to_self, value, skill);
     }
 
     // private
 
-    resolveAddState(actor, target, to_self, value){
+    resolveAddState(actor, target, to_self, value, skill){
         const owner = to_self ? actor : target;
         const opponent = to_self ? target : actor;
         this.battle.addStateToCharacter(owner, opponent, value);
     }
 
-    resolveDamage(actor, target, to_self, value){
+    resolveDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.damage(value);
     }
 
-    resolveDamagePercent(actor, target, to_self, value){
+    resolveDamagePercent(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const dmg = Math.floor(main.hp_max * value / 100);
         main.damage(dmg);
     }
 
-    resolveFireDamage(actor, target, to_self, value){
+    resolveFireDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const stateIds = [2007, 2019]; // ブレイクのステートID
         if(stateIds.some(stateId=>main.findStateById(stateId))){
@@ -52,7 +52,7 @@ SkillResolver {
         main.damage(value);
     }
 
-    resolveStormDamage(actor, target, to_self, value){
+    resolveStormDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const opponent = to_self ? target : actor;
         const stateId = 2010; // ストーム状態のステートID
@@ -64,7 +64,7 @@ SkillResolver {
     }
 
     // ストームを持っていなければ付与、持っていればスタックを1増加
-    resolveCheckStorm(actor, target, to_self, value){
+    resolveCheckStorm(actor, target, to_self, value, skill){
         const owner = to_self ? actor : target;
         const opponent = to_self ? target : actor;
         const stateId = 2010; // ストーム状態のステートID
@@ -77,112 +77,117 @@ SkillResolver {
         }
     }
 
-    resolveAddHp(actor, target, to_self, value){
+    resolveAddCost(actor, target, to_self, value, skill){
+        const main = to_self ? actor : target;
+        skill.cost += value;
+    }
+
+    resolveAddHp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.addHp(value);
     }
 
-    resolveAddMp(actor, target, to_self, value){
+    resolveAddMp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.addMp(value);
     }
 
-    resolveSetHp(actor, target, to_self, value){
+    resolveSetHp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.setHp(value);
     }
 
-    resolveSetMp(actor, target, to_self, value){
+    resolveSetMp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.setMp(value);
     }
 
-    resolveAddHpOverflow(actor, target, to_self, value){
+    resolveAddHpOverflow(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.hp += value;
     }
 
-    resolveAddMpOverflow(actor, target, to_self, value){
+    resolveAddMpOverflow(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.mp += value;
     }
 
-    resolveDamageMp(actor, target, to_self, value){
+    resolveDamageMp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.damageMp(value);
     }
 
-    resolveAddShield(actor, target, to_self, value){
+    resolveAddShield(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.addShield(value);
     }
 
-    resolveAddSpDamage(actor, target, to_self, value){
+    resolveAddSpDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.specialDamage += value;
     }
 
-    resolveAddPowerDamage(actor, target, to_self, value){
+    resolveAddPowerDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.powerDamage += value;
     }
 
-    resolveAddTechDamage(actor, target, to_self, value){
+    resolveAddTechDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.techDamage += value;
     }
 
-    resolveAddSpDamageForever(actor, target, to_self, value){
+    resolveAddSpDamageForever(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.special += value;
     }
 
-    resolveAddPowerDamageForever(actor, target, to_self, value){
+    resolveAddPowerDamageForever(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.power += value;
     }
 
-    resolveAddTechDamageForever(actor, target, to_self, value){
+    resolveAddTechDamageForever(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tech += value;
     }
 
-    resolveAddPower(actor, target, to_self, value){
+    resolveAddPower(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.power += value;
     }
 
-    resolveAddTech(actor, target, to_self, value){
+    resolveAddTech(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.tech += value;
     }
 
-    resolveAlterPower(actor, target, to_self, value){
+    resolveAlterPower(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.powerAlterTo = value;
     }
 
-    resolveAlterTech(actor, target, to_self, value){
+    resolveAlterTech(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.techAlterTo = value;
     }
 
-    resolveAddHandForever(actor, target, to_self, value){
+    resolveAddHandForever(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.handCardCount += value;
     }
 
-    resolveReduceHandForever(actor, target, to_self, value){
+    resolveReduceHandForever(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.handCardCount -= value;
     }
 
-    resolveReduceHand(actor, target, to_self, value){
+    resolveReduceHand(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.tempBuffs.handCardCountDelta -= value;
     }
 
-    resolveUpgradeDeck(actor, target, to_self, value){
+    resolveUpgradeDeck(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         for(let card of main.deck.cards){
             card.power += value;
@@ -190,11 +195,14 @@ SkillResolver {
         }
     }
 
-    resolveCalamity(actor, target, to_self, value){
+    resolveCalamity(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const multiplier = value;
         for(let skill of main.skills){
             for(let effect of skill.effects) {
+                if(effect.category === "AddState"){
+                    continue;
+                }
                 effect.value *= multiplier;
             }
         }
@@ -202,7 +210,7 @@ SkillResolver {
         this.battle.addState(to_self, 2001);
     }
 
-    resolveBrossom(actor, target, to_self, value){
+    resolveBrossom(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
 
         if(main.hp !== 1){
@@ -226,7 +234,7 @@ SkillResolver {
         main.setMp(200);
     }
 
-    resolveAddPointToWeaker(actor, target, to_self, value){
+    resolveAddPointToWeaker(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const cardIds = main.selectingCardIds;
         if(main.powerAt(cardIds) > main.techAt(cardIds)){
@@ -241,13 +249,13 @@ SkillResolver {
         }
     }
 
-    resolveReduceMaxHp(actor, target, to_self, value){
+    resolveReduceMaxHp(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         main.hp -= value;
         main.hp_max -= value;
     }
 
-    resolveCrashSelectingCardA(actor, target, to_self, value){
+    resolveCrashSelectingCardA(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const cardId = main.selectingCardIds[0];
         let card = main.deck.findCard(cardId);
@@ -256,7 +264,7 @@ SkillResolver {
         card.tech = 0;
     }
 
-    resolveCrashSelectingCardB(actor, target, to_self, value){
+    resolveCrashSelectingCardB(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const cardId = main.selectingCardIds[1];
         let card = main.deck.findCard(cardId);

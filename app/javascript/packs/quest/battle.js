@@ -111,13 +111,13 @@ module.exports = class Battle{
         for(let skill of this.player.skills.filter(x=>x.is_passive)){
             const effects = skill.effects;
             for(let effect of effects){
-                this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
+                this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill, skill.is_defence);
             }    
         }
         for(let skill of this.enemy.skills.filter(x=>x.is_passive)){
             const effects = skill.effects;
             for(let effect of effects){
-                this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
+                this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill, skill.is_defence);
             }    
         }
     }
@@ -147,7 +147,7 @@ module.exports = class Battle{
         const effects = skill.effects;
         this.player.useMp(skill.cost);
         for(let effect of effects){
-            this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill.is_defence);
+            this.skillResolver.resolveSkillEffect(true,  effect.category, effect.to_self, effect.value, skill, skill.is_defence);
         }
         this.characterStatus.tirol = 'magic';
     }
@@ -165,7 +165,7 @@ module.exports = class Battle{
         const effects = skill.effects;
         this.enemy.useMp(skill.cost);
         for(let effect of effects){
-            this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill.is_defence);
+            this.skillResolver.resolveSkillEffect(false,  effect.category, effect.to_self, effect.value, skill, skill.is_defence);
         }
         this.characterStatus.enemy = 'magic';
     }
