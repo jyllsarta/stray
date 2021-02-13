@@ -29,8 +29,8 @@ module.exports = class Battle{
         this.player.deck.fillDraw(this.player.totalHandCardCount());
         this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
 
-        this.selectingCardIds = [];
-        this.enemyCardIds = [];
+        this.player.selectingCardIds = [];
+        this.enemy.selectingCardIds = [];
 
         this.battleLog = [];
 
@@ -50,14 +50,14 @@ module.exports = class Battle{
         if(this.turnInProgress){
             return;
         }
-        if(this.selectingCardIds.includes(cardId)){
-            this.selectingCardIds = this.selectingCardIds.filter(n => n !== cardId);
+        if(this.player.selectingCardIds.includes(cardId)){
+            this.player.selectingCardIds = this.player.selectingCardIds.filter(n => n !== cardId);
             return;
         }
-        if(this.selectingCardIds.length === 2){
+        if(this.player.selectingCardIds.length === 2){
             return;
         }
-        this.selectingCardIds.push(cardId);
+        this.player.selectingCardIds.push(cardId);
     }
 
     selectSkill(skillIndex){
@@ -272,16 +272,16 @@ module.exports = class Battle{
         this.setCharacterStatusAll("waiting");
         this.lastAttackResult = "";
         this.battleLog.push([this.powerMeetResult(), this.techMeetResult()]);
-        this.player.operationHistory.push({cards: this.selectingCardIds, skillIndex: this.player.selectingSkillIndexes});
-        this.enemy.operationHistory.push({cards: this.enemyCardIds, skillIndex: this.enemy.selectingSkillIndexes});
+        this.player.operationHistory.push({cards: this.player.selectingCardIds, skillIndex: this.player.selectingSkillIndexes});
+        this.enemy.operationHistory.push({cards: this.enemy.selectingCardIds, skillIndex: this.enemy.selectingSkillIndexes});
 
-        this.player.deck.consumeCards(this.selectingCardIds);
-        this.enemy.deck.consumeCards(this.enemyCardIds);
-        this.selectingCardIds = [];
+        this.player.deck.consumeCards(this.player.selectingCardIds);
+        this.enemy.deck.consumeCards(this.enemy.selectingCardIds);
+        this.player.selectingCardIds = [];
         this.player.selectingSkillIndexes = [];
         this.player.deck.fillDraw(this.player.totalHandCardCount());
 
-        this.enemyCardIds = [];
+        this.enemy.selectingCardIds = [];
         this.enemy.selectingSkillIndexes = [];
         this.enemy.deck.fillDraw(this.enemy.totalHandCardCount());
         this.pickEnemyCards();
@@ -319,7 +319,7 @@ module.exports = class Battle{
     }
 
     pickEnemyCards(){
-        this.enemyCardIds = this.enemy.deck.handCardIds.slice(0, 2);
+        this.enemy.selectingCardIds = this.enemy.deck.handCardIds.slice(0, 2);
     }
 
     pickEnemySkill(){
@@ -334,7 +334,7 @@ module.exports = class Battle{
     }
 
     validateSelectingCardIds(){
-        const uniqueCardIds = this.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);
+        const uniqueCardIds = this.player.selectingCardIds.filter((elem, index, self) => self.indexOf(elem) === index);
         if(uniqueCardIds.length !== 2){
             console.error("selecting cards number is not exactly three");
             throw new Error();
@@ -360,20 +360,20 @@ module.exports = class Battle{
     }
 
     powerMeetResult(category){
-        if(this.player.powerAt(this.selectingCardIds) > this.enemy.powerAt(this.enemyCardIds)){
+        if(this.player.powerAt(this.player.selectingCardIds) > this.enemy.powerAt(this.enemy.selectingCardIds)){
             return "win";
         }
-        if(this.player.powerAt(this.selectingCardIds) < this.enemy.powerAt(this.enemyCardIds)){
+        if(this.player.powerAt(this.player.selectingCardIds) < this.enemy.powerAt(this.enemy.selectingCardIds)){
             return "lose";
         }
         return "draw";
     }
 
     techMeetResult(category){
-        if(this.player.techAt(this.selectingCardIds) > this.enemy.techAt(this.enemyCardIds)){
+        if(this.player.techAt(this.player.selectingCardIds) > this.enemy.techAt(this.enemy.selectingCardIds)){
             return "win";
         }
-        if(this.player.techAt(this.selectingCardIds) < this.enemy.techAt(this.enemyCardIds)){
+        if(this.player.techAt(this.player.selectingCardIds) < this.enemy.techAt(this.enemy.selectingCardIds)){
             return "lose";
         }
         return "draw";

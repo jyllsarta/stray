@@ -15,6 +15,7 @@ module.exports = class Character{
         this.skills = skills;
         this.resetTempBuffs();
         this.selectingSkillIndexes = [];
+        this.selectingCardIds = [];
         this.states = [];
         this.operationHistory = [];
     }

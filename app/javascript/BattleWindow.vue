@@ -431,28 +431,28 @@ export default {
       return this.battle?.enemy?.states || [];
     },
     playerHands(){
-      return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];
+      return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.player?.selectingCardIds?.includes(x.id)) || [];
     },
     enemyHands(){
-      return this.battle?.enemy?.deck?.currentHands()?.filter((x)=>!this.battle?.enemyCardIds?.includes(x.id)) || [];
+      return this.battle?.enemy?.deck?.currentHands()?.filter((x)=>!this.battle?.enemy?.selectingCardIds?.includes(x.id)) || [];
     },
     playerSelectingCards(){
-      return this.battle.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
+      return this.battle.player?.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
     },
     enemySelectingCards(){
-      return this.battle.enemyCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
+      return this.battle.enemy?.selectingCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
     },
     playerPower(){
-      return this.battle.player?.powerAt(this.battle.selectingCardIds) || 0;
+      return this.battle.player?.powerAt(this.battle.player.selectingCardIds) || 0;
     },
     playerTech(){
-      return this.battle.player?.techAt(this.battle.selectingCardIds) || 0;
+      return this.battle.player?.techAt(this.battle.player.selectingCardIds) || 0;
     },
     enemyPower(){
-      return this.battle.enemy?.powerAt(this.battle.enemyCardIds) || 0;
+      return this.battle.enemy?.powerAt(this.battle.enemy.selectingCardIds) || 0;
     },
     enemyTech(){
-      return this.battle.enemy?.techAt(this.battle.enemyCardIds) || 0;
+      return this.battle.enemy?.techAt(this.battle.enemy.selectingCardIds) || 0;
     },
     playerPowerDamage(){
       return this.battle.player?.damageAt("power");
@@ -506,7 +506,7 @@ export default {
       return this.battle?.characterStatus?.enemy || "waiting";
     },
     isDecidable(){
-      return this.battle.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
+      return this.battle?.player?.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
       return this.isDecidable ? "startable" : "disabled";
@@ -551,10 +551,10 @@ export default {
     },
 
     removeLastCard(){
-      if(this.battle.selectingCardIds.length === 0){
+      if(this.battle.player.selectingCardIds.length === 0){
         return;
       }
-      this.battle?.selectCard(this.battle.selectingCardIds.slice(-1)[0]);
+      this.battle?.selectCard(this.battle.player.selectingCardIds.slice(-1)[0]);
     },
 
     selectSkill(emittedObject){
