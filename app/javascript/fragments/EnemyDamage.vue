@@ -42,30 +42,34 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: $font-size-large * 1.5;
+    font-size: $font-size-large * 3;
+    font-family: 'Forum', cursive;
+    $color: rgb(143, 151, 255);
+    text-shadow: 0px 0px 12px $color, 0px 0px 12px $color, 0px 0px 12px $color;
   }
   .heal{
-    color: $dex;
+    $color: rgb(115, 255, 0);
+    text-shadow: 0px 0px 12px $color, 0px 0px 12px $color, 0px 0px 12px $color;
   }
   .anim-leave-active {
-    animation: anim 1.2s;
+    animation: anim 0.8s;
   }
   @keyframes anim {
     0% {
       opacity: 0;
-      transform: translateX(-10px);
+      transform: scale(3);
     }
-    30% {
+    20% {
       opacity: 1;
-      transform: translateX(0px);
+      transform: scale(1);
     }
-    70% {
-      opacity: 1;
-      transform: translateX(0px);
+    80% {
+      opacity: 0.95;
+      transform: scale(0.95);
     }
     100% {
       opacity: 0;
-      transform: translateX(30px);
+      transform: scale(0.8) translateY(-10px);
     }
   }
 </style>
