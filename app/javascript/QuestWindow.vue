@@ -94,6 +94,14 @@ export default {
     }
   },
   methods: {
+    selectFirstUnclearedQuest(){
+      for(let quest of this.quests){
+        if(quest.won_enemy_count !== quest.enemy_count){
+          this.selectQuest(quest.id);
+          return;
+        }
+      }
+    },
     selectQuest(questId){
       this.$store.commit("quest/setQuest", questId);
     },
@@ -103,7 +111,7 @@ export default {
         .then((results) => {
           console.log(results);
           this.quests = results.data.quests;
-          this.selectQuest(results.data.quests[0]?.id || 1);
+          this.selectFirstUnclearedQuest();
         })
         .catch((error) => {
           console.warn(error.response);
