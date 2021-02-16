@@ -1,62 +1,71 @@
 <template lang="pug">
   .right_menu.window.floating_window
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
-      @click="resurrect"
-    )
-      img.icon(src="/images/icons/right_menu/heal.gif")
-      .text
-        | 回復
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '装備メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'equip', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/equip.gif")
-      .text
-        | 装備
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/dungeon.gif")
-      .text
-        | ダンジョン
-        | 切り替え
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/relic.gif")
-      .text
-        | 能力解放
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/quest.gif")
-      .text
-        | クエスト
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/achievement.gif")
-      .text
-        | {{achievementText}}
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '冒険のあゆみを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/profile.gif")
-      .text
-        | 冒険のあゆみ
-    .item.clickable(
-      @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
-      @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
-    )
-      img.icon(src="/images/icons/right_menu/register.gif")
-      .text
-        | 引き継ぎ設定
+    ._back(@click="setConfirmStatus(false)" v-if="showEndingConfirm")
+    .items
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
+        @click="resurrect"
+      )
+        img.icon(src="/images/icons/right_menu/heal.gif")
+        .text
+          | 回復
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '装備メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'equip', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/equip.gif")
+        .text
+          | 装備
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/dungeon.gif")
+        .text
+          | ダンジョン
+          | 切り替え
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/relic.gif")
+        .text
+          | 能力解放
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/quest.gif")
+        .text
+          | クエスト
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/achievement.gif")
+        .text
+          | {{achievementText}}
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '冒険のあゆみを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'profile', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/profile.gif")
+        .text
+          | 冒険のあゆみ
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '引き継ぎ関連のメニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/register.gif")
+        .text
+          | 引き継ぎ設定
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', 'エンディングを表示します。')",
+        @click="proceedEnding"
+      )
+        img.icon(src="/images/icons/right_menu/ending.gif")
+        .text
+          | {{endingText}}
 </template>
 
 <script lang="ts">
@@ -66,7 +75,9 @@ import ax from "./packs/axios_default_setting.ts";
 
 export default {
   data: function () {
-    return {};
+    return {
+      showEndingConfirm: false,
+    };
   },
   store,
   mounted(){
@@ -79,9 +90,24 @@ export default {
         text += ` (${receivableAchievementCount})`
       }
       return text;
+    },
+    endingText(){
+      return this.showEndingConfirm ? "みる！" : "エンディング";
     }
   },
   methods: {
+    setConfirmStatus(status){
+      this.showEndingConfirm = status;
+    },
+    proceedEnding(){
+      if(this.showEndingConfirm){
+        this.setConfirmStatus(false);
+        this.$store.commit('window/updateWindowShowState', {windowName: "ending", state: true})
+      }
+      else{
+        this.setConfirmStatus(true);
+      }
+    },
     resurrect(){
       if(this.$store.getters['event/isDequeueMode']){
         console.log("イベント再生中なので回復はしません");
@@ -114,9 +140,20 @@ export default {
   width: 200px - $space * 3;
   top: $space;
   right: $space;
-  display: flex;
-  flex-direction: column;
   font-size: $font-size-normal;
+  ._back{
+    position: absolute;
+    // 画面横幅のなにもない領域 - 20px まで当たり判定を持つ
+    right: calc((#{$window-width} - 100vw + 20px)/2);
+    top: -100px;
+    width: 100vw;
+    height: 100vh;
+  }
+  .items{
+    display: flex;
+    flex-direction: column;
+  }
+
   .item{
     .text{
       margin-left: $space;
