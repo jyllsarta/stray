@@ -30,6 +30,20 @@
     transform: translateX(-30px);
     opacity: 0;
   }
+
+  .ending-enter-active {
+    transition: all 2s;
+  }
+  .ending-leave-active {
+    transition: all 1s;
+  }
+  .ending-enter{
+    opacity: 0;
+  }
+  .ending-leave-to{
+    opacity: 0;
+  }
+
   ::selection{
     background: none;
   }

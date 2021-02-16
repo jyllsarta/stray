@@ -33,7 +33,7 @@
         AchievementWindow(v-if="$store.state.window.achievement")
       transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
-      transition(name="open_window")
+      transition(name="ending")
         EndingWindow(v-if="$store.state.window.ending")
       Api(ref="api")
       Timer

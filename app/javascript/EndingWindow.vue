@@ -1,6 +1,6 @@
 <template lang="pug">
   .menu
-    .full_covered_window(@click.right.prevent="removeLastCard")
+    .full_covered_window(@click="proceed")
       | ぽよお
 </template>
 
@@ -13,6 +13,7 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
+      index: 0,
     };
   },
   props: {
@@ -25,6 +26,10 @@ export default {
   computed: {
   },
   methods: {
+    proceed(){
+      this.index++;
+      this.$store.commit('window/updateWindowShowState', {windowName: "ending", state: false});
+    },
   }
 }
 </script>
@@ -36,7 +41,7 @@ export default {
   position: absolute;
   width: $window-width;
   height: $window-height;
-  background-color: $background;
+  background-color: white;
   opacity: 1;
   padding: $space;
 }
