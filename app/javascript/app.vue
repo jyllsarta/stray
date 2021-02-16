@@ -33,6 +33,8 @@
         AchievementWindow(v-if="$store.state.window.achievement")
       transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
+      transition(name="open_window")
+        EndingWindow(v-if="$store.state.window.ending")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
@@ -72,6 +74,7 @@ import LoadingFrame from "./LoadingFrame.vue";
 import SessionExpiredFrame from "./SessionExpiredFrame.vue";
 import ClickEffect from "./ClickEffect.vue";
 import AchievementWindow from "./AchievementWindow.vue";
+import EndingWindow from "./EndingWindow.vue";
 
 export default {
   store,
@@ -104,6 +107,7 @@ export default {
     EventWatcher,
     MessageForm,
     ClickEffect,
+    EndingWindow,
   },
 }
 </script>
