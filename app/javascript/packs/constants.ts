@@ -59,9 +59,9 @@ const Constants = {
   },
   achievements: {
     ids: {
-      clickFieldCharacter: 25,
-      signIn: 26,
-      openLog: 27,
+      clickFieldCharacter: 101,
+      signIn: 102,
+      openLog: 103,
     }
   },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
