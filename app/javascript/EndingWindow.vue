@@ -2,11 +2,17 @@
   .menu
     .full_covered_window(@click="proceed")
       transition(name="show-in")
-        img.background(:key="chapter" :src="`/images/ending/${index}.png`" v-if="index === chapter" v-for="index in [1,2,3]")
-      .scripts
+        img.background(:key="chapter" :src="`/images/ending/${index}.png`" v-if="index === chapter" v-for="index in [0, 1, 2]")
+      .scripts(:class="`chapter_${chapter}`")
+        .line(
+          v-for="script, index in scripts[chapter]"
+          :key="`${chapter}-${index}`"
+          :class="`talker_${script[0]}`"
+          :style="{animationDelay: (500 + 700 * index + (chapter===0) * 1500)+'ms'}"
+        )
+          | {{ script[1] }}
       transition(name="show-in")
         .cover(v-if="showCover")
-
 </template>
 
 <script lang="ts">
@@ -18,7 +24,7 @@ import ax from "./packs/axios_default_setting.ts";
 export default {
   data: function () {
     return {
-      chapter: 1,
+      chapter: 0,
       showCover: true,
       blockClick: false,
       scripts: [
@@ -46,7 +52,9 @@ export default {
           [2, "「スピカそういう素直に前向きなとこあるよね」"],
           [1, "「私がこうするの見てチロルも頑張ろって思ってくれてるみたいだしさ」"],
           [2, "「あーそういうね」"],
-          [1, ""],
+          [1, "　"],
+          [1, "　"],
+          [1, "　"],
           [4, "オールクリアおめでとう！"],
           [4, "おまけダンジョン「再開の巡礼旅」が解放されたよ！"],
         ],
@@ -76,7 +84,7 @@ export default {
         return;
       }
       this.chapter++;
-      if(this.chapter > this.scripts.length){
+      if(this.chapter >= this.scripts.length){
         this.closeWindow();
       }
       this.lockAndInvokeUnlockClick();
@@ -86,7 +94,7 @@ export default {
     },
     lockAndInvokeUnlockClick(){
       this.blockClick = true;
-      setTimeout(this.unlockClick, 1000);
+      setTimeout(this.unlockClick, 2000);
     },
     unlockClick(){
       this.blockClick = false;
@@ -114,6 +122,48 @@ export default {
     width: 100%;
     height: 100%;
   }
+  .scripts{
+    position: absolute;
+    .line{
+      font-size: 18px;
+      animation: vertical-text-in .4s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+      line-height: 170%;
+    }
+    .talker_1{
+      $col: #b3467c;
+      color: $col;
+      text-shadow: $col 0 0 3px;
+    }
+    .talker_2{
+      $col: #a07b2c;
+      color: $col;
+      text-shadow: $col 0 0 3px;
+    }
+    .talker_3{
+      $col: #542b7a;
+      color: $col;
+      text-shadow: $col 0 0 3px;
+    }
+    .talker_4{
+      $col: #397699;
+      color: $col;
+      text-shadow: $col 0 0 3px;
+    }
+  }
+  .chapter_0{
+    top: 40px;
+    left: 40px;
+  }
+  .chapter_1{
+    top: 40px;
+    left: 40px;
+  }
+  .chapter_2{
+    top: 60px;
+    left: 10%;
+    text-align: center;
+    width: 80%;
+  }
 }
 
 
@@ -129,4 +179,12 @@ export default {
 .show-in-leave-to{
   opacity: 0;
 }
+
+@keyframes vertical-text-in {
+  0% {
+    transform: translate(0, -4px);
+    opacity: 0;
+  }
+}
+
 </style>
