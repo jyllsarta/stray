@@ -153,6 +153,7 @@ RSpec.describe "Users", type: :request do
                                                            star: Integer,
                                                            velocity: Integer,
                                                            max_item_rank_for_rankup: Integer,
+                                                           won_last_boss: Boolean,
                                                        },
                                                        characters: {
                                                            spica: Hash,

@@ -62,6 +62,7 @@
       .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', 'エンディングを表示します。')",
         @click="proceedEnding"
+        v-if="wonLastBoss"
       )
         img.icon(src="/images/icons/right_menu/ending.gif")
         .text
@@ -93,6 +94,10 @@ export default {
     },
     endingText(){
       return this.showEndingConfirm ? "みる！" : "エンディング";
+    },
+    wonLastBoss(){
+      console.log(this.$store.state.user.status.won_last_boss);
+      return this.$store.state.user.status.won_last_boss;
     }
   },
   methods: {

@@ -22,6 +22,7 @@ export default {
       star: 0,
       velocity: 100,
       max_item_rank_for_rankup: 100,
+      won_last_boss: false,
     },
     characters: {
       spica: {},
