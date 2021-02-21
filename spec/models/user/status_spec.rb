@@ -573,4 +573,26 @@ RSpec.describe User::Status, type: :model do
       expect(subject).to eq(4)
     end
   end
+
+  describe "#average_item_rank" do
+    let(:user){ create(:user) }
+    let(:user_status){ create(:user_status, user: user) }
+
+    subject { status.won_last_boss? }
+    it "default false" do
+      expect(subject).to be_falsey
+    end
+
+    context "won" do
+      before do
+        Enemy.delete_all
+      end
+      let!(:enemy){ create(:enemy, id: 705)}
+      let!(:won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
+
+      it do
+        expect(subject).to be_truthy
+      end
+    end
+  end
 end

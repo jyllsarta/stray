@@ -181,6 +181,10 @@ class User::Status < ApplicationRecord
     user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:item_rank).sum / (Constants.equip.max_count * 2)
   end
 
+  def won_last_boss?
+    user.won_enemies.exists?(enemy_id: Constants.enemy.last_boss_id)
+  end
+
   private
 
   def preload_item_associations!
