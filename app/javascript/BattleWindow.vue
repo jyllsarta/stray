@@ -834,8 +834,7 @@ export default {
         .then((results) => {
           console.log(results);
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
-          this.finished = true;
-          this.rewards = results.data.rewards;
+          this.rewards = results.data.rewards || [];
           if(results.data.isDraw){
             this.outcome = "draw";
           }
@@ -845,6 +844,7 @@ export default {
           else{
             this.outcome = "lose";
           }
+          this.showFinishDialog();
           this.$store.dispatch("achievement/fetchAchievements");
           this.$store.dispatch("achievement/fetchAchievementCache");
         })
@@ -913,6 +913,17 @@ export default {
           return false;
       }
     },
+ 
+    showFinishDialog(){
+      const isFirstTimeLastBossWin = (this.outcome === "win") && (this.rewards.length > 0) && ( this.$store.state.battle.enemy_id === Constants.enemy.lastBossEnemyId );
+      if(isFirstTimeLastBossWin){
+        this.$store.commit("window/updateWindowShowState", {windowName: "ending", state: true});
+        setTimeout(_=>{this.finished = true}, 2000);
+      }
+      else{
+        this.finished = true;
+      }
+    }
   },
 }
 </script>

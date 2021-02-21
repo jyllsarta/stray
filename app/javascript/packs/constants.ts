@@ -70,7 +70,8 @@ const Constants = {
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
   enemy: {
-    plusValueThreshold: 30
+    plusValueThreshold: 30,
+    lastBossEnemyId: 705,
   },
   battleCharacter: {
     imageLibrary: {
