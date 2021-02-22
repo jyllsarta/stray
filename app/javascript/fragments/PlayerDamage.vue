@@ -57,7 +57,7 @@ export default {
   @keyframes anim {
     0% {
       opacity: 0;
-      transform: scale(3);
+      transform: scale(5);
     }
     20% {
       opacity: 1;
