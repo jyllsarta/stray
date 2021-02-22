@@ -155,10 +155,10 @@ export default {
       // NOTE: user/item.rb とがんばって共有すること
       // (sum * rarity_factor(item.rarity) * (item_rank / 250 + 1).clamp(1, 3) / 80 + 2).floor
       ui.tech = function () {
-        return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank) / 250 + 1), 1), 3) / 80) + 2;
+        return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
       };
       ui.power = function () {
-        return Math.floor((this.str + this.def) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank) / 250 + 1), 1), 3) / 80) + 2;
+        return Math.floor((this.str + this.def) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
       };
 
       ui.effectValue = ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);

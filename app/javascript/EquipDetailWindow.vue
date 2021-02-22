@@ -29,6 +29,16 @@
                 |  {{param.toUpperCase()}}
               .value
                 | {{getEffectValue(item(), param)}}
+            .item
+              .label.power
+                | 力
+              .value
+                | {{item().power()}}
+            .item
+              .label.tech
+                | 技
+              .value
+                | {{item().tech()}}
           .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.3}")
             .name
               | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + parseInt(count)}}
@@ -46,6 +56,20 @@
                 | {{getEffectValue(rankUpItem(), param)}}
               .diff(:class="diffClass(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))")
                 | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
+            .item
+              .label.power
+                | 力
+              .value
+                | {{rankUpItem().power()}}
+              .diff(:class="diffClass(rankUpItem().power() - item().power())")
+                | ({{diffText(rankUpItem().power() - item().power())}})
+            .item
+              .label.tech
+                | 技
+              .value
+                | {{rankUpItem().tech()}}
+              .diff(:class="diffClass(rankUpItem().tech() - item().tech())")
+                | ({{diffText(rankUpItem().tech() - item().tech())}})
         .cannot_rankup(v-if="!canRankUp()")
           | {{cannotRankUpReason()}}
         .slider_area
@@ -92,6 +116,10 @@ export default {
       item_id: null,
       count: 1,
       rankUpLimit: 0,
+      defaultItemObject: {
+        power(){},
+        tech(){},
+      }
     };
   },
   props: {
@@ -105,10 +133,10 @@ export default {
   },
   methods: {
     item(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id) || {};
+      return this.$store.getters['equip_window/getUserItem'](this.item_id) || this.defaultItemObject;
     },
     rankUpItem(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id, parseInt(this.count)) || {};
+      return this.$store.getters['equip_window/getUserItem'](this.item_id, parseInt(this.count)) || this.defaultItemObject;
     },
     getEffectValue(itemObj, param){
       if(!itemObj.effectValueOf){
@@ -229,9 +257,9 @@ export default {
   justify-content: space-around;
   padding: $space;
   width: 100%;
-  height: 440px;
+  height: 500px;
   .status_area{
-    height: 230px;
+    height: 280px;
     padding: $space;
     display: flex;
     justify-content: center;
@@ -251,6 +279,7 @@ export default {
           padding-right: $space;
           text-align: right;
           display: inline-block;
+          line-height: 100%;
         }
         .value{
           width: 7rem;
@@ -282,6 +311,12 @@ export default {
         color: $plus;
       }
       .minus{
+        color: $minus;
+      }
+      .power{
+        color: $plus;
+      }
+      .tech{
         color: $minus;
       }
     }
