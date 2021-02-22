@@ -62,7 +62,7 @@ class User::Item < ApplicationRecord
   # STR + DEX || DEF + AGI の値を 力 / 技に変換する 
   # equip_window.ts と共有中
   def to_card_value(sum)
-    (sum * rarity_factor(item.rarity) * (item_rank / 250 + 1).clamp(1, 3) / 80 + 2).floor
+    (sum * rarity_factor(item.rarity) * (item_rank.to_f / 250 + 1).clamp(1, 3) / 80 + 2).floor
   end
 
   def max_rank
