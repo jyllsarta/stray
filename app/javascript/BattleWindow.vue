@@ -1334,17 +1334,17 @@ export default {
 }
 .player_selecting_cards{
   position: absolute;
-  top: 260px;
+  top: 290px;
   left: 250px;
   width: 198px;
-  height: 150px;
+  height: 100px;
 }
 .enemy_selecting_cards{
   position: absolute;
-  top: 260px;
+  top: 290px;
   right: 250px;
   width: 198px;
-  height: 150px;
+  height: 100px;
 }
 .skill_name{
   position: absolute;
@@ -1359,10 +1359,10 @@ export default {
 }
 .current_strength{
   position: absolute;
-  top: 260px;
+  top: 265px;
   left: calc( #{$window-width / 2} - 75px );
   width: 150px;
-  height: 80px;
+  height: 70px;
 }
 .decide{
   position: absolute;
