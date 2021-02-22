@@ -36,10 +36,10 @@ RSpec.describe DeckBuilder, type: :model do
     it "returns this" do
       expect(subject).to eq([
                                 # user_item1~4
-                                {:id=>1, :name=>"あいてむ", :power=>5, :tech=>5},
-                                {:id=>2, :name=>"あいてむ", :power=>2, :tech=>2},
-                                {:id=>3, :name=>"あいてむ", :power=>2, :tech=>2},
-                                {:id=>4, :name=>"あいてむ", :power=>11, :tech=>11},
+                                {:id=>1, :name=>"あいてむ", :power=>4, :tech=>4},
+                                {:id=>2, :name=>"あいてむ", :power=>3, :tech=>3},
+                                {:id=>3, :name=>"あいてむ", :power=>3, :tech=>3},
+                                {:id=>4, :name=>"あいてむ", :power=>7, :tech=>7},
                                 # 空き枠
                                 {:id=>5, :name=>"休憩", :power=>0, :tech=>0},
                                 {:id=>6, :name=>"休憩", :power=>0, :tech=>0},
@@ -76,10 +76,10 @@ RSpec.describe DeckBuilder, type: :model do
       it "returns this" do
         expect(subject).to eq([
                                   # user_items
-                                  {:id=>1, :name=>"あいてむ", :power=>5, :tech=>5},
-                                  {:id=>2, :name=>"あいてむ", :power=>2, :tech=>2},
-                                  {:id=>3, :name=>"あいてむ", :power=>2, :tech=>2},
-                                  {:id=>4, :name=>"あいてむ", :power=>11, :tech=>11},
+                                  {:id=>1, :name=>"あいてむ", :power=>4, :tech=>4},
+                                  {:id=>2, :name=>"あいてむ", :power=>3, :tech=>3},
+                                  {:id=>3, :name=>"あいてむ", :power=>3, :tech=>3},
+                                  {:id=>4, :name=>"あいてむ", :power=>7, :tech=>7},
                                   # 空き枠
                                   {:id=>5, :name=>"休憩", :power=>0, :tech=>0},
                                   {:id=>6, :name=>"休憩", :power=>0, :tech=>0},

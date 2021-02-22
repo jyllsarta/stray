@@ -23,8 +23,8 @@ class User::Item < ApplicationRecord
   def to_card
     param = self.parameter
     {
-        power: ((item.def + item.str) * rarity_factor(item.rarity) / 40).floor,
-        tech: ((item.dex + item.agi) * rarity_factor(item.rarity) / 40).floor,
+        power: to_card_value(item.def + item.str),
+        tech: to_card_value(item.dex + item.agi),
         name: self.item.name,
     }
   end
@@ -58,6 +58,12 @@ class User::Item < ApplicationRecord
   end
 
   private
+
+  # STR + DEX || DEF + AGI の値を 力 / 技に変換する 
+  # equip_window.ts と共有中
+  def to_card_value(sum)
+    (sum * rarity_factor(item.rarity) * (item_rank / 250 + 1).clamp(1, 3) / 80 + 2).floor
+  end
 
   def max_rank
     user.status.max_item_rank_for_rankup

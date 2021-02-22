@@ -30,8 +30,8 @@ RSpec.describe User::Item, type: :model do
       it "returns parameter for card" do
         expect(subject).to eq({
                                   name: "ぴよ",
-                                  power: 7,
-                                  tech: 2
+                                  power: 5,
+                                  tech: 3
                               })
       end
     end
@@ -43,8 +43,8 @@ RSpec.describe User::Item, type: :model do
       it "returns parameter for card" do
         expect(subject).to eq({
                                   name: "ぴよ",
-                                  power: 16,
-                                  tech: 5
+                                  power: 10,
+                                  tech: 4
                               })
       end
     end
