@@ -10,7 +10,7 @@ export default {
     relic: false,
     profile: false,
     battle: false,
-    battle_prepare: false,
+    battle_prepare: true,
     quest: false,
     equip_skill: false,
     achievement: false,

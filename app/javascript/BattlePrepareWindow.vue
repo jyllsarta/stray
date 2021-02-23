@@ -38,12 +38,8 @@
               | {{enemy.is_boss ?  "★" : ""}}{{enemy.name}}
             .rank
               | {{enemy.rank}}
-        .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
-          | 敵ランクに達していないため、
-          | カードが{{rankNotificationText}}強化されます。
-        .blank_card_notification(v-if="$store.getters['user/hasEmptySlot']" )
-          | 装備枠に空きがあると
-          | 「休憩」で埋まります。
+        .notifications
+          | {{notificationText}}
         .status_area
           .status
             .player
@@ -140,6 +136,16 @@
           this.fetchPlayerWonEnemies();
       },
       computed: {
+        notificationText(){
+            let text = "";
+            if(this.averageItemRank < this.currentEnemy.rank){
+                text += `敵ランクに達していないため\nカードが${this.rankNotificationText}強化されます。\n`;
+            }
+            if(this.$store.getters['user/hasEmptySlot']){
+                text += "装備枠に空きがあると\n「休憩」で埋まります。\n";
+            }
+            return text;
+          },
           currentEnemy(){
               return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
           },
@@ -288,10 +294,6 @@
 <style lang="scss" scoped>
   @import "stylesheets/global_setting";
 
-  *{
-    //outline: 1px solid #79f850;
-  }
-
   .description{
     padding: $space;
     white-space: pre-wrap;
@@ -391,21 +393,10 @@
       }
     }
 
-    .enemy_rank_notification{
+    .notifications{
       position: absolute;
       left: calc((100% - 180px) / 2);
-      top: 170px;
-      width: 180px;
-      height: 20px;
-      font-size: $font-size-mini;
-      line-height: 100%;
-      white-space: pre;
-    }
-
-    .blank_card_notification{
-      position: absolute;
-      left: calc((100% - 180px) / 2);
-      top: 120px;
+      top: 100px;
       width: 180px;
       height: 20px;
       font-size: $font-size-mini;
