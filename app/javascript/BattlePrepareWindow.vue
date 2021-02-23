@@ -43,11 +43,30 @@
         .status_area
           .status
             .player
-              | {{averageItemRank}}
+              .main
+                | 999
+              .sub
+                | ,000,000
             .label
-              | ランク
+              | ATK
             .enemy
-              | {{currentEnemy.rank}}
+              .main
+                | 999
+              .sub
+                | ,000,000
+          .status
+            .player
+              .main
+                | 999
+              .sub
+                | ,000,000
+            .label
+              | DEF
+            .enemy
+              .main
+                | 999
+              .sub
+                | ,000,000
           .status
             .player
               | {{$store.state.user.quest_battle_parameters.power}}
@@ -407,7 +426,7 @@
     .status_area{
       position: absolute;
       left: calc((100% - 180px) / 2);
-      top: 200px;
+      top: 170px;
       width: 180px;
       height: 100px;
       .status{
@@ -415,7 +434,7 @@
         width: 100%;
         display: flex;
         text-align: center;
-        align-items: baseline;
+        align-items: center;
         border-bottom: 1px solid $gray3;
         .player, .enemy{
           width: 35%;
@@ -423,6 +442,13 @@
         }
         .label{
           width: 30%;
+        }
+        .main{
+          line-height: 100%;
+        }
+        .sub{
+          font-size: $font-size-mini / 2;
+          line-height: 100%;
         }
       }
     }
@@ -486,7 +512,7 @@
 
     .battle_start{
       position: absolute;
-      bottom: 80px;
+      bottom: 75px;
       left: calc((100% - 150px) / 2);
       width: 150px;
       @include centering($height: 50px);
