@@ -40,10 +40,10 @@ class QuestBattle
         playerTech: 1 + @user.status.quest_battle_additional_power_tech_damage,
         playerSpecial: 1 + @user.status.quest_battle_additional_special_damage,
         enemyId: @enemy.id,
-        enemyName: @enemy.name_with_plus(player_rank),
+        enemyName: @enemy.name_with_plus(@user.status.player_strength[:atk], @user.status.player_strength[:def]),
         enemyImageName: @enemy.image_name,
         enemyScaleType: @enemy.scale_type,
-        enemyHp: @enemy.hp,
+        enemyHp: @enemy.multiplied_hp(@user.status.player_strength[:atk]),
         enemyPower: @enemy.power,
         enemyTech: @enemy.tech,
         enemySpecial: @enemy.special,
@@ -82,11 +82,7 @@ class QuestBattle
   end
 
   def enemy_cards
-    @enemy.cards(player_rank).each_with_index{|x, i| x.merge!(id: i+1)}
-  end
-
-  def player_rank
-    @_player_rank ||= @user.status.average_item_rank
+    @enemy.cards(@user.status.player_strength[:def]).each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)

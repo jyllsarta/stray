@@ -185,6 +185,15 @@ class User::Status < ApplicationRecord
     user.won_enemies.exists?(enemy_id: Constants.enemy.last_boss_id)
   end
 
+  def player_strength
+    return @_strength if @_strength
+    preload_item_associations!
+    @_strength = user.characters.map(&:strength).each_with_object({atk: 0, def: 0}) do |strength, hash|
+      hash[:atk] += strength[:atk]
+      hash[:def] += strength[:def]
+    end
+  end
+
   private
 
   def preload_item_associations!
