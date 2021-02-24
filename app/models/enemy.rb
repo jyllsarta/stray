@@ -27,20 +27,27 @@ class Enemy < ApplicationRecord
   has_many :enemy_skills
   has_many :enemy_rewards
 
-  def name_with_plus(player_rank)
-    name + ("+" * plus_count(player_rank))
+  # TODO 続き
+  def name_with_plus(player_atk, player_def)
+    n = name
+    n += "+" if parameter_multiplier(player_atk) > 1
+    n += "+" if parameter_multiplier(player_def) > 1
+    n
   end
 
-  def cards(player_rank)
+  def multiplied_hp(player_def)
+    (hp * parameter_multiplier(player_def)).floor
+  end
+
+  def cards(player_atk)
     preload_associations!
-    multiplier = Constants.enemy.card_strength_multiplier[self.plus_count(player_rank)]
-    enemy_cards.map(&:card).map{|card| card.to_card(multiplier)}
+    enemy_cards.map(&:card).map{|card| card.to_card(parameter_multiplier(player_atk))}
   end
 
-  def plus_count(player_rank)
-    rank_diff = rank - player_rank
-    return 0 if rank_diff <= 0
-    rank_diff <= Constants.enemy.plus_value_threshold ? 1 : 2
+  def parameter_multiplier(player_strength)
+    ratio = player_strength.to_f / strength.to_f
+    return Constants.enemy.strength_multiplier[0] if ratio >= 1
+    ratio >= Constants.enemy.strength_threshold ? Constants.enemy.strength_multiplier[1] : Constants.enemy.strength_multiplier[2]
   end
 
   private

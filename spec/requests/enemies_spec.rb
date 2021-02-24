@@ -44,7 +44,7 @@ RSpec.describe "Enemies", type: :request do
                                                      power: Integer,
                                                      tech: Integer,
                                                      special: Integer,
-                                                     rank: Integer,
+                                                     strength: Integer,
                                                      cards: [
                                                          {
                                                              name:String,

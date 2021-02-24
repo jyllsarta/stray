@@ -27,7 +27,7 @@ FactoryBot.define do
     image_name { "gorem" }
     scale_type { 1 }
     hp { 5 }
-    rank { 1 }
+    strength { 100 }
     is_boss { false }
 
     association :quest, factory: :quest, strategy: :create

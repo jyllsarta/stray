@@ -1,6 +1,10 @@
 class EnemiesController < ApplicationController
   def index
-    @user = current_user
+    # TODO: SQL最適化
+    @user_strength = current_user.characters.map(&:strength).each_with_object({atk: 0, def: 0}) do |strength, hash|
+      hash[:atk] += strength[:atk]
+      hash[:def] += strength[:def]
+    end
     @enemies = Enemy.where(quest_id: params[:quest_id]).preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
   end
 
