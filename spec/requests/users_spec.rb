@@ -203,7 +203,6 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    class_cards: Array,
                                                    item_cards: Array,
-                                                   average_item_rank: Integer,
                                                }
                                            )
     end

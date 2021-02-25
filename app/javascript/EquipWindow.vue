@@ -27,11 +27,6 @@
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
         )
           | 編集キャラ交代
-        .player_rank
-          .desc
-            | 平均装備ランク
-          .rank
-            NumeratableNumber(:number="averageItemRank", :speed="0.4")
         .sub_chara_status.block
           .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
@@ -374,9 +369,6 @@ export default {
     cancelAnimationFrame(this.move_character_handle);
   },
   computed: {
-    averageItemRank(){
-      return this.$store.getters['equip_window/averageItemRank']();
-    },
     currentItem(){
       return this.$store.getters['equip_window/getUserItem'](this.$store.state.equip_window.selecting_item_id);
     },
@@ -518,27 +510,6 @@ export default {
       top: 60px;
       left: $space;
       padding: $space;
-    }
-
-    .player_rank{
-      position: absolute;
-      left: $space;
-      top: 110px;
-      padding: 2px;
-      border: 1px solid $gray3;
-      border-radius: $radius;
-      @include checker_background;
-      .desc{
-        font-size: $font-size-mini;
-        line-height: 105%;
-        border-bottom: 1px solid $gray3;
-      }
-      .rank{
-        font-size: $font-size-large;
-        width: 100%;
-        text-align: right;
-        line-height: 105%;
-      }
     }
 
     .sub_chara_status{

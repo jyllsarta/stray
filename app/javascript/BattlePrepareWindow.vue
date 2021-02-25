@@ -36,8 +36,6 @@
           .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
               | {{enemy.is_boss ?  "★" : ""}}{{enemy.name}}
-            .rank
-              | {{enemy.rank}}
         .notifications
           | {{notificationText}}
         .status_area
@@ -95,11 +93,6 @@
               | HP
             .enemy
               | {{currentEnemy.hp}}
-        .player_rank
-          .desc
-            | 平均装備ランク：
-          .rank
-            | {{averageItemRank}}
         .open_skill_window.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: true})")
           | スキル選択
         .switch_deck_type
@@ -143,7 +136,6 @@
               enemyList: [],
               classCardsResponse: [],
               itemCardsResponse: [],
-              averageItemRank: 0,
               wonEnemyIds: [],
           };
       },
@@ -157,9 +149,6 @@
       computed: {
         notificationText(){
             let text = "";
-            if(this.averageItemRank < this.currentEnemy.rank){
-                text += `敵ランクに達していないため\nカードが${this.rankNotificationText}強化されます。\n`;
-            }
             if(this.$store.getters['user/hasEmptySlot']){
                 text += "装備枠に空きがあると\n「休憩」で埋まります。\n";
             }
@@ -210,10 +199,6 @@
           currentPlayerCards(){
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
               return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
-          },
-          rankNotificationText(){
-              const enemyRank = this.enemyList.find((x)=>x.id===this.selectingEnemyId)?.rank || 0;
-              return this.averageItemRank + Constants.enemy.plusValueThreshold < enemyRank ? "大幅に" : "";
           },
       },
       methods: {
@@ -269,7 +254,6 @@
                       console.log(results);
                       this.classCardsResponse = results.data.class_cards;
                       this.itemCardsResponse = results.data.item_cards;
-                      this.averageItemRank = results.data.average_item_rank;
                   })
                   .catch((error) => {
                       console.warn(error.response);
@@ -397,14 +381,11 @@
         margin: 2px;
         width: calc(100% - 6px);
         font-size: $font-size-mini;
-        .name, .rank{
+        .name{
+          padding-left: $thin_space;
           display: inline-block;
           text-align: left;
-          width: calc(100% - 2.5em);
-        }
-        .rank{
-          width: 2em;
-          text-align: right;
+          width: 100%;
         }
       }
       .disabled{
@@ -453,19 +434,6 @@
       }
     }
 
-    .player_rank{
-      position: absolute;
-      left: $space;
-      top: 100px;
-      width: 140px;
-      height: 60px;
-      .rank{
-        font-size: $font-size-large;
-        width: 100%;
-        text-align: right;
-      }
-    }
-
     .open_skill_window{
       position: absolute;
       left: 230px;
@@ -477,8 +445,8 @@
 
     .switch_deck_type{
       position: absolute;
-      left: $space;
-      top: 155px;
+      left: $space + 30px;
+      top: $space + 110px;
       width: 140px;
       height: 56px;
       .class_cards, .equip_cards{
