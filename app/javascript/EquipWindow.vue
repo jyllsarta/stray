@@ -27,6 +27,17 @@
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
         )
           | 編集キャラ交代
+        .total_chara_status.block
+          .label.topic_medium
+            | 合計ステータス
+          .status
+            .param(v-for="param in ['atk', 'def']")
+              span.current
+                | {{param.toUpperCase()}}: {{$store.getters['equip_window/getTotalStrength'](param, true)}}
+              span.diff(
+                :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff'](param)) ]"
+              )
+                | ({{$store.getters['equip_window/getTotalStrengthDiff'](param)}})
         .sub_chara_status.block
           .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
@@ -512,11 +523,29 @@ export default {
       padding: $space;
     }
 
+    .total_chara_status{
+      @include checker-background;
+      font-size: $font-size-mini;
+      padding-bottom: $thin_space;
+      padding-top: $thin_space;
+      .label{
+        font-size: $font-size-normal;
+        display: inline-block;
+      }
+      .status{
+        padding: $space;
+        .param{
+          padding: $space;
+          font-size: $font-size-normal;
+        }
+      }
+    }
+
     .sub_chara_status{
       @include checker-background;
       font-size: $font-size-mini;
-      padding-bottom: $space;
-      padding-top: 30px;
+      padding-bottom: $thin_space;
+      padding-top: $thin_space;
       .label{
         font-size: $font-size-normal;
         display: inline-block;
@@ -838,12 +867,19 @@ export default {
       width: $sub-character-width;
       height: $sub-character-height;
     }
-    .sub_chara_status{
+    .total_chara_status{
       position: absolute;
-      top: $thin_space * 2 + 64px;
+      top: 0;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
+      height: 100px;
+    }
+    .sub_chara_status{
+      position: absolute;
+      top: 108px;
+      left: $character-width;
+      width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
+      height: 300px;
     }
     .item_list_main{
       position: absolute;

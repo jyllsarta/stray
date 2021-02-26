@@ -197,6 +197,17 @@ export default {
     getCharacterStrengthDiff: (state, getters) => (characterId, paramName) => {
       return getters.getCharacterStrength(characterId, paramName, true) - getters.getCharacterStrength(characterId, paramName, false);
     },
+    getTotalStrength: (state, getters) => (paramName, isCurrent) => {
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
+      const spicaParams = sourceParamNames.map(p=>getters.getCharacterParameter(1, p, isCurrent));
+      const spicaTotal = Math.floor((spicaParams[0] + spicaParams[1]) / 2) + Math.min(spicaParams[0], spicaParams[1]);
+      const tirolParams = sourceParamNames.map(p=>getters.getCharacterParameter(2, p, isCurrent));
+      const tirolTotal = Math.floor((tirolParams[0] + tirolParams[1]) / 2) + Math.min(tirolParams[0], tirolParams[1]);
+      return spicaTotal + tirolTotal;
+    },
+    getTotalStrengthDiff: (state, getters) => (paramName) => {
+      return getters.getTotalStrength(paramName, true) - getters.getTotalStrength(paramName, false);
+    },
     averageItemRank: (state, getters) => () => {
       let sum = 0;
       for(let characterName of ['spica', 'tirol']){
