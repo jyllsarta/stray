@@ -42,29 +42,29 @@
           .status
             .player
               .main
-                | 999
+                | {{playerAtkMainPart}}
               .sub
-                | ,000,000
+                | {{playerAtkSubPart}}
             .label
               | ATK
             .enemy
               .main
-                | 999
+                | {{enemyAtkMainPart}}
               .sub
-                | ,000,000
+                | {{enemyAtkSubPart}}
           .status
             .player
               .main
-                | 999
+                | {{playerDefMainPart}}
               .sub
-                | ,000,000
+                | {{playerDefSubPart}}
             .label
               | DEF
             .enemy
               .main
-                | 999
+                | {{enemyDefMainPart}}
               .sub
-                | ,000,000
+                | {{enemyDefSubPart}}
           .status
             .player
               | {{$store.state.user.quest_battle_parameters.power}}
@@ -147,7 +147,7 @@
           this.fetchPlayerWonEnemies();
       },
       computed: {
-        notificationText(){
+          notificationText(){
             let text = "";
             if(this.$store.getters['user/hasEmptySlot']){
                 text += "装備枠に空きがあると\n「休憩」で埋まります。\n";
@@ -199,6 +199,70 @@
           currentPlayerCards(){
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
               return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
+          },
+          playerAtkMainPart(){
+            const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            return Math.floor(source / structure);
+          },
+          playerAtkSubPart(){
+            const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyAtkMainPart(){
+            const source = this.currentEnemy.strength || 0;
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            return Math.floor(source / structure);
+          },
+          enemyAtkSubPart(){
+            const source = this.currentEnemy.strength || 0;
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          playerDefMainPart(){
+            const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            return Math.floor(source / structure);
+          },
+          playerDefSubPart(){
+            const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyDefMainPart(){
+            const source = this.currentEnemy.strength || 0;
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            return Math.floor(source / structure);
+          },
+          enemyDefSubPart(){
+            const source = this.currentEnemy.strength || 0;
+            const exp = Math.log10(source);
+            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
           },
       },
       methods: {
@@ -428,7 +492,7 @@
           line-height: 100%;
         }
         .sub{
-          font-size: $font-size-mini / 2;
+          font-size: 12px;
           line-height: 100%;
         }
       }
