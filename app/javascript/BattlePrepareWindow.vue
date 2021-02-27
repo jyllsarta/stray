@@ -200,16 +200,22 @@
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
               return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
           },
+          expBase(){
+            const maxValue = Math.max(
+              this.$store.getters['equip_window/getTotalStrength']("atk", false),
+              this.$store.getters['equip_window/getTotalStrength']("def", false),
+              this.currentEnemy.strength,
+            )
+            const exp = Math.log10(maxValue);
+            return Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+          },
           playerAtkMainPart(){
             const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
-            return Math.floor(source / structure);
+            return Math.floor(source / this.expBase);
           },
           playerAtkSubPart(){
             const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             if(structure === 1){
               return " "
             }
@@ -218,14 +224,12 @@
           },
           enemyAtkMainPart(){
             const source = this.currentEnemy.strength || 0;
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             return Math.floor(source / structure);
           },
           enemyAtkSubPart(){
             const source = this.currentEnemy.strength || 0;
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             if(structure === 1){
               return " "
             }
@@ -234,14 +238,12 @@
           },
           playerDefMainPart(){
             const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             return Math.floor(source / structure);
           },
           playerDefSubPart(){
             const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             if(structure === 1){
               return " "
             }
@@ -250,14 +252,12 @@
           },
           enemyDefMainPart(){
             const source = this.currentEnemy.strength || 0;
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             return Math.floor(source / structure);
           },
           enemyDefSubPart(){
             const source = this.currentEnemy.strength || 0;
-            const exp = Math.log10(source);
-            const structure = Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+            const structure = this.expBase;
             if(structure === 1){
               return " "
             }
