@@ -248,6 +248,9 @@ export default {
     },
     changePage(state, payload){
       state.current_page = payload;
-    }
+    },
+    syncInitialToDraft(state){
+      state.initial = state.draft;
+    },
   }
 }
