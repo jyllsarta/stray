@@ -69,6 +69,14 @@ RSpec.describe Enemy, type: :model do
         expect(subject).to eq(13)
       end
     end
+
+    context "around 99" do
+      let(:enemy){ create(:enemy, :with_card, strength: 10, hp: 90) }
+      let(:player_atk){ 9 }
+      it "cap max hp to 99" do
+        expect(subject).to eq(99)
+      end
+    end
   end
 
   describe "#cards" do

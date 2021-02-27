@@ -36,7 +36,7 @@ class Enemy < ApplicationRecord
   end
 
   def multiplied_hp(player_def)
-    (hp * parameter_multiplier(player_def)).floor
+    [(hp * parameter_multiplier(player_def)).floor, Constants.enemy.max_hp].min
   end
 
   def cards(player_atk)
