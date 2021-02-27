@@ -29,6 +29,7 @@
           :right-side="false"
         )
         CardList.enemy_deck(
+          :class="enemyDefWins ? 'win' : ''"
           :cards="enemyDeck"
           :right-side="true"
         )
@@ -47,7 +48,7 @@
                 | {{playerAtkSubPart}}
             .label
               | ATK
-            .enemy
+            .enemy(:class="enemyAtkWins ? 'win' : ''")
               .main
                 | {{enemyAtkMainPart}}
               .sub
@@ -60,7 +61,7 @@
                 | {{playerDefSubPart}}
             .label
               | DEF
-            .enemy
+            .enemy(:class="enemyDefWins ? 'win' : ''")
               .main
                 | {{enemyDefMainPart}}
               .sub
@@ -91,7 +92,7 @@
               | {{$store.state.user.quest_battle_parameters.hp}}
             .label
               | HP
-            .enemy
+            .enemy(:class="enemyAtkWins ? 'win' : ''")
               | {{currentEnemy.hp}}
         .open_skill_window.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: true})")
           | スキル選択
@@ -150,7 +151,13 @@
           notificationText(){
             let text = "";
             if(this.$store.getters['user/hasEmptySlot']){
-                text += "装備枠に空きがあると\n「休憩」で埋まります。\n";
+                text += "装備の空枠は[休憩]になる。\n";
+            }
+            if(this.enemyAtkWins){
+                text += "力負けし有効打が入らずHP増加。\n";
+            }
+            if(this.enemyDefWins){
+                text += "守りが甘く、カード値増加。\n";
             }
             return text;
           },
@@ -263,6 +270,16 @@
             }
             const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
             return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyAtkWins(){
+            const enemyParameter = this.currentEnemy.strength || 0;
+            const playerParameter = this.$store.getters['equip_window/getTotalStrength']("atk", false) || 0;
+            return playerParameter < enemyParameter;
+          },
+          enemyDefWins(){
+            const enemyParameter = this.currentEnemy.strength || 0;
+            const playerParameter = this.$store.getters['equip_window/getTotalStrength']("def", false) || 0;
+            return playerParameter < enemyParameter;
           },
       },
       methods: {
@@ -432,6 +449,9 @@
       top: 100px;
       width: 213px;
       height: 330px;
+      &.win{
+        color: $yellow;
+      }
     }
 
     .enemy_list{
@@ -459,12 +479,13 @@
 
     .notifications{
       position: absolute;
-      left: calc((100% - 180px) / 2);
+      left: calc((100% - 220px) / 2);
       top: 100px;
-      width: 180px;
+      width: 220px;
       height: 20px;
       font-size: $font-size-mini;
-      line-height: 100%;
+      line-height: 170%;
+      text-align: center;
       white-space: pre;
     }
 
@@ -494,6 +515,9 @@
         .sub{
           font-size: 12px;
           line-height: 100%;
+        }
+        .win{
+          color: $yellow;
         }
       }
     }
