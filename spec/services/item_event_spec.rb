@@ -98,7 +98,7 @@ RSpec.describe ItemEvent, type: :model do
         it "ランクは上昇せずコインがもらえる" do
           subject
           expect(user.items.find(user_item.id).rank).to eq(Constants.item.default_max_rank)
-          expect(user.status.coin).to eq(rank)
+          expect(user.status.coin).to eq(1) # rank / 3 + 1 の 1
         end
       end
       context "それがすでに最大ランクを超えていても" do
@@ -161,8 +161,8 @@ RSpec.describe ItemEvent, type: :model do
           user.items.create(item_id: item4.id, rank: rank + Constants.item.higher_rank_jitter)
           user.items.create(item_id: item5.id, rank: rank + Constants.item.higher_rank_jitter)
         end
-        it "アイテムはコインに変換されてる" do
-          expect{subject}.to change(user.status, :coin).by(rank)
+        it "アイテムはコインに変換されてて、コイン量はキャップされている" do
+          expect{subject}.to change(user.status, :coin).by(100)
           expect(event.logs[0][:message].include?("コインに変換した")).to eq(true)
         end  
       end

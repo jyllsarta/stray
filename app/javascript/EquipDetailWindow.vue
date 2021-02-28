@@ -194,7 +194,10 @@ export default {
       return totalCost;
     },
     rankUpCost(rank){
-      return Math.floor(Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity));
+      return Math.min(
+        Math.floor(Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item().rarity)),
+        Constants.item.maxRankUpCost,
+      );
     },
     canRankUp(){
       return this.isCoinSufficient() && this.isRankCapable();

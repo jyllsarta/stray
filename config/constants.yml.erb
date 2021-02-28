@@ -57,6 +57,7 @@ item:
   higher_rank_jitter: 10
   random_item_max_rarity_weight: 1000 # 10000分率での、ランダムアイテム受領時の最大レアリティアイテムを拾う確率
   random_item_recent_threshold: 5 # 最近引いたX件のアイテムはランダムアイテム報酬の対象外とする
+  max_rank_up_cost: 99999,
 
 equip:
   max_count: 4
@@ -65,6 +66,7 @@ event:
   attenuate_velocity_per_event: 1
   attenuate_increase_threshold: 250
   long_time_absent_threshold_seconds: <%= 3600*6 %>
+  max_coin_amount_per_event: 100
   item:
     max_rarity: 5
     # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり
@@ -109,3 +111,21 @@ enemy:
   strength_multiplier: [1, 1.3, 1.8]
   last_boss_id: 705
   max_hp: 99
+
+gacha:
+  variations:
+    - id: 1
+      title: "神秘の鍋"
+      min_point: 0
+      reward_frequency: 1000
+      weights: [0, 7998, 1700, 250, 50, 2]
+    - id: 2
+      title: "神秘の大鍋"
+      min_point: 100000
+      reward_frequency: 10000
+      weights: [0, 6990, 2200, 450, 150, 10]
+    - id: 3
+      title: "不可思議の大鍋"
+      min_point: 10000000
+      reward_frequency: 1000000
+      weights: [0, 700, 3500, 4000, 1500, 300]

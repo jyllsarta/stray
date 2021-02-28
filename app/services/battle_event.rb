@@ -45,7 +45,7 @@ class BattleEvent < Event
   private
 
   def base_coin_amount
-    @rank * 10
+    [@rank/ 2 + 1 , Constants.event.max_coin_amount_per_event].min
   end
 
   def process_win(user)

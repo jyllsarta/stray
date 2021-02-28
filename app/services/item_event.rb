@@ -85,7 +85,7 @@ private
   end
 
   def coin_amount
-    @rank
+    [@rank/ 3 + 1, Constants.event.max_coin_amount_per_event].min
   end
 
   def lot_item_rarity!
