@@ -24,6 +24,8 @@
       transition(name="open_window")
         ProfileWindow(v-if="$store.state.window.profile")
       transition(name="open_window")
+        GachaWindow(v-if="$store.state.window.gacha")
+      transition(name="open_window")
         QuestWindow(v-if="$store.state.window.quest")
       transition(name="open_window")
         BattlePrepareWindow(v-if="$store.state.window.battle_prepare")
@@ -62,6 +64,7 @@ import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
 import RelicWindow from './RelicWindow'
 import ProfileWindow from './ProfileWindow'
+import GachaWindow from './GachaWindow'
 import QuestWindow from './QuestWindow'
 import BattlePrepareWindow from './BattlePrepareWindow'
 import EquipSkillWindow from './EquipSkillWindow'
@@ -96,6 +99,7 @@ export default {
     SwitchDungeonWindow,
     RelicWindow,
     ProfileWindow,
+    GachaWindow,
     QuestWindow,
     BattlePrepareWindow,
     EquipSkillWindow,

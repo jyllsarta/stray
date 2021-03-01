@@ -39,6 +39,13 @@
         .text
           | クエスト
       .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '神秘の鍋メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/gacha.gif")
+        .text
+          | 神秘の鍋
+      .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
         @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
       )
