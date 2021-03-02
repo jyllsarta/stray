@@ -10,6 +10,16 @@
       .description
         | コインを投入して、溢れてくる何かを掴み取りましょう。
       .body
+        .rates
+          | 提供割合：
+        .coins
+          | XXXXXX,XXX
+        .rewards
+          | ご利益
+        .pot
+          | ポット
+        .characters
+          | スピカチロル耳
 
 </template>
 
@@ -45,6 +55,48 @@ export default {
     border-bottom: 1px solid $gray3;
   }
   .body{
-    display: flex;
+    width: 100%;
+    height: 80%;
+    *{
+      outline: 1px solid $yellow;
+    }
+    .rates{
+      position: absolute;
+      top: 100px;
+      left: $space;
+      width: 200px;
+      height: 400px;
+    }
+    .rewards{
+      position: absolute;
+      top: 100px;
+      right: $space;
+      width: 200px;
+      height: 400px;
+    }
+    .coins{
+      position: absolute;
+      top: 100px;
+      $width: 400px;
+      left: calc((100% - #{$width}) / 2);
+      width: $width;
+      height: 150px;
+    }
+    .pot{
+      position: absolute;
+      bottom: 100px;
+      $width: 500px;
+      left: calc((100% - #{$width}) / 2);
+      width: $width;
+      height: 150px;
+    }
+    .characters{
+      position: absolute;
+      bottom: $space;
+      $width: 600px;
+      left: calc((100% - #{$width}) / 2);
+      width: $width;
+      height: 100px;
+    }
   }
 </style>
