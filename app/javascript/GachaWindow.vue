@@ -11,7 +11,34 @@
         | コインを投入して、溢れてくる何かを掴み取りましょう。
       .body
         .rates
-          | 提供割合：
+          .index
+            | - 提供割合 - 
+          .table
+            .item
+              .rarity
+                | ・
+              .rate
+                | 59.98%
+            .item
+              .rarity
+                | *
+              .rate
+                | 59.98%
+            .item
+              .rarity
+                | ☆
+              .rate
+                | 59.98%
+            .item
+              .rarity
+                | ★
+              .rate
+                | 59.98%
+            .item
+              .rarity
+                | ◆
+              .rate
+                | 59.98%
         .coins
           | XXXXXX,XXX
         .rewards
@@ -67,6 +94,32 @@ export default {
       left: $space;
       width: 200px;
       height: 400px;
+      font-size: $font-size-large;
+      .index{
+        text-align: center;
+      }
+      .table{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 300px;
+        justify-content: space-around;
+        .item{
+          border-bottom: 1px solid $gray3;
+          width: 100%;
+          line-height: 140%;
+          .rarity{
+            display: inline-block;
+            text-align: center;
+            width: 20%;
+          }
+          .rate{
+            display: inline-block;
+            text-align: right;
+            width: 80%;
+          }
+        }
+      }
     }
     .rewards{
       position: absolute;
