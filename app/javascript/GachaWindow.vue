@@ -140,9 +140,9 @@ export default {
     .rates{
       position: absolute;
       top: 100px;
-      left: $space;
+      left: 30px;
       width: 200px;
-      height: 400px;
+      height: 200px;
       font-size: $font-size-large;
       .index{
         text-align: center;
@@ -151,7 +151,7 @@ export default {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 300px;
+        height: 100%;
         justify-content: space-around;
         .item{
           border-bottom: 1px solid $gray3;
@@ -174,7 +174,7 @@ export default {
       position: absolute;
       top: 100px;
       right: $space;
-      width: 400px;
+      width: 300px;
       height: 250px;
       .index{
         width: 100%;
@@ -240,11 +240,11 @@ export default {
     }
     .pot{
       position: absolute;
-      bottom: 100px;
-      $width: 500px;
+      bottom: 0px;
+      $width: 800px;
       left: calc((100% - #{$width}) / 2);
       width: $width;
-      height: 150px;
+      height: 250px;
       display: flex;
       justify-content: space-around;
       .pot_image{
@@ -253,11 +253,11 @@ export default {
     }
     .characters{
       position: absolute;
-      bottom: $space;
-      $width: 600px;
+      bottom: 0;
+      $width: 950px;
       left: calc((100% - #{$width}) / 2);
       width: $width;
-      height: 100px;
+      height: 160px;
       display: flex;
       justify-content: space-between;
       img{
