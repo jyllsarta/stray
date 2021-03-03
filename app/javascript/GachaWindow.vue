@@ -17,9 +17,10 @@
         .rewards
           | ご利益
         .pot
-          | ポット
+          img.pot_image(src="/images/gacha/pot1.png")
         .characters
-          | スピカチロル耳
+          img.tirol(src="/images/gacha/tirol.png")
+          img.spica(src="/images/gacha/spica.png")
 
 </template>
 
@@ -58,7 +59,7 @@ export default {
     width: 100%;
     height: 80%;
     *{
-      outline: 1px solid $yellow;
+      //outline: 1px solid $yellow;
     }
     .rates{
       position: absolute;
@@ -89,6 +90,11 @@ export default {
       left: calc((100% - #{$width}) / 2);
       width: $width;
       height: 150px;
+      display: flex;
+      justify-content: space-around;
+      .pot_image{
+        height: 100%;
+      }
     }
     .characters{
       position: absolute;
@@ -97,6 +103,11 @@ export default {
       left: calc((100% - #{$width}) / 2);
       width: $width;
       height: 100px;
+      display: flex;
+      justify-content: space-between;
+      img{
+        height: 100%;
+      }
     }
   }
 </style>

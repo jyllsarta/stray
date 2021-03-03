@@ -12,7 +12,7 @@ export default {
     battle: false,
     battle_prepare: false,
     quest: false,
-    gacha: false,
+    gacha: true,
     equip_skill: false,
     achievement: false,
     transition_frame: false,
