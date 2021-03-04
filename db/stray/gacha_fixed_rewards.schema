@@ -1,0 +1,9 @@
+create_table "gacha_fixed_rewards", force: :cascade  do |t|
+  t.integer    :point,         null: false
+  t.string     :giftable_type, null: false
+  t.integer    :giftable_id
+  t.integer    :amount,        null: false
+  t.timestamps
+end
+
+add_index :gacha_fixed_rewards, [:point]

@@ -129,6 +129,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["skill_id"], name: "index_enemy_skills_on_skill_id"
   end
 
+  create_table "gacha_fixed_rewards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "point", null: false
+    t.string "giftable_type", null: false
+    t.integer "giftable_id"
+    t.integer "amount", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point"], name: "index_gacha_fixed_rewards_on_point"
+  end
+
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "base_rank", default: 0, null: false
