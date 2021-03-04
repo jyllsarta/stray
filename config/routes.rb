@@ -84,6 +84,8 @@ Rails.application.routes.draw do
     get :cache, on: :collection
   end
 
+  resources :gacha, only: [:index]
+
   if Rails.env.development?
     resources :debug, only: [] do
       DebugController.action_methods.each do |method|
