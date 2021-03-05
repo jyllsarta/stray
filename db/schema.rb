@@ -281,6 +281,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["user_id", "dungeon_id"], name: "index_user_dungeon_progresses_on_user_id_and_dungeon_id", unique: true
   end
 
+  create_table "user_gacha_points", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", default: 0
+    t.integer "point", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_gacha_points_on_user_id", unique: true
+  end
+
   create_table "user_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", default: 0
     t.integer "item_id", default: 0

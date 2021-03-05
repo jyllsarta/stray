@@ -30,6 +30,7 @@ RSpec.describe User, type: :model do
         expect(user.characters.tirol.first.equip_item_ids.compact).to eq([2])
         expect(user.characters.spica.first.equip_item_ids.compact).to eq([1])
         expect(user.items.length).to eq(2)
+        expect(user.gacha_point.present?).to be_truthy
       end
     end
   end

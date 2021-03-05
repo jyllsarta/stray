@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :random_item_receive_histories
   has_many :achievements
   has_many :achievement_steps
+  has_one :gacha_point
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end
@@ -45,6 +46,7 @@ class User < ApplicationRecord
       user.items.create!(item_id: 2, rank: 0)
       user.characters.spica.first.force_set_equips([1])
       user.characters.tirol.first.force_set_equips([2])
+      User::GachaPoint.create(user: user)
     end
     user
   end
