@@ -13,13 +13,8 @@
 #  index_user_gacha_points_on_user_id  (user_id) UNIQUE
 #
 
-class User::GachaPoint < ApplicationRecord
-  belongs_to :user
-
-  def add!(point)
-    with_lock do
-      user.status.consume_coin!(point)
-      self.increment!(:point, point)
-    end
+FactoryBot.define do
+  factory :user_gacha_point, class: 'User::GachaPoint' do
+    point { 0 }
   end
 end
