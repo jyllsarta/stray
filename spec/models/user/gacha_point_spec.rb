@@ -17,20 +17,28 @@ require 'rails_helper'
 
 RSpec.describe User::GachaPoint, type: :model do
   describe "#add!" do
-    let(:user) { create(:user) }
-    let(:user_status) { create(:user_status, user: user) }
-    let(:user_gacha_point){ create(:user_gacha_point, user: user) }
+    before do
+      GachaFixedReward.destroy_all 
+    end
+
+    let!(:user) { create(:user) }
+    let!(:user_status) { create(:user_status, user: user) }
+    let!(:user_gacha_point){ create(:user_gacha_point, user: user) }
+    let!(:gacha_fixed_reward){ create(:gacha_fixed_reward, point: 100, giftable_type: "Star", giftable_id: 1, amount: 5) }
+    let!(:gacha_fixed_reward2){ create(:gacha_fixed_reward, point: 101, giftable_type: "Star", giftable_id: 1, amount: 5) }
     subject { user_gacha_point.add!(amount) }
 
     context "正常系" do
       let(:amount){ 100 }
       before do
+        user_status.update!(star: 0)
         user_status.add_coin!(amount)
       end
-      it "amount分だけコイン消費してpointを増加させる" do
+      it "一通りの変換を行う" do
         subject
         expect(user.status.reload.coin).to eq(0)
-        expect(user.gacha_point.reload.point).to eq(amount)        
+        expect(user.status.reload.star).to eq(5)
+        expect(user.gacha_point.reload.point).to eq(amount)
       end
     end
     context "コイン不足" do
