@@ -27,6 +27,12 @@ class User::GachaPoint < ApplicationRecord
     end
   end
 
+  def current_pot
+    @_pot ||= Constants.gacha.variations.reverse.find do |variation|
+      point >= variation.min_point
+    end
+  end
+  
   private
 
   def add_fixed_rewards!(amount)
@@ -46,12 +52,6 @@ class User::GachaPoint < ApplicationRecord
     random_rewards
   end
 
-  def current_pot
-    @_pot ||= Constants.gacha.variations.reverse.find do |variation|
-      point >= variation.min_point
-    end
-  end
-  
   def reward_count(before, delta, freq)
     # before:1100 + delta:2300 -> 4400 で、2000, 3000, 4000(freq: 1000)の報酬を得るシチュエーションで例える
     # 1100 から次回報酬ライン 2000 をつくる
