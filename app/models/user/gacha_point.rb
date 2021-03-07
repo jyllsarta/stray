@@ -15,10 +15,11 @@
 
 class User::GachaPoint < ApplicationRecord
   belongs_to :user
+  class OverPotLimit < StandardError; end
 
   def add!(amount)
     with_lock do
-      # TODO: 現在のポットグレードよりも高い額を入れようとしてたらエラー
+      raise OverPotLimit if amount > current_pot.limit
       user.status.consume_coin!(amount)
       fixed_reward_messages = add_fixed_rewards!(amount)
       random_reward_messages = add_random_rewards!(amount)

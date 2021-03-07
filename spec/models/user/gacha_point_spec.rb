@@ -92,5 +92,15 @@ RSpec.describe User::GachaPoint, type: :model do
         expect{subject}.to raise_error(User::Status::InsufficientCoin)
       end
     end
+    context "リミットブレイク" do
+      let(:amount){ 10001 }
+      let(:point){ 0 }
+      before do
+        user_status.add_coin(amount)
+      end
+      it "エラー" do
+        expect{subject}.to raise_error(User::GachaPoint::OverPotLimit)
+      end
+    end
   end
 end
