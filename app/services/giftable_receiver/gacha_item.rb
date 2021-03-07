@@ -19,7 +19,6 @@ class GiftableReceiver::GachaItem
 
   def add_random_item!(user, rank)
     item = lot_item!(user, rank)
-    user.random_item_receive_histories.create(item: item, received_at: Time.now)
     @user_item = user.items.find_or_initialize_by(item_id: item.id)
     @user_item.rank = [(rank - item.base_rank), @user_item.rank].max
     @user_item.save!
@@ -35,7 +34,7 @@ class GiftableReceiver::GachaItem
 
   def available_items(user, rank, rarity)
     rank = [rank, 30].max
-    ::Item.where.where("base_rank <= #{rank}").where(rarity: rarity)
+    ::Item.where("base_rank <= #{rank}").where(rarity: rarity)
   end
 
   def lot_rarity(user)

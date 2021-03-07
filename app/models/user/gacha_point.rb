@@ -45,11 +45,17 @@ class User::GachaPoint < ApplicationRecord
     remain_point = amount
     random_rewards = []
     reward_count(point, amount, current_pot.reward_frequency).times do
-      # TODO: Gift経由じゃなくてランダム報酬は専用のロットロジックを使う、確率とかはそれを使う
-      # ...って考えてたけどめんどいし保守性も良くないので、ランク差分だけポットにもたせるかなぁ
-      random_rewards.push(Gift.new("RandomItem", 100, 1).receive!(user))
+      random_rewards.push(Gift.new("GachaItem", lot_rank, 1).receive!(user))
     end
     random_rewards
+  end
+
+  def lot_rank
+    user_rank + current_pot.additional_rank + SecureRandom.rand(0..20)
+  end
+
+  def user_rank
+    @_rank ||= user.status.current_dungeon_rank
   end
 
   def reward_count(before, delta, freq)

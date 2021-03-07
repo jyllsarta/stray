@@ -26,11 +26,6 @@ RSpec.describe GiftableReceiver::GachaItem, type: :model do
           expect(user.items.first.rank).to eq(125 - 30)
         end
       end
-      it "succeeds" do
-        aggregate_failures do
-          expect{ subject }.to change(user.random_item_receive_histories, :count).by(1)
-        end
-      end
     end
 
     context "already have strong item" do
@@ -55,7 +50,7 @@ RSpec.describe GiftableReceiver::GachaItem, type: :model do
   end
   describe "#received_content_message" do
     subject{ receiver.received_content_message }
-    let(:item){ build(:item) }
+    let(:item){ create(:item) }
     before do
       allow(receiver).to receive(:lot_item!).and_return(item)
       receiver.receive!(user)
