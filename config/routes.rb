@@ -84,7 +84,8 @@ Rails.application.routes.draw do
     get :cache, on: :collection
   end
 
-  resources :gacha, only: [:index]
+  resources :gacha, only: [:index] 
+  post :gacha, to: "gacha#update"
 
   if Rails.env.development?
     resources :debug, only: [] do
