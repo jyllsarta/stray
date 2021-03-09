@@ -22,11 +22,13 @@
                 | {{Math.round(rate.rate * 100 * 100) / 100}}%
         .coins
           .current
-            | 99999999
+            img.icon(src="/images/ui/coin.png")
+            .amount
+              | {{$store.state.user.status.coin - pool}}
           .to.clickable
             | ↓
           .pool
-            | 123456
+            | {{pool}}
           .go.clickable
             | 投入！
         .rewards
@@ -41,7 +43,6 @@
                 | x
               .amount
                 | {{reward.amount}}
-
         .pot
           img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
@@ -66,7 +67,8 @@ export default {
         pot_grade: 0,
         rates: [0, 8000, 1000, 500, 250, 250],
         recent_fixed_rewards: [],
-      }
+      },
+      pool: 0
     };
   },
   props: {
@@ -204,7 +206,20 @@ export default {
       align-items: center;
       font-size: $font-size-large;
       justify-content: space-between;
-      .current{}
+      .current{
+        display: flex;
+        align-items: center;
+        line-height: 100%;
+        height: 24px;
+        .icon{
+          width: 22px;
+          height: 22px;
+        }
+        .amount{
+          padding-left: $space;
+          font-size: $font-size-large;
+        }
+      }
       .to{
         padding: $space;
       }
