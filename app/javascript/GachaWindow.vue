@@ -14,31 +14,12 @@
           .index
             | - 提供割合 - 
           .table
-            .item
+            .item(v-for="rate in rarityObjects")
               .rarity
-                | ・
+                | {{ rate.symbol }}
               .rate
-                | 59.98%
-            .item
-              .rarity
-                | *
-              .rate
-                | 59.98%
-            .item
-              .rarity
-                | ☆
-              .rate
-                | 59.98%
-            .item
-              .rarity
-                | ★
-              .rate
-                | 59.98%
-            .item
-              .rarity
-                | ◆
-              .rate
-                | 59.98%
+                // *100 で % に変換, * 100 / 100 で小数第二位
+                | {{Math.round(rate.rate * 100 * 100) / 100}}%
         .coins
           .current
             | 99999999
@@ -93,7 +74,7 @@
               .amount
                 | 9876543
         .pot
-          img.pot_image(src="/images/gacha/pot1.png")
+          img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
           img.tirol(src="/images/gacha/tirol.png")
           img.spica(src="/images/gacha/spica.png")
@@ -110,16 +91,47 @@ import StateLibrary from './packs/quest/state_library'
 export default {
   data: function () {
     return {
+      gacha: {
+        current_total_point: 0,
+        limit: 100000,
+        pot_grade: 0,
+        rates: [0, 8000, 1000, 500, 250, 250],
+        recent_fixed_rewards: [],
+      }
     };
   },
   props: {
   },
   store,
   mounted(){
+    this.fetchGachaIndex();
   },
   computed: {
+    rarityObjects(){
+      let res = [];
+      let raritySymbols = ["", "・", "*", "☆", "★", "◆"];
+      let sumWeights = this.gacha.rates.reduce((x,y)=>x+y);
+      // rarity=0は捨てる
+      for(let i = 1; i < this.gacha.rates.length; ++i ){
+        res.push({rarity: i, symbol: raritySymbols[i], rate: this.gacha.rates[i] / sumWeights});
+      }
+      return res;
+    }
   },
   methods: {
+    fetchGachaIndex(){
+      const path = `/gacha.json`;
+      ax.get(path)
+        .then((results) => {
+          console.log(results);
+          this.gacha = results.data.gacha;
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+        });
+
+    },
   }
 }
 </script>
