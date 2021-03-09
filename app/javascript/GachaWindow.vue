@@ -31,48 +31,17 @@
             | 投入！
         .rewards
           .index
-            | - ご利益 -
+            | 　- ご利益 -
           .table
-            .reward
+            .reward(v-for="reward in gacha.recent_fixed_rewards")
               .total
-                | 999999999
-              img.icon(src="/images/ui/coin.png")
+                | {{reward.point}}
+              img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`")
               .cross
                 | x
               .amount
-                | 9876543
-            .reward
-              .total
-                | 999999999
-              img.icon(src="/images/ui/coin.png")
-              .cross
-                | x
-              .amount
-                | 9876543
-            .reward
-              .total
-                | 999999999
-              img.icon(src="/images/ui/coin.png")
-              .cross
-                | x
-              .amount
-                | 9876543
-            .reward
-              .total
-                | 999999999
-              img.icon(src="/images/ui/coin.png")
-              .cross
-                | x
-              .amount
-                | 9876543
-            .reward
-              .total
-                | 999999999
-              img.icon(src="/images/ui/coin.png")
-              .cross
-                | x
-              .amount
-                | 9876543
+                | {{reward.amount}}
+
         .pot
           img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
@@ -185,9 +154,9 @@ export default {
     .rewards{
       position: absolute;
       top: 100px;
-      right: $space;
-      width: 300px;
-      height: 250px;
+      right: 30px;
+      width: 250px;
+      height: 300px;
       .index{
         width: 100%;
         text-align: center;
@@ -196,35 +165,29 @@ export default {
       .table{
         width: 100%;
         height: 100%;
-        line-height: 100%;
+        line-height: 120%;
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: space-around;
-        align-items: flex-end;
         .reward{
+          display: flex;
+          align-items: center;
           .total{
-            display: inline-block;
-            width: 6em;
+            width: 116px;
+            text-align: right;
+            padding-right: 10px;
           }
           .icon{
-            display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
           }
           .cross{
-            display: inline-block;
-            width: 1em;
+            width: 30px;
             text-align: center;
           }
           .amount{
-            display: inline-block;
-            width: auto;
+            width: 80px;
             text-align: right;
-          }
-          @for $i from 1 through 10 {
-            &:nth-child(#{$i}) {
-              font-size:#{24 - $i}px;
-            }
           }
         }
       }
