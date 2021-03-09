@@ -16,4 +16,5 @@
 #
 
 class GachaFixedReward < ApplicationRecord
+  scope :recent, ->(point){ where("#{point} < point").limit(10) }
 end

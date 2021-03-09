@@ -17,5 +17,9 @@
 
 FactoryBot.define do
   factory :gacha_fixed_reward, class: 'GachaFixedReward' do
+    point { 100 }
+    giftable_type { "Coin" }
+    giftable_id { 1 }
+    amount { 1 }
   end
 end

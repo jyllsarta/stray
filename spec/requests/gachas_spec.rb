@@ -3,8 +3,12 @@ require 'rails_helper'
 RSpec.describe "gacha", type: :request do
   include_context("stub_current_user")
   describe "GET /gacha" do
+    before do
+      GachaFixedReward.delete_all
+    end
     let(:user){ User.create }
     let(:do_get) { get gacha_index_path + ".json" }
+    let!(:gacha_fixed_reward){ create(:gacha_fixed_reward, point: 100) }
     subject do
       do_get
       response
@@ -16,7 +20,11 @@ RSpec.describe "gacha", type: :request do
         {
             gacha: {
                 current_total_point: Integer,
-                recent_fixed_rewards: Array,
+                recent_fixed_rewards: [
+                  {
+                    id: gacha_fixed_reward.id
+                  }.ignore_extra_keys!
+                ],
                 rates: Array,
                 pot_grade: Integer,
                 limit: Integer

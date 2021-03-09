@@ -1,7 +1,7 @@
 json.gacha do
-  json.current_total_point 998765432
-  json.recent_fixed_rewards [{giftable_type: "Coin", giftable_id: 1, amount: 50000}, {giftable_type: "Star", giftable_id: 1, amount: 500}, {giftable_type: "RandomItem", giftable_id: 100, amount: 1}]
-  json.rates Constants.gacha.variations[0].weights
-  json.pot_grade 0
-  json.limit 100000
+  json.current_total_point @user.gacha_point.point
+  json.recent_fixed_rewards @recent_fixed_rewards
+  json.rates Constants.gacha.variations[@pot.id].weights
+  json.pot_grade @pot.id
+  json.limit @pot.limit
 end
