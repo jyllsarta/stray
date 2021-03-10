@@ -29,7 +29,7 @@
             | ↓
           .pool
             | {{pool}}
-          .go.clickable
+          .go.clickable(@click="doGacha")
             | 投入！
         .rewards
           .index
@@ -48,6 +48,34 @@
         .characters
           img.tirol(src="/images/gacha/tirol.png")
           img.spica(src="/images/gacha/spica.png")
+    .gacha_result.full_covered_window(v-if="showingResult")
+      .random_results
+        .result
+          | *あんぱん+55
+        .result.rarity2
+          | *あんぱん+55
+        .result
+          | *あんぱん+55
+        .result
+          | *あんぱん+55
+        .result
+          | *あんぱん+55
+        .result
+          | *あんぱん+55
+        .result
+          | *あんぱん+55
+      .fixed_results
+        .index
+          | - ご利益 -
+        .results
+          .result
+            | コインx7000枚
+          .result
+            | 星のカケラx5個
+          .result
+            | 星のカケラx5個
+      .done.clickable(@click="showingResult = false")
+        | 閉じる
 
 </template>
 
@@ -68,7 +96,8 @@ export default {
         rates: [0, 8000, 1000, 500, 250, 250],
         recent_fixed_rewards: [],
       },
-      pool: 0
+      pool: 0,
+      showingResult: false,
     };
   },
   props: {
@@ -101,14 +130,88 @@ export default {
           console.warn(error.response);
           console.warn("NG");
         });
-
     },
+    doGacha(){
+      this.showingResult = true;
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "stylesheets/global_setting";
+
+  .full_covered_window{
+    position: absolute;
+    width: $window-width;
+    height: $window-height;
+    background-color: rgba(0,0,0,0.7);
+    opacity: 1;
+    padding: $space;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .random_results{
+      width: 800px;
+      height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      .result{
+        width: 50%;
+        line-height: 100%;
+        padding: $space;
+        font-size: $font-size-large;
+        text-align: center;
+      }
+      .rarity1{
+        color: $rarity1;
+      }
+      .rarity2{
+        color: $rarity2;
+      }
+      .rarity3{
+        color: $rarity3;
+      }
+      .rarity4{
+        color: $rarity4;
+      }
+      .rarity5{
+        color: $rarity5;
+      }
+    }
+    .fixed_results{
+      height: 130px;
+      width: 800px;
+      .index{
+        height: 20%;
+        padding-bottom: $thin_space;
+        margin-left: 10%;
+        width: 80%;
+        text-align: center;
+        height: 20px;
+        border-bottom: 1px solid $gray3;
+      }
+      .results{
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+        .result{
+          padding: $thin_space;
+          width: 200px;
+          text-align: center;
+        }
+      }
+    }
+    .done{
+      width: 100px;
+      @include centering($height: 50px)
+    }
+  }
+
   .description{
     padding: $space;
     white-space: pre-wrap;
