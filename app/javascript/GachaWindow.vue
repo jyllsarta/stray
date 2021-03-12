@@ -28,7 +28,7 @@
           .to.clickable
             | ↓
           .pool
-            | {{pool}}
+            input.pool_text(v-model="pool" @blur="onPoolBlur()")
           .go.clickable(@click="doGacha")
             | 投入！
         .rewards
@@ -105,6 +105,7 @@ export default {
   store,
   mounted(){
     this.fetchGachaIndex();
+    this.pool = 0;
   },
   computed: {
     rarityObjects(){
@@ -133,6 +134,10 @@ export default {
     },
     doGacha(){
       this.showingResult = true;
+    },
+    onPoolBlur(){
+      console.log(this.pool);
+      // TODO impl
     }
   }
 }
@@ -326,7 +331,12 @@ export default {
       .to{
         padding: $space;
       }
-      .pool{}
+      .pool{
+        .pool_text{
+          text-align: center;
+          color: $white;
+        }
+      }
       .go{
         padding: $space;
       }
