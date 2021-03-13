@@ -10,6 +10,8 @@
       .description
         | コインを投入して、溢れてくる何かを掴み取りましょう。
       .body
+        .pot
+          img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .rates
           .index
             | - 提供割合 - 
@@ -26,27 +28,27 @@
               | 所持：
             img.icon(src="/images/ui/coin.png")
             .value
-              | {{$store.state.user.status.coin - pool}}
+              | {{estimatedCurrent}}
             .buttons
-              .button.clickable
+              .button.clickable(@click="resetPool")
                 | 戻す
           .line
             .label
               | 投入：
             img.icon(src="/images/ui/coin.png")
             .value
-              input.pool_text(v-model="pool" @blur="onPoolBlur()")
+              input.pool_text(v-model="pool" @blur="calibratePool")
             .buttons
-              .button.clickable
-                | +100
-              .button.clickable
+              .button.clickable(@click="addPoolSingle")
+                | +{{this.gacha.limit / 10}}
+              .button.clickable(@click="addPoolMax")
                 | MAX
           .line
             .label
               | 累計：
             img.icon(src="/images/ui/coin.png")
             .value
-              | 123456789
+              | {{estimatedTotal}}
             .buttons
               .button.clickable(@click="doGacha")
                 | 投入！
@@ -54,7 +56,7 @@
           .index
             | 　- ご利益 -
           .table
-            .reward(v-for="reward in gacha.recent_fixed_rewards")
+            .reward(v-for="reward in gacha.recent_fixed_rewards" :class="reward.point <= estimatedTotal  ? 'available' : ''")
               .total
                 | {{reward.point}}
               img.icon(:src="`/images/ui/${reward.giftable_type.toLowerCase()}.png`")
@@ -62,8 +64,6 @@
                 | x
               .amount
                 | {{reward.amount}}
-        .pot
-          img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
           img.tirol(src="/images/gacha/tirol.png")
           img.spica(src="/images/gacha/spica.png")
@@ -136,12 +136,18 @@ export default {
         res.push({rarity: i, symbol: raritySymbols[i], rate: this.gacha.rates[i] / sumWeights});
       }
       return res;
-    }
+    },
+    poolValue(){
+      return parseInt(this.pool);
+    },
+    estimatedTotal(){
+      return this.poolValue + this.gacha.current_total_point;
+    },
+    estimatedCurrent(){
+      return this.$store.state.user.status.coin - this.poolValue;
+    },
   },
   methods: {
-    put(){
-      this.pool += 1;
-    },
     fetchGachaIndex(){
       const path = `/gacha.json`;
       ax.get(path)
@@ -157,10 +163,21 @@ export default {
     doGacha(){
       this.showingResult = true;
     },
-    onPoolBlur(){
-      console.log(this.pool);
-      // TODO impl
-    }
+    calibratePool(){
+      this.pool = parseInt(this.pool) || 0;
+      this.pool = Math.min(Math.max(this.pool, 0), this.gacha.limit, this.$store.state.user.status.coin);
+    },
+    resetPool(){
+      this.pool = 0;
+    },
+    addPoolSingle(){
+      this.pool += this.gacha.limit / 10;
+      this.calibratePool();
+    },
+    addPoolMax(){
+      this.pool = this.gacha.limit;
+      this.calibratePool();
+    },
   }
 }
 </script>
@@ -255,7 +272,7 @@ export default {
       top: 100px;
       left: 30px;
       width: 200px;
-      height: 200px;
+      height: 180px;
       font-size: $font-size-large;
       .index{
         text-align: center;
@@ -288,7 +305,7 @@ export default {
       top: 100px;
       right: 30px;
       width: 250px;
-      height: 300px;
+      height: 180px;
       .index{
         width: 100%;
         text-align: center;
@@ -304,6 +321,7 @@ export default {
         .reward{
           display: flex;
           align-items: center;
+          border: 1px solid transparent;
           .total{
             width: 116px;
             text-align: right;
@@ -320,7 +338,12 @@ export default {
           .amount{
             width: 80px;
             text-align: right;
+            padding-right: $thin_space;
           }
+        }
+        .available{
+          border: 1px solid $yellow;
+          background-color: $gray3-opacity;
         }
       }
     }
