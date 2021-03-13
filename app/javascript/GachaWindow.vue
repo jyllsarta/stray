@@ -9,6 +9,7 @@
           | 神秘の鍋
       .description
         | コインを投入して、溢れてくる何かを掴み取りましょう。
+        | 投入額によって、ランダムなアイテムが手に入ります。現在滞在しているダンジョンの難易度によって出てくるものが変わります。
       .body
         .pot
           img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
@@ -289,7 +290,7 @@ export default {
     }
     .rates{
       position: absolute;
-      top: 100px;
+      top: 120px;
       left: 30px;
       width: 200px;
       height: 180px;
@@ -322,7 +323,7 @@ export default {
     }
     .rewards{
       position: absolute;
-      top: 100px;
+      top: 120px;
       right: 30px;
       width: 250px;
       height: 180px;
@@ -368,7 +369,7 @@ export default {
     }
     .controls{
       position: absolute;
-      top: 117px;
+      top: 137px;
       $width: 420px;
       left: calc((100% - #{$width}) / 2);
       width: $width;
