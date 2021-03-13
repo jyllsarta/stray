@@ -75,7 +75,7 @@
         .index
           | - ご利益 -
         .results
-          .result(v-for="reward in rewards.foxed_rewards")
+          .result(v-for="reward in rewards.fixed_rewards")
             | {{reward}}
       .done.clickable(@click="showingResult = false")
         | 閉じる
@@ -168,6 +168,8 @@ export default {
           console.log(results);
           this.showingResult = true;
           this.rewards = results.data.rewards;
+          this.gacha = results.data.gacha;
+          this.pool = 0;
           this.connecting = false;
         })
         .catch((error) => {
