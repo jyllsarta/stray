@@ -20,17 +20,36 @@
               .rate
                 // *100 で % に変換, * 100 / 100 で小数第二位
                 | {{Math.round(rate.rate * 100 * 100) / 100}}%
-        .coins
-          .current
+        .controls
+          .line
+            .label
+              | 所持：
             img.icon(src="/images/ui/coin.png")
-            .amount
+            .value
               | {{$store.state.user.status.coin - pool}}
-          .to.clickable
-            | ↓
-          .pool
-            input.pool_text(v-model="pool" @blur="onPoolBlur()")
-          .go.clickable(@click="doGacha")
-            | 投入！
+            .buttons
+              .button.clickable
+                | 戻す
+          .line
+            .label
+              | 投入：
+            img.icon(src="/images/ui/coin.png")
+            .value
+              input.pool_text(v-model="pool" @blur="onPoolBlur()")
+            .buttons
+              .button.clickable
+                | +100
+              .button.clickable
+                | MAX
+          .line
+            .label
+              | 累計：
+            img.icon(src="/images/ui/coin.png")
+            .value
+              | 123456789
+            .buttons
+              .button.clickable(@click="doGacha")
+                | 投入！
         .rewards
           .index
             | 　- ご利益 -
@@ -120,6 +139,9 @@ export default {
     }
   },
   methods: {
+    put(){
+      this.pool += 1;
+    },
     fetchGachaIndex(){
       const path = `/gacha.json`;
       ax.get(path)
@@ -302,43 +324,49 @@ export default {
         }
       }
     }
-    .coins{
+    .controls{
       position: absolute;
       top: 100px;
-      $width: 400px;
+      $width: 420px;
       left: calc((100% - #{$width}) / 2);
       width: $width;
-      height: 200px;
+      height: 180px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: $font-size-large;
       justify-content: space-between;
-      .current{
+      .line{
         display: flex;
+        width: 100%;
+        height: 60px;
         align-items: center;
-        line-height: 100%;
-        height: 24px;
+        .label{
+          width: 70px;
+        }
         .icon{
-          width: 22px;
-          height: 22px;
+          width: 24px;
+          height: 24px;
         }
-        .amount{
-          padding-left: $space;
+        .value{
+          flex: 1;
+          text-align: right;
+          padding-right: $space;
           font-size: $font-size-large;
+          .pool_text{
+            width: 100%;
+            text-align: right;
+            color: $white;
+          }
         }
-      }
-      .to{
-        padding: $space;
-      }
-      .pool{
-        .pool_text{
-          text-align: center;
-          color: $white;
+        .buttons{
+          width: 180px;
+          display: flex;
+          .button{
+            @include centering($height: 36px);
+            margin: $thin_space;
+            flex: 1;
+          }
         }
-      }
-      .go{
-        padding: $space;
       }
     }
     .pot{
