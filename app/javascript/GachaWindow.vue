@@ -16,8 +16,8 @@
           .index
             | - 提供割合 - 
           .table
-            .item(v-for="rate in rarityObjects")
-              .rarity
+            .item(v-for="rate, index in rarityObjects")
+              .rarity(:class="`rarity${index + 1}`")
                 | {{ rate.symbol }}
               .rate
                 // *100 で % に変換, * 100 / 100 で小数第二位
@@ -54,7 +54,7 @@
                 | 投入！
         .rewards
           .index
-            | 　- ご利益 -
+            | 　　　- ご利益 -
           .table
             .reward(v-for="reward in gacha.recent_fixed_rewards" :class="reward.point <= estimatedTotal  ? 'available' : ''")
               .total
@@ -244,21 +244,6 @@ export default {
         font-size: $font-size-large;
         text-align: center;
       }
-      .rarity1{
-        color: $rarity1;
-      }
-      .rarity2{
-        color: $rarity2;
-      }
-      .rarity3{
-        color: $rarity3;
-      }
-      .rarity4{
-        color: $rarity4;
-      }
-      .rarity5{
-        color: $rarity5;
-      }
     }
     .fixed_results{
       height: 130px;
@@ -308,7 +293,6 @@ export default {
       left: 30px;
       width: 200px;
       height: 180px;
-      font-size: $font-size-large;
       .index{
         text-align: center;
       }
@@ -317,15 +301,16 @@ export default {
         flex-direction: column;
         width: 100%;
         height: 100%;
+        line-height: 120%;
         justify-content: space-around;
         .item{
-          border-bottom: 1px solid $gray3;
           width: 100%;
           line-height: 140%;
           .rarity{
             display: inline-block;
             text-align: center;
             width: 20%;
+            font-size: $font-size-large;
           }
           .rate{
             display: inline-block;
@@ -344,7 +329,6 @@ export default {
       .index{
         width: 100%;
         text-align: center;
-        font-size: $font-size-large;
       }
       .table{
         width: 100%;
@@ -384,11 +368,11 @@ export default {
     }
     .controls{
       position: absolute;
-      top: 100px;
+      top: 117px;
       $width: 420px;
       left: calc((100% - #{$width}) / 2);
       width: $width;
-      height: 180px;
+      height: 160px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -452,6 +436,22 @@ export default {
       img{
         height: 100%;
       }
+    }
+
+    .rarity1{
+      color: $rarity1;
+    }
+    .rarity2{
+      color: $rarity2;
+    }
+    .rarity3{
+      color: $rarity3;
+    }
+    .rarity4{
+      color: $rarity4;
+    }
+    .rarity5{
+      color: $rarity5;
     }
   }
 </style>
