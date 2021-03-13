@@ -358,15 +358,15 @@ export default {
         top: -$line-size;
         .hiddener_upper{
           position: absolute;
-          top: -$line-size / 2;
+          top: 0;
           width: 100%;
-          height: $line-size;
+          height: $line-size / 2;
         }
         .hiddener_downer{
           position: absolute;
           top: $line-size / 2;
           width: 100%;
-          height: $line-size;
+          height: $line-size / 2;
         }
         .gacha-result-reveal-top-leave-active {
           transition: all 0.5s;
@@ -384,23 +384,23 @@ export default {
         }
         .rarity1{
           background-color: $rarity1-less;
-          box-shadow: 0px 0px 5px 2px $rarity1;
+          box-shadow: 0px 0px 5px 2px $rarity1-less;
         }
         .rarity2{
           background-color: $rarity2-less;
-          box-shadow: 0px 0px 5px 2px $rarity2;
+          box-shadow: 0px 0px 5px 2px $rarity2-less;
         }
         .rarity3{
           background-color: $rarity3-less;
-          box-shadow: 0px 0px 5px 2px $rarity3;
+          box-shadow: 0px 0px 5px 2px $rarity3-less;
         }
         .rarity4{
           background-color: $rarity4-less;
-          box-shadow: 0px 0px 5px 2px $rarity4;
+          box-shadow: 0px 0px 5px 2px $rarity4-less;
         }
         .rarity5{
           background-color: $rarity5-less;
-          box-shadow: 0px 0px 5px 2px $rarity5;
+          box-shadow: 0px 0px 5px 2px $rarity5-less;
         }
       }
       .rarity1{
@@ -424,12 +424,9 @@ export default {
       width: 800px;
       .index{
         height: 20%;
-        padding-bottom: $thin_space;
-        margin-left: 10%;
-        width: 80%;
+        width: 100%;
         text-align: center;
-        height: 20px;
-        border-bottom: 1px solid $gray3;
+        border-bottom: 1px solid $gray2;
       }
       .results{
         height: 80%;
