@@ -127,7 +127,7 @@ export default {
       return res;
     },
     poolValue(){
-      return parseInt(this.pool);
+      return Math.min(Math.max(parseInt(this.pool) || 0, 0), this.gacha.limit);
     },
     estimatedTotal(){
       return this.poolValue + this.gacha.current_total_point;
