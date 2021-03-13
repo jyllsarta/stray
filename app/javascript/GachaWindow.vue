@@ -68,8 +68,8 @@
         .pot(:class="onResultAnimation ? 'animating' : ''")
           img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
-          img.tirol(src="/images/gacha/tirol.png")
-          img.spica(src="/images/gacha/spica.png")
+          img.tirol(src="/images/gacha/tirol.png" :class="onResultAnimation ? 'animating' : ''")
+          img.spica(src="/images/gacha/spica.png" :class="onResultAnimation ? 'animating' : ''")
         .light_balls
           .ball(v-for="ball in lightBalls", :key="ball.id" :style="{transform: `translate(${ball.x}px, ${ball.y}px)`}")
             .ball_image(:class="`rarity${ball.rarity}`" :style="{animationDelay: `${ball.delay}ms`}")
@@ -248,7 +248,7 @@ export default {
           id: Math.floor(Math.random() * 100000000),
           x: (Math.random() - 0.5) * 300,
           y: (Math.random() - 0.5) * 30,
-          delay: i * 30,
+          delay: i * 30 + 700,
         })
       }
     },
@@ -284,7 +284,7 @@ export default {
       return new Promise((resolve) => {
         setTimeout(()=>{
           resolve();
-        }, 1000);
+        }, 2500);
       });
     },
     playLightBallAnimation(){
@@ -292,7 +292,7 @@ export default {
         this.setLightBalls();
         setTimeout(()=>{
           resolve();
-        }, 2000);
+        }, 1500);
       });
     },
     showResultWindow(){
@@ -550,7 +550,7 @@ export default {
       }
       &.animating{
         animation: pot-animation 1s;
-        animation-delay: 0.8s;
+        animation-delay: 2s;
         transform-origin: bottom;
       }
       @keyframes pot-animation {
@@ -571,6 +571,37 @@ export default {
       img{
         height: 100%;
       }
+      .spica{
+        &.animating{
+          animation: spica-animation 1s;
+          transform-origin: bottom;
+        }
+        @keyframes spica-animation {
+          30% {
+            transform: scale(1.04, 0.98) translateX(-10px);
+          }
+        }
+      }
+      .tirol{
+        &.animating{
+          animation: tirol-animation 1s;
+          transform-origin: bottom;
+        }
+        @keyframes tirol-animation {
+          20% {
+            transform: scale(1, 1.05);
+          }
+          40% {
+            transform: scale(1, 1) translateX(10px);
+          }
+          60% {
+            transform: scale(1, 1.05);
+          }
+          80% {
+            transform: scale(1, 1) translateX(10px);
+          }
+        }
+      }
     }
 
     .light_balls{
@@ -587,7 +618,7 @@ export default {
           height: 30px;
           border-radius: 15px;
           background-color: rgba(255,255,255,0.85);
-          animation: ball-animation 2s;
+          animation: ball-animation 1.6s;
         }
       }
       .rarity1{
