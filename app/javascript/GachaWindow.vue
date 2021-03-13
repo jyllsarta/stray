@@ -80,7 +80,7 @@
       .full_covered_window(v-if="showingResult")
         .random_results
           .result(v-for="reward, index in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
-            .word
+            .word(:class="guessItemRankUpedFromReward(reward) ? '' : 'disabled'")
               | {{reward}}
             .hiddeners
               transition(name="gacha-result-reveal-top")
@@ -236,6 +236,9 @@ export default {
       const index = raritySymbols.indexOf(reweardText[0]);
       return index == -1 ? 1 : index;
     },
+    guessItemRankUpedFromReward(reweardText){
+      return reweardText.endsWith(")");
+    },
     setLightBalls(){
       this.lightBalls = [];
       for(let i = 0; i < this.rewards.random_rewards.length; ++i){
@@ -346,6 +349,9 @@ export default {
         padding: $space;
         font-size: $line-size;
         text-align: center;
+        .disabled{
+          opacity: 0.5;
+        }
       }
       .hiddeners{
         position: relative;
