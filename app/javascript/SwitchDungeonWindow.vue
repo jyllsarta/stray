@@ -153,7 +153,7 @@ export default {
     },
     onFloorBlur(){
       this.selectingDungeonDepth = parseInt(this.selectingDungeonDepth) || 1;
-      this.selectingDungeonDepth = Math.min(Math.max(this.selectingDungeonDepth, 1), this.currentDungeonMaxDepth);
+      this.selectingDungeonDepth = Math.min(Math.max(this.selectingDungeonDepth, 1), this.currentDungeonMaxDepthCanSwitch);
     },
   }
 }
