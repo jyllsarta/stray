@@ -85,7 +85,7 @@
           .results
             .result(v-for="reward in rewards.fixed_rewards")
               | {{reward}}
-        .done.clickable(@click="showingResult = false")
+        .done.clickable(@click="closeGachaResult")
           | 閉じる
 
 </template>
@@ -111,9 +111,10 @@ export default {
         fixed_rewards: [],
         random_rewards: [],
       },
+      lastGachapool: 0,
       pool: 0,
       showingResult: false,
-      connecting: false,
+      blockPostGacha: false,
       lightBalls: [],
       blightEffects: [],
     };
@@ -164,7 +165,7 @@ export default {
         });
     },
     doGacha(){
-      if(this.connecting){
+      if(this.blockPostGacha){
         console.log("通信中だよ");
         return;
       }
@@ -172,7 +173,7 @@ export default {
         console.log("空やんけ");
         return;
       }
-      this.connecting = true;
+      this.blockPostGacha = true;
       const path = `/gacha.json`;
       const params = {
         amount: this.pool,
@@ -182,14 +183,14 @@ export default {
           console.log(results);
           this.rewards = results.data.rewards;
           this.gacha = results.data.gacha;
+          this.lastGachapool = this.pool;
           this.pool = 0;
-          this.connecting = false;
           this.invokeGachaAnimation();
         })
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
-          this.connecting = false;
+          this.blockPostGacha = false;
         });      
     },
     calibratePool(){
@@ -197,14 +198,14 @@ export default {
       this.pool = Math.min(Math.max(this.pool, 0), this.gacha.limit, this.$store.state.user.status.coin);
     },
     resetPool(){
-      if(this.connecting){
+      if(this.blockPostGacha){
         console.log("通信中だよ");
         return;
       }
       this.pool = 0;
     },
     addPoolSingle(){
-      if(this.connecting){
+      if(this.blockPostGacha){
         console.log("通信中だよ");
         return;
       }
@@ -212,7 +213,7 @@ export default {
       this.calibratePool();
     },
     addPoolMax(){
-      if(this.connecting){
+      if(this.blockPostGacha){
         console.log("通信中だよ");
         return;
       }
@@ -238,7 +239,8 @@ export default {
     },
     setBlightEffects(){
       this.blightEffects = [];
-      for(let i = 0; i < 20; ++i){
+      const effectCount = Math.max(Math.floor(20 * this.lastGachapool / this.gacha.limit), 1);
+      for(let i = 0; i < effectCount; ++i){
         this.blightEffects.push({
           id: Math.floor(Math.random() * 100000000),
           x: (Math.random() - 0.5) * 300,
@@ -247,10 +249,17 @@ export default {
         })
       }
     },
+    closeGachaResult(){
+      this.showingResult = false;
+      this.blockPostGacha = false;
+    },
     // Promises
 
     invokeGachaAnimation(){
       this.playBlightEffectAnimation();
+      if(this.rewards.fixed_rewards.length == 0 && this.rewards.random_rewards.length == 0){
+        return;
+      }
       Promise.resolve()
         .then(()=>{
           return this.waitBlightEffectAnimation();
