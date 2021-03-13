@@ -8,5 +8,9 @@ class GachaController < ApplicationController
 
   def update
     @result = current_user.gacha_point.add!(params[:amount].to_i)
+    @user = current_user
+    @pot = current_user.gacha_point.current_pot
+    point = current_user.gacha_point.point
+    @recent_fixed_rewards = GachaFixedReward.recent(point)
   end
 end

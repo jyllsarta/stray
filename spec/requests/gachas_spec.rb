@@ -36,6 +36,7 @@ RSpec.describe "gacha", type: :request do
   describe "POST /gacha" do
     let(:do_post) { post gacha_path + ".json", params: params }
     let(:user){ User.create }
+    let!(:gacha_fixed_reward){ create(:gacha_fixed_reward, point: 100000) }
     subject do
       do_post
       response
@@ -54,8 +55,19 @@ RSpec.describe "gacha", type: :request do
       expect(JSON.parse(response.body)).to match_json_expression(
         {
           rewards: {
-            fixed_rewards: Array,
-            random_rewards: Array,  
+              fixed_rewards: Array,
+              random_rewards: Array,  
+          },
+          gacha: {
+            current_total_point: Integer,
+            recent_fixed_rewards: [
+              {
+                id: gacha_fixed_reward.id
+              }.ignore_extra_keys!
+            ],
+            rates: Array,
+            pot_grade: Integer,
+            limit: Integer
           }
         }
       )

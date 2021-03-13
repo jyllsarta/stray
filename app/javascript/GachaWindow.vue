@@ -69,30 +69,14 @@
           img.spica(src="/images/gacha/spica.png")
     .gacha_result.full_covered_window(v-if="showingResult")
       .random_results
-        .result
-          | *あんぱん+55
-        .result.rarity2
-          | *あんぱん+55
-        .result
-          | *あんぱん+55
-        .result
-          | *あんぱん+55
-        .result
-          | *あんぱん+55
-        .result
-          | *あんぱん+55
-        .result
-          | *あんぱん+55
+        .result(v-for="reward in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
+          | {{reward}}
       .fixed_results
         .index
           | - ご利益 -
         .results
-          .result
-            | コインx7000枚
-          .result
-            | 星のカケラx5個
-          .result
-            | 星のカケラx5個
+          .result(v-for="reward in rewards.foxed_rewards")
+            | {{reward}}
       .done.clickable(@click="showingResult = false")
         | 閉じる
 
@@ -115,8 +99,13 @@ export default {
         rates: [0, 8000, 1000, 500, 250, 250],
         recent_fixed_rewards: [],
       },
+      rewards: {
+        fixed_rewards: [],
+        random_rewards: [],
+      },
       pool: 0,
       showingResult: false,
+      connecting: false,
     };
   },
   props: {
@@ -161,22 +150,62 @@ export default {
         });
     },
     doGacha(){
-      this.showingResult = true;
+      if(this.connecting){
+        console.log("通信中だよ");
+        return;
+      }
+      if(this.pool === 0){
+        console.log("空やんけ");
+        return;
+      }
+      this.connecting = true;
+      const path = `/gacha.json`;
+      const params = {
+        amount: this.pool,
+      }
+      ax.post(path, params)
+        .then((results) => {
+          console.log(results);
+          this.showingResult = true;
+          this.rewards = results.data.rewards;
+          this.connecting = false;
+        })
+        .catch((error) => {
+          console.warn(error.response);
+          console.warn("NG");
+          this.connecting = false;
+        });      
     },
     calibratePool(){
       this.pool = parseInt(this.pool) || 0;
       this.pool = Math.min(Math.max(this.pool, 0), this.gacha.limit, this.$store.state.user.status.coin);
     },
     resetPool(){
+      if(this.connecting){
+        console.log("通信中だよ");
+        return;
+      }
       this.pool = 0;
     },
     addPoolSingle(){
+      if(this.connecting){
+        console.log("通信中だよ");
+        return;
+      }
       this.pool += this.gacha.limit / 10;
       this.calibratePool();
     },
     addPoolMax(){
+      if(this.connecting){
+        console.log("通信中だよ");
+        return;
+      }
       this.pool = this.gacha.limit;
       this.calibratePool();
+    },
+    guessRarityFromFirstCharacter(reweardText){
+      const raritySymbols = ["", "・", "*", "☆", "★", "◆"];
+      return raritySymbols.indexOf(reweardText[0]);
     },
   }
 }
