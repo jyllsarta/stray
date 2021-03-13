@@ -11,8 +11,6 @@
         | コインを投入して、溢れてくる何かを掴み取りましょう。
         | 投入額によって、ランダムなアイテムが手に入ります。現在滞在しているダンジョンの難易度によって出てくるものが変わります。
       .body
-        .pot
-          img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .rates
           .index
             | - 提供割合 - 
@@ -65,6 +63,10 @@
                 | x
               .amount
                 | {{reward.amount}}
+        transition(name="fad")
+          .darken(v-if="onResultAnimation")
+        .pot
+          img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
           img.tirol(src="/images/gacha/tirol.png")
           img.spica(src="/images/gacha/spica.png")
@@ -113,6 +115,7 @@ export default {
       },
       lastGachapool: 0,
       pool: 0,
+      onResultAnimation: false,
       showingResult: false,
       blockPostGacha: false,
       lightBalls: [],
@@ -251,13 +254,16 @@ export default {
     },
     closeGachaResult(){
       this.showingResult = false;
+      this.onResultAnimation = false;
       this.blockPostGacha = false;
     },
     // Promises
 
     invokeGachaAnimation(){
       this.playBlightEffectAnimation();
+      this.onResultAnimation = true;
       if(this.rewards.fixed_rewards.length == 0 && this.rewards.random_rewards.length == 0){
+        this.closeGachaResult();
         return;
       }
       Promise.resolve()
@@ -375,10 +381,10 @@ export default {
   }
 
   .fad-enter-active {
-    transition: opacity 1s;
+    transition: opacity 0.5s;
   }
   .fad-leave-active {
-    transition: opacity 1s;
+    transition: opacity 0.5s;
   }
   .fad-enter{
     opacity: 0;
@@ -521,6 +527,14 @@ export default {
           }
         }
       }
+    }
+    .darken{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
     }
     .pot{
       position: absolute;
