@@ -71,6 +71,9 @@
         .light_balls
           .ball(v-for="ball in lightBalls", :key="ball.id" :style="{transform: `translate(${ball.x}px, ${ball.y}px)`}")
             .ball_image(:class="`rarity${ball.rarity}`" :style="{animationDelay: `${ball.delay}ms`}")
+        .blight_effects
+          .blight(v-for="blight in blightEffects", :key="blight.id" :style="{transform: `translate(${blight.x}px, ${blight.y}px)`}")
+            .blight_image(:style="{animationDelay: `${blight.delay}ms`}")
     transition(name="fad")
       .full_covered_window(v-if="showingResult")
         .random_results
@@ -112,6 +115,7 @@ export default {
       showingResult: false,
       connecting: false,
       lightBalls: [],
+      blightEffects: [],
     };
   },
   props: {
@@ -220,7 +224,7 @@ export default {
       const index = raritySymbols.indexOf(reweardText[0]);
       return index == -1 ? 1 : index;
     },
-    setLightBall(){
+    setLightBalls(){
       this.lightBalls = [];
       for(let i = 0; i < this.rewards.random_rewards.length; ++i){
         this.lightBalls.push({
@@ -232,10 +236,25 @@ export default {
         })
       }
     },
+    setBlightEffects(){
+      this.blightEffects = [];
+      for(let i = 0; i < 20; ++i){
+        this.blightEffects.push({
+          id: Math.floor(Math.random() * 100000000),
+          x: (Math.random() - 0.5) * 300,
+          y: (Math.random() - 0.5) * 30,
+          delay: i * 30,
+        })
+      }
+    },
     // Promises
 
     invokeGachaAnimation(){
+      this.playBlightEffectAnimation();
       Promise.resolve()
+        .then(()=>{
+          return this.waitBlightEffectAnimation();
+        })
         .then(()=>{
           return this.playLightBallAnimation();
         })
@@ -243,10 +262,19 @@ export default {
           return this.showResultWindow();
         })
     },
+    playBlightEffectAnimation(){
+      this.setBlightEffects();
+    },
+    waitBlightEffectAnimation(){
+      return new Promise((resolve) => {
+        setTimeout(()=>{
+          resolve();
+        }, 1000);
+      });
+    },
     playLightBallAnimation(){
       return new Promise((resolve) => {
-        this.setLightBall();
-        this.showingLightBall = true;
+        this.setLightBalls();
         setTimeout(()=>{
           resolve();
         }, 2000);
@@ -568,7 +596,38 @@ export default {
         }
       }
     }
-
+    .blight_effects{
+      position: absolute;
+      bottom: 220px;
+      left: 50%;
+      width: 1px;
+      height: 1px;
+      .blight{
+        position: absolute;
+        .blight_image{
+          opacity: 0;
+          width: 2px;
+          height: 15px;
+          border-radius: 2px;
+          background-color: rgba(225, 255, 89, 0.85);
+          box-shadow: 0px 0px 10px 3px $rarity1, 0px 0px 15px 2px $rarity1 inset;
+          animation: blight-animation 0.5s;
+        }
+      }
+      @keyframes blight-animation{
+        0% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        50% {
+          opacity: 1;
+        }
+        100%{
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      }
+    }
     .rarity1{
       color: $rarity1;
     }
