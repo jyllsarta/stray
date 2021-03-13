@@ -1,9 +1,9 @@
 <template lang="pug">
   .menu
-    .back(@click="$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: false})")
+    .back(@click="closeWindow")
     .window.content
       .title_area
-        .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: false})")
+        .back_button.clickable(@click="closeWindow")
           .arrow
         .title
           | 神秘の鍋
@@ -137,6 +137,10 @@ export default {
     },
   },
   methods: {
+    closeWindow(){
+      this.$store.dispatch("user/fetchUserModel");
+      this.$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: false});
+    },
     fetchGachaIndex(){
       const path = `/gacha.json`;
       ax.get(path)
