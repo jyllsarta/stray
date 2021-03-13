@@ -30,7 +30,7 @@
             .value
               | {{estimatedCurrent}}
             .buttons
-              .button.clickable(@click="resetPool")
+              .button(@click="resetPool", :class="poolValue > 0 ? 'clickable' : 'not_clickable'")
                 | 戻す
           .line
             .label
@@ -39,9 +39,9 @@
             .value
               input.pool_text(v-model="pool" @blur="calibratePool")
             .buttons
-              .button.clickable(@click="addPoolSingle")
+              .button(@click="addPoolSingle", :class="poolValue !== gacha.limit ? 'clickable' : 'not_clickable'")
                 | +{{this.gacha.limit / 10}}
-              .button.clickable(@click="addPoolMax")
+              .button(@click="addPoolMax", :class="poolValue !== gacha.limit ? 'clickable' : 'not_clickable'")
                 | MAX
           .line
             .label
@@ -50,7 +50,7 @@
             .value
               | {{estimatedTotal}}
             .buttons
-              .button.clickable(@click="doGacha")
+              .button(@click="doGacha", :class="poolValue > 0 ? 'clickable' : 'not_clickable'")
                 | 投入！
         .rewards
           .index

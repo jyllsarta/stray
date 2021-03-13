@@ -167,6 +167,13 @@
   cursor: pointer;
 }
 
+.not_clickable{
+  background: linear-gradient(to bottom, $clickable-highlight-color, transparent 5%, transparent 90%, $clickable-highlight-color);
+  border-radius: $radius;
+  border: 1px solid $gray1;
+  opacity: 0.5;
+}
+
 .hoverable{
   &:hover{
     filter: brightness(180%);
