@@ -7,12 +7,13 @@ class GiftableReceiver::GachaItem
 
   def receive!(user)
     @amount.times do
-      add_random_item!(user, @rank)
+      additional_rank = lot_additional_rank!(user)
+      add_random_item!(user, @rank + additional_rank)
     end
   end
 
   def received_content_message
-    "#{@user_item.full_name}"
+    "#{@user_item.full_name} 〔R#{@user_item.item_rank}〕"
   end
 
   private
@@ -30,6 +31,13 @@ class GiftableReceiver::GachaItem
     items = available_items(user, rank, rarity)
     return items.sample unless items.empty?
     ::Item.where(rarity: rarity).order(id: :asc).first
+  end
+
+  def lot_additional_rank!(user)
+    base = SecureRandom.rand(1..user.gacha_point.current_pot.additional_rank)
+    lucky = SecureRandom.rand(1..1000)
+    base += lucky if lucky < 50
+    base
   end
 
   def available_items(user, rank, rarity)

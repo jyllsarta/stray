@@ -4,6 +4,7 @@ RSpec.describe GiftableReceiver::GachaItem, type: :model do
   let(:receiver){ GiftableReceiver::GachaItem.new(id, amount) }
   let(:user){ create(:user) }
   let!(:user_status){ create(:user_status, user: user) }
+  let!(:user_gacha_point){ create(:user_gacha_point, user: user) }
   let!(:item){ create(:item, base_rank: 30, rarity: 4) }
   let(:id) { 125 }
   let(:amount){ 1 }
@@ -23,7 +24,7 @@ RSpec.describe GiftableReceiver::GachaItem, type: :model do
       it "succeeds" do
         aggregate_failures do
           expect{ subject }.to change(user.items, :count).by(1)
-          expect(user.items.first.rank).to eq(125 - 30)
+          expect(user.items.first.rank).to be >= (125 - 30) # ランダムな追加ランクがあるのでgteq
         end
       end
     end

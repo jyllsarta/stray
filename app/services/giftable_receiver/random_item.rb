@@ -12,7 +12,7 @@ class GiftableReceiver::RandomItem
   end
 
   def received_content_message
-    "#{@user_item.full_name}"
+    "#{@user_item.full_name} 〔R#{@user_item.item_rank}〕"
   end
 
   private
