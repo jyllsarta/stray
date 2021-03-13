@@ -79,8 +79,14 @@
     transition(name="fad")
       .full_covered_window(v-if="showingResult")
         .random_results
-          .result(v-for="reward in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
-            | {{reward}}
+          .result(v-for="reward, index in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
+            .word
+              | {{reward}}
+            .hiddeners
+              transition(name="gacha-result-reveal-top")
+                .hiddener_upper(v-if="gachaResultRevealState[index] !== true" @mouseover="revealGachaResult(index)" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
+              transition(name="gacha-result-reveal-bottom")
+                .hiddener_downer(v-if="gachaResultRevealState[index] !== true" @mouseover="revealGachaResult(index)" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
         .fixed_results
           .index
             | - ご利益 -
@@ -120,6 +126,7 @@ export default {
       blockPostGacha: false,
       lightBalls: [],
       blightEffects: [],
+      gachaResultRevealState: [],
     };
   },
   props: {
@@ -187,6 +194,7 @@ export default {
           this.rewards = results.data.rewards;
           this.gacha = results.data.gacha;
           this.lastGachapool = this.pool;
+          this.gachaResultRevealState = [];
           this.pool = 0;
           this.invokeGachaAnimation();
         })
@@ -257,6 +265,11 @@ export default {
       this.onResultAnimation = false;
       this.blockPostGacha = false;
     },
+    revealGachaResult(index){
+      console.log(index);
+      this.$set(this.gachaResultRevealState, index, true);
+      console.log(this.gachaResultRevealState);
+    },
     // Promises
 
     invokeGachaAnimation(){
@@ -326,12 +339,63 @@ export default {
       align-items: center;
       justify-content: space-around;
       flex-wrap: wrap;
+      $line-size: $font-size-large;
       .result{
         width: 50%;
         line-height: 100%;
         padding: $space;
-        font-size: $font-size-large;
+        font-size: $line-size;
         text-align: center;
+      }
+      .hiddeners{
+        position: relative;
+        top: -$line-size;
+        .hiddener_upper{
+          position: absolute;
+          top: -$line-size / 2;
+          width: 100%;
+          height: $line-size;
+        }
+        .hiddener_downer{
+          position: absolute;
+          top: $line-size / 2;
+          width: 100%;
+          height: $line-size;
+        }
+        .gacha-result-reveal-top-leave-active {
+          transition: all 0.5s;
+        }
+        .gacha-result-reveal-top-leave-to{
+          opacity: 0;
+          transform: translateY(-30px) scale(2, 0);
+        }
+        .gacha-result-reveal-bottom-leave-active {
+          transition: all 0.5s;
+        }
+        .gacha-result-reveal-bottom-leave-to{
+          opacity: 0;
+          transform: translateY(30px) scale(2, 0);
+        }
+        .rarity1{
+          background-color: $rarity1-less;
+          box-shadow: 0px 0px 5px 2px $rarity1;
+        }
+        .rarity2{
+          background-color: $rarity2-less;
+          box-shadow: 0px 0px 5px 2px $rarity2;
+        }
+        .rarity3{
+          background-color: $rarity3-less;
+          box-shadow: 0px 0px 5px 2px $rarity3;
+        }
+        .rarity4{
+          background-color: $rarity4-less;
+          box-shadow: 0px 0px 5px 2px $rarity4;
+        }
+        .rarity5{
+          background-color: $rarity5-less;
+          box-shadow: 0px 0px 5px 2px $rarity5;
+        }
       }
       .rarity1{
         color: $rarity1;
