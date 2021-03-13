@@ -95,7 +95,7 @@ export default {
       gacha: {
         current_total_point: 0,
         limit: 100000,
-        pot_grade: 0,
+        pot_grade: 1,
         rates: [0, 8000, 1000, 500, 250, 250],
         recent_fixed_rewards: [],
       },
