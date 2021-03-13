@@ -13,7 +13,7 @@ class GiftableReceiver::GachaItem
   end
 
   def received_content_message
-    "#{@user_item.full_name} 〔R#{@user_item.item_rank}〕"
+    "#{@user_item.full_name} #{rank_diff_text}"
   end
 
   private
@@ -21,7 +21,9 @@ class GiftableReceiver::GachaItem
   def add_random_item!(user, rank)
     item = lot_item!(user, rank)
     @user_item = user.items.find_or_initialize_by(item_id: item.id)
-    @user_item.rank = [(rank - item.base_rank), @user_item.rank].max
+    after_rank = [(rank - item.base_rank), @user_item.rank].max
+    @rank_diff = after_rank - @user_item.rank
+    @user_item.rank = after_rank
     @user_item.save!
     user.achievement_logger.post(Achievement::Event::ReceiveRandomItem.new(user, item.id, @user_item.rank))
   end
@@ -53,5 +55,10 @@ class GiftableReceiver::GachaItem
       sum += weight
       return i if seed <= sum
     end
+  end
+
+  def rank_diff_text
+    return "" unless @rank_diff
+    @rank_diff == 0 ? "" : "(+#{@rank_diff})"
   end
 end
