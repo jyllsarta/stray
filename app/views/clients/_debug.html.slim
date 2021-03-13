@@ -55,3 +55,7 @@ p
 = form_tag clear_achievement_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag '実績を全部リセット'
+= form_tag edit_gacha_point_debug_index_path
+  = text_field_tag :point, 0
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag '累計投入額をこの値にする'

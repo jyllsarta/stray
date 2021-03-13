@@ -89,6 +89,11 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def edit_gacha_point
+    current_user.gacha_point.update!(point: params[:point].to_i)
+    redirect_to clients_path
+  end
+
   private
 
   def current_user
