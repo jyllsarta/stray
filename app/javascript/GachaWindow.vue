@@ -65,7 +65,7 @@
                 | {{reward.amount}}
         transition(name="fad")
           .darken(v-if="onResultAnimation")
-        .pot
+        .pot(:class="onResultAnimation ? 'animating' : ''")
           img.pot_image(:src="`/images/gacha/pot${gacha.pot_grade}.png`")
         .characters
           img.tirol(src="/images/gacha/tirol.png")
@@ -547,6 +547,16 @@ export default {
       justify-content: space-around;
       .pot_image{
         height: 100%;
+      }
+      &.animating{
+        animation: pot-animation 1s;
+        animation-delay: 0.8s;
+        transform-origin: bottom;
+      }
+      @keyframes pot-animation {
+        30% {
+          transform: scale(1.02, 0.99);
+        }
       }
     }
     .characters{
