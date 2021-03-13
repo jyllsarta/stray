@@ -68,18 +68,22 @@
         .characters
           img.tirol(src="/images/gacha/tirol.png")
           img.spica(src="/images/gacha/spica.png")
-    .gacha_result.full_covered_window(v-if="showingResult")
-      .random_results
-        .result(v-for="reward in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
-          | {{reward}}
-      .fixed_results
-        .index
-          | - ご利益 -
-        .results
-          .result(v-for="reward in rewards.fixed_rewards")
+        .light_balls
+          .ball(v-for="ball in lightBalls", :key="ball.id" :style="{transform: `translate(${ball.x}px, ${ball.y}px)`}")
+            .ball_image(:class="`rarity${ball.rarity}`" :style="{animationDelay: `${ball.delay}ms`}")
+    transition(name="fad")
+      .full_covered_window(v-if="showingResult")
+        .random_results
+          .result(v-for="reward in rewards.random_rewards" :class="`rarity${guessRarityFromFirstCharacter(reward)}`")
             | {{reward}}
-      .done.clickable(@click="showingResult = false")
-        | 閉じる
+        .fixed_results
+          .index
+            | - ご利益 -
+          .results
+            .result(v-for="reward in rewards.fixed_rewards")
+              | {{reward}}
+        .done.clickable(@click="showingResult = false")
+          | 閉じる
 
 </template>
 
@@ -107,6 +111,7 @@ export default {
       pool: 0,
       showingResult: false,
       connecting: false,
+      lightBalls: [],
     };
   },
   props: {
@@ -171,11 +176,11 @@ export default {
       ax.post(path, params)
         .then((results) => {
           console.log(results);
-          this.showingResult = true;
           this.rewards = results.data.rewards;
           this.gacha = results.data.gacha;
           this.pool = 0;
           this.connecting = false;
+          this.invokeGachaAnimation();
         })
         .catch((error) => {
           console.warn(error.response);
@@ -211,8 +216,49 @@ export default {
       this.calibratePool();
     },
     guessRarityFromFirstCharacter(reweardText){
-      const raritySymbols = ["", "・", "*", "☆", "★", "◆"];
-      return raritySymbols.indexOf(reweardText[0]);
+      const raritySymbols = ["x", "x", "*", "☆", "★", "◆"];
+      const index = raritySymbols.indexOf(reweardText[0]);
+      return index == -1 ? 1 : index;
+    },
+    setLightBall(){
+      this.lightBalls = [];
+      for(let i = 0; i < this.rewards.random_rewards.length; ++i){
+        this.lightBalls.push({
+          id: Math.floor(Math.random() * 100000000),
+          x: (Math.random() - 0.5) * 400,
+          y: (Math.random() - 0.5) * 90,
+          rarity: this.guessRarityFromFirstCharacter(this.rewards.random_rewards[i]),
+          delay: i * 50,
+        })
+      }
+    },
+    // Promises
+
+    invokeGachaAnimation(){
+      Promise.resolve()
+        .then(()=>{
+          return this.playLightBallAnimation();
+        })
+        .then(()=>{
+          return this.showResultWindow();
+        })
+    },
+    playLightBallAnimation(){
+      return new Promise((resolve) => {
+        this.setLightBall();
+        this.showingLightBall = true;
+        setTimeout(()=>{
+          resolve();
+        }, 2000);
+      });
+    },
+    showResultWindow(){
+      return new Promise((resolve) => {
+        this.showingResult = true;
+        setTimeout(()=>{
+          resolve();
+        }, 10);
+      });
     },
   }
 }
@@ -225,8 +271,7 @@ export default {
     position: absolute;
     width: $window-width;
     height: $window-height;
-    background-color: rgba(0,0,0,0.7);
-    opacity: 1;
+    background-color: rgba(0,0,0,0.8);
     padding: $space;
     display: flex;
     flex-direction: column;
@@ -244,6 +289,21 @@ export default {
         padding: $space;
         font-size: $font-size-large;
         text-align: center;
+      }
+      .rarity1{
+        color: $rarity1;
+      }
+      .rarity2{
+        color: $rarity2;
+      }
+      .rarity3{
+        color: $rarity3;
+      }
+      .rarity4{
+        color: $rarity4;
+      }
+      .rarity5{
+        color: $rarity5;
       }
     }
     .fixed_results{
@@ -275,6 +335,19 @@ export default {
       width: 100px;
       @include centering($height: 50px)
     }
+  }
+
+  .fad-enter-active {
+    transition: opacity 1s;
+  }
+  .fad-leave-active {
+    transition: opacity 1s;
+  }
+  .fad-enter{
+    opacity: 0;
+  }
+  .fad-leave-to{
+    opacity: 0;
   }
 
   .description{
@@ -436,6 +509,63 @@ export default {
       justify-content: space-between;
       img{
         height: 100%;
+      }
+    }
+
+    .light_balls{
+      position: absolute;
+      bottom: 170px;
+      left: 50%;
+      width: 1px;
+      height: 1px;
+      .ball{
+        position: absolute;
+        .ball_image{
+          opacity: 0;
+          width: 30px;
+          height: 30px;
+          border-radius: 15px;
+          background-color: rgba(255,255,255,0.85);
+          animation: ball-animation 2s;
+        }
+      }
+      .rarity1{
+        box-shadow: 0px 0px 10px 3px $rarity1, 0px 0px 15px 2px $rarity1 inset;
+      }
+      .rarity2{
+        box-shadow: 0px 0px 10px 3px $rarity2, 0px 0px 15px 2px $rarity2 inset;
+      }
+      .rarity3{
+        box-shadow: 0px 0px 10px 3px $rarity3, 0px 0px 15px -2px $rarity3 inset;
+      }
+      .rarity4{
+        box-shadow: 0px 0px 10px 3px $rarity4, 0px 0px 15px 2px $rarity4 inset;
+      }
+      .rarity5{
+        box-shadow: 0px 0px 10px 3px $rarity5, 0px 0px 15px 2px $rarity5 inset;
+      }
+
+      @keyframes ball-animation{
+        0% {
+          opacity: 0.2;
+          transform: scale(0.5, 0) translateY(10px);
+        }
+        20% {
+          opacity: 1;
+          transform: scale(1.1, 1.2) translateY(-5px);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2, 1) translateY(2px);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(1, 1) translateY(0px);
+        }
+        100%{
+          opacity: 0;
+          transform: scale(0.1, 3) translateY(-30px);
+        }
       }
     }
 
