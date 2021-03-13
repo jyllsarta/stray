@@ -24,17 +24,22 @@ class User::GachaPoint < ApplicationRecord
       fixed_reward_messages = add_fixed_rewards!(amount)
       random_reward_messages = add_random_rewards!(amount)
       self.increment!(:point, amount)
+      reload_pot!
       { fixed_rewards: fixed_reward_messages, random_rewards: random_reward_messages }
     end
   end
 
   def current_pot
-    @_pot ||= Constants.gacha.variations.reverse.find do |variation|
-      point >= variation.min_point
-    end
+    @_pot ||= reload_pot!
   end
   
   private
+
+  def reload_pot!
+    @_pot = Constants.gacha.variations.reverse.find do |variation|
+      point >= variation.min_point
+    end
+  end
 
   def add_fixed_rewards!(amount)
     # ポイント1000のユーザは1000の報酬はすでにもらってるので片方の境界を外す
