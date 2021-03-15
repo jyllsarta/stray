@@ -1228,8 +1228,8 @@ export default {
   .rewards{
     position: absolute;
     bottom: 150px;
-    right: 275px;
-    width: 250px;
+    right: 235px;
+    width: 330px;
     border-radius: $radius;
     padding: $thin_space;
     color: $gray3;
