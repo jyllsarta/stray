@@ -62,8 +62,8 @@ class BattleEvent < Event
 
   def fluctuate_velocity(user)
     if @battle.is_win
-      delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
-      user.status.fluctuate_velocity(delta)
+      @velocity_delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
+      user.status.fluctuate_velocity(@velocity_delta)
     else
       user.status.fluctuate_velocity(-9999)
     end
@@ -79,13 +79,18 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{battle_result_mark_message}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
+    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{coin_message} #{velocity_message}"
   end
 
   def coin_message
     return "" unless @battle.is_win
     multiplied = @coin_multiplier > 1 ? '多めに' : ''
-    "#{multiplied}#{@coin_amount}コイン手にいれた！"
+    "#{multiplied}#{@coin_amount}コイン獲得！"
+  end
+
+  def velocity_message
+    return "" unless @velocity_delta.present?
+    "(速度#{@velocity_delta.positive? ? '+' : ''}#{@velocity_delta})"
   end
 
   def battle_result_mark_message
