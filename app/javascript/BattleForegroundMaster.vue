@@ -2,7 +2,11 @@
   .foreground_fields(:class="turnInProgress ? 'zoomed' : 'normal'")
     BattleForeground(v-if="fieldEffectStateId == null")
     BattleForegroundLeaf(v-if="fieldEffectStateId == 102")
-
+    BattleForegroundFire(v-if="fieldEffectStateId == 103")
+    BattleForegroundThunder(v-if="fieldEffectStateId == 104")
+    BattleForegroundWind(v-if="fieldEffectStateId == 105")
+    BattleForegroundDark(v-if="fieldEffectStateId == 106")
+    BattleForegroundMagic(v-if="fieldEffectStateId == 107")
 </template>
 
 <script lang="ts">
@@ -10,11 +14,21 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import BattleForeground from "./BattleForeground.vue";
 import BattleForegroundLeaf from "./BattleForegroundLeaf.vue";
+import BattleForegroundFire from "./BattleForegroundFire.vue";
+import BattleForegroundThunder from "./BattleForegroundThunder.vue";
+import BattleForegroundWind from "./BattleForegroundWind.vue";
+import BattleForegroundDark from "./BattleForegroundDark.vue";
+import BattleForegroundMagic from "./BattleForegroundMagic.vue";
 
 export default {
   components: {
     BattleForeground,
     BattleForegroundLeaf,
+    BattleForegroundFire,
+    BattleForegroundThunder,
+    BattleForegroundWind,
+    BattleForegroundDark,
+    BattleForegroundMagic,
   },
   props: {
     turnInProgress: Boolean,
