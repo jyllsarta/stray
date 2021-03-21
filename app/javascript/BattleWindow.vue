@@ -5,6 +5,7 @@
       // キャラ
 
       .battle_background
+        BattleBackgroundGraduation(:field-effect-state="battle.fieldEffectState")
         BattleBackground(:turn-in-progress="isTurnInProgress")
       .player_character
         .tirol
@@ -301,6 +302,7 @@ import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
 import BattleBackground from "./BattleBackground.vue";
+import BattleBackgroundGraduation from "./BattleBackgroundGraduation.vue";
 import BattleForegroundMaster from "./BattleForegroundMaster.vue";
 import ParalyzeEffectWatcher from "./fragments/ParalyzeEffectWatcher.vue";
 import ParalyzeEffect from "./fragments/ParalyzeEffect.vue";
@@ -324,6 +326,7 @@ export default {
     StateInstance,
     FieldEffect,
     BattleBackground,
+    BattleBackgroundGraduation,
     BattleForegroundMaster,
     ParalyzeEffectWatcher,
     ParalyzeEffect,
@@ -1301,7 +1304,6 @@ export default {
   height: $window-height;
   background-color: $background;
   opacity: 1;
-  padding: $space;
 }
 
 .player_character{

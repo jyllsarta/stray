@@ -49,7 +49,7 @@ export default {
 <style lang="scss" scoped>
 @import "stylesheets/constants";
 .background_fields{
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   .floor {
