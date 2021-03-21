@@ -1,6 +1,7 @@
 <template lang="pug">
   .foreground_fields(:class="turnInProgress ? 'zoomed' : 'normal'")
-    BattleForeground
+    BattleForeground(v-if="fieldEffectStateId == null")
+    BattleForegroundLeaf(v-if="fieldEffectStateId == 102")
 
 </template>
 
@@ -8,13 +9,16 @@
 import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import BattleForeground from "./BattleForeground.vue";
+import BattleForegroundLeaf from "./BattleForegroundLeaf.vue";
 
 export default {
   components: {
     BattleForeground,
+    BattleForegroundLeaf,
   },
   props: {
-    turnInProgress: Boolean
+    turnInProgress: Boolean,
+    fieldEffectState: Object,
   },
   data: function () {
     return {
@@ -22,6 +26,11 @@ export default {
   },
   store,
   mounted(){
+  },
+  computed: {
+    fieldEffectStateId(){
+      return this.fieldEffectState?.stateMaster?.id;
+    }
   },
   methods: {
   }

@@ -37,7 +37,7 @@
           :shield="enemyShield > 0"
         )
       .battle_foreground
-        BattleForegroundMaster(:turn-in-progress="isTurnInProgress")
+        BattleForegroundMaster(:turn-in-progress="isTurnInProgress", :field-effect-state="battle.fieldEffectState")
 
       // UI
 
