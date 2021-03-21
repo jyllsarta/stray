@@ -6,6 +6,13 @@
         | 探索速度：
       .value
         | {{velocity}}
+    .particles
+      transition-group(name="particle-anim")
+        .particle(
+          v-for="particle in particles",
+          :key="particle.id",
+          :style="{left: particle.x, top: particle.y}"
+        )
     .image(:class="velocityRankClass")
 </template>
 
@@ -17,9 +24,13 @@ import Vue from 'vue'
 export default {
   data: function () {
     return {
+      particles: []
     };
   },
   store,
+  mounted(){
+    setInterval(this.addParticle, 300);
+  },
   computed: {
     velocity(){
       return Math.min(this.$store.state.user.status.velocity, 333);
@@ -29,6 +40,23 @@ export default {
     },
   },
   methods: {
+    addParticle(){
+      if(document.visibilityState !== "visible"){
+        return;
+      }
+      if(this.velocity < 200){
+        this.particles = [];
+        return;
+      }
+      const maxParticleCount = 5;
+      if(this.particles.length > maxParticleCount){
+        this.particles = this.particles.slice(-maxParticleCount)
+      }
+      const id = Math.floor(Math.random() * 999999999);
+      const x = Math.floor(Math.random() * 300);
+      const y = Math.floor(Math.random() * 50);
+      this.particles.push({id: id, x: x, y: y})
+    },
   },
   watch: {
   }
@@ -94,6 +122,32 @@ export default {
     &.rank_3{
       background-image: url("/images/ui/velocity/rank_3.png");
     }
+  }
+  .particles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .particle{
+      position: absolute;
+      width: 40px;
+      height: 1px;
+      background-color: $gray1;
+    }
+  }
+
+  .particle-anim-enter-active, .particle-anim-leave-active {
+    transition: all 4s;
+  }
+  .particle-anim-enter {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  .particle-anim-leave-to {
+    opacity: 0;
+    transform: translateX(-100px);
   }
 }
 </style>
