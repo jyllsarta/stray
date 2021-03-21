@@ -37,7 +37,7 @@
           :shield="enemyShield > 0"
         )
       .battle_foreground
-        BattleForeground(:turn-in-progress="isTurnInProgress")
+        BattleForegroundMaster(:turn-in-progress="isTurnInProgress")
 
       // UI
 
@@ -301,7 +301,7 @@ import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
 import BattleBackground from "./BattleBackground.vue";
-import BattleForeground from "./BattleForeground.vue";
+import BattleForegroundMaster from "./BattleForegroundMaster.vue";
 import ParalyzeEffectWatcher from "./fragments/ParalyzeEffectWatcher.vue";
 import ParalyzeEffect from "./fragments/ParalyzeEffect.vue";
 
@@ -324,7 +324,7 @@ export default {
     StateInstance,
     FieldEffect,
     BattleBackground,
-    BattleForeground,
+    BattleForegroundMaster,
     ParalyzeEffectWatcher,
     ParalyzeEffect,
   },

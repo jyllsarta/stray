@@ -1,12 +1,11 @@
 <template lang="pug">
-  .foreground_fields(:class="turnInProgress ? 'zoomed' : 'normal'")
-    .particles
-      transition-group(name="particle-anim")
-        .particle(
-          v-for="particle in particles",
-          :key="particle.id",
-          :style="{left: particle.x, top: particle.y}"
-        )
+  .particles
+    transition-group(name="particle-anim")
+      .particle(
+        v-for="particle in particles",
+        :key="particle.id",
+        :style="{left: particle.x, top: particle.y}"
+      )
 
 </template>
 
@@ -47,28 +46,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "stylesheets/constants";
-.foreground_fields{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  .particles{
-    .particle{
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #9fa0e077;
-      mix-blend-mode: screen;
-    }
+.particles{
+  .particle{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #9fa0e077;
+    mix-blend-mode: screen;
   }
-}
-
-.zoomed{
-  transition: transform 0.6s;
-  transform: scale(1.3);
-}
-.normal{
-  transition: transform 0.6s;
-  transform: scale(1);
 }
 
 .particle-anim-enter-active, .particle-anim-leave-active {
