@@ -7,6 +7,7 @@
           v-for="particle in particles",
           :key="particle.id",
           :style="{left: particle.x, top: particle.y}"
+          :class="`bg_${fieldEffectStateId}`"
         )
 
 </template>
@@ -17,7 +18,8 @@ import store from './packs/store.ts'
 
 export default {
   props: {
-    turnInProgress: Boolean
+    turnInProgress: Boolean,
+    fieldEffectState: Object,
   },
   data: function () {
     return {
@@ -27,6 +29,11 @@ export default {
   store,
   mounted(){
     setInterval(this.addParticle, 400);
+  },
+  computed: {
+    fieldEffectStateId(){
+      return this.fieldEffectState?.stateMaster?.id || "default";
+    }
   },
   methods: {
     addParticle(){
@@ -67,7 +74,27 @@ export default {
       position: absolute;
       width: 2px;
       height: 60px;
-      background-color: $gray1;
+      &.bg_default{
+        background-color: $gray1;
+      }
+      &.bg_102{
+        background-color: #497a51;
+      }
+      &.bg_103{
+        background-color: #8b5f58;
+      }
+      &.bg_104{
+        background-color: #7f8160;
+      }
+      &.bg_105{
+        background-color: #648b82;
+      }
+      &.bg_106{
+        background-color: #4b3c8b;
+      }
+      &.bg_107{
+        background-color: #674b9e;
+      }
     }
   }
 }

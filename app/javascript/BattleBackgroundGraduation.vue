@@ -53,7 +53,7 @@ export default {
     background-image: linear-gradient(to bottom, #2b2350 0%, transparent 15%);
   }
   &.bg_107{
-    background-image: linear-gradient(to bottom, #44365f 0%, transparent 15%);
+    background-image: linear-gradient(to bottom, #402d57 0%, transparent 15%);
   }
 }
 </style>

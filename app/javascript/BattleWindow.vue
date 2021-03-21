@@ -6,7 +6,7 @@
 
       .battle_background
         BattleBackgroundGraduation(:field-effect-state="battle.fieldEffectState")
-        BattleBackground(:turn-in-progress="isTurnInProgress")
+        BattleBackground(:field-effect-state="battle.fieldEffectState" :turn-in-progress="isTurnInProgress")
       .player_character
         .tirol
           BattleCharacter(
@@ -805,7 +805,7 @@ export default {
     // **
 
     postEngage(){
-      const enemyId = this.$store.state.battle.enemy_id || 201;
+      const enemyId = this.$store.state.battle.enemy_id || 101;
       const path = `/enemies/${enemyId}/engage.json`;
       const params = {
         enemy_id: enemyId
