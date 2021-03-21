@@ -10,16 +10,18 @@
       :style="viewStyle(2)"
     )
     .ground
-      img.spica(
-        :src="spicaImagePath"
-        :style="{transform: `translate(${characters.spica.position}px, ${characters.spica.verticalPosition}px) scale(${characters.spica.direction}, 1)`}"
-        @click="clickCharacter"
-      )
-      img.tirol(
-        :src="tirolImagePath"
-        :style="{transform: `translate(${characters.tirol.position}px, ${characters.tirol.verticalPosition}px) scale(${characters.tirol.direction}, 1)`}"
-        @click="clickCharacter"
-      )
+      .hover_animator(:style="{transform: `translate(0, -${characters.spica.hoverHeight}px)`}")
+        img.spica(
+          :src="spicaImagePath"
+          :style="{transform: `translate(${characters.spica.position}px, ${characters.spica.verticalPosition}px) scale(${characters.spica.direction}, 1)`}"
+          @click="clickSpica"
+        )
+      .hover_animator(:style="{transform: `translate(0, -${characters.tirol.hoverHeight}px)`}")
+        img.tirol(
+          :src="tirolImagePath"
+          :style="{transform: `translate(${characters.tirol.position}px, ${characters.tirol.verticalPosition}px) scale(${characters.tirol.direction}, 1)`}"
+          @click="clickTirol"
+        )
     .background.view3(
       :style="viewStyle(3)"
     )
@@ -57,12 +59,16 @@ export default {
           speed: 0,
           direction: 1,
           verticalPosition: 1,
+          verticalVelocity: 0,
+          hoverHeight: 0,
         },
         tirol: {
           position: -70,
           speed: 0,
           direction: 1,
           verticalPosition: 1,
+          verticalVelocity: 0,
+          hoverHeight: 0,
         },
       },
     };
@@ -82,6 +88,18 @@ export default {
       this.frameCount++;
       requestAnimationFrame(this.update);
     },
+    jumpSpica(){
+      if(this.characters.spica.verticalVelocity != 0){
+        return;
+      }
+      this.characters.spica.verticalVelocity += 10;
+    },
+    jumpTirol(){
+      if(this.characters.tirol.verticalVelocity != 0){
+        return;
+      }
+      this.characters.tirol.verticalVelocity += 8;
+    },
     proceedCharacter(){
       ["spica", "tirol"].forEach((name)=>{
         if(!this.$store.getters['user/isAliveCharacter'](name)){
@@ -93,6 +111,14 @@ export default {
         }
         else{
           this.characters[name].position += this.characters[name].speed;
+        }
+
+        // ジャンプ
+        this.characters[name].hoverHeight += this.characters[name].verticalVelocity;
+        this.characters[name].verticalVelocity -= 0.5;
+        if(this.characters[name].hoverHeight <= 0){
+          this.characters[name].hoverHeight = 0;
+          this.characters[name].verticalVelocity = 0;
         }
       });
     },
@@ -160,6 +186,14 @@ export default {
         opacity: opacity,
       }
     },
+    clickSpica(){
+      this.jumpSpica();
+      this.clickCharacter();
+    },
+    clickTirol(){
+      this.jumpTirol();
+      this.clickCharacter();
+    },
     clickCharacter(){
       const achievementId = Constants.achievements.ids.clickFieldCharacter;
       if( this.$store.state.achievement.loading || this.$store.state.achievement.user_achievements[achievementId]?.progress >= 1 ){
@@ -176,10 +210,22 @@ export default {
   },
   computed: {
     spicaImagePath(){
-      return this.$store.getters['user/isAliveCharacter']('spica') ? "images/ui/spica.png" : "images/ui/spica_dead.png";
+      if(!this.$store.getters['user/isAliveCharacter']('spica')){
+        return "images/ui/spica_dead.png";
+      }
+      if(this.characters.spica.hoverHeight !== 0){
+        return "images/ui/spica_ukya.png"
+      }
+      return "images/ui/spica.png";
     },
     tirolImagePath(){
-      return this.$store.getters['user/isAliveCharacter']('tirol') ? "images/ui/tirol.png" : "images/ui/tirol_dead.png";
+      if(!this.$store.getters['user/isAliveCharacter']('tirol')){
+        return "images/ui/tirol_dead.png";
+      }
+      if(this.characters.tirol.hoverHeight !== 0){
+        return "images/ui/tirol_ukya.png"
+      }
+      return "images/ui/tirol.png";
     },
   },
 }
@@ -203,11 +249,13 @@ export default {
     bottom: 50px + $space * 2;
     height: 200px;
     left: 50%;
-    img{
-      image-rendering: pixelated;
-      position: absolute;
-      height: 200px;
-      cursor: pointer;
+    .hover_animator{
+      img{
+        image-rendering: pixelated;
+        position: absolute;
+        height: 200px;
+        cursor: pointer;
+      }
     }
   }
   .view3{
