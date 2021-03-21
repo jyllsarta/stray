@@ -24,6 +24,9 @@ RSpec.describe StairEvent, type: :model do
     end
   end
   describe "#logs" do
+    before do
+      event.execute(user)
+    end
     subject { event.logs }
     it "returns formatted logs" do
       expect(subject).to match_json_expression(
