@@ -2,6 +2,11 @@
   .right_menu.window.floating_window
     ._back(@click="setConfirmStatus(false)" v-if="showEndingConfirm")
     .items
+      .category
+        .japanese
+          | 育成
+        .english
+          | Build
       .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', '手動で完全回復します。')",
         @click="resurrect"
@@ -17,6 +22,25 @@
         .text
           | 装備
       .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/relic.gif")
+        .text
+          | 能力解放
+      .item.clickable(
+        @mouseover="$store.commit('guide/updateGuide', '神秘の鍋メニューを表示します。')",
+        @click="$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: true})"
+      )
+        img.icon(src="/images/icons/right_menu/gacha.gif")
+        .text
+          | 神秘の鍋
+      .category
+        .japanese
+          | 冒険
+        .english
+          | Explore
+      .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', 'ダンジョン切り替えメニューを表示します。')",
         @click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: true})"
       )
@@ -25,26 +49,17 @@
           | ダンジョン
           | 切り替え
       .item.clickable(
-        @mouseover="$store.commit('guide/updateGuide', '能力解放メニューを表示します。')",
-        @click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: true})"
-      )
-        img.icon(src="/images/icons/right_menu/relic.gif")
-        .text
-          | 能力解放
-      .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', '戦闘メニューを表示します。')",
         @click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: true})"
       )
         img.icon(src="/images/icons/right_menu/quest.gif")
         .text
           | クエスト
-      .item.clickable(
-        @mouseover="$store.commit('guide/updateGuide', '神秘の鍋メニューを表示します。')",
-        @click="$store.commit('window/updateWindowShowState', {windowName: 'gacha', state: true})"
-      )
-        img.icon(src="/images/icons/right_menu/gacha.gif")
-        .text
-          | 神秘の鍋
+      .category
+        .japanese
+          | 記録
+        .english
+          | Memorial
       .item.clickable(
         @mouseover="$store.commit('guide/updateGuide', '実績メニューを表示します。')",
         @click="$store.commit('window/updateWindowShowState', {windowName: 'achievement', state: true})"
@@ -133,7 +148,7 @@ export default {
           console.log(results);
           this.$store.commit("user/resurrect");
           this.$store.commit("event/addEventLog", {message: "ご主人パワーで完全回復した！"});
-          this.$store.commit("event_illust/showEventIllust", "resurrect");
+          this.$store.commit("event_illust/showEventIllust", "resurrect_complete");
           this.$store.dispatch("achievement/fetchAchievements");
           this.$store.dispatch("achievement/fetchAchievementCache");
         })
@@ -164,6 +179,26 @@ export default {
   .items{
     display: flex;
     flex-direction: column;
+  }
+
+  .category{
+    line-height: 100%;
+    margin-top: $thin_space;
+    margin-bottom: $thin_space;
+
+    .japanese {
+      display: inline-block;
+      font-size: $font-size-mini;
+      padding-left: $thin_space;
+      padding-right: $thin_space;
+    }
+    .english {
+      display: inline-block;
+      font-size: $font-size-mini - 4px;
+      color: $accent-color;
+      font-style: italic;
+    }
+    border-bottom: 1px solid $gray3;
   }
 
   .item{
