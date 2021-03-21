@@ -24,20 +24,20 @@ export default {
   },
   store,
   mounted(){
-    setInterval(this.addParticle, 500);
+    setInterval(this.addParticle, 400);
   },
   methods: {
     addParticle(){
       if(document.visibilityState !== "visible"){
         return;
       }
-      const maxParticleCount = 6;
+      const maxParticleCount = 3;
       if(this.particles.length > maxParticleCount){
         this.particles = this.particles.slice(-maxParticleCount)
       }
       const id = Math.floor(Math.random() * 999999999);
       const x = Math.floor(Math.random() * 700) + 162;
-      const y = Math.floor(Math.random() * 100) + 50;
+      const y = Math.floor(Math.random() * 50) + 160;
       this.particles.push({id: id, x: x, y: y})
     },
   }
@@ -49,23 +49,25 @@ export default {
 .particles{
   .particle{
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #f58a6977;
+    width: 5px;
+    height: 5px;
+    background-color: #ffb056;
     mix-blend-mode: screen;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 3px #ee683fe7, 0px 0px 15px 2px #f7bc659d inset;
   }
 }
 
 .particle-anim-enter-active, .particle-anim-leave-active {
-  transition: all 5s;
+  transition: all 4s;
 }
 .particle-anim-enter {
   opacity: 0;
-  transform: translateY(-100px) rotate(45deg) scale(1, 2) rotate(32deg);
+  transform: translateY(50px) scale(3);
 }
 .particle-anim-leave-to {
-  opacity: 0;
-  transform: translateY(100px) rotate(-125deg) scale(1, 2) rotate(32deg);
+  opacity: 0.5;
+  transform: translateY(-100px) scale(0);
 }
 
 </style>
