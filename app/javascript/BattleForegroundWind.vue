@@ -24,22 +24,22 @@ export default {
   },
   store,
   mounted(){
-    setInterval(this.addParticle, 500);
+    setInterval(this.addParticle, 400);
   },
   methods: {
     addParticle(){
       if(document.visibilityState !== "visible"){
         return;
       }
-      const maxParticleCount = 6;
+      const maxParticleCount = 2;
       if(this.particles.length > maxParticleCount){
         this.particles = this.particles.slice(-maxParticleCount)
       }
       const id = Math.floor(Math.random() * 999999999);
-      const x = Math.floor(Math.random() * 700) + 162;
-      const y = Math.floor(Math.random() * 100) + 50;
+      const x = Math.floor(Math.random() * 400) + 200;
+      const y = Math.floor(Math.random() * 150) + 70;
       this.particles.push({id: id, x: x, y: y})
-    },
+    }
   }
 }
 </script>
@@ -49,23 +49,23 @@ export default {
 .particles{
   .particle{
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #69c2f577;
+    width: 70px;
+    height: 1px;
+    background-color: #7df3ed;
     mix-blend-mode: screen;
   }
 }
 
 .particle-anim-enter-active, .particle-anim-leave-active {
-  transition: all 5s;
+  transition: all 2s linear;
 }
 .particle-anim-enter {
   opacity: 0;
-  transform: translateY(-100px) rotate(45deg) scale(1, 2) rotate(32deg);
+  transform: translateX(300px);
 }
 .particle-anim-leave-to {
   opacity: 0;
-  transform: translateY(100px) rotate(-125deg) scale(1, 2) rotate(32deg);
+  transform: translateX(-300px);
 }
 
 </style>
