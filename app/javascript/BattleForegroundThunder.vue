@@ -58,21 +58,21 @@ export default {
       width: 10px;
       height: 10px;
       background-color: #f3f569dc;
-      transform: scale(0.2, 4) rotate(45deg)
+      transform: scale(0.2, 6) rotate(45deg)
     }
     .cross_y2{
       position: absolute;
       width: 10px;
       height: 10px;
-      background-color: #f3f56977;
-      transform: rotate(20deg) scale(0.2, 2.4) rotate(45deg)
+      background-color: #f3f569dc;
+      transform: translateX(3px) rotate(10deg) scale(0.2, 2) rotate(45deg)
     }
     .cross_y3{
       position: absolute;
       width: 10px;
       height: 10px;
-      background-color: #f3f56977;
-      transform: rotate(-20deg) scale(0.2, 2.4) rotate(45deg)
+      background-color: #f3f569dc;
+      transform: translateX(-3px) rotate(-10deg) scale(0.2, 2) rotate(45deg)
     }
   }
 }
