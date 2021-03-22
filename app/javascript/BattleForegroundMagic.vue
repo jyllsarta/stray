@@ -31,7 +31,7 @@ export default {
       if(document.visibilityState !== "visible"){
         return;
       }
-      const maxParticleCount = 6;
+      const maxParticleCount = 8;
       if(this.particles.length > maxParticleCount){
         this.particles = this.particles.slice(-maxParticleCount)
       }
@@ -51,21 +51,22 @@ export default {
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #f569bb77;
+    background-color: #fac7e542;
+    box-shadow: 0px 0px 3px 2px #eac1f5c5;
     mix-blend-mode: screen;
   }
 }
 
 .particle-anim-enter-active, .particle-anim-leave-active {
-  transition: all 5s;
+  transition: all 5s linear;
 }
 .particle-anim-enter {
   opacity: 0;
-  transform: translateY(-100px) rotate(45deg) scale(1, 2) rotate(32deg);
+  transform: translateY(-100px) rotate(545deg) rotate(45deg);
 }
 .particle-anim-leave-to {
   opacity: 0;
-  transform: translateY(100px) rotate(-125deg) scale(1, 2) rotate(32deg);
+  transform: translateY(100px) rotate(-545deg) rotate(45deg);
 }
 
 </style>
