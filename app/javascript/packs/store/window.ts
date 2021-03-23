@@ -21,6 +21,9 @@ export default {
     session_expired_frame: false,
   },
   getters: {
+    isOnFullScreen(state){
+      return state.battle || state.ending || state.session_expired_frame;
+    },
   },
   mutations: {
     updateWindowShowState(state, payload){

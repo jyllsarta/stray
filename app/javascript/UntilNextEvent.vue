@@ -4,7 +4,7 @@
       | 次回イベントまで
     .content
       .main
-        | {{$store.state.timer.next_event}}
+        | {{Math.max($store.state.timer.next_event, 0)}}
       .sep
         | 秒
 </template>
