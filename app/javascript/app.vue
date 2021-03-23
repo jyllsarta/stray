@@ -2,13 +2,13 @@
   #app
     Guide
     .game
-      Field(ref="field")
-      Header
-      RightMenu
-      Status
-      Velocity
-      Log
-      EventIllust
+      Field(ref="field" v-if="showField")
+      Header(v-if="showField")
+      RightMenu(v-if="showField")
+      Status(v-if="showField")
+      Velocity(v-if="showField")
+      Log(v-if="showField")
+      EventIllust(v-if="showField")
       AchievementCompleteFlash
       TransitionFrame(v-if="$store.state.window.transition_frame")
       transition(name="open_window")
@@ -112,6 +112,11 @@ export default {
     MessageForm,
     ClickEffect,
     EndingWindow,
+  },
+  computed: {
+    showField(){
+      return !this.$store.getters["window/isOnFullScreen"];
+    },
   },
 }
 </script>

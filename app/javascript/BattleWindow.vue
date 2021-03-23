@@ -358,6 +358,8 @@ export default {
   },
   store,
   mounted(){
+    this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
+    this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
     this.postEngage();
   },
   computed: {
