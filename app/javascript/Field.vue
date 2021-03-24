@@ -154,7 +154,7 @@ export default {
       setTimeout(()=>{
         this.randomisePosition();
         this.$store.commit('window/updateWindowShowState', {windowName: 'transition_frame', state: false});
-      }, 1000)
+      }, 650)
     },
     randomisePosition(){
       // 3500以上は世界の果てが見えちゃう

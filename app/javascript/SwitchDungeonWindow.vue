@@ -139,10 +139,10 @@ export default {
           this.$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})
         })
         .then(()=>{
-          // とてもとてもダサいのだけど、400ms待って十分に演出が流れてから背景を更新する
+          // とてもとてもダサいのだけど、一定時間待って十分に演出が流れてから背景を更新する
           // うまくかけていたなら「閉じる」「更新を待つ」「開く」ってできるんだろうけどそれを想定したコードにできなかった...勉強のためにもいつか直したい
           return new Promise((resolve, reject) => {
-            setTimeout(resolve, 400);
+            setTimeout(resolve, 150);
           });
         })
         .then(()=>{
