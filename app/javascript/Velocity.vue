@@ -139,7 +139,7 @@ export default {
   }
 
   .particle-anim-enter-active, .particle-anim-leave-active {
-    transition: all 4s;
+    transition: all 4s linear;
   }
   .particle-anim-enter {
     opacity: 0;
