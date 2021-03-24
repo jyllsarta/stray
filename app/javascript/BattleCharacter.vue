@@ -265,11 +265,11 @@ export default {
   transition: all .4s;
 }
 .showing-enter{
-  transform: translateX(-30px);
+  transform: translateX(-30px) scale(0.9, 1);
   opacity: -0.5;
 }
 .showing-leave-to{
-  transform: translateX(-30px);
+  transform: translateX(-30px) scale(0.9, 1);
   opacity: 0;
 }
 
@@ -280,7 +280,7 @@ export default {
   transition: all .4s;
 }
 .upper_attack-enter{
-  transform: translateY(30px);
+  transform: translateY(40px) scale(1.15, 0.98);
   opacity: 0;
 }
 .upper_attack-leave-to{
@@ -293,7 +293,7 @@ export default {
   transition: all .4s;
 }
 .down_attack-enter{
-  transform: translateY(-30px);
+  transform: translateY(-40px) scale(0.98, 1.15);
   opacity: 0;
 }
 .down_attack-leave-to{
