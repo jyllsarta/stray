@@ -260,6 +260,8 @@
         OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
         PlayerDamage(v-if="$store.state.battle.fragments.player_damage")
         EnemyDamage(v-if="$store.state.battle.fragments.enemy_damage")
+        PlayerDamageEffect(v-if="$store.state.battle.fragments.player_damage_effect")
+        EnemyDamageEffect(v-if="$store.state.battle.fragments.enemy_damage_effect")
         ParalyzeEffect(v-if="$store.state.battle.fragments.paralyze_effect")
         ParalyzeEffectWatcher(:battle="battle")
       transition(name="open_window")
@@ -298,6 +300,8 @@ import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import PlayerDamage from "./fragments/PlayerDamage.vue";
+import PlayerDamageEffect from "./fragments/PlayerDamageEffect.vue";
+import EnemyDamageEffect from "./fragments/EnemyDamageEffect.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
@@ -322,6 +326,8 @@ export default {
     EnemySkillCutin,
     OutcomeCutin,
     PlayerDamage,
+    PlayerDamageEffect,
+    EnemyDamageEffect,
     EnemyDamage,
     StateInstance,
     FieldEffect,
@@ -524,6 +530,9 @@ export default {
           return;
         }
         this.$store.commit("battle/showFragment", "player_damage");
+        if(newVal < oldVal){ // is Damage
+          this.$store.commit("battle/showFragment", "player_damage_effect");
+        }
         this.$store.commit("battle/setDamageDiff", {target: 'player', value: newVal - oldVal});
       }
     },
@@ -533,6 +542,9 @@ export default {
           return;
         }
         this.$store.commit("battle/showFragment", "enemy_damage");
+        if(newVal < oldVal){ // is Damage
+          this.$store.commit("battle/showFragment", "enemy_damage_effect");
+        }
         this.$store.commit("battle/setDamageDiff", {target: 'enemy', value: newVal - oldVal});
       }
     },
