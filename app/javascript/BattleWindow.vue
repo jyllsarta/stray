@@ -262,6 +262,8 @@
         EnemyDamage(v-if="$store.state.battle.fragments.enemy_damage")
         PlayerDamageEffect(v-if="$store.state.battle.fragments.player_damage_effect")
         EnemyDamageEffect(v-if="$store.state.battle.fragments.enemy_damage_effect")
+        PlayerHealEffect(v-if="$store.state.battle.fragments.player_heal_effect")
+        EnemyHealEffect(v-if="$store.state.battle.fragments.enemy_heal_effect")
         ParalyzeEffect(v-if="$store.state.battle.fragments.paralyze_effect")
         ParalyzeEffectWatcher(:battle="battle")
       transition(name="open_window")
@@ -301,7 +303,9 @@ import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import PlayerDamage from "./fragments/PlayerDamage.vue";
 import PlayerDamageEffect from "./fragments/PlayerDamageEffect.vue";
+import PlayerHealEffect from "./fragments/PlayerHealEffect.vue";
 import EnemyDamageEffect from "./fragments/EnemyDamageEffect.vue";
+import EnemyHealEffect from "./fragments/EnemyHealEffect.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
@@ -327,7 +331,9 @@ export default {
     OutcomeCutin,
     PlayerDamage,
     PlayerDamageEffect,
+    PlayerHealEffect,
     EnemyDamageEffect,
+    EnemyHealEffect,
     EnemyDamage,
     StateInstance,
     FieldEffect,
@@ -533,6 +539,9 @@ export default {
         if(newVal < oldVal){ // is Damage
           this.$store.commit("battle/showFragment", "player_damage_effect");
         }
+        else{
+          this.$store.commit("battle/showFragment", "player_heal_effect");
+        }
         this.$store.commit("battle/setDamageDiff", {target: 'player', value: newVal - oldVal});
       }
     },
@@ -544,6 +553,9 @@ export default {
         this.$store.commit("battle/showFragment", "enemy_damage");
         if(newVal < oldVal){ // is Damage
           this.$store.commit("battle/showFragment", "enemy_damage_effect");
+        }
+        else{
+          this.$store.commit("battle/showFragment", "enemy_heal_effect");
         }
         this.$store.commit("battle/setDamageDiff", {target: 'enemy', value: newVal - oldVal});
       }
