@@ -264,6 +264,8 @@
         EnemyDamageEffect(v-if="$store.state.battle.fragments.enemy_damage_effect")
         PlayerHealEffect(v-if="$store.state.battle.fragments.player_heal_effect")
         EnemyHealEffect(v-if="$store.state.battle.fragments.enemy_heal_effect")
+        PlayerStateEffect(v-if="$store.state.battle.fragments.player_state_effect")
+        EnemyStateEffect(v-if="$store.state.battle.fragments.enemy_state_effect")
         ParalyzeEffect(v-if="$store.state.battle.fragments.paralyze_effect")
         ParalyzeEffectWatcher(:battle="battle")
       transition(name="open_window")
@@ -304,8 +306,10 @@ import OutcomeCutin from "./fragments/OutcomeCutin.vue";
 import PlayerDamage from "./fragments/PlayerDamage.vue";
 import PlayerDamageEffect from "./fragments/PlayerDamageEffect.vue";
 import PlayerHealEffect from "./fragments/PlayerHealEffect.vue";
+import PlayerStateEffect from "./fragments/PlayerStateEffect.vue";
 import EnemyDamageEffect from "./fragments/EnemyDamageEffect.vue";
 import EnemyHealEffect from "./fragments/EnemyHealEffect.vue";
+import EnemyStateEffect from "./fragments/EnemyStateEffect.vue";
 import EnemyDamage from "./fragments/EnemyDamage.vue";
 import StateInstance from "./StateInstance.vue";
 import FieldEffect from "./FieldEffect.vue";
@@ -332,8 +336,10 @@ export default {
     PlayerDamage,
     PlayerDamageEffect,
     PlayerHealEffect,
+    PlayerStateEffect,
     EnemyDamageEffect,
     EnemyHealEffect,
+    EnemyStateEffect,
     EnemyDamage,
     StateInstance,
     FieldEffect,
@@ -545,6 +551,16 @@ export default {
         this.$store.commit("battle/setDamageDiff", {target: 'player', value: newVal - oldVal});
       }
     },
+    "battle.player.states.length": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        if(newVal > oldVal){ // is Add
+          this.$store.commit("battle/showFragment", "player_state_effect");
+        }
+      }
+    },
     "battle.enemy.hp": {
       handler: function(newVal, oldVal){
         if(!this.battle.turnInProgress){
@@ -558,6 +574,16 @@ export default {
           this.$store.commit("battle/showFragment", "enemy_heal_effect");
         }
         this.$store.commit("battle/setDamageDiff", {target: 'enemy', value: newVal - oldVal});
+      }
+    },
+    "battle.enemy.states.length": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        if(newVal > oldVal){ // is Add
+          this.$store.commit("battle/showFragment", "enemy_state_effect");
+        }
       }
     },
   },

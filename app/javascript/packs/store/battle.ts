@@ -13,9 +13,11 @@ export default {
       player_damage: false,
       player_damage_effect: false,
       player_heal_effect: false,
+      player_state_effect: false,
       enemy_damage: false,
       enemy_damage_effect: false,
       enemy_heal_effect: false,
+      enemy_state_effect: false,
       paralyze_effect: false,
     },
     damageDiffs: {
