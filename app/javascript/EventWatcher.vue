@@ -99,7 +99,7 @@ export default {
     resolveStairEvent(event){
       this.$store.commit("user/updateCurrentDungeonProgress", event.detail.max_depth_dug);
       setTimeout(()=>{
-        this.rootRef.field.reseedScene();
+        this.rootRef?.field?.reseedScene();
       }, 2000);
     },
     resolveResurrectEvent(event){
