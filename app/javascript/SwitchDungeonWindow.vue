@@ -99,7 +99,7 @@ export default {
       return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0;
     },
     sliderWidthPercent(){
-      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.1);
+      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.23);
       return Math.floor(ratio * 100) + "%";
     },
     returnsOnDeathText(){
@@ -222,7 +222,7 @@ export default {
       height: 232px;
       .depth_slider{
         position: absolute;
-        bottom: 0;
+        bottom: 0px;
         left: 70px;
         width: 210px;
         height: 20px;
