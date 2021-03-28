@@ -394,4 +394,34 @@ RSpec.describe "Users", type: :request do
       end
     end
   end
+
+  describe "POST /users/:id/switch_returns_on_death" do
+    include_context("stub_current_user")
+    let(:dungeon){ create(:dungeon) }
+    let(:user){ User.create }
+    let(:do_post) { post user_switch_returns_on_death_path(user_id: -1)+ ".json", params: params }
+    let(:params) do
+      {
+          returns_on_death: true,
+      }
+    end
+    subject do
+      do_post
+      response
+    end
+    context "succeeds" do
+      it 'returns nothing' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     success: true
+                                                 }
+                                             )
+      end
+
+      it "changes status" do
+        expect{subject}.to change(user.status, :returns_on_death).to(true)
+      end
+    end
+  end
 end

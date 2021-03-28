@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     post :events
     post :resurrect
     post :switch_dungeon
+    post :switch_returns_on_death
     # 複数の装備をまとめて編集するので :edit とは別アクション
     post "equips/edit", to: 'equips#edit'
   end

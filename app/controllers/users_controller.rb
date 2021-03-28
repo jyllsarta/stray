@@ -72,6 +72,11 @@ class UsersController < ApplicationController
     render json: {success: true}, status: :ok
   end
 
+  def switch_returns_on_death
+    current_user.status.update!(returns_on_death: params[:returns_on_death])
+    render json: {success: true}, status: :ok
+  end
+
   private
 
   def verify_session
