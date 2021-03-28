@@ -7,5 +7,6 @@ create_table "user_statuses", force: :cascade do |t|
   t.integer :coin, null: false, default: 0
   t.integer :star, null: false, default: 0
   t.integer :velocity, null: false, default: 100
+  t.boolean :returns_on_death, null: false, default: false
   t.timestamps
 end

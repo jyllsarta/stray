@@ -194,6 +194,12 @@ class User::Status < ApplicationRecord
     end
   end
 
+  def return_floor_on_death
+    return unless returns_on_death
+    self.current_dungeon_depth -= Constants.dungeon.return_floors_on_death
+    self.current_dungeon_depth = 1 if current_dungeon_depth <= 0
+  end
+
   private
 
   def preload_item_associations!

@@ -70,6 +70,7 @@ class BattleEvent < Event
   end
 
   def process_lose(user)
+    user.status.return_floor_on_death
     user.status.start_resurrect_timer
   end
 
@@ -79,13 +80,18 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{coin_message} #{velocity_message}"
+    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{coin_message} #{velocity_message} #{return_message}"
   end
 
   def coin_message
     return "" unless @battle.is_win
     multiplied = @coin_multiplier > 1 ? '多めに' : ''
     "#{multiplied}#{@coin_amount}コイン獲得！"
+  end
+
+  def return_message
+    return "" if @battle.is_win || @user.status.returns_on_death
+    "#{Constants.dungeon.return_floors_on_death}フロア退却した！"
   end
 
   def velocity_message

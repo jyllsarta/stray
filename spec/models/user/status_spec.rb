@@ -595,4 +595,32 @@ RSpec.describe User::Status, type: :model do
       end
     end
   end
+
+  describe "#return_floor_on_death" do
+    let(:user){ create(:user) }
+    let(:user_status){ create(:user_status, user: user, returns_on_death: returns_on_death, current_dungeon_depth: depth) }
+
+    subject { user_status.return_floor_on_death }
+    let(:returns_on_death){ false }
+    let(:depth){ 101 }
+    it "default false" do
+      expect{subject}.to_not change(user_status, :current_dungeon_depth)
+    end
+
+    context "on" do
+      let(:returns_on_death){ true }
+      context ">100" do
+        let!(:depth){ 101 }
+        it do
+          expect{subject}.to change(user_status, :current_dungeon_depth).by(-100)
+        end
+      end
+      context "<100" do
+        let!(:depth){ 100 }
+        it do
+          expect{subject}.to change(user_status, :current_dungeon_depth).to(1)
+        end
+      end
+    end
+  end
 end
