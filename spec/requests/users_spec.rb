@@ -154,6 +154,7 @@ RSpec.describe "Users", type: :request do
                                                            velocity: Integer,
                                                            max_item_rank_for_rankup: Integer,
                                                            won_last_boss: Boolean,
+                                                           returns_on_death: Boolean,
                                                        },
                                                        characters: {
                                                            spica: Hash,
@@ -414,7 +415,8 @@ RSpec.describe "Users", type: :request do
         expect(subject).to have_http_status(200)
         expect(JSON.parse(response.body)).to match_json_expression(
                                                  {
-                                                     success: true
+                                                     success: true,
+                                                     returns_on_death: true,
                                                  }
                                              )
       end

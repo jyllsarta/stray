@@ -80,7 +80,7 @@ class BattleEvent < Event
 
   def log_messages
     damages = @battle.damages
-    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{coin_message} #{velocity_message} #{return_message}"
+    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{return_message}#{coin_message} #{velocity_message}"
   end
 
   def coin_message
@@ -90,7 +90,7 @@ class BattleEvent < Event
   end
 
   def return_message
-    return "" if @battle.is_win || @user.status.returns_on_death
+    return "" if @battle.is_win || !@user.status.returns_on_death
     "#{Constants.dungeon.return_floors_on_death}フロア退却した！"
   end
 

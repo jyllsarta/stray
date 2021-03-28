@@ -35,6 +35,10 @@
                 | F
             .go_to_floor_label
               | 移動先：
+            .returns_on_death.clickable(@click="switchReturnsOnDeath")
+              | {{returnsOnDeathText}}
+            .returns_on_death_label
+              | 全滅したら100F戻る：
             .top_floor
               NumeratableNumber(:number="currentDungeonMaxDepth", :speed="0.4")
               .f
@@ -98,6 +102,9 @@ export default {
       const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.1);
       return Math.floor(ratio * 100) + "%";
     },
+    returnsOnDeathText(){
+      return this.$store.state.user.status.returns_on_death ? "有効" : "無効";
+    }
   },
   methods: {
     selectDungeon(dungeonId){
@@ -150,6 +157,9 @@ export default {
           this.$store.commit("event/addEventLog", {message: `${this.$store.state.masterdata.dungeons[this.selectingDungeonId].name}に移動した！`});
         }
       );
+    },
+    switchReturnsOnDeath(){
+      this.$store.dispatch("user/switchReturnsOnDeath", {returns_on_death: !this.$store.state.user.status.returns_on_death});
     },
     onFloorBlur(){
       this.selectingDungeonDepth = parseInt(this.selectingDungeonDepth) || 1;
@@ -244,11 +254,11 @@ export default {
         bottom: $space;
         right: $space;
         width: 100px;
-        height: 50px;
+        height: 54px;
         line-height: 100%;
         font-size: $font-size-large;
         text-align: center;
-        padding-top: (50px - $font-size-large) / 2;
+        padding-top: (54px - $font-size-large) / 2;
       }
       .go_to_floor{
         position: absolute;
@@ -264,11 +274,25 @@ export default {
       }
       .go_to_floor_label{
         position: absolute;
-        bottom: $font-size-large + $space * 2;
+        bottom: $font-size-large + $space * 2.5;
         right: 120px;
         width: 100px;
         font-size: $font-size-mini;
       }
+      .returns_on_death_label{
+        position: absolute;
+        bottom: $font-size-large + $space * 2.5;
+        right: 250px;
+        width: 150px;
+        font-size: $font-size-mini;
+      }
+      .returns_on_death{
+        position: absolute;
+        bottom: $space;
+        right: 250px;
+        width: 56px;
+        @include centering($height: 30px)
+      }      
       .top_floor{
         position: absolute;
         top: $space;

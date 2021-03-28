@@ -23,6 +23,7 @@ export default {
       velocity: 100,
       max_item_rank_for_rankup: 100,
       won_last_boss: false,
+      returns_on_death: false,
     },
     characters: {
       spica: {},
@@ -119,6 +120,9 @@ export default {
     updateUserCoin(state, payload) {
       state.status.coin = payload;
     },
+    updateUserReturnOnDeathStatus(state, payload){
+      state.status.returns_on_death = payload;
+    },
   },
   actions: {
     fetchUserModel ({ commit }) {
@@ -143,6 +147,22 @@ export default {
         ax.post(path, payload)
           .then((results) => {
             console.log(results);
+            resolve();
+          })
+          .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
+      })
+    },
+    switchReturnsOnDeath ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/switch_returns_on_death.json`;
+        ax.post(path, payload)
+          .then((results) => {
+            console.log(results);
+            commit("updateUserReturnOnDeathStatus", results.data.returns_on_death);
             resolve();
           })
           .catch((error) => {
