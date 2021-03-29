@@ -159,7 +159,7 @@ export default {
   }
 
   .scale_2{
-    top: 40px;
+    top: 35px;
     width: 220px;
     height: 220px;
   }
@@ -232,7 +232,7 @@ export default {
   }
   .enemy.waiting.scale_2{
     left: 40px;
-    top: 77px;
+    top: 70px;
   }
   .enemy.waiting.scale_3{
     left: 40px;
