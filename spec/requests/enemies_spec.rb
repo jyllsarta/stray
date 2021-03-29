@@ -144,6 +144,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerPower: Integer,
                                                      playerTech: Integer,
                                                      playerSpecial: Integer,
+                                                     enemyIsBoss: Boolean,
                                                      enemyId: Integer,
                                                      enemyImageName: String,
                                                      enemyScaleType: Integer,

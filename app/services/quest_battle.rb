@@ -43,6 +43,7 @@ class QuestBattle
         enemyName: @enemy.name_with_plus(@user.status.player_strength[:atk], @user.status.player_strength[:def]),
         enemyImageName: @enemy.image_name,
         enemyScaleType: @enemy.scale_type,
+        enemyIsBoss: @enemy.is_boss,
         enemyHp: @enemy.multiplied_hp(@user.status.player_strength[:atk]),
         enemyPower: @enemy.power,
         enemyTech: @enemy.tech,

@@ -7,6 +7,7 @@ export default {
     enemy_image_name: "kani",
     fragments: {
       turn_start: false,
+      boss_battle_start: false,
       player_skill: false,
       enemy_skill: false,
       battle_outcome: false,

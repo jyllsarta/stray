@@ -255,6 +255,7 @@
 
       .fragments
         TurnStart(v-if="$store.state.battle.fragments.turn_start")
+        BossBattleStart(v-if="$store.state.battle.fragments.boss_battle_start")
         PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
         EnemySkillCutin(v-if="$store.state.battle.fragments.enemy_skill")
         OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
@@ -300,6 +301,7 @@ import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
 import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
+import BossBattleStart from "./fragments/BossBattleStart.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
@@ -330,6 +332,7 @@ export default {
     NumeratableNumber,
     ZeroPaddingedNumeratableNumber,
     TurnStart,
+    BossBattleStart,
     PlayerSkillCutin,
     EnemySkillCutin,
     OutcomeCutin,
@@ -867,6 +870,9 @@ export default {
           console.log(results);
           this.input = results.data;
           this.$store.commit("battle/setEnemyImageName", this.input.enemyImageName);
+          if(this.input.enemyIsBoss){
+            this.$store.commit("battle/showFragment", "boss_battle_start");
+          }
           this.localBattleStart();
           // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
           if (process.env.NODE_ENV !== 'production') {
