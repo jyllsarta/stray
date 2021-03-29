@@ -1,8 +1,11 @@
 <template lang="pug">
 transition(name="anim")
-  .turn_start
-    .text
-      | ボス戦！
+  .boss_battle_start
+    .texts
+      .ruby
+        | Engaging Master Failies!!
+      .main
+        | 強敵出現!
 </template>
 
 <script lang="ts">
@@ -26,45 +29,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .turn_start{
+  @import "../stylesheets/global_setting";
+
+  .boss_battle_start{
     position: absolute;
-    top: calc(40% - 15px);
-    left: calc(50% - 200px);
-    height: 30px;
-    width: 400px;
-    opacity: 0;
+    height: $window-height;
+    width: $window-width;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    background-color: #fff7fa20;
+    background-color: #10101dde;
+    .texts{
+      height: 100px;
+      width: 500px;
+      border-top: 1px solid #fff7fa;
+      border-bottom: 1px solid #fff7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .ruby{
+        font-size: $font-size-normal;
+        line-height: 200%;
+        text-align-last: justify;
+        width: 200px;
+      }
+      .main{
+        font-size: 40px;
+        line-height: 100%;
+        text-align-last: justify;
+        width: 250px;
+      }
+    }
   }
   .anim-leave-active {
-    animation: anim 0.8s;
+    animation: anim 2s linear;
   }
   @keyframes anim {
     0% {
       opacity: 0;
-      border-top: 1px solid transparent;
-      border-bottom: 1px solid transparent;
-      transform:  scale(1.3);
+      transform: scale(3);
     }
-    30% {
+    15% {
       opacity: 1;
-      transform:  scale(1);
+      transform: scale(1);
     }
-    50%{
-      border-top: 1px solid #fff7fa;
-      border-bottom: 1px solid #fff7fa;
-    }
-    70% {
+    80% {
       opacity: 1;
+      transform: scale(0.98);
     }
     100% {
       opacity: 0;
-      border-top: 1px solid #fff7fa00;
-      border-bottom: 1px solid #fff7fa00;
     }
   }
 </style>

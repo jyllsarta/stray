@@ -1362,6 +1362,7 @@ export default {
   height: $window-height;
   background-color: $background;
   opacity: 1;
+  overflow: hidden;
 }
 
 .player_character{
