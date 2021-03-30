@@ -87,7 +87,10 @@
                 .param(:class="[{ disabled: isAlreadyEquipped(item) }]")
                   .item_name(:class="[rarityClass(item)]")
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
-                  .value
+                  // 力+技順を特別扱いする
+                  .value(v-if="$store.state.equip_window.current_sort_id === 7")
+                    | {{item.power()}} / {{item.tech()}}
+                  .value(v-if="$store.state.equip_window.current_sort_id !== 7")
                     | {{$store.getters['equip_window/getCurrentSortKey'].lambda(item)}}
                 .go_to_detail.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: true})")
                   | ＊
