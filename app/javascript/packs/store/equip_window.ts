@@ -43,67 +43,61 @@ export default {
       switch(id){
         case 0:
           return {
-            lambda: (a, b) => { return (b.id - a.id) },
+            lambda: (a) => { return a.id },
             name: "ID順",
           };
         case 1:
           return {
-            lambda: (a, b) => { return (getters.getItemEffectValue(b.id) - getters.getItemEffectValue(a.id)) },
+            lambda: (a) => { return getters.getItemEffectValue(a.id) },
             name: "総合順",
           };
         case 2:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('str') - getters.getUserItem(a.id).effectValueOf('str')) },
+            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('str') },
             name: "STR順",
           };
         case 3:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('dex') - getters.getUserItem(a.id).effectValueOf('dex')) },
+            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('dex') },
             name: "DEX順",
           };
         case 4:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('def') - getters.getUserItem(a.id).effectValueOf('def')) },
+            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('def') },
             name: "DEF順",
           };
         case 5:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('agi') - getters.getUserItem(a.id).effectValueOf('agi')) },
+            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('agi') },
             name: "AGI順",
           };
         case 6:
           return {
-            lambda: (a, b) => {
-              let item_b = (getters.getUserItem(b.id));
+            lambda: (a) => {
               let item_a = (getters.getUserItem(a.id));
-              return (item_b.rank + item_b.base_rank) - (item_a.rank + item_a.base_rank)
+              return item_a.rank + item_a.base_rank;
             },
             name: "ランク順",
           };
         case 7:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
+            lambda: (a) => {
               const item_a = (getters.getUserItem(a.id));
-              return (item_b.tech() + item_b.power()) - (item_a.tech() + item_a.power());
+              return item_a.tech() + item_a.power();
             },
             name: "力+技順",
           };
         case 8:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
-              const item_a = (getters.getUserItem(a.id));
-              return (item_b.power()) - (item_a.power());
+            lambda: (a) => {
+              return getters.getUserItem(a.id).power();
             },
             name: "力順",
           };
         case 9:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
-              const item_a = (getters.getUserItem(a.id));
-              return (item_b.tech()) - (item_a.tech());
+            lambda: (a) => {
+              return getters.getUserItem(a.id).tech();
             },
             name: "技順",
           };
@@ -112,8 +106,16 @@ export default {
           return null;
       }
     },
+    getCurrentSortKey: (state, getters) => {
+      return getters.sortLambdas(state.current_sort_id);
+    },
     getCurrentSortLambda: (state, getters) => {
-      return getters.sortLambdas(state.current_sort_id).lambda;
+      const sort = getters.getCurrentSortKey;
+      return (a, b) => {return sort.lambda(b) - sort.lambda(a)};
+    },
+    getStrongestSortLambda: (state, getters) => {
+      const sort = getters.sortLambdas(1);
+      return (a, b) => {return sort.lambda(b) - sort.lambda(a)};
     },
     getCurrentSortName: (state, getters) => {
       return getters.sortLambdas(state.current_sort_id).name;
@@ -146,7 +148,7 @@ export default {
     getStrongestUserItem: (state, getters, rootState, rootGetters) => {
       return Object.values(rootState.user.items)
         .map(item=>getters.getUserItem(item.item_id))
-        .sort(getters.sortLambdas(1).lambda)[0]; // sordLambda: 1 は総合順
+        .sort(getters.getStrongestSortLambda)[0]; // sordLambda: 1 は総合順
     },
     getUserItem: (state, getters, rootState, rootGetters) => (itemId, rankDelta=0) => {
       if(!rootState.user.items[itemId] || !rootState.masterdata.items[itemId]){

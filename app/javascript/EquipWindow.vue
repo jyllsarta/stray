@@ -88,7 +88,7 @@
                   .item_name(:class="[rarityClass(item)]")
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                   .value
-                    | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+                    | {{$store.getters['equip_window/getCurrentSortKey'].lambda(item)}}
                 .go_to_detail.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: true})")
                   | ＊
               .bar_area
