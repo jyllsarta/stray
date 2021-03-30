@@ -143,6 +143,11 @@ export default {
         .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
         .filter(x=>x);
     },
+    getStrongestUserItem: (state, getters, rootState, rootGetters) => {
+      return Object.values(rootState.user.items)
+        .map(item=>getters.getUserItem(item.item_id))
+        .sort(getters.sortLambdas(1).lambda)[0]; // sordLambda: 1 は総合順
+    },
     getUserItem: (state, getters, rootState, rootGetters) => (itemId, rankDelta=0) => {
       if(!rootState.user.items[itemId] || !rootState.masterdata.items[itemId]){
         return null;

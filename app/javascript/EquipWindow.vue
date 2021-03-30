@@ -338,9 +338,8 @@ export default {
       return delta > 0 ? 'plus' : 'minus';
     },
     relativeEffectivenessRatio(param){
-      // TODO: ここの /4 は完全にUI横幅調整のためのものなので、レベデザ次第で修正していく
-      const standard = Math.max(this.$store.getters['user/currentStandardParameter'], 30);
-      return param / 4 / standard;
+      const standard = Math.max(this.$store.getters['equip_window/getStrongestUserItem'].effectValue);
+      return param / standard * 4; // 4パラメータ分の合計値との比較なので*4で比が一致する
     },
     cropWidth(param){
       if(param < 0){
@@ -356,8 +355,8 @@ export default {
     },
     barWidthPercent(param){
       const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
-      // 基準パラメータの2倍あったらwidth:100%にしたいので 1/2 を係数にかけてる
-      return this.cropWidth(100 * (1/2) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+      // 基準パラメータの4倍あったらwidth:100%にしたいので 1/4 を係数にかけてる
+      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
     // atk, def は他パラメータの倍必要なので 1/4
     atkBar(){
