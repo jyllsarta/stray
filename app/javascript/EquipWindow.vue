@@ -879,7 +879,7 @@ export default {
     }
     .sub_chara_status{
       position: absolute;
-      top: 108px;
+      top: 100px;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
       height: 300px;
