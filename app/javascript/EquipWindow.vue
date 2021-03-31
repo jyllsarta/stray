@@ -53,10 +53,20 @@
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               :class="[rarityClass(item)]"
             )
-              | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+              .param
+                | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+              .bar_area
+                .bar(
+                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  :class="param"
+                  :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                  )
             // 空枠を埋める
             .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
-              | -
+              .param
+                | -
+              .bar_area
+                .bar
         .item_list_main.block
           .misc_area
             .label_block
@@ -536,7 +546,7 @@ export default {
         display: inline-block;
       }
       .status{
-        padding: $space;
+        padding: $thin_space;
         .param{
           padding: $space;
           font-size: $font-size-normal;
@@ -554,7 +564,7 @@ export default {
         display: inline-block;
       }
       .status{
-        padding: $space;
+        padding: $thin_space;
         .param{
           padding: $space;
           font-size: $font-size-normal;
@@ -882,7 +892,7 @@ export default {
       top: 100px;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: 300px;
+      height: 260px;
     }
     .item_list_main{
       position: absolute;
