@@ -18,6 +18,7 @@
               | チロルのスキル
             .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="switchPage(3)")
               | なんでもスキル
+          .cussion
           .relics
             .obtain_animation(
                 v-for="relic in displayRelics"
@@ -197,18 +198,25 @@ export default {
     border-bottom: 1px solid $gray3;
     display: flex;
     .tabs{
+      margin-top: 36px;
       width: 200px;
       height: 100%;
-      padding: $thin_space;
+      padding: $space;
+      display: flex;
+      flex-direction: column;
       .tab{
         width: 100%;
         height: 100px;
-        margin-bottom: $space;
+        margin-bottom: $space * 2;
         @include centering($height: 60px);
       }
     }
+    .cussion{
+      width: 90px;
+    }
     .relics{
       position: relative;
+      margin-left: (58 * 2)px;
       .obtain_animation{
         position: absolute;
         width: 50px;
