@@ -235,7 +235,7 @@ export default {
     },
     removeEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
-      state.draft[characterName] = state.draft[characterName].filter(i=>i!==payload.itemId)
+      state.draft[characterName] = state.draft[characterName].filter(i=>i!==payload.itemId);
     },
     attachEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
@@ -257,7 +257,7 @@ export default {
       state.current_page = payload;
     },
     syncInitialToDraft(state){
-      state.initial = state.draft;
+      Object.assign(state.initial, state.draft);
     },
   }
 }
