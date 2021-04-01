@@ -31,13 +31,30 @@
           .label.topic_medium
             | 合計ステータス
           .status
-            .param(v-for="param in ['atk', 'def']")
-              span.current
-                | {{param.toUpperCase()}}: {{$store.getters['equip_window/getTotalStrength'](param, true)}}
-              span.diff(
-                :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff'](param)) ]"
-              )
-                | ({{$store.getters['equip_window/getTotalStrengthDiff'](param)}})
+            .param
+              .value
+                span.current
+                  | ATK: {{$store.getters['equip_window/getTotalStrength']('atk', true)}}
+                span.diff(
+                  :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff']('atk')) ]"
+                )
+                  | ({{$store.getters['equip_window/getTotalStrengthDiff']('atk')}})
+              .bar_area
+                .bar.plus(
+                  :style="{width: atkBarTotal()}"
+                )
+            .param
+              .value
+                span.current
+                  | DEF: {{$store.getters['equip_window/getTotalStrength']('def', true)}}
+                span.diff(
+                  :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff']('def')) ]"
+                )
+                  | ({{$store.getters['equip_window/getTotalStrengthDiff']('def')}})
+              .bar_area
+                .bar.minus(
+                  :style="{width: defBarTotal()}"
+                )             
         .sub_chara_status.block
           .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
@@ -395,6 +412,18 @@ export default {
       const value = this.$store.getters['equip_window/getCharacterStrength'](characterId, 'def', true)
       return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
+    atkBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true);
+      const value = (spica + tirol) / 2;
+      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    },
+    defBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true);
+      const value = (spica + tirol) / 2;
+      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    },
     toggleSelectOrderWindow(){
       this.showing_select_order_window = !this.showing_select_order_window;
     },
@@ -561,10 +590,23 @@ export default {
         display: inline-block;
       }
       .status{
-        padding: $thin_space;
+        padding: $space;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         .param{
-          padding: $space;
+          padding: $thin_space;
           font-size: $font-size-normal;
+          width: 100%;
+          .bar_area{
+            width: 100%;
+            height: 1px;
+            .bar{
+              width: 100%;
+              height: 1px;
+            }
+          }
         }
       }
     }
