@@ -42,11 +42,26 @@
           .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
           .status
-            .param(v-for="param in ['atk', 'def']")
-              span.current
-                | {{param.toUpperCase()}}: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], param, true)}}
-              span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param))]")
-                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param)}})
+            .param
+              .value
+                span.current
+                  | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], 'atk', true)}}
+                span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'atk'))]")
+                  | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'atk')}})
+              .bar_area
+                .bar.plus(
+                  :style="{width: atkBar($store.getters['equip_window/getSubCharacterId'])}"
+                )
+            .param
+              .value
+                span.current
+                  | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], 'def', true)}}
+                span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'def'))]")
+                  | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'def')}})
+              .bar_area
+                .bar.minus(
+                  :style="{width: defBar($store.getters['equip_window/getSubCharacterId'])}"
+                )
           .equips
             .equip.character_equip(
               v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
@@ -231,7 +246,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)", :speed="0.6")
                 .bar_area
                   .bar.plus(
-                    :style="{width: atkBar()}"
+                    :style="{width: atkBar($store.state.equip_window.main_character_id)}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')", :speed="0.6")
@@ -243,7 +258,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)", :speed="0.6")
                 .bar_area
                   .bar.minus(
-                    :style="{width: defBar()}"
+                    :style="{width: defBar($store.state.equip_window.main_character_id)}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')", :speed="0.6")
@@ -371,14 +386,14 @@ export default {
       // 基準パラメータの4倍あったらwidth:100%にしたいので 1/4 を係数にかけてる
       return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
-    // atk, def は他パラメータの倍必要なので 1/4
-    atkBar(){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'atk', true)
-      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    // atk, def は他パラメータの倍必要なので 1/4... と後なんだかんだゲージ振り切れがちなので 1/6 にする
+    atkBar(characterId){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](characterId, 'atk', true)
+      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
-    defBar(){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'def', true)
-      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    defBar(characterId){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](characterId, 'def', true)
+      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
     toggleSelectOrderWindow(){
       this.showing_select_order_window = !this.showing_select_order_window;
@@ -564,10 +579,23 @@ export default {
         display: inline-block;
       }
       .status{
-        padding: $thin_space;
+        padding: $space;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         .param{
-          padding: $space;
+          padding: $thin_space;
           font-size: $font-size-normal;
+          width: 100%;
+          .bar_area{
+            width: 100%;
+            height: 1px;
+            .bar{
+              width: 100%;
+              height: 1px;
+            }
+          }
         }
       }
       .equips{
