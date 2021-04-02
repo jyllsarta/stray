@@ -95,7 +95,7 @@ export default {
 
       // このターン選んでいるスキルは明るくなる 
       if(this.battle.player.selectingSkillIndexes.includes(skillIndex)){
-        return 'animation_selected';
+        return 'selected';
       }
 
       // 同ターンの予算編成的にもう選べないスキルは暗くなる
@@ -118,7 +118,7 @@ export default {
       if(!this.battle.enemy.canUseSkill(skillIndex)){
         return 'disabled';
       }
-      return this.battle.enemy.selectingSkillIndexes.includes(skillIndex) ? 'animation_selected' : 'available';
+      return this.battle.enemy.selectingSkillIndexes.includes(skillIndex) ? 'selected' : 'available';
     },
     iconImagePath(skillId){
       if(!this.$store.state.masterdata?.skills[skillId]){
@@ -205,34 +205,8 @@ export default {
         text-align: center;
       }
     }
+  }
 
-  }
-  .selected{
-    background-color: $gray3;
-    border: 1px solid $yellow;
-    cursor: pointer;
-  }
-  .animation_selected {
-    animation: animate-stripes 12s linear infinite;
-    background-size: 15px 15px;
-    background-image: linear-gradient(
-        135deg,
-        $gray3 25%,
-        $gray3-opacity 25%,
-        $gray3-opacity 50%,
-        $gray3 50%,
-        $gray3 75%,
-        $gray3-opacity 75%,
-        $gray3-opacity
-    );
-    border: 1px solid $yellow;
-    background-repeat: repeat;
-  }  
-  .disabled{
-    background-color: $gray3-opacity;
-    opacity: 0.5;
-    cursor: default;
-  }
   .used{
     opacity: 0.25;
     cursor: default;
@@ -241,7 +215,7 @@ export default {
     background-color: $gray3-opacity;
     cursor: pointer;
   }
-  .selected, .available{
+  .available{
     &:hover{
       border: 1px solid $yellow;
       transform: scale(1.1);
@@ -263,29 +237,4 @@ export default {
 .enemy_skill_list{
   justify-content: flex-end;
 }
-
-@keyframes animate-stripes {
-  0% {
-    background-position: 0 0;
-    border-color: $yellow;
-  }
-
-  25% {
-    border-color: $plus;
-  }
-
-  50% {
-    border-color: $yellow;
-  }
-
-  25% {
-    border-color: $plus;
-  }
-
-  100% {
-    background-position: 60px 0;
-    border-color: $yellow;
-  }
-}
-
 </style>

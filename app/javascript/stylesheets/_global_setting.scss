@@ -208,12 +208,32 @@
 .selectable{
   background-color: $gray3-opacity;
   border: 1px solid transparent;
-  &.selected{
-    background-color: $gray3;
-    border: 1px solid $yellow;
-  }
   cursor: pointer;
 }
+
+.selected {
+  animation: animate-stripes 12s linear infinite;
+  background-size: 15px 15px;
+  background-image: linear-gradient(
+      135deg,
+      $gray3 25%,
+      $gray3-opacity 25%,
+      $gray3-opacity 50%,
+      $gray3 50%,
+      $gray3 75%,
+      $gray3-opacity 75%,
+      $gray3-opacity
+  );
+  border: 1px solid $yellow;
+  background-repeat: repeat;
+}  
+
+.disabled{
+  background-color: $gray3-opacity;
+  opacity: 0.5;
+  cursor: default;
+}
+
 
 .list_item_large{
   padding: $space;
@@ -253,4 +273,28 @@
 .main_sheet{
   background: $background_with_opacity;
   border-radius: $radius;
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+    border-color: $yellow;
+  }
+
+  25% {
+    border-color: $plus;
+  }
+
+  50% {
+    border-color: $yellow;
+  }
+
+  25% {
+    border-color: $plus;
+  }
+
+  100% {
+    background-position: 60px 0;
+    border-color: $yellow;
+  }
 }

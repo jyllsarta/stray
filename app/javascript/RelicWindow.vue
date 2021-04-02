@@ -168,7 +168,7 @@ export default {
       return relicId === this.obtainEffectRelicId ? "obtained" : "";
     },
     selectingRelicClass(relicId){
-      return relicId === this.selectingRelicId ? "selecting" : "";
+      return relicId === this.selectingRelicId ? "selected" : "";
     },
     relicStyle(relic){
       return {
@@ -349,18 +349,11 @@ export default {
   .available{
     border: 1px solid $gray1;
   }
-  .disabled{
-    border: 1px solid $gray2;
-    opacity: 0.6;
-    &:hover{
-      filter: brightness(100%);
-    }
-  }
   .got{
     border: 1px solid $yellow;
   }
-  .selecting{
-    filter: brightness(150%);
+  .selected{
+    border: 1px solid $yellow;
   }
 }
 
