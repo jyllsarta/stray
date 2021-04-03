@@ -41,35 +41,35 @@
                 | {{item().tech()}}
           .after.parameter_box(:style="{opacity: canRankUp() ? 1 : 0.3}")
             .name
-              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + parseInt(count)}}
+              | {{$store.getters['equip_window/getItemRarityIcon'](item_id)}}{{item().name}}+{{item().rank + parsedCount}}
             .total.item
               .label
                 |  TOTAL
               .value
-                | {{rankUpItem().effectValue}}
-              .diff(:class="diffClass(rankUpItem().effectValue - item().effectValue)")
-                | ({{diffText(rankUpItem().effectValue - item().effectValue)}})
+                | {{ rankUpItemEffectValue() }}
+              .diff(:class="diffClass(rankUpItemEffectValue() - item().effectValue)")
+                | ({{diffText(rankUpItemEffectValue() - item().effectValue)}})
             .item(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .label(:class="param")
                 |  {{param.toUpperCase()}}
               .value
-                | {{getEffectValue(rankUpItem(), param)}}
-              .diff(:class="diffClass(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))")
-                | ({{diffText(getEffectValue(rankUpItem(), param) - getEffectValue(item(), param))}})
+                | {{ item().effectValueOf(param, parsedCount) }}
+              .diff(:class="diffClass(item().effectValueOf(param, parsedCount) - item().effectValueOf(param))")
+                | ({{diffText(item().effectValueOf(param, parsedCount) - item().effectValueOf(param))}})
             .item
               .label.power
                 | 力
               .value
-                | {{rankUpItem().power()}}
-              .diff(:class="diffClass(rankUpItem().power() - item().power())")
-                | ({{diffText(rankUpItem().power() - item().power())}})
+                | {{item().power(parsedCount)}}
+              .diff(:class="diffClass(item().power(parsedCount) - item().power())")
+                | ({{diffText(item().power(parsedCount) - item().power())}})
             .item
               .label.tech
                 | 技
               .value
-                | {{rankUpItem().tech()}}
-              .diff(:class="diffClass(rankUpItem().tech() - item().tech())")
-                | ({{diffText(rankUpItem().tech() - item().tech())}})
+                | {{item().tech(parsedCount)}}
+              .diff(:class="diffClass(item().tech(parsedCount) - item().tech())")
+                | ({{diffText(item().tech(parsedCount) - item().tech())}})
         .cannot_rankup(v-if="!canRankUp()")
           | {{cannotRankUpReason()}}
         .slider_area
@@ -77,9 +77,9 @@
             .min.label
               | +{{ item().rank }}
             .current.label(:class="[canRankUp() ? '' : 'cannot']")
-              | +{{item().rank + parseInt(count)}}
+              | +{{item().rank + parsedCount}}
             .max.label
-              | +{{Math.max(item().rank + rankUpLimit, item().rank + parseInt(count))}}
+              | +{{Math.max(item().rank + rankUpLimit, item().rank + parsedCount)}}
           .slider
             input(type="range" orient="vertical" v-model="count" min="0" :max="rankUpLimit")
         .controls
@@ -95,12 +95,10 @@
                 | 消費
               .coin_icon
               .value
-                | {{totalRankUpCost(count)}}
+                | {{totalRankUpCost(parsedCount)}}
           .rank_up(@click="executeRankUpItem", :class="canRankUp() ? 'super_clickable' : 'not_clickable'")
             | 強化
         .enchantment_area
-
-
 
 </template>
 
@@ -117,6 +115,7 @@ export default {
       count: 1,
       rankUpLimit: 0,
       defaultItemObject: {
+        effectValueOf(){},
         power(){},
         tech(){},
       }
@@ -130,13 +129,16 @@ export default {
     this.calculateRankUpLimit();
   },
   computed: {
+    parsedCount(){
+      return parseInt(this.count);
+    }
   },
   methods: {
     item(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id) || this.defaultItemObject;
+      return this.$store.state.equip_window.user_items[this.item_id] || this.defaultItemObject;
     },
-    rankUpItem(){
-      return this.$store.getters['equip_window/getUserItem'](this.item_id, parseInt(this.count)) || this.defaultItemObject;
+    rankUpItemEffectValue(){
+      return ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + this.item().effectValueOf(x, this.parsedCount)), 0);
     },
     getEffectValue(itemObj, param){
       if(!itemObj.effectValueOf){

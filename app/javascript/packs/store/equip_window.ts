@@ -152,27 +152,6 @@ export default {
         .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
         .filter(x=>x);
     },
-    getUserItem: (state, getters, rootState, rootGetters) => (itemId, rankDelta=0) => {
-      if(!rootState.user.items[itemId] || !rootState.masterdata.items[itemId]){
-        return null;
-      }
-      let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
-      ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] / 100 * rootGetters['user/' +
-        'rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
-      };
-      // NOTE: user/item.rb とがんばって共有すること
-      // (sum * rarity_factor(item.rarity) * (item_rank / 250 + 1).clamp(1, 3) / 80 + 2).floor
-      ui.tech = function () {
-        return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
-      };
-      ui.power = function () {
-        return Math.floor((this.str + this.vit) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
-      };
-
-      ui.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
-      return ui;
-    },
     getItemEffectValue: (state, getters) => (itemId) => {
       const item = state.user_items[itemId];
       if(!item){
@@ -235,7 +214,6 @@ export default {
     constructUserItems(state, payload){
       const items = payload.items;
       const user_items = payload.user_items;
-      console.log("memoize start");
       for(let user_item of Object.values(user_items)){
         let ui = Object.assign({}, user_item, items[user_item.item_id]);
         Object.assign(ui, items[user_item.item_id]);
@@ -245,20 +223,19 @@ export default {
         ui.rarityFactor = function(rarity) {
           return Constants.item.rarityFactor[rarity];
         },
-        ui.effectValueOf = function (paramName) {
-          return Math.floor(this[paramName] / 100 * this.rankFactor(this.rank + this.base_rank) * this.rarityFactor(this.rarity));
+        ui.effectValueOf = function (paramName, rankDelta=0) {
+          return Math.floor(this[paramName] / 100 * this.rankFactor(this.rank + this.base_rank + rankDelta) * this.rarityFactor(this.rarity));
         };
-        ui.tech = function () {
-          return Math.floor((this.dex + this.agi) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank) / 250 + 1), 1), 3) / 80) + 2;
+        ui.tech = function (rankDelta=0) {
+          return Math.floor((this.dex + this.agi) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
         };
-        ui.power = function () {
-          return Math.floor((this.str + this.vit) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank) / 250 + 1), 1), 3) / 80) + 2;
+        ui.power = function (rankDelta=0) {
+          return Math.floor((this.str + this.vit) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
         };  
         ui.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
         Vue.set(state.user_items, ui.item_id, ui);
       }
       state.max_effect_value = Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0);
-      console.log("memoized!");
     },
     updateSelectingItemId(state, payload){
       state.selecting_item_id = payload;
