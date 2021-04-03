@@ -17,7 +17,7 @@ class BattleCharacter
 
   def self.new_enemy(rank=0)
     base = self.base_parameter(rank)
-    parameters = { str: base * 4, dex: base * 4, def: base, agi: base }
+    parameters = { str: base * 4, dex: base * 4, vit: base, agi: base }
     strength = { atk: base * 8, def: base * 2 }
     hp = hp_max = base * 30 + 1
     self.new(parameters, strength, hp, hp_max, rank)
@@ -26,7 +26,7 @@ class BattleCharacter
   # HP多めのボスを生成する
   def self.new_boss(rank=0)
     base = self.base_parameter(rank + Constants.event.battle.boss_additional_rank)
-    parameters = { str: base * 4, dex: base * 4, def: base * 4, agi: base * 4 }
+    parameters = { str: base * 4, dex: base * 4, vit: base * 4, agi: base * 4 }
     strength = { atk: base * 8, def: base * 4 }
     hp = hp_max = base * 240 + 1
     self.new(parameters, strength, hp, hp_max, rank)

@@ -71,7 +71,7 @@
                 .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.spica.length)")
                   | -
               .statuses
-                .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
+                .status.list_item_medium(v-for="param in ['str', 'dex', 'vit', 'agi']")
                   .key
                     | {{param.toUpperCase()}}
                   .value
@@ -83,7 +83,7 @@
                 .equip.character_equip(v-for="_e in new Array(maxEquipCount - profile.equips.tirol.length)")
                   | -
               .statuses
-                .status.list_item_medium(v-for="param in ['str', 'dex', 'def', 'agi']")
+                .status.list_item_medium(v-for="param in ['str', 'dex', 'vit', 'agi']")
                   .key
                     | {{param.toUpperCase()}}
                   .value

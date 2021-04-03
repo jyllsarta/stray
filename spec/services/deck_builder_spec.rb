@@ -8,10 +8,10 @@ RSpec.describe DeckBuilder, type: :model do
 
   let(:deck_builder){ DeckBuilder.new(user) }
   let!(:dungeon){ Dungeon.create }
-  let!(:item1){ create(:item, str: 100, def: 100, dex: 100, agi: 100) }
-  let!(:item2){ create(:item, str:   0, def: 100, dex:   0, agi: 100) }
-  let!(:item3){ create(:item, str: 100, def:   0, dex: 100, agi:   0) }
-  let!(:item4){ create(:item, str: 100, def: 100, dex: 100, agi: 100, rarity: 5) }
+  let!(:item1){ create(:item, str: 100, vit: 100, dex: 100, agi: 100) }
+  let!(:item2){ create(:item, str:   0, vit: 100, dex:   0, agi: 100) }
+  let!(:item3){ create(:item, str: 100, vit:   0, dex: 100, agi:   0) }
+  let!(:item4){ create(:item, str: 100, vit: 100, dex: 100, agi: 100, rarity: 5) }
   let!(:user_item1){ create(:user_item, user: user, item: item1, rank: 5) }
   let!(:user_item2){ create(:user_item, user: user, item: item2, rank: 5) }
   let!(:user_item3){ create(:user_item, user: user, item: item3, rank: 5) }

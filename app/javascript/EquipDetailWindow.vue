@@ -24,7 +24,7 @@
                 |  TOTAL
               .value
                 | {{item().effectValue}}
-            .item(v-for="param in ['str', 'dex', 'def', 'agi']")
+            .item(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .label(:class="param")
                 |  {{param.toUpperCase()}}
               .value
@@ -49,7 +49,7 @@
                 | {{rankUpItem().effectValue}}
               .diff(:class="diffClass(rankUpItem().effectValue - item().effectValue)")
                 | ({{diffText(rankUpItem().effectValue - item().effectValue)}})
-            .item(v-for="param in ['str', 'dex', 'def', 'agi']")
+            .item(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .label(:class="param")
                 |  {{param.toUpperCase()}}
               .value
@@ -304,8 +304,8 @@ export default {
       .dex{
         color: $dex;
       }
-      .def{
-        color: $def;
+      .vit{
+        color: $vit;
       }
       .agi{
         color: $agi;

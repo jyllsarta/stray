@@ -89,7 +89,7 @@
                 | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
               .bar_area
                 .bar(
-                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
                   :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
@@ -138,7 +138,7 @@
                   | ＊
               .bar_area
                 .bar(
-                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
                   :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
@@ -151,7 +151,7 @@
                     | -
                 .bar_area
                 .bar(
-                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
                   :style="{width: 0}"
                 )
@@ -171,7 +171,7 @@
                 | TOTAL
               .value
                 | {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
-            .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
+            .parameter(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .index(:class="param")
                 | {{param.toUpperCase()}}
               .value
@@ -224,14 +224,14 @@
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                 .bar_area
                   .bar(
-                    v-for="param in ['str', 'dex', 'def', 'agi']"
+                    v-for="param in ['str', 'dex', 'vit', 'agi']"
                     :class="param"
                     :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
                   )
               .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
-              .status(v-for="param in ['str', 'dex', 'def', 'agi']")
+              .status(v-for="param in ['str', 'dex', 'vit', 'agi']")
                 .param_area
                   .label(:class="param")
                     | {{param.toUpperCase()}}
@@ -244,7 +244,7 @@
                   )
             .this_item
               .status(
-                v-for="param in ['str', 'dex', 'def', 'agi']"
+                v-for="param in ['str', 'dex', 'vit', 'agi']"
                 :class="[currentItem ? deltaClass(currentItem.effectValueOf(param)) : '']"
                 )
                 .param
@@ -509,8 +509,8 @@ export default {
     .dex{
       color: $dex;
     }
-    .def{
-      color: $def;
+    .vit{
+      color: $vit;
     }
     .agi{
       color: $agi;
@@ -536,8 +536,8 @@ export default {
       .dex{
         background-color: $dex;
       }
-      .def{
-        background-color: $def;
+      .vit{
+        background-color: $vit;
       }
       .agi{
         background-color: $agi;

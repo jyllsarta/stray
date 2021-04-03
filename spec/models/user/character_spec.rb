@@ -176,8 +176,8 @@ RSpec.describe User::Character, type: :model do
 
   describe "#parameters" do
     let(:character){ create(:user_character, character_id: "spica" , user: user) }
-    let!(:item1){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
-    let!(:item2){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) }
+    let!(:item1){ create(:item, str: 100, dex: 200, vit: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
+    let!(:item2){ create(:item, str: 100, dex: 200, vit: 300, agi: 0, base_rank: 1) }
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}
@@ -188,7 +188,7 @@ RSpec.describe User::Character, type: :model do
       expect(subject).to eq({
                                 str: 12, # 1 + 1 + 10(default)
                                 dex: 14, # 2 + 2 + 10(default)
-                                def: 16, # 3 + 3 + 10(default)
+                                vit: 16, # 3 + 3 + 10(default)
                                 agi: 10, # 0 + 0 + 10(default)
                             })
     end
@@ -200,7 +200,7 @@ RSpec.describe User::Character, type: :model do
         expect(subject).to eq({
                                   str: 502, # 1 + 1 + 500(rank2)
                                   dex: 504, # 2 + 2 + 500
-                                  def: 506, # 3 + 3 + 500
+                                  vit: 506, # 3 + 3 + 500
                                   agi: 500, # 0 + 0 + 500
                               })
       end
@@ -209,8 +209,8 @@ RSpec.describe User::Character, type: :model do
 
   describe "#strength" do
     let(:character){ create(:user_character, user: user) }
-    let!(:item1){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
-    let!(:item2){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
+    let!(:item1){ create(:item, str: 1000, dex: 1000, vit: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
+    let!(:item2){ create(:item, str: 1000, dex: 1000, vit: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}

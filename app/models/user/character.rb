@@ -72,7 +72,7 @@ class User::Character < ApplicationRecord
     params = parameters
     {
       atk: lambda.call(params[:str], params[:dex]),
-      def: lambda.call(params[:def], params[:agi])
+      def: lambda.call(params[:vit], params[:agi])
     }
   end
 

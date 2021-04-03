@@ -23,7 +23,7 @@ class User::Item < ApplicationRecord
   def to_card
     param = self.parameter
     {
-        power: to_card_value(item.def + item.str),
+        power: to_card_value(item.vit + item.str),
         tech: to_card_value(item.dex + item.agi),
         name: self.item.name,
     }
@@ -31,7 +31,7 @@ class User::Item < ApplicationRecord
 
   def parameter
     # ActiveRecord のmodel にslice をかけるとキーが文字列化するようなので symbolize_name を通してから処理する
-    item.slice(:str, :dex, :def, :agi).map{|k,v| [k.to_sym, v] }.to_h.map do |name, value|
+    item.slice(:str, :dex, :vit, :agi).map{|k,v| [k.to_sym, v] }.to_h.map do |name, value|
       # クライアントだとこう
       # Math.floor(this[paramName] / 100 * rootGetters['user/rankFactor'](this.rank + this.id) * rootGetters['user/rarityFactor'](this.rarity));
       param = (value.to_f / 100 * rank_factor(item_rank) * rarity_factor(item.rarity)).floor

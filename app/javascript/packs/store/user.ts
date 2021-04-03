@@ -48,7 +48,7 @@ export default {
     },
     aroundEnemyAtk: (state, getters) => {
       const actual_rank = getters.aroundEnemyRank;
-      // str, def の基準値4つぶん*str+dex の合算になるので2倍で、基準パラメータの8倍が敵ATKになる
+      // str, vit の基準値4つぶん*str+vit の合算になるので2倍で、基準パラメータの8倍が敵ATKになる
       return Math.floor(8 * getters.rankFactor(actual_rank));
     },
     aroundEnemyRank: (state, getters) => {

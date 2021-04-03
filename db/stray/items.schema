@@ -3,7 +3,7 @@ create_table "items", force: :cascade  do |t|
   t.integer :base_rank, null:false, default: 0
   t.integer :str,       null:false, default: 0
   t.integer :dex,       null:false, default: 0
-  t.integer :def,       null:false, default: 0
+  t.integer :vit,       null:false, default: 0
   t.integer :agi,       null:false, default: 0
   t.integer :rarity,    null:false, default: 1
   t.string :flavor_text

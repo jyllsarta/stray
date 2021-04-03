@@ -63,8 +63,8 @@ export default {
           };
         case 4:
           return {
-            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('def') },
-            name: "DEF順",
+            lambda: (a) => { return getters.getUserItem(a.id).effectValueOf('vit') },
+            name: "VIT順",
           };
         case 5:
           return {
@@ -165,10 +165,10 @@ export default {
         return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
       };
       ui.power = function () {
-        return Math.floor((this.str + this.def) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
+        return Math.floor((this.str + this.vit) * rootGetters['user/rarityFactor'](this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
       };
 
-      ui.effectValue = ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
+      ui.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
       return ui;
     },
     getItemEffectValue: (state, getters) => (itemId) => {
@@ -176,7 +176,7 @@ export default {
       if(!item){
         return 0;
       }
-      return ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
+      return ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
     },
     getItemRarityIcon: (state, getters, rootState, rootGetters) => (itemId) => {
       const item = rootState.masterdata.items[itemId];
@@ -197,7 +197,7 @@ export default {
       return equipParameter + defaultParameter;
     },
     getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {
-      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['vit', 'agi'];
       const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent));
       return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
     },
@@ -205,7 +205,7 @@ export default {
       return getters.getCharacterStrength(characterId, paramName, true) - getters.getCharacterStrength(characterId, paramName, false);
     },
     getTotalStrength: (state, getters) => (paramName, isCurrent) => {
-      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['vit', 'agi'];
       const spicaParams = sourceParamNames.map(p=>getters.getCharacterParameter(1, p, isCurrent));
       const spicaTotal = Math.floor((spicaParams[0] + spicaParams[1]) / 2) + Math.min(spicaParams[0], spicaParams[1]);
       const tirolParams = sourceParamNames.map(p=>getters.getCharacterParameter(2, p, isCurrent));

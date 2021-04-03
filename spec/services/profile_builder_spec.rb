@@ -23,13 +23,13 @@ RSpec.describe ProfileBuilder, type: :model do
                                                        spica: {
                                                            str: Integer,
                                                            dex: Integer,
-                                                           def: Integer,
+                                                           vit: Integer,
                                                            agi: Integer,
                                                        },
                                                        tirol: {
                                                            str: Integer,
                                                            dex: Integer,
-                                                           def: Integer,
+                                                           vit: Integer,
                                                            agi: Integer,
                                                        },
                                                    },
