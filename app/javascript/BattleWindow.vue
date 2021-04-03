@@ -535,7 +535,7 @@ export default {
       return this.battle?.player?.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
-      return this.isDecidable ? "startable" : "not_clickable";
+      return this.isDecidable ? "super_clickable" : "not_clickable";
     }
   },
   watch: {
@@ -1160,14 +1160,6 @@ export default {
   @include centering($height: 40px);
   border: 1px solid $gray3;
   border-radius: $radius;
-  &.startable{
-    border: 1px solid $yellow;
-    background-color: $gray3;
-    cursor: pointer;
-    &:hover{
-      transform: scale(1.1);
-    }
-  }
 }
 
 .player_status{

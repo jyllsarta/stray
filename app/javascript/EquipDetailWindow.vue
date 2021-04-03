@@ -96,7 +96,7 @@
               .coin_icon
               .value
                 | {{totalRankUpCost(count)}}
-          .rank_up.clickable(@click="executeRankUpItem", :style="{opacity: canRankUp() ? 1 : 0.5}")
+          .rank_up(@click="executeRankUpItem", :class="canRankUp() ? 'super_clickable' : 'not_clickable'")
             | 強化
         .enchantment_area
 

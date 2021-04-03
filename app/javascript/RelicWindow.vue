@@ -65,7 +65,7 @@
                 NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.4")
           .button
             .get(
-              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']"
+              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'super_clickable' : '']"
               @click="obtainRelic(selectingRelicId)"
               )
               | {{relicLabels[relicStatus(selectingRelicId)]}}

@@ -49,7 +49,7 @@
             .value
               | {{estimatedTotal}}
             .buttons
-              .button(@click="doGacha", :class="poolValue > 0 ? 'clickable' : 'not_clickable'")
+              .button(@click="doGacha", :class="poolValue > 0 ? 'super_clickable' : 'not_clickable'")
                 | 投入！
         .rewards
           .index

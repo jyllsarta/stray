@@ -167,6 +167,29 @@
   cursor: pointer;
 }
 
+.super_clickable {
+  animation: animate-stripes 5s linear infinite;
+  border-radius: $radius;
+  background-size: 15px 15px;
+  background-image: linear-gradient(
+      135deg,
+      $gray3-opacity 25%,
+      $yellow-opacity-low 25%,
+      $yellow-opacity-low 50%,
+      $gray3-opacity 50%,
+      $gray3-opacity 75%,
+      $yellow-opacity-low 75%,
+      $yellow-opacity-low
+  );
+  border: 1px solid $yellow;
+  background-repeat: repeat;
+  &:hover{
+    filter: brightness(115%);
+    transform: scale(1.1);
+  }
+  cursor: pointer;
+}  
+
 .not_clickable{
   background: linear-gradient(to bottom, $clickable-highlight-color, transparent 5%, transparent 90%, $clickable-highlight-color);
   border-radius: $radius;
@@ -279,22 +302,27 @@
   0% {
     background-position: 0 0;
     border-color: $yellow;
+    color: $white;
   }
 
   25% {
     border-color: $plus;
+    color: $yellow;
   }
 
   50% {
     border-color: $yellow;
+    color: $white;
   }
 
   25% {
     border-color: $plus;
+    color: $yellow;
   }
 
   100% {
     background-position: 60px 0;
     border-color: $yellow;
+    color: $white;
   }
 }
