@@ -54,9 +54,11 @@ export default {
     aroundEnemyRank: (state, getters) => {
       return Math.floor(state.status.current_dungeon_rank);
     },
+    // 処理負荷軽減のためにEquipWindow.tsにコピペしてある
     rankFactor: (state, getters) => (rank) => {
       return Math.floor(Math.pow(Constants.item.rankFactor, rank) * 100) - 100;
     },
+    // 処理負荷軽減のためにEquipWindow.tsにコピペしてある
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];
     },

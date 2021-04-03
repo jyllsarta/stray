@@ -91,7 +91,7 @@
                 .bar(
                   v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
-                  :style="{width: '1%'}"
+                  :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
             // 空枠を埋める
             .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
@@ -140,7 +140,7 @@
                 .bar(
                   v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
-                  :style="{width: '1%'}"
+                  :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
             .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
               .param_area(:class="[{ disabled: true }]")
@@ -226,7 +226,7 @@
                   .bar(
                     v-for="param in ['str', 'dex', 'vit', 'agi']"
                     :class="param"
-                    :style="{width: '1%'}"
+                    :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
               .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
@@ -240,7 +240,7 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: '1%'}"
+                    :style="{width: (100 * Math.max($store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true), 0) / maxStrength) + '%'}"
                   )
             .this_item
               .status(
@@ -252,7 +252,7 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: '1%'}"
+                    :style="{width: (100 * Math.max(currentItem ? currentItem.effectValueOf(param) : 0, 0) / maxStrength) + '%'}"
                   )
             .to_status
               .status
@@ -300,8 +300,11 @@ export default {
     };
   },
   store,
-  mounted(){
+  created(){
     this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
+    this.$store.commit("equip_window/constructUserItems", {items: this.$store.state.masterdata.items, user_items: this.$store.state.user.items});
+  },
+  mounted(){
     this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。');
     this.moveCharacter();
   },
@@ -374,7 +377,7 @@ export default {
       return this.$store.getters['equip_window/isAlreadyEquippedBySomeone'](item.id);
     },
     rarityClass(item){
-      return `rarity${item.rarity}`;
+      return `rarity${item?.rarity || 0}`;
     },
     deltaClass(delta){
       if(delta === 0){
@@ -401,7 +404,7 @@ export default {
   },
   computed: {
     currentItem(){
-      return this.$store.getters['equip_window/getUserItem'](this.$store.state.equip_window.selecting_item_id);
+      return this.$store.state.equip_window.user_items[this.$store.state.equip_window.selecting_item_id];
     },
     Constants(){
       return Constants;
@@ -442,8 +445,7 @@ export default {
       return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
     },
     maxStrength(){
-      const standard = Math.max(this.$store.getters['equip_window/getStrongestUserItem'].effectValue);
-      return standard; // 4パラメータ分の合計値との比較なので*4で比が一致する
+      return this.$store.state.equip_window.max_effect_value;
     },
   }
 }
