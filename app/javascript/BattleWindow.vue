@@ -535,7 +535,7 @@ export default {
       return this.battle?.player?.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
-      return this.isDecidable ? "startable" : "disabled";
+      return this.isDecidable ? "startable" : "not_clickable";
     }
   },
   watch: {
@@ -1167,10 +1167,6 @@ export default {
     &:hover{
       transform: scale(1.1);
     }
-  }
-  &.disabled{
-    opacity: 0.5;
-    cursor: default;
   }
 }
 
