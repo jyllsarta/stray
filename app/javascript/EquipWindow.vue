@@ -41,7 +41,7 @@
                   | ({{$store.getters['equip_window/getTotalStrengthDiff']('atk')}})
               .bar_area
                 .bar.plus(
-                  :style="{width: atkBarTotal()}"
+                  :style="{width: atkBarTotal}"
                 )
             .param
               .value
@@ -53,7 +53,7 @@
                   | ({{$store.getters['equip_window/getTotalStrengthDiff']('def')}})
               .bar_area
                 .bar.minus(
-                  :style="{width: defBarTotal()}"
+                  :style="{width: defBarTotal}"
                 )             
         .sub_chara_status.block
           .label.topic_medium
@@ -67,7 +67,7 @@
                   | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'atk')}})
               .bar_area
                 .bar.plus(
-                  :style="{width: atkBar($store.getters['equip_window/getSubCharacterId'])}"
+                  :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
                 )
             .param
               .value
@@ -77,7 +77,7 @@
                   | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'def')}})
               .bar_area
                 .bar.minus(
-                  :style="{width: defBar($store.getters['equip_window/getSubCharacterId'])}"
+                  :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? defBarSpica : defBarTirol}"
                 )
           .equips
             .equip.character_equip(
@@ -91,7 +91,7 @@
                 .bar(
                   v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
-                  :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                  :style="{width: '1%'}"
                   )
             // 空枠を埋める
             .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
@@ -140,7 +140,7 @@
                 .bar(
                   v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
-                  :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                  :style="{width: '1%'}"
                   )
             .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
               .param_area(:class="[{ disabled: true }]")
@@ -226,7 +226,7 @@
                   .bar(
                     v-for="param in ['str', 'dex', 'vit', 'agi']"
                     :class="param"
-                    :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                    :style="{width: '1%'}"
                   )
               .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
@@ -240,7 +240,7 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: barWidthPercent(param)}"
+                    :style="{width: '1%'}"
                   )
             .this_item
               .status(
@@ -252,7 +252,7 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: currentItem ? cropWidth(100 * relativeEffectivenessRatio(currentItem.effectValueOf(param)) + withPercent(currentItem.effectValueOf(param)) ) : 0}"
+                    :style="{width: '1%'}"
                   )
             .to_status
               .status
@@ -263,7 +263,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)", :speed="0.6")
                 .bar_area
                   .bar.plus(
-                    :style="{width: atkBar($store.state.equip_window.main_character_id)}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')", :speed="0.6")
@@ -275,7 +275,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)", :speed="0.6")
                 .bar_area
                   .bar.minus(
-                    :style="{width: defBar($store.state.equip_window.main_character_id)}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')", :speed="0.6")
@@ -382,48 +382,6 @@ export default {
       }
       return delta > 0 ? 'plus' : 'minus';
     },
-    relativeEffectivenessRatio(param){
-      const standard = Math.max(this.$store.getters['equip_window/getStrongestUserItem'].effectValue);
-      return param / standard * 4; // 4パラメータ分の合計値との比較なので*4で比が一致する
-    },
-    cropWidth(param){
-      if(param < 0){
-        return 0;
-      }
-      if(param > 200){
-        return 200;
-      }
-      return param;
-    },
-    withPercent(param){
-      return param <= 0 ? '' : '%';
-    },
-    barWidthPercent(param){
-      const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
-      // 基準パラメータの4倍あったらwidth:100%にしたいので 1/4 を係数にかけてる
-      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    // atk, def は他パラメータの倍必要なので 1/4... と後なんだかんだゲージ振り切れがちなので 1/6 にする
-    atkBar(characterId){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](characterId, 'atk', true)
-      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    defBar(characterId){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](characterId, 'def', true)
-      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    atkBarTotal(){
-      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true);
-      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true);
-      const value = (spica + tirol) / 2;
-      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    defBarTotal(){
-      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true);
-      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true);
-      const value = (spica + tirol) / 2;
-      return this.cropWidth(100 * (1/6) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
     toggleSelectOrderWindow(){
       this.showing_select_order_window = !this.showing_select_order_window;
     },
@@ -431,6 +389,11 @@ export default {
       this.showing_select_order_window = false;
       this.$store.commit('equip_window/switchItemSortLambda',  id)
       this.scrollToTop();
+    },
+    barWidthPercent(param){
+      const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
+      // 基準パラメータの4倍あったらwidth:100%にしたいので 1/4 を係数にかけてる
+      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
   },
   beforeDestroy(){
@@ -448,6 +411,39 @@ export default {
     },
     aroundEnemyRank(){
       return this.$store.getters['user/aroundEnemyRank'];
+    },
+    // atk, def は他パラメータの倍必要なので 1/4... と後なんだかんだゲージ振り切れがちなので 1/6 にする
+    atkBarSpica(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true)
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    defBarSpica(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true)
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    atkBarTirol(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true)
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    defBarTirol(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true)
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    atkBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true);
+      const value = (spica + tirol) / 2;
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    defBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true);
+      const value = (spica + tirol) / 2;
+      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+    },
+    maxStrength(){
+      const standard = Math.max(this.$store.getters['equip_window/getStrongestUserItem'].effectValue);
+      return standard; // 4パラメータ分の合計値との比較なので*4で比が一致する
     },
   }
 }
