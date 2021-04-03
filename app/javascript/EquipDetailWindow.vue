@@ -79,7 +79,7 @@
             .current.label(:class="[canRankUp() ? '' : 'cannot']")
               | +{{item().rank + parseInt(count)}}
             .max.label
-              | +{{item().rank + rankUpLimit}}
+              | +{{Math.max(item().rank + rankUpLimit, item().rank + parseInt(count))}}
           .slider
             input(type="range" orient="vertical" v-model="count" min="0" :max="rankUpLimit")
         .controls
