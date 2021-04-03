@@ -171,6 +171,7 @@ export default {
         return;
       }
       this.$store.dispatch("user/rankUpItem", {item_id: this.item_id, count: this.count} ).then(()=>{
+        this.$store.commit("equip_window/updateUserItemRank", {item_id: this.item_id, rank: this.item().rank + this.parsedCount})
         this.count = 1;
         this.calculateRankUpLimit();
       });

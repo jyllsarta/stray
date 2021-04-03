@@ -231,8 +231,11 @@ export default {
         };
         ui.power = function (rankDelta=0) {
           return Math.floor((this.str + this.vit) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
-        };  
-        ui.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
+        };
+        ui.recalculate = function(){
+          this.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + this.effectValueOf(x)), 0);
+        }
+        ui.recalculate();
         Vue.set(state.user_items, ui.item_id, ui);
       }
       state.max_effect_value = Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0);
@@ -266,5 +269,11 @@ export default {
     syncInitialToDraft(state){
       Object.assign(state.initial, state.draft);
     },
-  }
+    updateUserItemRank(state, payload){
+      state.user_items[payload.item_id].rank = payload.rank;
+      state.user_items[payload.item_id].recalculate();
+      // bar_areaの再計算
+      state.max_effect_value = Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0);
+    },
+  },
 }
