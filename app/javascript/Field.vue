@@ -83,9 +83,12 @@ export default {
       this.update();
     },
     update(){
-      this.proceedCharacter();
-      this.scroll();
-      this.frameCount++;
+      // 装備ウィンドウの表示中は背景の処理負荷を落とす
+      if(!this.$store.state.window.equip){
+        this.proceedCharacter();
+        this.scroll();
+        this.frameCount++;
+      }
       requestAnimationFrame(this.update);
     },
     jumpSpica(){
