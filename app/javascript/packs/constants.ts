@@ -67,7 +67,7 @@ const Constants = {
   },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 2,
-  itemsPerPage: 50,
+  itemsPerPage: 20,
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
   enemy: {
