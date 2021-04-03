@@ -1369,14 +1369,14 @@ export default {
 }
 .player_hands{
   position: absolute;
-  top: 90px;
+  top: 85px;
   left: $space;
   width: 198px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
-  top: 90px;
+  top: 85px;
   right: $space;
   width: 198px;
   height: 310px;
