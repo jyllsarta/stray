@@ -131,22 +131,11 @@ export default {
     getCurrentSortName: (state, getters) => {
       return getters.sortLambdas(state.current_sort_id).name;
     },
-    getUserItemRank: (state, getters, rootState, rootGetters) => (itemId) => {
-      return rootState.user?.items[itemId]?.rank || 0;
-    },
     // 画面表示用(ランク0ならプラスを表示しない)
     getUserItemRankTextForDisplay: (state, getters) => (itemId) => {
-      const rank = getters.getUserItemRank(itemId);
+      const rank = state.user_items[itemId]?.rank || 0;
       // 0 はfalsy なことを使ったハック
       return rank ? `+${rank}`: "";
-    },
-    getItems: (state, getters, rootState, rootGetters) => {
-      return Object.values(state.user_items);
-    },
-    getItemsWithPager: (state, getters, rootState, rootGetters) => {
-      return Object.values(state.user_items)
-        .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
-        .filter(x=>x);
     },
     getItemsWithPagerSorted: (state, getters, rootState, rootGetters) => {
       return Object.values(state.user_items)
@@ -154,15 +143,8 @@ export default {
         .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
         .filter(x=>x);
     },
-    getItemEffectValue: (state, getters) => (itemId) => {
-      const item = state.user_items[itemId];
-      if(!item){
-        return 0;
-      }
-      return ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
-    },
     getItemRarityIcon: (state, getters, rootState, rootGetters) => (itemId) => {
-      const item = rootState.masterdata.items[itemId];
+      const item = state.user_items[itemId];
       if(!item){
         return "";
       }
@@ -197,13 +179,6 @@ export default {
     },
     getTotalStrengthDiff: (state, getters) => (paramName) => {
       return getters.getTotalStrength(paramName, true) - getters.getTotalStrength(paramName, false);
-    },
-    averageItemRank: (state, getters) => () => {
-      let sum = 0;
-      for(let characterName of ['spica', 'tirol']){
-         sum += state['draft'][characterName].reduce((p,x)=>(p + state.user_items[x].rank + state.user_items[x].base_rank), 0);
-      }
-      return Math.floor(sum / (Constants.maxEquipCount * 2));
     },
   },
   mutations: {
@@ -258,9 +233,6 @@ export default {
     },
     switchMainCharacter(state){
       state.main_character_id = state.main_character_id === 1 ? 2 : 1;
-    },
-    reverseItemSortOrder(state){
-      state.current_sort_order *= -1;
     },
     switchItemSortLambda(state, payload){
       state.current_sort_id = payload;

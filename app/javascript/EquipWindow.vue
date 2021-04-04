@@ -142,7 +142,7 @@
                   :class="param"
                   :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
-            .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
+            .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPagerSorted'].length).fill(1)")
               .param_area(:class="[{ disabled: true }]")
                 .param
                   .item_name
@@ -170,7 +170,7 @@
               .index
                 | TOTAL
               .value
-                | {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
+                | {{currentItem ? currentItem.effectValue : ''}}
             .parameter(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .index(:class="param")
                 | {{param.toUpperCase()}}
