@@ -24,7 +24,9 @@ export default {
       effectValueOf: _=>0,
       tech: ()=>0,
       power: ()=>0,
-    }
+    },
+    // 書くとこないのでここにユーティリティ書くわるハック
+    recalculateMaxEffectValue: (state)=>{return Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0)},
   },
   getters: {
     getCurrentEquipsByCharacterId: (state, getters, rootState, rootGetters) => (characterId) => {
@@ -238,7 +240,7 @@ export default {
         ui.recalculate();
         Vue.set(state.user_items, ui.item_id, ui);
       }
-      state.max_effect_value = Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0);
+      state.max_effect_value = state.recalculateMaxEffectValue(state);
     },
     updateSelectingItemId(state, payload){
       state.selecting_item_id = payload;
@@ -273,7 +275,7 @@ export default {
       state.user_items[payload.item_id].rank = payload.rank;
       state.user_items[payload.item_id].recalculate();
       // bar_areaの再計算
-      state.max_effect_value = Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0);
+      state.max_effect_value = state.recalculateMaxEffectValue(state);
     },
   },
 }
