@@ -710,6 +710,10 @@ export default {
               transform: scale(1.2);
             }
           }
+          .state { 
+            width: 60px;
+            text-align: center;
+          }
         }
         .order{
           @include centering($height: 36px);
