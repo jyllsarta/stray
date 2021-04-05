@@ -155,6 +155,7 @@ RSpec.describe "Users", type: :request do
                                                            max_item_rank_for_rankup: Integer,
                                                            won_last_boss: Boolean,
                                                            returns_on_death: Boolean,
+                                                           skill_slot_count: Integer,
                                                        },
                                                        characters: {
                                                            spica: Hash,

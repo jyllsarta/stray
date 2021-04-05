@@ -18,8 +18,14 @@
               SkillList(:isPlayer="true", :skills="remainingSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
             .head
               | 装備中のスキル
-            .selected_skills.skills
-              SkillList(:isPlayer="true", :skills="selectedSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
+            .selected_skills_area
+              .skills
+                SkillList(:isPlayer="true", :skills="selectedSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
+              .limit
+                span(:class="isSkillSlotMax ? 'limit' : ''")
+                  | {{ selectedSkills.length }}
+                span
+                  | / {{ $store.state.user.status.skill_slot_count }}
           .detail_area
             .head
               | スキル詳細
@@ -70,8 +76,6 @@
           .decide.clickable(@click="decide")
             | 確定して閉じる
 
-
-
 </template>
 
 <script lang="ts">
@@ -113,7 +117,10 @@
                   is_defence: "false",
               };
               return this.$store.state.skill.skills.find((x)=>x.id===this.pointingSkillId) || stub;
-          }
+          },
+          isSkillSlotMax(){
+            return this.selectingSkillIds.length === this.$store.state.user.status.skill_slot_count
+          },
       },
       methods: {
         iconImagePath(skillId){
@@ -128,7 +135,7 @@
                   this.selectingSkillIds = this.selectingSkillIds.filter(n => n !== id);
                   return;
               }
-              if(this.selectingSkillIds.length === 5){ //Constants 依存のがいいかな？
+              if(this.isSkillSlotMax){
                   return;
               }
               this.selectingSkillIds.push(id);
@@ -202,12 +209,22 @@
             align-content: flex-start;
           }
         }
-        .selected_skills{
+        .selected_skills_area{
+          display: flex;
           height: 70px;
-          .skill_list{
+          width: 100%;
+          .skills{
+            width: 85%;
             height: 100%;
             align-items: flex-start;
-            flex-wrap: wrap;
+          }
+          .limit{
+            width: 15%;
+            text-align: right;
+            font-size: $font-size-large;
+            .limit{
+              color: $yellow;
+            }
           }
         }
       }

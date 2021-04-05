@@ -24,6 +24,7 @@ export default {
       max_item_rank_for_rankup: 100,
       won_last_boss: false,
       returns_on_death: false,
+      skill_slot_count: 1,
     },
     characters: {
       spica: {},
