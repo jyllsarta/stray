@@ -23,7 +23,7 @@ class User::Skill < ApplicationRecord
   class TooManySkill < StandardError; end
 
   def self.equip_skill!(user, skill_ids)
-    raise TooManySkill if skill_ids.length > Constants.skill.max_equip_count
+    raise TooManySkill if skill_ids.length > user.status.skill_slot_count
     user.with_lock do
       user.skills.equipped.update_all(is_equipped: false)
       user.skills.where(skill_id: skill_ids).update_all(is_equipped: true)

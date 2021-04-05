@@ -501,6 +501,22 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#skill_slot_count" do
+    subject { status.skill_slot_count }
+    context "without relic" do
+      it "3" do
+        expect(subject).to eq(3)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :skill_slot) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      it "returns max rank" do
+        expect(subject).to eq(4)
+      end
+    end
+  end
+
   describe "#quest_battle_additional_hp" do
     subject { status.quest_battle_additional_hp }
     context "without relic" do
