@@ -43,6 +43,15 @@ SkillResolver {
         main.damage(dmg);
     }
 
+    resolveMuramasa(actor, target, to_self, value, skill){
+        const main = to_self ? actor : target;
+        const dmg = actor.hp_max - actor.hp;
+        if(dmg <= 0){
+            return;
+        }
+        main.damage(dmg);
+    }
+
     resolveFireDamage(actor, target, to_self, value, skill){
         const main = to_self ? actor : target;
         const stateIds = [2007, 2019]; // ブレイクのステートID
@@ -246,6 +255,25 @@ SkillResolver {
         else{
             main.tempBuffs.power += value;
             main.tempBuffs.tech += value;
+        }
+    }
+
+    resolveCrossingCosmos(actor, target, to_self, value, skill){
+        const main = to_self ? actor : target;
+        const cardIds = main.selectingCardIds;
+        if(main.powerAt(cardIds) > main.techAt(cardIds)){
+            const diff = Math.max( target.techAt(target.selectingCardIds) - main.techAt(cardIds), 0);
+            main.tempBuffs.tech += diff;
+        }
+        else if(main.powerAt(cardIds) < main.techAt(cardIds)){
+            const diff = Math.max( target.powerAt(target.selectingCardIds) - main.powerAt(cardIds), 0);
+            main.tempBuffs.power += diff;
+        }
+        else{
+            const diff = Math.max( target.techAt(target.selectingCardIds) - main.techAt(cardIds), 0);
+            main.tempBuffs.tech += diff;
+            const diff2 = Math.max( target.powerAt(target.selectingCardIds) - main.powerAt(cardIds), 0);
+            main.tempBuffs.power += diff2;
         }
     }
 
