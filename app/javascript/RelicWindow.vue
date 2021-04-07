@@ -100,6 +100,7 @@ export default {
   },
   store,
   mounted(){
+    this.switchPage(1);
   },
   computed: {
     selectingRelic(){
@@ -176,9 +177,14 @@ export default {
         top: 8 + (relic.grid_y - 1) * 58,
       }
     },
+    selectDefaultRelic(){
+      this.selectingRelicId = Object.values(this.$store.state.masterdata.relics)
+                                    .filter(relic=>relic.page===this.currentPage)
+                                    .sort((a,b)=>{return (a.grid_x - b.grid_x) * 100000 + (a.grid_y - b.grid_y)})[0].id;
+    },
     switchPage(toPage){
       this.currentPage = toPage;
-      this.selectingRelicId = Object.values(this.$store.state.masterdata.relics).filter(relic=>relic.page===this.currentPage)[0].id;
+      this.selectDefaultRelic();
     }
   }
 }
