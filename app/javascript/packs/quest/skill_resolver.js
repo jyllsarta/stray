@@ -271,9 +271,10 @@ SkillResolver {
         }
         else{
             const diff = Math.max( target.techAt(target.selectingCardIds) - main.techAt(cardIds), 0);
-            main.tempBuffs.tech += diff;
             const diff2 = Math.max( target.powerAt(target.selectingCardIds) - main.powerAt(cardIds), 0);
-            main.tempBuffs.power += diff2;
+            const minimum = Math.min(diff, diff2);
+            main.tempBuffs.tech += minimum;
+            main.tempBuffs.power += minimum;
         }
     }
 
