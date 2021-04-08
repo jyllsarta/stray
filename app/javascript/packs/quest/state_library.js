@@ -42,6 +42,10 @@ let states = [
   require("./state/2029_curse2"),
   require("./state/2030_dream_aura"),
   require("./state/2031_promote"),
+  require("./state/2032_protect"),
+  require("./state/2033_seeds"),
+  require("./state/2034_autoheal3"),
+  require("./state/2035_onigiri"),
 ]
 
 module.exports = class StateLibrary {
