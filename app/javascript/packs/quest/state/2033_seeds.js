@@ -3,7 +3,7 @@ class OriginalState {
     this.id = 2033;
     this.ttl = 5;
     this.title = "シーズ";
-    this.icon = "20106.gif";
+    this.icon = "20508.gif";
     this.description = "毎ターン終了時にMP-10。";
   }
 
