@@ -68,7 +68,8 @@ RSpec.describe "gacha", type: :request do
             rates: Array,
             pot_grade: Integer,
             limit: Integer
-          }
+          },
+          after_coin: Integer,
         }
       )
     end

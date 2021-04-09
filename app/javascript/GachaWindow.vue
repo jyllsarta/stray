@@ -197,6 +197,7 @@ export default {
           this.gachaResultRevealState = [];
           this.pool = 0;
           this.invokeGachaAnimation();
+          this.$store.commit("user/updateUserCoin", results.data.after_coin);
         })
         .catch((error) => {
           console.warn(error.response);
@@ -269,9 +270,7 @@ export default {
       this.blockPostGacha = false;
     },
     revealGachaResult(index){
-      console.log(index);
       this.$set(this.gachaResultRevealState, index, true);
-      console.log(this.gachaResultRevealState);
     },
     // Promises
 
@@ -279,6 +278,7 @@ export default {
       this.playBlightEffectAnimation();
       this.onResultAnimation = true;
       if(this.rewards.fixed_rewards.length == 0 && this.rewards.random_rewards.length == 0){
+
         this.closeGachaResult();
         return;
       }
