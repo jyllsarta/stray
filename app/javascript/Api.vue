@@ -54,7 +54,6 @@ export default {
       this.$store.commit("event/setNextEventAtTo", ten_seconds_after);
     },
     init(){
-      console.log("mounted api system!");
       this.initializeSession();
       this.fetchMasterData();
       this.loadUserData();
@@ -68,7 +67,6 @@ export default {
     },
     loadUserData(){
       if(localStorage.access_token){
-        console.log("fetch user model");
         this.fetchUserModel();
         this.fetchAchievements();
         this.sendSignInAchievement();

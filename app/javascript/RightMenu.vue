@@ -118,7 +118,6 @@ export default {
       return this.showEndingConfirm ? "みる！" : "エンディング";
     },
     wonLastBoss(){
-      console.log(this.$store.state.user.status.won_last_boss);
       return this.$store.state.user.status.won_last_boss;
     }
   },
