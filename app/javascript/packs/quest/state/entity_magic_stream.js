@@ -2,7 +2,7 @@ class EntitymagicStream {
   constructor() {
     this.id = 1007;
     this.ttl = -1;
-    this.title = "魔濁";
+    this.title = "霊流";
     this.icon = "magic_stream.gif";
     this.description = "ターン終了時にMP+20。";
   }
