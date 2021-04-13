@@ -9,6 +9,7 @@ class Achievement::Event::Quest < Achievement::Event::Base
   def listeners
     [
       'Achievement::Type::WinEnemy',
+      'Achievement::Type::LoseEnemy',
       'Achievement::Type::WinEnemyWithNoSkill',
       'Achievement::Type::WinEnemyWithNoEquip',
       'Achievement::Type::WinEnemyUpperRank',
