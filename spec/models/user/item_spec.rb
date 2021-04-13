@@ -43,7 +43,7 @@ RSpec.describe User::Item, type: :model do
       it "returns parameter for card" do
         expect(subject).to eq({
                                   name: "ぴよ",
-                                  power: 10,
+                                  power: 8,
                                   tech: 4
                               })
       end
@@ -74,10 +74,10 @@ RSpec.describe User::Item, type: :model do
 
       it "設計シート通りの値をビタで返すか" do
         expect(subject).to eq({
-                                  str: 463,
-                                  dex: 239,
-                                  vit: 239,
-                                  agi: 588
+                                  str: 421,
+                                  dex: 217,
+                                  vit: 217,
+                                  agi: 535
                               })
       end
     end

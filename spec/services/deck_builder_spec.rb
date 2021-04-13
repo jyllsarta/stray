@@ -39,7 +39,7 @@ RSpec.describe DeckBuilder, type: :model do
                                 {:id=>1, :name=>"あいてむ", :power=>4, :tech=>4},
                                 {:id=>2, :name=>"あいてむ", :power=>3, :tech=>3},
                                 {:id=>3, :name=>"あいてむ", :power=>3, :tech=>3},
-                                {:id=>4, :name=>"あいてむ", :power=>7, :tech=>7},
+                                {:id=>4, :name=>"あいてむ", :power=>6, :tech=>6},
                                 # 空き枠
                                 {:id=>5, :name=>"休憩", :power=>0, :tech=>0},
                                 {:id=>6, :name=>"休憩", :power=>0, :tech=>0},
@@ -79,7 +79,7 @@ RSpec.describe DeckBuilder, type: :model do
                                   {:id=>1, :name=>"あいてむ", :power=>4, :tech=>4},
                                   {:id=>2, :name=>"あいてむ", :power=>3, :tech=>3},
                                   {:id=>3, :name=>"あいてむ", :power=>3, :tech=>3},
-                                  {:id=>4, :name=>"あいてむ", :power=>7, :tech=>7},
+                                  {:id=>4, :name=>"あいてむ", :power=>6, :tech=>6},
                                   # 空き枠
                                   {:id=>5, :name=>"休憩", :power=>0, :tech=>0},
                                   {:id=>6, :name=>"休憩", :power=>0, :tech=>0},
