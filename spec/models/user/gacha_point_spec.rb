@@ -26,7 +26,7 @@ RSpec.describe User::GachaPoint, type: :model do
     let!(:user_gacha_point){ create(:user_gacha_point, user: user, point: point) }
     let!(:gacha_fixed_reward){ create(:gacha_fixed_reward, point: 100, giftable_type: "Star", giftable_id: 1, amount: 5) }
     let!(:gacha_fixed_reward2){ create(:gacha_fixed_reward, point: 101, giftable_type: "Star", giftable_id: 1, amount: 5) }
-    subject { user_gacha_point.add!(amount) }
+    subject { user_gacha_point.add!(user, amount) }
 
     context "正常系" do
       let(:amount){ 100 }

@@ -17,7 +17,7 @@ class User::GachaPoint < ApplicationRecord
   belongs_to :user
   class OverPotLimit < StandardError; end
 
-  def add!(amount)
+  def add!(user, amount)
     with_lock do
       raise OverPotLimit if amount > current_pot.limit
       user.status.consume_coin!(amount)
