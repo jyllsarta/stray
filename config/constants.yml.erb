@@ -22,8 +22,9 @@ profile:
     total_play_time: 205
 
 character:
-  initial_hp_max: 100
-  gain_hp_per_level: 100
+  initial_hp_max: 1000
+  gain_hp_per_level: 10
+  level_max: 1000
   # constants.tsと定義を共有しているので注意
   default_parameters:
     rank_1:
@@ -75,7 +76,7 @@ event:
     weights: [0, 8000, 1500, 450, 48, 2]
   battle:
     # base + (0 ~ additional) 点の経験値を得る
-    base_exp: 10
+    base_exp: 20
     additional_exp_range: 5
     boss_additional_rank: 5
     boss_lose_rewind_floor: 2

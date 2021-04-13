@@ -244,5 +244,20 @@ RSpec.describe User::Character, type: :model do
         expect{subject}.to change(character, :hp_max).by(Constants.character.gain_hp_per_level * 2)
       end
     end
+
+    context "level max" do
+      let(:character){ create(:user_character, user: user, level: Constants.character.level_max) }
+      let(:value){ 1 }
+      it "grows hp_max" do
+        expect{subject}.to_not change(character, :exp)
+      end
+    end
+    context "level up to max" do
+      let(:character){ create(:user_character, user: user, exp: 999, level: Constants.character.level_max - 1) }
+      let(:value){ 10 }
+      it "grows hp_max" do
+        expect{subject}.to change(character, :exp).to(0)
+      end
+    end
   end
 end
