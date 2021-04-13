@@ -31,6 +31,7 @@ class Relic < ApplicationRecord
       user.status.consume_star!(cost)
       user.relics.create!(relic_id: id)
       learn_associated_skill!(user)
+      user.achievement_logger.post(Achievement::Event::ObtainRelic.new(user))
     end
   end
 

@@ -81,6 +81,16 @@ RSpec.describe User::GachaPoint, type: :model do
           end
         end
       end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger).twice # consume_coin でもpostされる
+        end
+      end
     end
     context "コイン不足" do
       let(:amount){ 100 }
