@@ -60,6 +60,10 @@ class QuestBattle
     @result['isWin'] == true
   end
 
+  def lose?
+    @result['isWin'] == false && @result['isDraw'] == false
+  end
+
   private
 
   def capture_result(cache, operation_history)

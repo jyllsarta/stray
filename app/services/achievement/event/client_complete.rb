@@ -11,6 +11,7 @@ class Achievement::Event::ClientComplete < Achievement::Event::Base
       'Achievement::Type::OpenLog',
       'Achievement::Type::ClickFieldCharacter',
       'Achievement::Type::SignIn',
+      'Achievement::Type::CloseEndingWindow',
     ]
   end
 end

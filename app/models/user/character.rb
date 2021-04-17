@@ -77,10 +77,15 @@ class User::Character < ApplicationRecord
   end
 
   def gain_exp(value)
+    return if level_max?
     increment(:exp, value)
     while can_level_up?
       level_up
     end
+  end
+
+  def level_max?
+    level >= Constants.character.level_max
   end
 
   private
@@ -90,8 +95,9 @@ class User::Character < ApplicationRecord
   end
 
   def level_up
-    self.decrement(:exp, Constants.character.level_up_exp - 1)
+    self.decrement(:exp, Constants.character.level_up_exp)
     self.increment(:level)
+    self.exp = 0 if level >= Constants.character.level_max
     self.hp_max = hp_max_at(level)
   end
 

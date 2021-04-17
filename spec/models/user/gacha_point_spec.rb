@@ -26,7 +26,7 @@ RSpec.describe User::GachaPoint, type: :model do
     let!(:user_gacha_point){ create(:user_gacha_point, user: user, point: point) }
     let!(:gacha_fixed_reward){ create(:gacha_fixed_reward, point: 100, giftable_type: "Star", giftable_id: 1, amount: 5) }
     let!(:gacha_fixed_reward2){ create(:gacha_fixed_reward, point: 101, giftable_type: "Star", giftable_id: 1, amount: 5) }
-    subject { user_gacha_point.add!(amount) }
+    subject { user_gacha_point.add!(user, amount) }
 
     context "正常系" do
       let(:amount){ 100 }
@@ -79,6 +79,16 @@ RSpec.describe User::GachaPoint, type: :model do
           it "2" do
             expect(subject[:random_rewards].length).to eq(2)
           end
+        end
+      end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger).twice # consume_coin でもpostされる
         end
       end
     end

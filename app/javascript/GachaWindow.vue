@@ -198,6 +198,8 @@ export default {
           this.pool = 0;
           this.invokeGachaAnimation();
           this.$store.commit("user/updateUserCoin", results.data.after_coin);
+          this.$store.dispatch("achievement/fetchAchievementCache");
+          this.$store.dispatch("achievement/fetchAchievements");
         })
         .catch((error) => {
           console.warn(error.response);

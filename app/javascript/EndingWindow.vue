@@ -91,6 +91,10 @@ export default {
     },
     closeWindow(){
       this.$store.commit('window/updateWindowShowState', {windowName: "ending", state: false});
+      this.$store.dispatch('achievement/sendClientAchievement', "close_ending_window").then(()=>{
+        this.$store.dispatch("achievement/fetchAchievements");
+        this.$store.dispatch("achievement/fetchAchievementCache");
+      });
     },
     lockAndInvokeUnlockClick(){
       this.blockClick = true;

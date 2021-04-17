@@ -17,7 +17,7 @@ class User::GachaPoint < ApplicationRecord
   belongs_to :user
   class OverPotLimit < StandardError; end
 
-  def add!(amount)
+  def add!(user, amount)
     with_lock do
       raise OverPotLimit if amount > current_pot.limit
       user.status.consume_coin!(amount)
@@ -25,6 +25,7 @@ class User::GachaPoint < ApplicationRecord
       random_reward_messages = add_random_rewards!(amount)
       self.increment!(:point, amount)
       reload_pot!
+      user.achievement_logger.post(Achievement::Event::Gacha.new(user))
       { fixed_rewards: fixed_reward_messages, random_rewards: random_reward_messages }
     end
   end

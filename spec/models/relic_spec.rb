@@ -41,6 +41,16 @@ RSpec.describe Relic, type: :model do
         expect{subject}.to change(user.relics, :count).by(1)
       end
 
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end  
+
       context "about associated skills" do
         context "if associated" do
           let!(:skill){ create(:skill) }

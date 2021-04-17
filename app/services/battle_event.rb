@@ -75,7 +75,7 @@ class BattleEvent < Event
   end
 
   def rank_ratio(enemy_rank, character_rank)
-    [(enemy_rank - character_rank) / 2, 1].max
+    [(enemy_rank - character_rank), 1].max
   end
 
   def log_messages
