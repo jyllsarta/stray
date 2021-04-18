@@ -88,6 +88,10 @@ RSpec.describe User::Item, type: :model do
     subject { user_item.rank_up!(user, count) }
     let(:count){ 1 }
 
+    before do
+      user.status.update!(coin: 0)
+    end
+
     context "succeeds" do
       let(:item){ create(:item, base_rank: 5) }
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
