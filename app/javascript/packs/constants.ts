@@ -57,6 +57,7 @@ const Constants = {
   dungeon: {
     bossFloorFrequency: 100,
     bossLoseRewindFloor: 3,
+    lastDungeonId: 7,
   },
   achievements: {
     ids: {

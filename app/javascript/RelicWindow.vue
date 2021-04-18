@@ -18,6 +18,8 @@
               | チロルのスキル
             .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="switchPage(3)")
               | なんでもスキル
+            .tab.selectable(:class="currentPage===4 ? 'selected' : ''", @click="switchPage(4)" v-if="showsUltimateSkill")
+              | きゅうきょくスキル
           .cussion
           .relics
             .obtain_animation(
@@ -120,6 +122,12 @@ export default {
     },
     displayRelics(){
       return Object.values(this.$store.state.masterdata.relics).filter(relic=>relic.page===this.currentPage);
+    },
+    showsUltimateSkill(){
+      if(!this.$store.state.user?.dungeon_progresses){
+        return false;
+      }
+      return this.$store.state.user.dungeon_progresses[Constants.dungeon.lastDungeonId]?.max_depth || 0 > 0;
     }
   },
   methods: {
@@ -204,17 +212,17 @@ export default {
     border-bottom: 1px solid $gray3;
     display: flex;
     .tabs{
-      margin-top: 36px;
       width: 200px;
       height: 100%;
       padding: $space;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       .tab{
         width: 100%;
         height: 100px;
-        margin-bottom: $space * 2;
-        @include centering($height: 60px);
+        margin: $space;
+        @include centering($height: 50px);
       }
     }
     .cussion{
