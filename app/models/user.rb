@@ -47,6 +47,7 @@ class User < ApplicationRecord
       user.characters.spica.first.force_set_equips([1])
       user.characters.tirol.first.force_set_equips([2])
       User::GachaPoint.create(user: user)
+      user.status.add_coin!(10000)
     end
     user
   end
