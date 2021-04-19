@@ -279,18 +279,18 @@
   border-radius: $radius;
   padding: $space;
   line-height: 100%;
-  border-top: 1px solid $gray3;
-  border-bottom: 1px solid $gray3;
-  border-right: 2px solid $gray3;
-  border-left: 2px solid $gray3;
+  border-top: 1px solid $gray3-opacity;
+  border-bottom: 1px solid $gray3-opacity;
+  border-right: 2px solid $gray3-opacity;
+  border-left: 2px solid $gray3-opacity;
 }
 
 .topic_medium{
-  background: $accent-color-opacity;
+  font-size: $font-size-mini;
   line-height: 100%;
-  padding: $thin_space;
-  border-left: 1px solid $accent-color;
-  border-right: 1px solid $accent-color;
+  padding-top: $thin_space;
+  padding-bottom: $thin_space;
+  border-bottom: 1px solid $gray3;
 }
 
 .main_sheet{

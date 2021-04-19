@@ -584,7 +584,6 @@ export default {
       padding-bottom: $thin_space;
       padding-top: $thin_space;
       .label{
-        font-size: $font-size-normal;
         display: inline-block;
       }
       .status{
@@ -615,7 +614,6 @@ export default {
       padding-bottom: $thin_space;
       padding-top: $thin_space;
       .label{
-        font-size: $font-size-normal;
         display: inline-block;
       }
       .status{
@@ -759,7 +757,6 @@ export default {
     .detail{
       font-size: $font-size-mini;
       .label{
-        font-size: $font-size-normal;
         display: inline-block;
       }
       .item_name{
