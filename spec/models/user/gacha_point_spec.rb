@@ -74,8 +74,8 @@ RSpec.describe User::GachaPoint, type: :model do
           end
         end
         context "ポットグレード違い" do
-          let(:amount){ 2100000 } # 最高鍋での報酬が２つもらえるライン
-          let(:point){ 10000000 } # 最高鍋
+          let(:amount){ 210000 } # 最高鍋での報酬が２つもらえるライン
+          let(:point){ 3000000 } # 最高鍋
           it "2" do
             expect(subject[:random_rewards].length).to eq(2)
           end

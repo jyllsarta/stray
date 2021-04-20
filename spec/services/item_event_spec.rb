@@ -98,7 +98,7 @@ RSpec.describe ItemEvent, type: :model do
         it "ランクは上昇せずコインがもらえる" do
           subject
           expect(user.items.find(user_item.id).rank).to eq(Constants.item.default_max_rank)
-          expect(user.status.coin).to eq(1) # rank / 3 + 1 の 1
+          expect(user.status.coin).to eq(50) # rank / 4 + 50
         end
       end
       context "それがすでに最大ランクを超えていても" do
