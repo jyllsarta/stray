@@ -56,8 +56,6 @@ RSpec.describe ResurrectEvent, type: :model do
 
         it "それなりに何か起こる" do
           expect{subject}.to change(user.status, :event_updated_at)
-                                 .and change(user.status, :coin)
-
         end
       end
 
@@ -68,8 +66,6 @@ RSpec.describe ResurrectEvent, type: :model do
 
         it "それなりに何か起こる" do
           expect{subject}.to change(user.status, :event_updated_at)
-                                 .and change(user.status, :coin).by(Constants.max_charge_absent_time_seconds * rank / 10)
-
         end
       end
     end
