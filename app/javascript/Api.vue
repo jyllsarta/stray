@@ -55,8 +55,7 @@ export default {
     },
     init(){
       this.initializeSession();
-      this.fetchMasterData();
-      this.loadUserData();
+      this.fetchMasterDataThenUserData();
       if(this.isAuthorized()){
         this.fetchLatestEvents();
       }
@@ -76,12 +75,13 @@ export default {
         this.signUp();
       }
     },
-    fetchMasterData(){
+    fetchMasterDataThenUserData(){
       const path = `/masterdata.json`;
       axios.get(path)
         .then((results) => {
           console.log(results);
           this.$store.commit("masterdata/updateMasterData", results.data);
+          this.loadUserData();
         })
         .catch((error) => {
           console.warn(error.response);
@@ -91,6 +91,7 @@ export default {
     fetchUserModel(){
       this.$store.dispatch("user/fetchUserModel").then(()=>{
         this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
+        this.$store.commit("equip_window/constructUserItems", {items: this.$store.state.masterdata.items, user_items: this.$store.state.user.items});
       });
     },
     fetchLatestEvents(){
