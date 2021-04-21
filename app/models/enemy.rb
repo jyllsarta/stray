@@ -8,6 +8,7 @@
 #  is_boss    :boolean          not null
 #  name       :string(255)
 #  power      :integer          default(0), not null
+#  rank       :integer          default(0), not null
 #  scale_type :integer          default(1), not null
 #  special    :integer          default(0), not null
 #  strength   :integer          default(0), not null
@@ -45,12 +46,20 @@ class Enemy < ApplicationRecord
   end
 
   def parameter_multiplier(player_strength)
+    strength_coefficient(player_strength) * rank_coefficient
+  end
+
+  private
+
+  def rank_coefficient
+    (rank.to_f / 250) + 1
+  end
+
+  def strength_coefficient(player_strength)
     ratio = player_strength.to_f / strength.to_f
     return Constants.enemy.strength_multiplier[0] if ratio >= 1
     ratio >= Constants.enemy.strength_threshold ? Constants.enemy.strength_multiplier[1] : Constants.enemy.strength_multiplier[2]
   end
-
-  private
 
   def preload_associations!
     ActiveRecord::Associations::Preloader.new.preload( self, {enemy_cards: [:card]})

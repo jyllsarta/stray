@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "tech", default: 0, null: false
     t.integer "special", default: 0, null: false
     t.integer "strength", default: 0, null: false
+    t.integer "rank", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quest_id"], name: "index_enemies_on_quest_id"

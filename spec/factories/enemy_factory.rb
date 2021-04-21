@@ -8,6 +8,7 @@
 #  is_boss    :boolean          not null
 #  name       :string(255)
 #  power      :integer          default(0), not null
+#  rank       :integer          default(0), not null
 #  scale_type :integer          default(1), not null
 #  special    :integer          default(0), not null
 #  strength   :integer          default(0), not null
@@ -29,6 +30,7 @@ FactoryBot.define do
     hp { 5 }
     strength { 100 }
     is_boss { false }
+    rank { 0 }
 
     association :quest, factory: :quest, strategy: :create
     trait :with_card do

@@ -9,5 +9,6 @@ create_table "enemies", force: :cascade  do |t|
   t.integer :tech,       null: false, default: 0
   t.integer :special,    null: false, default: 0
   t.integer :strength,   null: false, default: 0
+  t.integer :rank,       null: false, default: 0
   t.timestamps
 end

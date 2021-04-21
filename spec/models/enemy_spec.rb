@@ -8,6 +8,7 @@
 #  is_boss    :boolean          not null
 #  name       :string(255)
 #  power      :integer          default(0), not null
+#  rank       :integer          default(0), not null
 #  scale_type :integer          default(1), not null
 #  special    :integer          default(0), not null
 #  strength   :integer          default(0), not null
@@ -80,9 +81,10 @@ RSpec.describe Enemy, type: :model do
   end
 
   describe "#cards" do
-    let(:enemy){ create(:enemy, :with_card, strength: 10) }
+    let(:enemy){ create(:enemy, :with_card, strength: 10, rank: rank) }
     let(:card){ create(:card, name: "ぴよ", power: 7, tech: 2) }
     let!(:enemy_card){create(:enemy_card, enemy: enemy, card: card)}
+    let(:rank){ 0 }
     subject { enemy.cards(player_atk) }
 
     context "player wins" do
@@ -94,6 +96,20 @@ RSpec.describe Enemy, type: :model do
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"ぴよ", :power=>7, :tech=>2},
+                              ])
+      end
+    end
+
+    context "player wins with rank" do
+      let(:rank){ 250 }
+      let(:player_atk){ 10 }
+      it "returns cards" do
+        expect(subject).to eq([
+                                  {:name=>"粘液", :power=>0, :tech=>0},
+                                  {:name=>"粘液", :power=>0, :tech=>0},
+                                  {:name=>"粘液", :power=>0, :tech=>0},
+                                  {:name=>"粘液", :power=>0, :tech=>0},
+                                  {:name=>"ぴよ", :power=>14, :tech=>4},
                               ])
       end
     end
