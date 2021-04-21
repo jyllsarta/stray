@@ -52,7 +52,7 @@ class Enemy < ApplicationRecord
   private
 
   def rank_coefficient
-    (rank.to_f / 250) + 1
+    (rank.to_f / 800) + 1
   end
 
   def strength_coefficient(player_strength)

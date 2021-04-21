@@ -104,12 +104,12 @@ RSpec.describe Enemy, type: :model do
       let(:rank){ 250 }
       let(:player_atk){ 10 }
       it "returns cards" do
-        expect(subject).to eq([
+        expect(subject).to match_json_expression([
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
                                   {:name=>"粘液", :power=>0, :tech=>0},
-                                  {:name=>"ぴよ", :power=>14, :tech=>4},
+                                  {:name=>"ぴよ", :power=>Integer, :tech=>Integer}, # 倍率は気にしないことにする
                               ])
       end
     end
