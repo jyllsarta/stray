@@ -10,7 +10,7 @@ module.exports = class Character{
         this.special = special;
         this.mp = 0;
         this.mp_max = 100;
-        this.handCardCount = 6;
+        this.handCardCount = 5;
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
