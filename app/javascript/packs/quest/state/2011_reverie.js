@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = 2;
     this.title = "レヴァリエ";
     this.icon = "20210.gif";
-    this.description = "次のターン終了時に15ダメージ。";
+    this.description = "次のターン終了時に17ダメージ。";
   }
 
   getInitialCondition(){
@@ -17,7 +17,7 @@ class OriginalState {
 
   onTurnEnd(state){
     if(state.ttl === 1){
-      state.owner.damage(15);
+      state.owner.damage(17);
       state.flash();  
     }
   }

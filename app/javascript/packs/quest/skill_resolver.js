@@ -241,6 +241,7 @@ SkillResolver {
             skill.reusable = true;
         }
         main.setMp(200);
+        main.hp_max= 1;
     }
 
     resolveAddPointToWeaker(actor, target, to_self, value, skill){
