@@ -65,7 +65,7 @@ RSpec.describe Battle, type: :model do
       let(:defence_b){ 100 }
       let(:rank){ 100 }
       it "calculates damage" do
-        expect(subject).to eq((255 - 100) + 100 / 10 + 2)
+        expect(subject).to eq((255 - 100) + 100 / 20 + 1)
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe Battle, type: :model do
       let(:defence_b){ 100 }
       let(:rank){ 100 }
       it "calculates damage" do
-        expect(subject).to eq(100 / 10 + 2)
+        expect(subject).to eq(100 / 20 + 1)
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.describe Battle, type: :model do
       let(:defence_b){ 125 }
       let(:rank){ 90 }
       it "calculates damage" do
-        expect(subject).to eq(0 + 90 / 10 + 2)
+        expect(subject).to eq(0 + 90 / 20 + 1)
       end
     end
   end
