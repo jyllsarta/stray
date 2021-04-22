@@ -8,7 +8,7 @@ class GiftableReceiver::GachaItem
   def receive!(user)
     @amount.times do
       additional_rank = lot_additional_rank!(user)
-      add_random_item!(user, @rank + additional_rank)
+      add_random_item!(user, @rank, additional_rank)
     end
   end
 
@@ -18,10 +18,10 @@ class GiftableReceiver::GachaItem
 
   private
 
-  def add_random_item!(user, rank)
+  def add_random_item!(user, rank, additional_rank)
     item = lot_item!(user, rank)
     @user_item = user.items.find_or_initialize_by(item_id: item.id)
-    after_rank = [(rank - item.base_rank), @user_item.rank].max
+    after_rank = [[(rank - item.base_rank + additional_rank), @user_item.rank].max, Constants.gacha.max_item_rank - item.base_rank].min
     @rank_diff = after_rank - @user_item.rank
     @user_item.rank = after_rank
     @user_item.save!
@@ -37,8 +37,8 @@ class GiftableReceiver::GachaItem
 
   def lot_additional_rank!(user)
     base = SecureRandom.rand(1..user.gacha_point.current_pot.additional_rank)
-    lucky = SecureRandom.rand(1..1000)
-    base += lucky if lucky < 50
+    lucky = SecureRandom.rand(1..3000)
+    base += lucky if lucky < 100
     base
   end
 

@@ -34,7 +34,18 @@ RSpec.describe GiftableReceiver::GachaItem, type: :model do
       it "does nothing" do
         aggregate_failures do
           expect{ subject }.to_not change(user.items.reload, :count)
-          expect(user.items.first.rank).to eq(500)
+          expect(user.items.first.reload.rank).to eq(500)
+        end
+      end
+    end
+
+    context "insane rank" do
+      let(:id) { 10000000000 }
+      let!(:user_item){ create(:user_item, user: user, item: item, rank: 500) }
+      it "caps to max rank" do
+        aggregate_failures do
+          expect{ subject }.to_not change(user.items.reload, :count)
+          expect(user.items.first.reload.rank + user.items.first.item.base_rank).to eq(Constants.gacha.max_item_rank)
         end
       end
     end
