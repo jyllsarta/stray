@@ -13,7 +13,7 @@
         .achievements
           .achievement_headers
             .icon.item
-            .title.item
+            .title_name.item
               | 実績名
             .progress.item
               | 進行度
@@ -273,7 +273,7 @@
           width: 24px;
           height: 24px;
         }
-        .title{
+        .title_name{
           flex-grow: 1;
         }
         .progress{
