@@ -263,7 +263,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)", :speed="0.6")
                 .bar_area
                   .bar.plus(
-                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarTirol : atkBarSpica}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')", :speed="0.6")
@@ -275,7 +275,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)", :speed="0.6")
                 .bar_area
                   .bar.minus(
-                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? defBarTirol : defBarSpica}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')", :speed="0.6")
@@ -415,34 +415,34 @@ export default {
     aroundEnemyRank(){
       return this.$store.getters['user/aroundEnemyRank'];
     },
-    // atk, def は他パラメータの倍必要なので 1/4... と後なんだかんだゲージ振り切れがちなので 1/6 にする
+    // atk, def は他パラメータの倍必要なので 1/4 ... が妥当だが表示エリアがでかいのでその分を加味して 1/3
     atkBarSpica(){
       const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true)
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     defBarSpica(){
       const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true)
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     atkBarTirol(){
       const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true)
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     defBarTirol(){
       const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true)
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     atkBarTotal(){
       const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true);
       const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true);
       const value = (spica + tirol) / 2;
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     defBarTotal(){
       const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true);
       const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true);
       const value = (spica + tirol) / 2;
-      return Math.max(0, Math.min(200, (100 * (1/6) * value / this.maxStrength))) + "%";
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
     },
     maxStrength(){
       return this.$store.state.equip_window.max_effect_value;
