@@ -229,6 +229,7 @@ export default {
               width: 340px;
               line-height: 120%;
               font-size: $font-size-mini;
+              white-space: pre-wrap;
             }
             .icon{
               margin-right: $thin_space;

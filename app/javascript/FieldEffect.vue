@@ -44,6 +44,7 @@ export default {
     width: 300px;
     font-size: $font-size-mini;
     line-height: 120%;
+    white-space: pre-wrap;
   }
 }
 
