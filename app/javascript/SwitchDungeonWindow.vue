@@ -8,7 +8,7 @@
         .title
           | ダンジョン切り替え
       .description
-        | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
+        | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。新ダンジョンはクエストの★ボスを倒すと現れます。
       .body
         .dungeon_list_tab.scrollable
           .dungeon.hoverable.selectable(
