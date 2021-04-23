@@ -4,7 +4,7 @@ class FieldEffectFeatherWind {
     this.ttl = -1;
     this.title = "翼風";
     this.icon = "feather_wind.gif";
-    this.description = "ダメージを与えるたびにMPを5回復。";
+    this.description = "ダメージを与えるたびにMPを10回復。";
   }
 
   getInitialCondition(){
@@ -13,7 +13,7 @@ class FieldEffectFeatherWind {
   }
 
   showParameter(state){
-    return state.ttl;
+    return "-";
   }
 
   onAdd(state){

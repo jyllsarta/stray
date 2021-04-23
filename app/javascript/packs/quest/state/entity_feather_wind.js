@@ -4,7 +4,7 @@ class EntityFeatherWind {
     this.ttl = -1;
     this.title = "翼風";
     this.icon = "feather_wind.gif";
-    this.description = "ダメージを与えるたびにMPを5回復。";
+    this.description = "ダメージを与えるたびにMPを10回復。";
   }
 
   getInitialCondition(){
@@ -14,11 +14,11 @@ class EntityFeatherWind {
   }
 
   showParameter(state){
-    return ""; //バグったらごめんって感じ
+    return "";
   }
 
   onDamage(state, damageAmount){
-    state.opponent.addMp(5);
+    state.opponent.addMp(10);
   }
 }
 
