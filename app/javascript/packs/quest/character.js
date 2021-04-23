@@ -140,7 +140,7 @@ module.exports = class Character{
         };
     }
 
-    damage(value){
+    damage(value, isPhysical = false){
         if(this.tempBuffs.shield > 0){
             // 防ぎきれたならシールドがダメージ値だけ減る
             if(this.tempBuffs.shield >= value){
@@ -156,7 +156,7 @@ module.exports = class Character{
         this.hp -= value;
         if(value > 0){
             for(let state of this.states.slice().reverse()){
-                state.onDamage(value);
+                state.onDamage(value, isPhysical);
             }
         }
     }

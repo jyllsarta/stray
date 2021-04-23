@@ -2,9 +2,9 @@ class FieldEffectParalyze {
   constructor() {
     this.id = 104;
     this.ttl = -1;
-    this.title = "雷痺";
+    this.title = "轟雷";
     this.icon = "paralyze.gif";
-    this.description = "5回ダメージを受けるとスタンし、そのターン中の力技が0になる。ダメージを受けなかったらターン終了時にカウント-1。";
+    this.description = "ステート「雷」を付与する。\n雷：スキルの被ダメージ+1/発動後轟になる\n轟：通常攻撃の被ダメージ+1/発動後雷になる";
   }
 
   getInitialCondition(){
@@ -13,7 +13,7 @@ class FieldEffectParalyze {
   }
 
   showParameter(state){
-    return state.ttl;
+    return "-";
   }
 
   onAdd(state){

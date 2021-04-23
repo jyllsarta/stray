@@ -36,10 +36,10 @@ module.exports = class StateInstance {
     }
     this.stateMaster.onTurnEnd(this);
   }
-  onDamage(value){
+  onDamage(value, isPhysical){
     if(!this.stateMaster.onDamage){
       return;
     }
-    this.stateMaster.onDamage(this, value);
+    this.stateMaster.onDamage(this, value, isPhysical);
   }
 };
