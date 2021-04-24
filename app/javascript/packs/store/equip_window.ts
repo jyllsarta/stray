@@ -157,8 +157,7 @@ export default {
       const env = isCurrent ? 'draft' : 'initial';
       const characterName =  [null, "spica", "tirol"][characterId];
       const equipParameter = state[env][characterName].reduce((p,x)=>(p + state.user_items[x]?.effectValueOf(paramName) || 0), 0);
-      const characterRank = rootState.user.characters[characterName]?.rank || 1;
-      const defaultParameter = Constants.character.defaultParameters[`rank${characterRank}`][paramName];
+      const defaultParameter = Constants.character.defaultParameters[paramName];
       return equipParameter + defaultParameter;
     },
     getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {

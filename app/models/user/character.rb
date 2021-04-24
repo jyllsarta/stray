@@ -60,7 +60,7 @@ class User::Character < ApplicationRecord
 
   def parameters
     return @_parameters if @_parameters
-    default_parameters = Constants.character.default_parameters["rank_#{rank}"].to_h
+    default_parameters = Constants.character.default_parameters.to_h
     @_parameters = compacted_equips.each_with_object(default_parameters) do |equip, hash|
       hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
     end
