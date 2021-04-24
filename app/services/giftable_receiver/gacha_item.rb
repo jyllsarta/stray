@@ -37,8 +37,8 @@ class GiftableReceiver::GachaItem
 
   def lot_additional_rank!(user)
     base = SecureRandom.rand(1..user.gacha_point.current_pot.additional_rank)
-    lucky = SecureRandom.rand(1..3000)
-    base += lucky if lucky < 100
+    lucky = SecureRandom.rand(1..2000)
+    base += lucky if lucky < 50
     base
   end
 
