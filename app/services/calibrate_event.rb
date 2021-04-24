@@ -24,7 +24,7 @@ class CalibrateEvent < Event
 
   def execute(user)
     @user = user
-    delta_seconds = [(user.status.event_remain_time(@at) - Constants.max_event_consume_time_seconds), Constants.max_charge_absent_time_seconds].min
+    delta_seconds = [(user.status.event_remain_time(@at) - Constants.max_event_consume_time_seconds), Constants.max_event_consume_time_seconds].min
     user.status.calibrate_event_updated_at(@at)
     self
   end
