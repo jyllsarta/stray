@@ -40,27 +40,33 @@
         .notifications
           | {{notificationText}}
         .status_area
-          .status
+          .status(@mouseover="$store.commit('guide/updateGuide', atkGuideMessage)")
             .player
               .main
                 | {{playerAtkMainPart}}
               .sub
                 | {{playerAtkSubPart}}
             .label
-              | ATK
+              .index
+                | ATK
+              .equality
+                | {{atkEquality}}
             .enemy(:class="enemyAtkWins ? 'win' : ''")
               .main
                 | {{enemyAtkMainPart}}
               .sub
                 | {{enemyAtkSubPart}}
-          .status
+          .status(@mouseover="$store.commit('guide/updateGuide', defGuideMessage)")
             .player
               .main
                 | {{playerDefMainPart}}
               .sub
                 | {{playerDefSubPart}}
             .label
-              | DEF
+              .index
+                | DEF
+              .equality
+                | {{defEquality}}
             .enemy(:class="enemyDefWins ? 'win' : ''")
               .main
                 | {{enemyDefMainPart}}
@@ -209,19 +215,24 @@
           },
           expBase(){
             const maxValue = Math.max(
-              this.$store.getters['equip_window/getTotalStrength']("atk", false),
-              this.$store.getters['equip_window/getTotalStrength']("def", false),
-              this.currentEnemy.strength,
+              this.playerAtk,
+              this.playerDef,
+              this.enemyStrength,
             )
             const exp = Math.log10(maxValue);
             return Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
           },
+          playerAtk(){
+            return this.$store.getters['equip_window/getTotalStrength']("atk", false);
+          },
+          playerDef(){
+            return this.$store.getters['equip_window/getTotalStrength']("def", false);
+          },
           playerAtkMainPart(){
-            const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
-            return Math.floor(source / this.expBase);
+            return Math.floor(this.playerAtk / this.expBase);
           },
           playerAtkSubPart(){
-            const source = this.$store.getters['equip_window/getTotalStrength']("atk", false);
+            const source = this.playerAtk;
             const structure = this.expBase;
             if(structure === 1){
               return " "
@@ -244,12 +255,12 @@
             return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
           },
           playerDefMainPart(){
-            const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
+            const source = this.playerDef;
             const structure = this.expBase;
             return Math.floor(source / structure);
           },
           playerDefSubPart(){
-            const source = this.$store.getters['equip_window/getTotalStrength']("def", false);
+            const source = this.playerDef;
             const structure = this.expBase;
             if(structure === 1){
               return " "
@@ -271,15 +282,66 @@
             const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
             return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
           },
+          enemyStrength(){
+            return this.currentEnemy.strength || 0;
+          },
           enemyAtkWins(){
-            const enemyParameter = this.currentEnemy.strength || 0;
-            const playerParameter = this.$store.getters['equip_window/getTotalStrength']("atk", false) || 0;
-            return playerParameter < enemyParameter;
+            return this.playerAtk < this.enemyStrength;
           },
           enemyDefWins(){
-            const enemyParameter = this.currentEnemy.strength || 0;
-            const playerParameter = this.$store.getters['equip_window/getTotalStrength']("def", false) || 0;
-            return playerParameter < enemyParameter;
+            return this.playerDef < this.enemyStrength;
+          },
+          atkEquality(){
+            if(this.playerAtk > this.enemyStrength){
+              return ">";
+            }
+            if(this.playerAtk == this.enemyStrength){
+              return "=";
+            }
+            if(this.playerAtk > this.enemyStrength * Constants.enemy.plusValueThreshold){
+              return "<";
+            }
+            return "<<";
+          },
+          defEquality(){
+            if(this.playerDef > this.enemyStrength){
+              return ">";
+            }
+            if(this.playerDef == this.enemyStrength){
+              return "=";
+            }
+            if(this.playerDef > this.enemyStrength * Constants.enemy.plusValueThreshold){
+              return "<";
+            }
+            return "<<";
+          },
+          atkGuideMessage(){
+            switch(this.atkEquality){
+              case ">":
+                return "【ATK優勢】相手よりも強い。補正なし。";
+              case "=":
+                return "【ATK同格】相手とちょうど一緒。補正なし。";
+              case "<":
+                return `【ATK劣勢】【 ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} < x < ${this.enemyStrength} 】相手よりもわずかに劣っている。敵HPが強化される。`;
+              case "<<":
+                return `【ATK格上】【 x < ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} 】相手のほうが圧倒的に強い。敵HPが大幅に強化される。`;
+              default:
+                return "";                
+            }
+          },
+          defGuideMessage(){
+            switch(this.defEquality){
+              case ">":
+                return "【DEF優勢】相手よりも強い。補正なし。";
+              case "=":
+                return "【DEF同格】相手とちょうど一緒。補正なし。";
+              case "<":
+                return `【DEF劣勢】【 ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} < x < ${this.enemyStrength} 】相手よりもわずかに劣っている。敵カードが強化される。`;
+              case "<<":
+                return `【DEF格上】【 x < ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} 】相手のほうが圧倒的に強い。敵カードが大幅に強化される。`;
+              default:
+                return "";                
+            }
           },
       },
       methods: {

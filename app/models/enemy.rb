@@ -31,8 +31,8 @@ class Enemy < ApplicationRecord
   # TODO 続き
   def name_with_plus(player_atk, player_def)
     n = name
-    n += "+" if parameter_multiplier(player_atk) > 1
-    n += "+" if parameter_multiplier(player_def) > 1
+    n += "+" if strength_coefficient(player_atk) > 1
+    n += "+" if strength_coefficient(player_def) > 1
     n
   end
 

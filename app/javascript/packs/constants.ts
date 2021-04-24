@@ -41,7 +41,7 @@ const Constants = {
     expMax: 1000,
   },
   log: {
-    maxLength: 300,
+    maxLength: 50,
   },
   item: {
     rankFactor: 1.01,
@@ -72,7 +72,8 @@ const Constants = {
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
   enemy: {
-    plusValueThreshold: 30,
+    // サーバと値を共有してるので注意
+    plusValueThreshold: 0.7,
     lastBossEnemyId: 705,
   },
   battleCharacter: {
