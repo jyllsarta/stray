@@ -192,19 +192,6 @@ RSpec.describe User::Character, type: :model do
                                 agi: 10, # 0 + 0 + 10(default)
                             })
     end
-
-    context "has rank relic" do
-      let!(:relic){create(:relic, category: :spica_rank)}
-      let!(:user_relic){create(:user_relic, relic: relic, user: user)}
-      it "grows up with rank" do
-        expect(subject).to eq({
-                                  str: 502, # 1 + 1 + 500(rank2)
-                                  dex: 504, # 2 + 2 + 500
-                                  vit: 506, # 3 + 3 + 500
-                                  agi: 500, # 0 + 0 + 500
-                              })
-      end
-    end
   end
 
   describe "#strength" do
