@@ -14,16 +14,6 @@ class OriginalState {
   showParameter(state){
     return "∞";
   }
-
-  onTurnStart(state){
-    let paralyze = state.owner.findStateById(1004);
-    if(!paralyze){
-      return;
-    }
-    paralyze.condition.count += 2;
-    paralyze.stateMaster.checkParalyze(paralyze);
-    state.flash();
-  }
 }
 
 module.exports = new OriginalState();
