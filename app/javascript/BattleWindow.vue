@@ -55,6 +55,14 @@
               | 諦める
       .field_effect_area
         FieldEffect(:field-effect-state="battle.fieldEffectState")
+      .turn_area
+        .index
+          | Turn
+        .values
+          span.current(:key="currentTurn")
+            | {{currentTurn}}
+          span.limit
+            | / {{currentTurnLimit}}
       BlankCardList.player_hands(
         :right-side="false"
         :max-item-count="parameters.maxHandCardCount"
@@ -536,7 +544,15 @@ export default {
     },
     decideButtonClass(){
       return this.isDecidable ? "super_clickable" : "not_clickable";
-    }
+    },
+    currentTurn(){
+      const turn = this.battle?.turn || 1;
+      const limit = this.battle?.turnLimit || 10;
+      return Math.min(turn, limit);
+    },
+    currentTurnLimit(){
+      return this.battle?.turnLimit || 10;
+    },
   },
   watch: {
     "battle.player.hp": {
@@ -1051,6 +1067,39 @@ export default {
   top: $space;
   left: $space;
 }
+
+.turn_area{
+  position: absolute;
+  top: $space;
+  right: $space * 2 + 160px;
+  font-family: 'Forum', cursive;
+  $color: rgb(143, 151, 255);
+  text-shadow: 0px 0px 12px $color, 0px 0px 12px $color, 0px 0px 12px $color;
+  width: 70px;
+  line-height: 100%;
+  .index{
+    width: 100%;
+    font-style: italic;
+  }
+  .values{
+    width: 100%;
+    text-align: right;
+    .current{
+      display: inline-block;
+      font-size: $font-size-large * 1.5;
+      padding-right: $thin_space;
+      animation: turn-text-in 0.7s;
+    }
+  }
+}
+
+@keyframes turn-text-in {
+  0% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
 
 .player_character{
   pointer-events: none;

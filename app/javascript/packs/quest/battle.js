@@ -15,6 +15,8 @@ module.exports = class Battle{
 
         this.turnInProgress = false;
         this.turnStatus = "selectCard";
+        this.turn = 1;
+        this.turnLimit = 10;
 
         this.setCharacterStatusAll("waiting");
         this.lastAttackResult = "";
@@ -302,6 +304,7 @@ module.exports = class Battle{
         this.enemy.attenuateAndSweepStates();
 
         this.turnInProgress = false;
+        this.turn++;
         this.turnStatus = "selectCard";
     }
 
@@ -419,16 +422,19 @@ module.exports = class Battle{
 
     // 生存して相手が死んでれば勝ち
     isWin(){
-        return this.player.isAlive() && !this.enemy.isAlive();
+        return this.player.isAlive() && !this.enemy.isAlive() && this.turn <= this.turnLimit;
     }
 
     // 両方死んでれば引き分け
     isDraw(){
+        if(this.turn > this.turnLimit){
+             return true;
+        }
         return !this.player.isAlive() && !this.enemy.isAlive();
     }
 
     isGameEnd(){
-        return !this.player.isAlive() || !this.enemy.isAlive();
+        return !this.player.isAlive() || !this.enemy.isAlive() || this.turn > this.turnLimit;
     }
 
     setCharacterStatusAll(state){
