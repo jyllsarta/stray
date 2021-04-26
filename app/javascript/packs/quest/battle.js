@@ -422,15 +422,12 @@ module.exports = class Battle{
 
     // 生存して相手が死んでれば勝ち
     isWin(){
-        return this.player.isAlive() && !this.enemy.isAlive() && this.turn <= this.turnLimit;
+        return this.player.isAlive() && !this.enemy.isAlive();
     }
 
-    // 両方死んでれば引き分け
+    // 両方死んでるか両方生きてれば引き分け
     isDraw(){
-        if(this.turn > this.turnLimit){
-             return true;
-        }
-        return !this.player.isAlive() && !this.enemy.isAlive();
+        return (!this.player.isAlive() && !this.enemy.isAlive()) || (this.player.isAlive() && this.enemy.isAlive());
     }
 
     isGameEnd(){

@@ -264,6 +264,7 @@
       .fragments
         TurnStart(v-if="$store.state.battle.fragments.turn_start")
         BossBattleStart(v-if="$store.state.battle.fragments.boss_battle_start")
+        LastTurn(v-if="$store.state.battle.fragments.last_turn")
         PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
         EnemySkillCutin(v-if="$store.state.battle.fragments.enemy_skill")
         OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
@@ -310,6 +311,7 @@ import NumeratableNumber from "./NumeratableNumber.vue";
 import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
 import TurnStart from "./fragments/TurnStart.vue";
 import BossBattleStart from "./fragments/BossBattleStart.vue";
+import LastTurn from "./fragments/LastTurn.vue";
 import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
 import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
 import OutcomeCutin from "./fragments/OutcomeCutin.vue";
@@ -341,6 +343,7 @@ export default {
     ZeroPaddingedNumeratableNumber,
     TurnStart,
     BossBattleStart,
+    LastTurn,
     PlayerSkillCutin,
     EnemySkillCutin,
     OutcomeCutin,
@@ -936,6 +939,9 @@ export default {
     // **
 
     checkGameEnd(){
+      if(this.battle.turn == this.battle.turnLimit){
+        this.$store.commit("battle/showFragment", "last_turn");
+      }
       if(this.battle.isGameEnd()){
         console.log("決着！ショーダウン!");
         console.log(this.input.seed);

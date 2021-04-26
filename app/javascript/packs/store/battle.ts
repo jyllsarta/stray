@@ -20,6 +20,7 @@ export default {
       enemy_heal_effect: false,
       enemy_state_effect: false,
       paralyze_effect: false,
+      last_turn: false,
     },
     damageDiffs: {
       player: 0,
