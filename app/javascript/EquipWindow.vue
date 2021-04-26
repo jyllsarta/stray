@@ -857,7 +857,7 @@ export default {
           justify-content: space-around;
           margin: $subtle_space;
           .equip{
-            padding: $space;
+            padding: 0 0 0 $space;
             display: flex;
             flex-direction: column;
             justify-content: center;
