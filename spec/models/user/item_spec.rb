@@ -97,7 +97,7 @@ RSpec.describe User::Item, type: :model do
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
 
       before do
-        user.status.add_coin!(6) # 10 ^ 2 / 20 + 1
+        user.status.add_coin!(100000)
       end
 
       it "rank up" do
@@ -105,7 +105,7 @@ RSpec.describe User::Item, type: :model do
       end
       it "uses coin" do
         subject
-        expect(user.status.reload.coin).to eq(0)
+        expect(user.status.reload.coin).to_not eq(100000)
       end
       
       context "achievement" do
@@ -170,7 +170,7 @@ RSpec.describe User::Item, type: :model do
 
       it "uses coin" do
         subject
-        expect(user.status.reload.coin).to eq(1000000 - 6)
+        expect(user.status.reload.coin).to_not eq(1000000)
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe User::Item, type: :model do
       end
       it "現状の設計通りの値を返す" do
         subject
-        expect(user.status.reload.coin).to eq(99884)
+        expect(user.status.reload.coin).to eq(98983)
       end
     end
   end

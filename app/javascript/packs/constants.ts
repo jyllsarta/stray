@@ -32,7 +32,7 @@ const Constants = {
       4: 1.5,
       5: 1.8,
     },
-    maxRankUpCost: 99999,
+    maxRankUpCost: 9999,
   },
   dungeon: {
     bossFloorFrequency: 100,
