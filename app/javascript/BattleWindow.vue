@@ -939,7 +939,7 @@ export default {
     // **
 
     checkGameEnd(){
-      if(this.battle.turn == this.battle.turnLimit){
+      if(this.battle.turn == this.battle.turnLimit && !this.battle.isGameEnd()){
         this.$store.commit("battle/showFragment", "last_turn");
       }
       if(this.battle.isGameEnd()){
