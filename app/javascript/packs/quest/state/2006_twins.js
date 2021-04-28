@@ -16,7 +16,7 @@ class OriginalState {
   }
 
   onTurnEnd(state){
-    state.owner.hp -= 2;
+    state.owner.damage(2);
     state.flash();
   }
 }
