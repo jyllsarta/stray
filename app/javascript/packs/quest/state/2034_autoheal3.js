@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = -1;
     this.title = "創造ノ兎";
     this.icon = "40304.gif";
-    this.description = "ターン終了時にHPを3回復。";
+    this.description = "ターン終了時にHPを2回復。";
   }
 
   getInitialCondition(){
@@ -16,7 +16,7 @@ class OriginalState {
   }
 
   onTurnEnd(state){
-    state.owner.addHp(3);
+    state.owner.addHp(2);
     state.flash();
   }
 }
