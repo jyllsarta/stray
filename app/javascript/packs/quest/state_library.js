@@ -14,6 +14,7 @@ let states = [
   require("./state/entity_wood_regenerate"),
   require("./state/field_effect_magic_stream"),
   require("./state/entity_magic_stream"),
+  require("./state/field_effect_108"),
   require("./state/morphing"),
   require("./state/lose_infinity_skill"),
   require("./state/2005_crample"),
@@ -47,6 +48,10 @@ let states = [
   require("./state/2033_seeds"),
   require("./state/2034_autoheal3"),
   require("./state/2035_onigiri"),
+  require("./state/2036_flare"),
+  require("./state/2037_autoheal5"),
+  require("./state/2038_full_curse"),
+  require("./state/2039_cell_guard"),
 ]
 
 module.exports = class StateLibrary {
