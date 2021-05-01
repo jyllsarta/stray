@@ -52,6 +52,7 @@ let states = [
   require("./state/2037_autoheal5"),
   require("./state/2038_full_curse"),
   require("./state/2039_cell_guard"),
+  require("./state/2040_astral"),
 ]
 
 module.exports = class StateLibrary {
