@@ -289,7 +289,7 @@ SkillResolver {
         const main = to_self ? actor : target;
         const cardId = main.selectingCardIds[0];
         let card = main.deck.findCard(cardId);
-        card.name = "破壊された！";
+        card.name = "■■■■";
         card.power = 0;
         card.tech = 0;
     }
@@ -298,8 +298,20 @@ SkillResolver {
         const main = to_self ? actor : target;
         const cardId = main.selectingCardIds[1];
         let card = main.deck.findCard(cardId);
-        card.name = "破壊された！";
+        card.name = "■■■■";
         card.power = 0;
         card.tech = 0;
+    }
+
+    resolveAlterAllDeckCard(actor, target, to_self, value, skill){
+        const main = to_self ? actor : target;
+        for(let card of main.deck.cards){
+            card.power = value;
+            card.tech = value;
+        }
+    }
+
+    resolveReduceTurnLimit(actor, target, to_self, value, skill){
+        this.battle.turnLimit -= value;
     }
 };
