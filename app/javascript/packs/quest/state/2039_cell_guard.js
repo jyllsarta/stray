@@ -4,7 +4,7 @@ class OriginalState {
     this.ttl = -1;
     this.title = "セルガード";
     this.icon = "1008061.gif";
-    this.description = "このターンに受けたダメージと同じ値のシールドを次のターン開始時に展開する";
+    this.description = "このターンに受けたダメージと同じ値のシールドを次のターン開始時に展開する。";
   }
 
   getInitialCondition(){
