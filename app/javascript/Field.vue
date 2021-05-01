@@ -183,8 +183,11 @@ export default {
     },
     viewStyle(viewId){
       const opacity = viewId === 3 ? Math.abs(Math.sin(this.layerStatus[viewId] / 20)) * 0.7 + 0.3 : 1;
+      // ラスダンはランダム背景
+      const dungeon_id = this.$store.state.user.status.current_dungeon_id;
+      const showDungeonId = dungeon_id == 8 ? ((Math.floor(this.$store.state.user.status.current_dungeon_depth / 150)) % 8) + 1 : dungeon_id
       return {
-        backgroundImage: `url("/images/backgrounds/${this.$store.state.user.status.current_dungeon_id}/${this.scapeId()}-${viewId}.png")`,
+        backgroundImage: `url("/images/backgrounds/${showDungeonId}/${this.scapeId()}-${viewId}.png")`,
         backgroundPosition: `-${Math.floor(this.layerStatus[viewId])}px 0`,
         opacity: opacity,
       }
