@@ -51,7 +51,7 @@ event:
   attenuate_velocity_per_event: 1
   attenuate_increase_threshold: 250
   long_time_absent_threshold_seconds: <%= 3600*6 %>
-  max_coin_amount_per_event: 100
+  max_coin_amount_per_event: 500
   item:
     max_rarity: 5
     # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり
@@ -105,20 +105,20 @@ gacha:
       title: "神秘の鍋"
       min_point: 0
       reward_frequency: 1000
-      weights: [0, 7295, 2200, 400, 100, 5]
+      weights: [0, 7290, 2200, 400, 100, 10]
       additional_rank: 20
       limit: 10000
     - id: 2
       title: "神秘の大鍋"
       min_point: 100000
       reward_frequency: 5000
-      weights: [0, 6780, 2400, 600, 200, 20]
+      weights: [0, 6750, 2400, 600, 200, 50]
       additional_rank: 40
       limit: 50000
     - id: 3
       title: "不可思議の大鍋"
       min_point: 1000000
       reward_frequency: 10000
-      weights: [0, 3400, 4400, 1650, 500, 50]
+      weights: [0, 1400, 4400, 2650, 1250, 300]
       additional_rank: 40
       limit: 100000

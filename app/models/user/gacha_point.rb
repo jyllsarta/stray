@@ -21,7 +21,7 @@ class User::GachaPoint < ApplicationRecord
     with_lock do
       raise OverPotLimit if amount > current_pot.limit
       user.status.consume_coin!(amount)
-      fixed_reward_messages = add_fixed_rewards!(amount)
+      fixed_reward_messages = add_fixed_rewards!(amount, user)
       random_reward_messages = add_random_rewards!(amount)
       self.increment!(:point, amount)
       reload_pot!
@@ -42,7 +42,7 @@ class User::GachaPoint < ApplicationRecord
     end
   end
 
-  def add_fixed_rewards!(amount)
+  def add_fixed_rewards!(amount, user)
     # ポイント1000のユーザは1000の報酬はすでにもらってるので片方の境界を外す
     rewards = GachaFixedReward.where(point: (point+1)..(point+amount))
     rewards.map{ |reward| Gift.new(reward.giftable_type, reward.giftable_id, reward.amount).receive!(user) }

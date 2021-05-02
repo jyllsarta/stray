@@ -162,7 +162,7 @@ RSpec.describe ItemEvent, type: :model do
           user.items.create(item_id: item5.id, rank: rank + Constants.item.higher_rank_jitter)
         end
         it "アイテムはコインに変換されてて、コイン量はキャップされている" do
-          expect{subject}.to change(user.status, :coin).by(100)
+          expect{subject}.to change(user.status, :coin).by(Constants.event.max_coin_amount_per_event)
           expect(event.logs[0][:message].include?("コインに変換した")).to eq(true)
         end  
       end

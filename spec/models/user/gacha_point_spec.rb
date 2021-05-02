@@ -88,7 +88,8 @@ RSpec.describe User::GachaPoint, type: :model do
         end
         it "posts achievement" do
           subject
-          expect(user).to have_received(:achievement_logger).twice # consume_coin でもpostされる
+          # consume_coin / receive_random_item でもpostされるので総計3回
+          expect(user).to have_received(:achievement_logger).exactly(3).times
         end
       end
     end
