@@ -57,7 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'ridgepole'
 gem 'slim-rails'
 gem "dotenv"
-gem "annotate"
+gem "annotate", git: 'git@github.com:dcangulo/annotate_models.git', branch: "develop"
 gem "activerecord-import"
 gem "sentry-rails"
 gem "redis"
