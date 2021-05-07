@@ -5,7 +5,7 @@ RSpec.describe Achievement::Type::WinEnemyUpperRank, type: :model do
   let!(:user_status){ create(:user_status, user: user) }
   let!(:achievement){ create(:achievement, type: "Achievement::Type::WinEnemyUpperRank", target_id: enemy.id) }
   let!(:user_achievement){ create(:user_achievement, user: user, achievement: achievement) }
-  let(:enemy){ create(:enemy, rank: 100) }
+  let(:enemy){ create(:enemy, strength: 100) }
   let(:params) do
     {
       user: user,
@@ -18,7 +18,7 @@ RSpec.describe Achievement::Type::WinEnemyUpperRank, type: :model do
     subject{ Achievement.find(achievement.id).progress_achievement(user_achievement, params) }
     context "正常系" do
       before do
-        allow_any_instance_of(User::Status).to receive(:average_item_rank).and_return(99)
+        allow_any_instance_of(User::Status).to receive(:player_strength).and_return({atk: 100, def: 99})
       end
       let(:quest) do
         OpenStruct.new(
@@ -36,7 +36,7 @@ RSpec.describe Achievement::Type::WinEnemyUpperRank, type: :model do
     end
     context "ランク過剰" do
       before do
-        allow_any_instance_of(User::Status).to receive(:average_item_rank).and_return(100)
+        allow_any_instance_of(User::Status).to receive(:player_strength).and_return({atk: 100, def: 100})
       end
       let(:quest) do
         OpenStruct.new(

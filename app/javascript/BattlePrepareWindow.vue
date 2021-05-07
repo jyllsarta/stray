@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: false})")
+          .arrow
         .title
           | クエスト戦・準備
       .description
@@ -28,29 +29,49 @@
           :right-side="false"
         )
         CardList.enemy_deck(
+          :class="enemyDefWins ? 'win' : ''"
           :cards="enemyDeck"
           :right-side="true"
         )
         .enemy_list.scrollable
           .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
-              | {{enemy.name}}
-            .rank
-              | {{enemy.rank}}
-        .enemy_rank_notification(v-if="averageItemRank < currentEnemy.rank" )
-          | 敵IRに達していないため、
-          | 敵カードが強化されます。
-        .blank_card_notification(v-if="$store.getters['user/hasEmptySlot']" )
-          | 装備枠に空きがあると
-          | 「休憩」で埋まります。
+              | {{enemy.is_boss ?  "★" : ""}}{{enemy.name}}
+        .notifications
+          | {{notificationText}}
         .status_area
-          .status
+          .status(@mouseover="$store.commit('guide/updateGuide', atkGuideMessage)")
             .player
-              | {{averageItemRank}}
+              .main
+                | {{playerAtkMainPart}}
+              .sub
+                | {{playerAtkSubPart}}
             .label
-              | 平均IR
-            .enemy
-              | {{currentEnemy.rank}}
+              .index
+                | ATK
+              .equality
+                | {{atkEquality}}
+            .enemy(:class="enemyAtkWins ? 'win' : ''")
+              .main
+                | {{enemyAtkMainPart}}
+              .sub
+                | {{enemyAtkSubPart}}
+          .status(@mouseover="$store.commit('guide/updateGuide', defGuideMessage)")
+            .player
+              .main
+                | {{playerDefMainPart}}
+              .sub
+                | {{playerDefSubPart}}
+            .label
+              .index
+                | DEF
+              .equality
+                | {{defEquality}}
+            .enemy(:class="enemyDefWins ? 'win' : ''")
+              .main
+                | {{enemyDefMainPart}}
+              .sub
+                | {{enemyDefSubPart}}
           .status
             .player
               | {{$store.state.user.quest_battle_parameters.power}}
@@ -77,13 +98,8 @@
               | {{$store.state.user.quest_battle_parameters.hp}}
             .label
               | HP
-            .enemy
+            .enemy(:class="enemyAtkWins ? 'win' : ''")
               | {{currentEnemy.hp}}
-        .player_rank
-          .desc
-            | 平均装備ランク：
-          .rank
-            | {{averageItemRank}}
         .open_skill_window.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: true})")
           | スキル選択
         .switch_deck_type
@@ -127,7 +143,6 @@
               enemyList: [],
               classCardsResponse: [],
               itemCardsResponse: [],
-              averageItemRank: 0,
               wonEnemyIds: [],
           };
       },
@@ -139,6 +154,19 @@
           this.fetchPlayerWonEnemies();
       },
       computed: {
+          notificationText(){
+            let text = "";
+            if(this.$store.getters['user/hasEmptySlot']){
+                text += "装備の空枠は[休憩]になる。\n";
+            }
+            if(this.enemyAtkWins){
+                text += "力負けし有効打が入らずHP増加。\n";
+            }
+            if(this.enemyDefWins){
+                text += "守りが甘く、カード値増加。\n";
+            }
+            return text;
+          },
           currentEnemy(){
               return this.enemyList.find((x)=>x.id===this.selectingEnemyId) || {};
           },
@@ -152,7 +180,7 @@
               return this.currentEnemyReward?.giftable_type?.toLowerCase() || 'coin';
           },
           currentEnemyRewardTypeMessage(){
-              let message = ""
+              let message = "";
               switch(this.currentEnemyRewardType){
                   case 'coin':
                       message = "コインがもらえる。";
@@ -184,7 +212,137 @@
           currentPlayerCards(){
               const cards = this.showsClassCards ? this.classCardsResponse : this.itemCardsResponse;
               return cards?.map((x)=>new Card(x.id, x.name, x.power, x.tech));
-          }
+          },
+          expBase(){
+            const maxValue = Math.max(
+              this.playerAtk,
+              this.playerDef,
+              this.enemyStrength,
+            )
+            const exp = Math.log10(maxValue);
+            return Math.pow(10, exp >= 3 ? ( exp >= 6 ? 6 : 3 ) : 0);
+          },
+          playerAtk(){
+            return this.$store.getters['equip_window/getTotalStrength']("atk", false);
+          },
+          playerDef(){
+            return this.$store.getters['equip_window/getTotalStrength']("def", false);
+          },
+          playerAtkMainPart(){
+            return Math.floor(this.playerAtk / this.expBase);
+          },
+          playerAtkSubPart(){
+            const source = this.playerAtk;
+            const structure = this.expBase;
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyAtkMainPart(){
+            const source = this.currentEnemy.strength || 0;
+            const structure = this.expBase;
+            return Math.floor(source / structure);
+          },
+          enemyAtkSubPart(){
+            const source = this.currentEnemy.strength || 0;
+            const structure = this.expBase;
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          playerDefMainPart(){
+            const source = this.playerDef;
+            const structure = this.expBase;
+            return Math.floor(source / structure);
+          },
+          playerDefSubPart(){
+            const source = this.playerDef;
+            const structure = this.expBase;
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyDefMainPart(){
+            const source = this.currentEnemy.strength || 0;
+            const structure = this.expBase;
+            return Math.floor(source / structure);
+          },
+          enemyDefSubPart(){
+            const source = this.currentEnemy.strength || 0;
+            const structure = this.expBase;
+            if(structure === 1){
+              return " "
+            }
+            const baseString = ("000000" + (source - Math.floor(source / structure) * structure)).slice(-Math.log10(structure));
+            return "," + baseString.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+          },
+          enemyStrength(){
+            return this.currentEnemy.strength || 0;
+          },
+          enemyAtkWins(){
+            return this.playerAtk < this.enemyStrength;
+          },
+          enemyDefWins(){
+            return this.playerDef < this.enemyStrength;
+          },
+          atkEquality(){
+            if(this.playerAtk > this.enemyStrength){
+              return ">";
+            }
+            if(this.playerAtk == this.enemyStrength){
+              return "=";
+            }
+            if(this.playerAtk > this.enemyStrength * Constants.enemy.plusValueThreshold){
+              return "<";
+            }
+            return "<<";
+          },
+          defEquality(){
+            if(this.playerDef > this.enemyStrength){
+              return ">";
+            }
+            if(this.playerDef == this.enemyStrength){
+              return "=";
+            }
+            if(this.playerDef > this.enemyStrength * Constants.enemy.plusValueThreshold){
+              return "<";
+            }
+            return "<<";
+          },
+          atkGuideMessage(){
+            switch(this.atkEquality){
+              case ">":
+                return "【ATK優勢】相手よりも強い。補正なし。";
+              case "=":
+                return "【ATK同格】相手とちょうど一緒。補正なし。";
+              case "<":
+                return `【ATK劣勢】【 ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} < x < ${this.enemyStrength} 】相手よりもわずかに劣っている。敵HPが強化される。`;
+              case "<<":
+                return `【ATK格上】【 x < ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} 】相手のほうが圧倒的に強い。敵HPが大幅に強化される。`;
+              default:
+                return "";                
+            }
+          },
+          defGuideMessage(){
+            switch(this.defEquality){
+              case ">":
+                return "【DEF優勢】相手よりも強い。補正なし。";
+              case "=":
+                return "【DEF同格】相手とちょうど一緒。補正なし。";
+              case "<":
+                return `【DEF劣勢】【 ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} < x < ${this.enemyStrength} 】相手よりもわずかに劣っている。敵カードが強化される。`;
+              case "<<":
+                return `【DEF格上】【 x < ${Math.floor(this.enemyStrength * Constants.enemy.plusValueThreshold)} 】相手のほうが圧倒的に強い。敵カードが大幅に強化される。`;
+              default:
+                return "";                
+            }
+          },
       },
       methods: {
           selectEnemy(id){
@@ -239,7 +397,6 @@
                       console.log(results);
                       this.classCardsResponse = results.data.class_cards;
                       this.itemCardsResponse = results.data.item_cards;
-                      this.averageItemRank = results.data.average_item_rank;
                   })
                   .catch((error) => {
                       console.warn(error.response);
@@ -282,10 +439,6 @@
 
 <style lang="scss" scoped>
   @import "stylesheets/global_setting";
-
-  *{
-    //outline: 1px solid #79f850;
-  }
 
   .description{
     padding: $space;
@@ -358,6 +511,9 @@
       top: 100px;
       width: 213px;
       height: 330px;
+      &.win{
+        color: $yellow;
+      }
     }
 
     .enemy_list{
@@ -369,15 +525,13 @@
       .enemy{
         @include centering($height: 30px);
         margin: 2px;
-        width: calc(100% - 15px);
-        .name, .rank{
+        width: calc(100% - 6px);
+        font-size: $font-size-mini;
+        .name{
+          padding-left: $thin_space;
           display: inline-block;
           text-align: left;
-          width: calc(100% - 2.5em);
-        }
-        .rank{
-          width: 2em;
-          text-align: right;
+          width: 100%;
         }
       }
       .disabled{
@@ -385,32 +539,22 @@
       }
     }
 
-    .enemy_rank_notification{
+    .notifications{
       position: absolute;
-      left: calc((100% - 180px) / 2);
-      top: 170px;
-      width: 180px;
+      left: calc((100% - 220px) / 2);
+      top: 100px;
+      width: 220px;
       height: 20px;
       font-size: $font-size-mini;
-      line-height: 100%;
-      white-space: pre;
-    }
-
-    .blank_card_notification{
-      position: absolute;
-      left: calc((100% - 180px) / 2);
-      top: 120px;
-      width: 180px;
-      height: 20px;
-      font-size: $font-size-mini;
-      line-height: 100%;
+      line-height: 170%;
+      text-align: center;
       white-space: pre;
     }
 
     .status_area{
       position: absolute;
       left: calc((100% - 180px) / 2);
-      top: 200px;
+      top: 170px;
       width: 180px;
       height: 100px;
       .status{
@@ -418,7 +562,7 @@
         width: 100%;
         display: flex;
         text-align: center;
-        align-items: baseline;
+        align-items: center;
         border-bottom: 1px solid $gray3;
         .player, .enemy{
           width: 35%;
@@ -427,19 +571,16 @@
         .label{
           width: 30%;
         }
-      }
-    }
-
-    .player_rank{
-      position: absolute;
-      left: $space;
-      top: 100px;
-      width: 140px;
-      height: 60px;
-      .rank{
-        font-size: $font-size-large;
-        width: 100%;
-        text-align: right;
+        .main{
+          line-height: 100%;
+        }
+        .sub{
+          font-size: 12px;
+          line-height: 100%;
+        }
+        .win{
+          color: $yellow;
+        }
       }
     }
 
@@ -454,8 +595,8 @@
 
     .switch_deck_type{
       position: absolute;
-      left: $space;
-      top: 155px;
+      left: $space + 30px;
+      top: $space + 110px;
       width: 140px;
       height: 56px;
       .class_cards, .equip_cards{
@@ -489,7 +630,7 @@
 
     .battle_start{
       position: absolute;
-      bottom: 80px;
+      bottom: 75px;
       left: calc((100% - 150px) / 2);
       width: 150px;
       @include centering($height: 50px);

@@ -12,7 +12,7 @@ class GiftableReceiver::RandomItem
   end
 
   def received_content_message
-    "#{@user_item.full_name}"
+    "#{@user_item.full_name} 〔R#{@user_item.item_rank}〕"
   end
 
   private
@@ -34,7 +34,7 @@ class GiftableReceiver::RandomItem
   end
 
   def available_items(user, rank, rarity)
-    rank = [rank, 100].max
+    rank = [rank, 50].max
     recent_item_ids = user.random_item_receive_histories.recent.map(&:item_id)
     ::Item.where.not(id: recent_item_ids).where("base_rank <= #{rank}").where(rarity: rarity)
   end

@@ -4,12 +4,13 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})")
+          .arrow
         .title
           | ダンジョン切り替え
       .description
-        | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。
+        | 行ったことのあるダンジョンに戻ったり、新しいダンジョンに挑めます。新ダンジョンはクエストの★ボスを倒すと現れます。
       .body
-        .dungeon_list_tab
+        .dungeon_list_tab.scrollable
           .dungeon.hoverable.selectable(
             v-for="dungeon in visibleDungeons"
             @click="selectDungeon(dungeon.id)"
@@ -34,12 +35,16 @@
                 | F
             .go_to_floor_label
               | 移動先：
+            .returns_on_death.clickable(@click="switchReturnsOnDeath")
+              | {{returnsOnDeathText}}
+            .returns_on_death_label
+              | 全滅したら100F戻る：
             .top_floor
-              | 1F
-            .deepest_floor
               NumeratableNumber(:number="currentDungeonMaxDepth", :speed="0.4")
               .f
                 | F
+            .deepest_floor
+              | 1F
             .descriptions
               .dungeon_title(:key="selectingDungeon.name")
                 | {{selectingDungeon.name}}
@@ -94,9 +99,12 @@ export default {
       return this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth || 0;
     },
     sliderWidthPercent(){
-      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.5);
+      const ratio = Math.max(Math.min(this.$store.state.user.dungeon_progresses[this.selectingDungeonId]?.max_depth / this.selectingDungeon.depth, 1), 0.23);
       return Math.floor(ratio * 100) + "%";
     },
+    returnsOnDeathText(){
+      return this.$store.state.user.status.returns_on_death ? "有効" : "無効";
+    }
   },
   methods: {
     selectDungeon(dungeonId){
@@ -138,10 +146,10 @@ export default {
           this.$store.commit('window/updateWindowShowState', {windowName: 'switch_dungeon', state: false})
         })
         .then(()=>{
-          // とてもとてもダサいのだけど、400ms待って十分に演出が流れてから背景を更新する
+          // とてもとてもダサいのだけど、一定時間待って十分に演出が流れてから背景を更新する
           // うまくかけていたなら「閉じる」「更新を待つ」「開く」ってできるんだろうけどそれを想定したコードにできなかった...勉強のためにもいつか直したい
           return new Promise((resolve, reject) => {
-            setTimeout(resolve, 400);
+            setTimeout(resolve, 150);
           });
         })
         .then(()=>{
@@ -150,9 +158,12 @@ export default {
         }
       );
     },
+    switchReturnsOnDeath(){
+      this.$store.dispatch("user/switchReturnsOnDeath", {returns_on_death: !this.$store.state.user.status.returns_on_death});
+    },
     onFloorBlur(){
       this.selectingDungeonDepth = parseInt(this.selectingDungeonDepth) || 1;
-      this.selectingDungeonDepth = Math.min(Math.max(this.selectingDungeonDepth, 1), this.currentDungeonMaxDepth);
+      this.selectingDungeonDepth = Math.min(Math.max(this.selectingDungeonDepth, 1), this.currentDungeonMaxDepthCanSwitch);
     },
   }
 }
@@ -169,7 +180,7 @@ export default {
     display: flex;
   }
   .dungeon_list_tab{
-    padding: $space;
+    margin: $thin_space;
     display: flex;
     flex-direction: column;
     height: 430px;
@@ -177,7 +188,7 @@ export default {
     .dungeon{
       margin: $thin_space;
       padding: $space;
-      width: 100%;
+      width: calc(100% - 10px);
       .name{
         display: inline-block;
         width: 60%;
@@ -211,12 +222,12 @@ export default {
       height: 232px;
       .depth_slider{
         position: absolute;
-        top: 0;
+        bottom: 0px;
         left: 70px;
         width: 210px;
         height: 20px;
         transform-origin: left;
-        transform: rotate(90deg);
+        transform: rotate(-90deg);
         input{
           -webkit-appearance:none;
           width: 100%;
@@ -228,12 +239,14 @@ export default {
           -webkit-appearance:none;
           border-radius: $radius;
           border-right: 1px solid $gray2;
+          border-left: 1px solid $gray2;
+          background-color: $gray3-opacity;
           background-image: url("/images/ui/direction_tirol.png");
           background-size: contain;
           background-repeat: no-repeat;
-          background-position: bottom;
-          height: 135px;
-          width: 80px;
+          background-position: top;
+          height: 120px;
+          width: 45px;
         }
       }
       .go{
@@ -241,11 +254,11 @@ export default {
         bottom: $space;
         right: $space;
         width: 100px;
-        height: 50px;
+        height: 54px;
         line-height: 100%;
         font-size: $font-size-large;
         text-align: center;
-        padding-top: (50px - $font-size-large) / 2;
+        padding-top: (54px - $font-size-large) / 2;
       }
       .go_to_floor{
         position: absolute;
@@ -261,21 +274,35 @@ export default {
       }
       .go_to_floor_label{
         position: absolute;
-        bottom: $font-size-large + $space * 2;
+        bottom: $font-size-large + $space * 2.5;
         right: 120px;
         width: 100px;
         font-size: $font-size-mini;
       }
+      .returns_on_death_label{
+        position: absolute;
+        bottom: $font-size-large + $space * 2.5;
+        right: 250px;
+        width: 150px;
+        font-size: $font-size-mini;
+      }
+      .returns_on_death{
+        position: absolute;
+        bottom: $space;
+        right: 250px;
+        width: 56px;
+        @include centering($height: 30px)
+      }      
       .top_floor{
         position: absolute;
         top: $space;
         left: 100px;
+        display: flex;
       }
       .deepest_floor{
         position: absolute;
         bottom: $space;
         left: 100px;
-        display: flex;
       }
       .descriptions{
         position: absolute;

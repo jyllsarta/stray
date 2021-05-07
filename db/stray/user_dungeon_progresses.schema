@@ -1,7 +1,9 @@
 create_table "user_dungeon_progresses", force: :cascade do |t|
-  t.integer :user_id, null: false, default: 0
+  t.integer :user_id,    null: false
   t.belongs_to :dungeon, null: false
-  t.integer :max_depth, null: false, default: 0
-  t.boolean :cleared, null: false, default: false
+  t.integer :max_depth,  null: false, default: 0
+  t.boolean :cleared,    null: false, default: false
   t.timestamps
 end
+
+add_index :user_dungeon_progresses, [:user_id, :dungeon_id], unique: true

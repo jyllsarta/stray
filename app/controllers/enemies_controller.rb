@@ -1,6 +1,7 @@
 class EnemiesController < ApplicationController
   def index
-    @user = current_user
+    # TODO: SQL最適化
+    @user_strength = current_user.status.player_strength
     @enemies = Enemy.where(quest_id: params[:quest_id]).preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
   end
 
@@ -12,7 +13,7 @@ class EnemiesController < ApplicationController
 
   def showdown
     quest = QuestBattle.new(current_user)
-    quest.showdown!(params[:operation_history].map{|x| x.permit(:skillIndex, cards: [])}.map(&:to_h))
+    quest.showdown!(params[:operation_history].map{|x| x.permit(skillIndex: [], cards: [])}.map(&:to_h))
     result = quest.result
     pp result unless Rails.env.test?
 

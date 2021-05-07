@@ -2,12 +2,13 @@
 #
 # Table name: quests
 #
-#  id              :bigint           not null, primary key
-#  description     :string(255)
-#  name            :string(255)
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  parent_quest_id :integer
+#  id                    :bigint           not null, primary key
+#  description           :string(255)
+#  name                  :string(255)
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  field_effect_state_id :integer
+#  parent_quest_id       :integer
 #
 
 class Quest < ApplicationRecord
@@ -20,7 +21,7 @@ class Quest < ApplicationRecord
 
   def cleared?(user)
     user_won_enemy_ids = user.won_enemies.map(&:enemy_id)
-    enemies.ids.all?{ |enemy_id| user_won_enemy_ids.include?(enemy_id) }
+    enemies.where(is_boss: true).ids.all?{ |enemy_id| user_won_enemy_ids.include?(enemy_id) }
   end
 
   def visible?(user)

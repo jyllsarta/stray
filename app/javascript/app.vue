@@ -2,13 +2,13 @@
   #app
     Guide
     .game
-      Field(ref="field")
-      Header
-      RightMenu
-      Status
-      Velocity
-      Log
-      EventIllust
+      Field(ref="field" v-if="showField")
+      Header(v-if="showField")
+      RightMenu(v-if="showField")
+      Status(v-if="showField")
+      Velocity(v-if="showField")
+      Log(v-if="showField")
+      EventIllust(v-if="showField")
       AchievementCompleteFlash
       TransitionFrame(v-if="$store.state.window.transition_frame")
       transition(name="open_window")
@@ -22,6 +22,10 @@
       transition(name="open_window")
         RelicWindow(v-if="$store.state.window.relic")
       transition(name="open_window")
+        ProfileWindow(v-if="$store.state.window.profile")
+      transition(name="open_window")
+        GachaWindow(v-if="$store.state.window.gacha")
+      transition(name="open_window")
         QuestWindow(v-if="$store.state.window.quest")
       transition(name="open_window")
         BattlePrepareWindow(v-if="$store.state.window.battle_prepare")
@@ -31,6 +35,8 @@
         AchievementWindow(v-if="$store.state.window.achievement")
       transition(name="open_window")
         BattleWindow(v-if="$store.state.window.battle")
+      transition(name="ending")
+        EndingWindow(v-if="$store.state.window.ending")
       Api(ref="api")
       Timer
       EventWatcher(:root-ref="$refs")
@@ -57,6 +63,8 @@ import EquipWindow from './EquipWindow'
 import EquipDetailWindow from './EquipDetailWindow'
 import SwitchDungeonWindow from './SwitchDungeonWindow'
 import RelicWindow from './RelicWindow'
+import ProfileWindow from './ProfileWindow'
+import GachaWindow from './GachaWindow'
 import QuestWindow from './QuestWindow'
 import BattlePrepareWindow from './BattlePrepareWindow'
 import EquipSkillWindow from './EquipSkillWindow'
@@ -69,6 +77,7 @@ import LoadingFrame from "./LoadingFrame.vue";
 import SessionExpiredFrame from "./SessionExpiredFrame.vue";
 import ClickEffect from "./ClickEffect.vue";
 import AchievementWindow from "./AchievementWindow.vue";
+import EndingWindow from "./EndingWindow.vue";
 
 export default {
   store,
@@ -89,6 +98,8 @@ export default {
     EquipDetailWindow,
     SwitchDungeonWindow,
     RelicWindow,
+    ProfileWindow,
+    GachaWindow,
     QuestWindow,
     BattlePrepareWindow,
     EquipSkillWindow,
@@ -100,6 +111,12 @@ export default {
     EventWatcher,
     MessageForm,
     ClickEffect,
+    EndingWindow,
+  },
+  computed: {
+    showField(){
+      return !this.$store.getters["window/isOnFullScreen"];
+    },
   },
 }
 </script>

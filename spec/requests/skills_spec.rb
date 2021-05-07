@@ -33,7 +33,10 @@ RSpec.describe "Skill", type: :request do
                                                                           description: String,
                                                                           reusable: Boolean,
                                                                           is_defence: Boolean,
+                                                                          is_exhaust: Boolean,
+                                                                          is_passive: Boolean,
                                                                           cost: Integer,
+                                                                          threshold_hp: nil,
                                                                           effect1_category: String,
                                                                           effect1_to_self: Boolean,
                                                                           effect1_value: Integer,
@@ -52,6 +55,7 @@ RSpec.describe "Skill", type: :request do
   describe "POST /skills/equip" do
     include_context("stub_current_user")
     let(:user){ create(:user) }
+    let!(:user_status){ create(:user_status, user: user) }
     let!(:skill){ create(:skill) }
     let!(:user_skill){ create(:user_skill, user: user, skill: skill) }
     let(:do_post) { post equip_skills_path, params: params}

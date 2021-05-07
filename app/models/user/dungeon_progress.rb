@@ -8,11 +8,12 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  dungeon_id :bigint           not null
-#  user_id    :integer          default(0), not null
+#  user_id    :integer          not null
 #
 # Indexes
 #
-#  index_user_dungeon_progresses_on_dungeon_id  (dungeon_id)
+#  index_user_dungeon_progresses_on_dungeon_id              (dungeon_id)
+#  index_user_dungeon_progresses_on_user_id_and_dungeon_id  (user_id,dungeon_id) UNIQUE
 #
 
 class User::DungeonProgress < ApplicationRecord
@@ -29,5 +30,9 @@ class User::DungeonProgress < ApplicationRecord
 
   def clear!
     self.update!(cleared: true)
+  end
+
+  def cached_dungeon
+    @_dungeon ||= dungeon
   end
 end

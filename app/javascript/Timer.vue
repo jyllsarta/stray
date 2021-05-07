@@ -19,7 +19,7 @@ export default {
       const next_date = new Date(this.$store.state.event.next_event_at * 1000);
       const now = new Date();
       // 実際にサーバ上でイベントが発生する時刻より Constants.nextEventDelaySeconds 秒だけ遅れさせてからリクエストを取りに行く
-      const time = Math.max(Math.ceil((next_date - now) / 1000) + Constants.nextEventDelaySeconds, 0);
+      const time = Math.ceil((next_date - now) / 1000) + Constants.nextEventDelaySeconds;
       this.$store.commit("timer/updateEventTimer", {time: time});
     },
   },

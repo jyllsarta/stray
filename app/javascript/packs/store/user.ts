@@ -21,6 +21,10 @@ export default {
       coin: 0,
       star: 0,
       velocity: 100,
+      max_item_rank_for_rankup: 100,
+      won_last_boss: false,
+      returns_on_death: false,
+      skill_slot_count: 1,
     },
     characters: {
       spica: {},
@@ -40,27 +44,22 @@ export default {
       const current_dungeon_id = state.status.current_dungeon_id;
       return state.status.current_dungeon_depth >= rootState.masterdata?.dungeons[current_dungeon_id]?.depth;
     },
-    isNearBossFloor(state, getters, rootState, rootGetters){
-      const current_dungeon_id = state.status.current_dungeon_id;
-      const max_depth = state.dungeon_progresses[current_dungeon_id]?.max_depth || 0;
-      const unexplored = state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor >= max_depth;
-      const around_boss_floor = ((state.status.current_dungeon_depth+Constants.dungeon.bossLoseRewindFloor) % Constants.dungeon.bossFloorFrequency) < Constants.dungeon.bossLoseRewindFloor;
-      return unexplored && around_boss_floor;
-    },
     currentStandardParameter: (state, getters) => {
       return getters.rankFactor(state.status.current_dungeon_rank);
     },
     aroundEnemyAtk: (state, getters) => {
       const actual_rank = getters.aroundEnemyRank;
-      // str, def の基準値4つぶん*str+dex の合算になるので2倍で、基準パラメータの8倍が敵ATKになる
+      // str, vit の基準値4つぶん*str+vit の合算になるので2倍で、基準パラメータの8倍が敵ATKになる
       return Math.floor(8 * getters.rankFactor(actual_rank));
     },
     aroundEnemyRank: (state, getters) => {
       return Math.floor(state.status.current_dungeon_rank);
     },
+    // 処理負荷軽減のためにEquipWindow.tsにコピペしてある
     rankFactor: (state, getters) => (rank) => {
       return Math.floor(Math.pow(Constants.item.rankFactor, rank) * 100) - 100;
     },
+    // 処理負荷軽減のためにEquipWindow.tsにコピペしてある
     rarityFactor: (state, getters) => (rarity) => {
       return Constants.item.rarityFactor[rarity];
     },
@@ -124,6 +123,9 @@ export default {
     updateUserCoin(state, payload) {
       state.status.coin = payload;
     },
+    updateUserReturnOnDeathStatus(state, payload){
+      state.status.returns_on_death = payload;
+    },
   },
   actions: {
     fetchUserModel ({ commit }) {
@@ -148,6 +150,22 @@ export default {
         ax.post(path, payload)
           .then((results) => {
             console.log(results);
+            resolve();
+          })
+          .catch((error) => {
+            console.warn(error.response);
+            console.warn("NG");
+          });
+      })
+    },
+    switchReturnsOnDeath ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        const user_id = localStorage.user_id;
+        const path = `/users/${user_id}/switch_returns_on_death.json`;
+        ax.post(path, payload)
+          .then((results) => {
+            console.log(results);
+            commit("updateUserReturnOnDeathStatus", results.data.returns_on_death);
             resolve();
           })
           .catch((error) => {

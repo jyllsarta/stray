@@ -22,6 +22,8 @@ RSpec.describe Achievement::Event::Quest, type: :model do
     it "returns listener list" do
       expect( subject ).to eq([
         'Achievement::Type::WinEnemy',
+        'Achievement::Type::WinEnemyCount',
+        'Achievement::Type::LoseEnemy',
         'Achievement::Type::WinEnemyWithNoSkill',
         'Achievement::Type::WinEnemyWithNoEquip',
         'Achievement::Type::WinEnemyUpperRank',

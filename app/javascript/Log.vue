@@ -1,7 +1,7 @@
 <template lang="pug">
-  .log.window(ref="log", :class="foldClass" @click="switchFoldStatus")
+  .window.floating_window.log(ref="log", :class="foldClass" @click="switchFoldStatus")
     transition-group(name="show-in")
-      .item(v-for="log in logs", :key="log.pseudo_id")
+      .item(v-for="log in logs", :key="log.pseudo_id" :class="$store.state.event.eventsQueue.length > 0 ? 'stop-animation' :''")
         .at
           | {{composeTime(log.at)}}
         .content
@@ -57,6 +57,9 @@ export default {
   watch: {
     "$store.state.event.events": {
       handler: function(){
+        if(this.$store.state.event.eventsQueue.length > 0){
+          this.scrollToBottom();
+        }
         Vue.nextTick(()=>{
           //大雑把にだいたい画面の下の方にいたら下限をキープする
           if(this.$refs.log.scrollHeight - this.$refs.log.scrollTop < 600){
@@ -85,6 +88,7 @@ export default {
   flex-direction: column;
   font-size: $font-size-mini;
   overflow-y: scroll;
+  cursor: pointer;
   &::-webkit-scrollbar{
     width: 10px;
   }
@@ -131,6 +135,9 @@ export default {
   .show-in-leave-to{
     transform: translateX(-30px);
     opacity: 0.5;
+  }
+  .stop-animation{
+    transition: none 0s;
   }
 }
 </style>

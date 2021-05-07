@@ -4,42 +4,54 @@
     .window.content
       .title_area
         .back_button.clickable(@click="closeWindow")
+          .arrow
         .title
           | 実績
       .description
         | これまでに取得した実績を確認できます。報酬がある場合受け取れます。
       .body
-        .achievements.scrollable
-          transition-group(name="achievement-animation")
-            .achievement.selectable.hoverable(
-              v-for="achievementStep in sortedAchievementSteps()",
-              @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
-              @click="selectAchievementStep(achievementStep.id)",
-              :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
-              :key="achievementStep.id"
-            )
-              .body
-                .height_block
-                .icon.item
-                  img(:src="`/images/icons/achievements/${achievementStep.icon_image_path}`")
-                .title.item
-                  | {{achievementStep.title}}
-                .progress.item
-                  .current
-                    | {{userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) : 0}}
-                  .sep
-                    | /
-                  .target
-                    | {{achievementStep.progress}}
-                .reward.item
-                  .value
-                    .icon
-                      img(src="/images/ui/star.png")
-                  .amount
-                    | x{{achievementStep.rewards[0] ? achievementStep.rewards[0].amount : 0}}
-                .receive.item
-                  | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
-              .under_bar(:style="{width: (userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) / achievementStep.progress : 0) * 100 + '%'}")
+        .achievements
+          .achievement_headers
+            .icon.item
+            .title_name.item
+              | 実績名
+            .progress.item
+              | 進行度
+            .reward.item
+              | 報酬
+            .receive.item
+              | 進捗
+          .contents.scrollable
+            transition-group(name="achievement-animation")
+              .achievement.selectable.hoverable(
+                v-for="achievementStep in sortedAchievementSteps()",
+                @mouseover="$store.commit('guide/updateGuide', achievementStep.description)",
+                @click="selectAchievementStep(achievementStep.id)",
+                :class="[achievementStep.id === selectingAchievementStepId ? 'selected' : 'not_selected', achievementStepStatus(achievementStep.id)]"
+                :key="achievementStep.id"
+              )
+                .body
+                  .height_block
+                  .icon.item
+                    img(:src="`/images/icons/achievements/${achievementStep.icon_image_path}`")
+                  .title.item
+                    | {{achievementStep.title}}
+                  .progress.item
+                    .current
+                      | {{userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) : 0}}
+                    .sep
+                      | /
+                    .target
+                      | {{achievementStep.progress}}
+                  .reward.item
+                    .value
+                      .icon
+                        img(src="/images/ui/star.png")
+                    .amount
+                      | x{{achievementStep.rewards[0] ? achievementStep.rewards[0].amount : 0}}
+                  .receive.item
+                    | {{achievementLabels[achievementStepStatus(achievementStep.id)]}}
+                .under_bar(:style="{width: (userAchievements[achievementStep.achievement_id] ? Math.min(userAchievements[achievementStep.achievement_id].progress, achievementStep.progress) / achievementStep.progress : 0) * 100 + '%'}")
         .details
           .summary
             .label
@@ -245,76 +257,105 @@
 
   .body{
     display: flex;
-
     .achievements{
-      display: flex;
-      flex-direction: column;
-      height: 440px;
-      overflow-y: scroll;
+      height: 420px;
       width: 75%;
-      .achievement{
-        margin: $thin_space / 2;
-        width: calc(100% - 8px);
-        .under_bar{
-          height: 1px;
-          background-color: $yellow;
+      .achievement_headers{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 30px;
+        .item{
+          margin-left: $thin_space;
+          margin-right: $thin_space;
         }
-        .body{
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          .height_block{
-            height: 40px; // achievement 全体の高さをこいつで決めている
+        .icon{
+          width: 24px;
+          height: 24px;
+        }
+        .title_name{
+          flex-grow: 1;
+        }
+        .progress{
+          width: 4rem;
+        }
+        .reward{
+          width: 65px;
+        }
+        .receive{
+          width: 60px;
+          margin-right: 20px;
+        }    
+      }
+      .contents{
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        height: 410px;
+        .achievement{
+          margin: $thin_space / 2;
+          width: calc(100% - 8px);
+          .under_bar{
+            height: 1px;
+            background-color: $yellow;
           }
-          .item{
-            margin-left: $thin_space;
-            margin-right: $thin_space;
-          }
-          .icon{
-            width: 24px;
-            height: 24px;
-          }
-          .title{
-            flex-grow: 1;
-            font-size: 18px; // ここも妙に通常サイズだと小さく見えるので特異なサイズにする...
-          }
-          .progress{
-            .current, .target{
-              display: inline-block;
-              min-width: 3rem;
-              text-align: right;
+          .body{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .height_block{
+              height: 40px; // achievement 全体の高さをこいつで決めている
             }
-            .sep{
-              display: inline-block;
-              width: 1rem;
-              text-align: center;
-            }
-          }
-          .reward{
-            width: 50px;
-            .value{
-              display: inline-block;
-              padding-left: $thin_space;
+            .item{
+              margin-left: $thin_space;
+              margin-right: $thin_space;
             }
             .icon{
-              display: inline-block;
-              width: 14px;
-              height: 14px;
-              img{
-                width: 100%;
-                height: 100%;
+              width: 24px;
+              height: 24px;
+            }
+            .title{
+              flex-grow: 1;
+              font-size: 18px; // ここも妙に通常サイズだと小さく見えるので特異なサイズにする...
+            }
+            .progress{
+              .current, .target{
+                display: inline-block;
+                min-width: 3rem;
+                text-align: right;
+              }
+              .sep{
+                display: inline-block;
+                width: 1rem;
+                text-align: center;
               }
             }
-            .amount{
-              display: inline-block;
+            .reward{
+              width: 50px;
+              .value{
+                display: inline-block;
+                padding-left: $thin_space;
+              }
+              .icon{
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                img{
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+              .amount{
+                display: inline-block;
+              }
+            }
+            .receive{
+              @include centering($height: 30px);
+              width: 60px;
+              margin-right: 20px;
             }
           }
-          .receive{
-            @include centering($height: 30px);
-            width: 60px;
-            margin-right: 20px;
-          }
-        }
+        } 
       }
     }
     .details{

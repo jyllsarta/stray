@@ -10,6 +10,10 @@ p
 = form_tag get_all_items_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag 'アイテム全部ゲット'
+= form_tag set_all_item_rank_debug_index_path
+  = text_field_tag :rank, 100
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag '所持アイテムを全部+Xにする'
 = form_tag set_coin_debug_index_path
   = text_field_tag :coin, 999999999
   = hidden_field_tag :user_id, 0, id: nil
@@ -18,6 +22,9 @@ p
   = text_field_tag :star, 99999
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag '星のカケラをこの値にする'
+= form_tag open_all_dungeons_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag 'ダンジョンを全部オープン'
 = form_tag set_depth_debug_index_path
   = text_field_tag :depth, 999
   = hidden_field_tag :user_id, 0, id: nil
@@ -29,6 +36,9 @@ p
 = form_tag learn_all_user_skills_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag 'スキル全部習得'
+= form_tag open_all_quests_debug_index_path
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag 'クエストを全部オープン'
 = form_tag clear_quest_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = select_tag :clear_quest_id, options_from_collection_for_select(Quest.all, :id, :name)
@@ -45,3 +55,7 @@ p
 = form_tag clear_achievement_debug_index_path
   = hidden_field_tag :user_id, 0, id: nil
   = submit_tag '実績を全部リセット'
+= form_tag edit_gacha_point_debug_index_path
+  = text_field_tag :point, 0
+  = hidden_field_tag :user_id, 0, id: nil
+  = submit_tag '累計投入額をこの値にする'

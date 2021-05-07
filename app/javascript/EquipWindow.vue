@@ -7,15 +7,17 @@
           @click="closeWindow"
           @mouseover="$store.commit('guide/updateGuide', '編集を確定してメニューを閉じます。')",
         )
+          .arrow
         .title
           | 装備
       .body
-        .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}")
+        .sub_chara(:style="{transform: `translateY(${sub_character_position}px)`}", :key="$store.state.equip_window.main_character_id")
           img.sub_character_image(
             :src="'images/characters/' + $store.getters['equip_window/getSubCharacterName'] + '.png'"
             @click="$store.commit('equip_window/switchMainCharacter')"
           )
-        .chara(:style="{transform: `translateY(${main_character_position}px)`}")
+        // key被り回避のためのハック用 +1
+        .chara(:style="{transform: `translateY(${main_character_position}px)`}", :key="$store.state.equip_window.main_character_id + 1")
           img.character_image(
             :src="'images/characters/' + $store.getters['equip_window/getMainCharacterName'] + '.png'"
             @click="$store.commit('equip_window/switchMainCharacter')"
@@ -25,58 +27,98 @@
           @mouseover="$store.commit('guide/updateGuide', '装備を編集するキャラを交代します。')",
         )
           | 編集キャラ交代
-        .player_rank
-          .desc
-            | 平均装備ランク
-          .rank
-            NumeratableNumber(:number="averageItemRank", :speed="0.4")
-        .reinforcements.block
-          .label
-            | 加護
-          .reinforcement_list(v-if="false")
-            // 一旦加護実装まで封印
-            .reinforcement
-              | 先制Lv2
-          .no-reinforcement(v-else="false")
-            .message
-              | 加護がありません
+        .total_chara_status.block
+          .label.topic_medium
+            | 合計ステータス
+          .status
+            .param
+              .value
+                span.current
+                  | ATK: {{$store.getters['equip_window/getTotalStrength']('atk', true)}}
+                span.diff(
+                  :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff']('atk')) ]"
+                )
+                  | ({{$store.getters['equip_window/getTotalStrengthDiff']('atk')}})
+              .bar_area
+                .bar.plus(
+                  :style="{width: atkBarTotal}"
+                )
+            .param
+              .value
+                span.current
+                  | DEF: {{$store.getters['equip_window/getTotalStrength']('def', true)}}
+                span.diff(
+                  :class="[ deltaClass($store.getters['equip_window/getTotalStrengthDiff']('def')) ]"
+                )
+                  | ({{$store.getters['equip_window/getTotalStrengthDiff']('def')}})
+              .bar_area
+                .bar.minus(
+                  :style="{width: defBarTotal}"
+                )             
         .sub_chara_status.block
-          .label
+          .label.topic_medium
             | {{$store.getters['equip_window/getSubCharacterJapaneseName']}}のステータス
           .status
-            .param(v-for="param in ['atk', 'def']")
-              span.current
-                | {{param.toUpperCase()}}: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], param, true)}}
-              span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param))]")
-                | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], param)}})
+            .param
+              .value
+                span.current
+                  | ATK: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], 'atk', true)}}
+                span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'atk'))]")
+                  | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'atk')}})
+              .bar_area
+                .bar.plus(
+                  :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarSpica : atkBarTirol}"
+                )
+            .param
+              .value
+                span.current
+                  | DEF: {{$store.getters['equip_window/getCharacterStrength']($store.getters['equip_window/getSubCharacterId'], 'def', true)}}
+                span.diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'def'))]")
+                  | ({{$store.getters['equip_window/getCharacterStrengthDiff']($store.getters['equip_window/getSubCharacterId'], 'def')}})
+              .bar_area
+                .bar.minus(
+                  :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? defBarSpica : defBarTirol}"
+                )
           .equips
-            .equip(
+            .equip.character_equip(
               v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId'])"
               @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
               :class="[rarityClass(item)]"
             )
-              | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+              .param
+                | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
+              .bar_area
+                .bar(
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
+                  :class="param"
+                  :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
+                  )
             // 空枠を埋める
-            .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
-              | -
+            .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.getters['equip_window/getSubCharacterId']).length).fill(1))")
+              .param
+                | -
+              .bar_area
+                .bar
         .item_list_main.block
-          .label
-            | アイテム
-          .misc
-            .pager_button(@click="changePage(-1)")
-              | ◀
-            .state
-              | {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
-            .pager_button(@click="changePage(1)")
-              | ▶
-            .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
-              | {{$store.getters['equip_window/getCurrentSortName']}}
-          transition(name="open_window")
-            .select_order(v-if="showing_select_order_window")
-              .close(@click="toggleSelectOrderWindow")
-              .in_window.window
-                .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", @click="onClickChangeSortLambdaButton(i)")
-                  | {{$store.getters['equip_window/sortLambdas'](i).name}}
+          .misc_area
+            .label_block
+              .label.topic_medium
+                | アイテム
+            .misc
+              .pager_button(@click="changePage(-1)")
+                | ◀
+              .state
+                | {{$store.state.equip_window.current_page}} / {{Math.ceil(Object.keys($store.state.user.items).length / Constants.itemsPerPage)}}
+              .pager_button(@click="changePage(1)")
+                | ▶
+              .order.clickable(@mouseover="$store.commit('guide/updateGuide', 'クリックでソート順切り替えができます。')", @click="toggleSelectOrderWindow")
+                | {{$store.getters['equip_window/getCurrentSortName']}}
+              transition(name="open_window")
+                .select_order(v-if="showing_select_order_window")
+                  .close(@click="toggleSelectOrderWindow")
+                  .in_window.window
+                    .order.clickable(v-for="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", @click="onClickChangeSortLambdaButton(i)")
+                      | {{$store.getters['equip_window/sortLambdas'](i).name}}
           .item_list.scrollable(ref="item_list")
             .item.hoverable(
               v-for="item in $store.getters['equip_window/getItemsWithPagerSorted']",
@@ -87,17 +129,20 @@
                 .param(:class="[{ disabled: isAlreadyEquipped(item) }]")
                   .item_name(:class="[rarityClass(item)]")
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
-                  .value
-                    | {{$store.getters['equip_window/getItemEffectValue'](item.id)}}
+                  // 力+技順を特別扱いする
+                  .value(v-if="$store.state.equip_window.current_sort_id === 7")
+                    | {{item.power()}} / {{item.tech()}}
+                  .value(v-if="$store.state.equip_window.current_sort_id !== 7")
+                    | {{$store.getters['equip_window/getCurrentSortKey'].lambda(item)}}
                 .go_to_detail.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_detail', state: true})")
                   | ＊
               .bar_area
                 .bar(
-                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
-                  :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                  :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
-            .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPager'].length).fill(1)")
+            .item(v-for="nilItem in new Array(Constants.itemsPerPage - $store.getters['equip_window/getItemsWithPagerSorted'].length).fill(1)")
               .param_area(:class="[{ disabled: true }]")
                 .param
                   .item_name
@@ -106,12 +151,12 @@
                     | -
                 .bar_area
                 .bar(
-                  v-for="param in ['str', 'dex', 'def', 'agi']"
+                  v-for="param in ['str', 'dex', 'vit', 'agi']"
                   :class="param"
                   :style="{width: 0}"
                 )
         .detail.block
-          .label
+          .label.topic_medium
             | 詳細
           .item_name
             | {{currentItem ? currentItem.name : "-"}}
@@ -125,22 +170,22 @@
               .index
                 | TOTAL
               .value
-                | {{$store.getters['equip_window/getItemEffectValue']($store.state.equip_window.selecting_item_id)}}
-            .parameter(v-for="param in ['str', 'dex', 'def', 'agi']")
+                | {{currentItem ? currentItem.effectValue : ''}}
+            .parameter(v-for="param in ['str', 'dex', 'vit', 'agi']")
               .index(:class="param")
                 | {{param.toUpperCase()}}
               .value
                 | {{currentItem ? currentItem.effectValueOf(param) : ''}}
             .parameter
-              .index.power
-                | 力
+              .index
+                span.power
+                  | 力
+                span.sep
+                  | /
+                span.tech
+                  | 技
               .value
-                | {{currentItem ? currentItem.power() : ''}}
-            .parameter
-              .index.tech
-                | 技
-              .value
-                | {{currentItem ? currentItem.tech() : ''}}
+                | {{currentItem ? `${currentItem.power()} / ${currentItem.tech()}` : ''}}
           .flavor_text
             | {{currentItem ? currentItem.flavor_text : "-"}}
           .open_detail_window.clickable(
@@ -151,13 +196,17 @@
         .main_chara_equips.block
           .label_box
             .label
-              | {{$store.getters['equip_window/getMainCharacterJapaneseName']}}のステータス
+              .topic_medium
+                | {{$store.getters['equip_window/getMainCharacterJapaneseName']}}のステータス
             .current_parameters_label
-              | ステータス
+              .topic_medium
+                | ステータス
             .this_item_label
-              | 選択中の装備
+              .topic_medium
+                | 選択中の装備
             .to_status_label
-              | 効果値
+              .topic_medium
+                | 効果値
           .main
             .kos
               img.ko.upper(src="images/ui/ko.png")
@@ -165,7 +214,7 @@
             .around_block
               | 周辺の敵ATK:{{aroundEnemyAtk}}
             .equips
-              .equip.hoverable.item(
+              .equip.character_equip.hoverable.item(
                 v-for="item in $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id)"
                 @mouseenter="$store.commit('equip_window/updateSelectingItemId', item.id)"
                 @click="$store.commit('equip_window/removeEquip', {itemId: item.id, characterId: $store.state.equip_window.main_character_id})"
@@ -175,14 +224,14 @@
                     | {{$store.getters['equip_window/getItemRarityIcon'](item.id)}}{{item.name}}{{$store.getters['equip_window/getUserItemRankTextForDisplay'](item.id)}}
                 .bar_area
                   .bar(
-                    v-for="param in ['str', 'dex', 'def', 'agi']"
+                    v-for="param in ['str', 'dex', 'vit', 'agi']"
                     :class="param"
-                    :style="{width: cropWidth( 100 * (1/4) * relativeEffectivenessRatio(item.effectValueOf(param)) + withPercent(item.effectValueOf(param)))}"
+                    :style="{width: (100 * Math.max(item.effectValueOf(param), 0) / maxStrength) + '%'}"
                   )
-              .equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
+              .equip.character_equip(v-for="nilItem in (new Array(Constants.maxEquipCount - $store.getters['equip_window/getCurrentEquipsByCharacterId']($store.state.equip_window.main_character_id).length).fill(1))")
                 | -
             .current_parameters
-              .status(v-for="param in ['str', 'dex', 'def', 'agi']")
+              .status(v-for="param in ['str', 'dex', 'vit', 'agi']")
                 .param_area
                   .label(:class="param")
                     | {{param.toUpperCase()}}
@@ -191,11 +240,11 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: barWidthPercent(param)}"
+                    :style="{width: (100 * Math.max($store.getters['equip_window/getCharacterParameter']($store.state.equip_window.main_character_id, param, true), 0) / maxStrength) + '%'}"
                   )
             .this_item
               .status(
-                v-for="param in ['str', 'dex', 'def', 'agi']"
+                v-for="param in ['str', 'dex', 'vit', 'agi']"
                 :class="[currentItem ? deltaClass(currentItem.effectValueOf(param)) : '']"
                 )
                 .param
@@ -203,7 +252,7 @@
                 .bar_area
                   .bar(
                     :class="param"
-                    :style="{width: currentItem ? cropWidth(100 * relativeEffectivenessRatio(currentItem.effectValueOf(param)) + withPercent(currentItem.effectValueOf(param)) ) : 0}"
+                    :style="{width: (100 * Math.max(currentItem ? currentItem.effectValueOf(param) : 0, 0) / maxStrength) + '%'}"
                   )
             .to_status
               .status
@@ -214,7 +263,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'atk', true)", :speed="0.6")
                 .bar_area
                   .bar.plus(
-                    :style="{width: atkBar()}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? atkBarTirol : atkBarSpica}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'atk')", :speed="0.6")
@@ -226,7 +275,7 @@
                     NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrength']($store.state.equip_window.main_character_id, 'def', true)", :speed="0.6")
                 .bar_area
                   .bar.minus(
-                    :style="{width: defBar()}"
+                    :style="{width: $store.getters['equip_window/getSubCharacterId'] == 1 ? defBarTirol : defBarSpica}"
                   )
               .status_diff(:class="[deltaClass($store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def'))]")
                 NumeratableNumber(:number="$store.getters['equip_window/getCharacterStrengthDiff']($store.state.equip_window.main_character_id, 'def')", :speed="0.6")
@@ -251,8 +300,11 @@ export default {
     };
   },
   store,
-  mounted(){
+  created(){
     this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
+    this.$store.commit("equip_window/constructUserItems", {items: this.$store.state.masterdata.items, user_items: this.$store.state.user.items});
+  },
+  mounted(){
     this.$store.commit('guide/updateGuide', '装備メニューです。右クリックで装備を外せます。');
     this.moveCharacter();
   },
@@ -294,6 +346,7 @@ export default {
     },
     closeWindow(){
       this.submit();
+      this.$store.commit('equip_window/syncInitialToDraft');
       this.$store.commit('user/syncEquipDraft', this.$store.state.equip_window.draft);
       this.$store.commit('window/updateWindowShowState', {windowName: 'equip', state: false});
       this.$store.commit("event/addEventLog", {message: "装備を編集した！"});
@@ -324,44 +377,13 @@ export default {
       return this.$store.getters['equip_window/isAlreadyEquippedBySomeone'](item.id);
     },
     rarityClass(item){
-      return `rarity${item.rarity}`;
+      return `rarity${item?.rarity || 0}`;
     },
     deltaClass(delta){
       if(delta === 0){
         return "";
       }
       return delta > 0 ? 'plus' : 'minus';
-    },
-    relativeEffectivenessRatio(param){
-      // TODO: ここの /4 は完全にUI横幅調整のためのものなので、レベデザ次第で修正していく
-      const standard = Math.max(this.$store.getters['user/currentStandardParameter'], 30);
-      return param / 4 / standard;
-    },
-    cropWidth(param){
-      if(param < 0){
-        return 0;
-      }
-      if(param > 200){
-        return 200;
-      }
-      return param;
-    },
-    withPercent(param){
-      return param <= 0 ? '' : '%';
-    },
-    barWidthPercent(param){
-      const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
-      // 基準パラメータの2倍あったらwidth:100%にしたいので 1/2 を係数にかけてる
-      return this.cropWidth(100 * (1/2) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    // atk, def は他パラメータの倍必要なので 1/4
-    atkBar(){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'atk', true)
-      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
-    },
-    defBar(){
-      const value = this.$store.getters['equip_window/getCharacterStrength'](this.$store.state.equip_window.main_character_id, 'def', true)
-      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
     },
     toggleSelectOrderWindow(){
       this.showing_select_order_window = !this.showing_select_order_window;
@@ -371,16 +393,18 @@ export default {
       this.$store.commit('equip_window/switchItemSortLambda',  id)
       this.scrollToTop();
     },
+    barWidthPercent(param){
+      const value = this.$store.getters['equip_window/getCharacterParameter'](this.$store.state.equip_window.main_character_id, param, true);
+      // 基準パラメータの4倍あったらwidth:100%にしたいので 1/4 を係数にかけてる
+      return this.cropWidth(100 * (1/4) * this.relativeEffectivenessRatio(value)) + this.withPercent(value);
+    },
   },
   beforeDestroy(){
     cancelAnimationFrame(this.move_character_handle);
   },
   computed: {
-    averageItemRank(){
-      return this.$store.getters['equip_window/averageItemRank']();
-    },
     currentItem(){
-      return this.$store.getters['equip_window/getUserItem'](this.$store.state.equip_window.selecting_item_id);
+      return this.$store.state.equip_window.user_items[this.$store.state.equip_window.selecting_item_id];
     },
     Constants(){
       return Constants;
@@ -390,6 +414,38 @@ export default {
     },
     aroundEnemyRank(){
       return this.$store.getters['user/aroundEnemyRank'];
+    },
+    // atk, def は他パラメータの倍必要なので 1/4 ... が妥当だが表示エリアがでかいのでその分を加味して 1/3
+    atkBarSpica(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true)
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    defBarSpica(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true)
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    atkBarTirol(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true)
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    defBarTirol(){
+      const value = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true)
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    atkBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'atk', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'atk', true);
+      const value = (spica + tirol) / 2;
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    defBarTotal(){
+      const spica = this.$store.getters['equip_window/getCharacterStrength'](1, 'def', true);
+      const tirol = this.$store.getters['equip_window/getCharacterStrength'](2, 'def', true);
+      const value = (spica + tirol) / 2;
+      return Math.max(0, Math.min(200, (100 * (1/3) * value / this.maxStrength))) + "%";
+    },
+    maxStrength(){
+      return this.$store.state.equip_window.max_effect_value;
     },
   }
 }
@@ -403,13 +459,12 @@ export default {
   // 頭がおかしくなりそうなんだけどこういうのの配置って通常どうなってるんです？
 
   $detail-width: 180px;
-  $character-width: 200px;
+  $character-width: 170px;
   $character-height: 380px;
   $sub-character-width: 100px;
   $sub-character-height: 200px;
   $main-chara-equip-height: 170px;
   $item_list-main-width:400px;
-  $reinforcement-list-height: 200px;
 
   .content{
     overflow: hidden;
@@ -417,18 +472,6 @@ export default {
 
   // 通常のスタイル定義
   .body{
-    .block{
-      border-left: 1px solid $gray3;
-      background-color: $background_with_opacity;
-      opacity: $opacity;
-      border-radius: $radius;
-    }
-
-    .label{
-      font-size: $font-size-normal;
-      color: $accent-color;
-      line-height: 100%;
-    }
     .character_image{
       width: 220px;
       transform: scale(-1,1);
@@ -437,14 +480,35 @@ export default {
       width: 160px;
     }
 
+    .chara {
+      animation: main-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+      cursor: pointer;
+    }
+    @keyframes main-character-animation {
+      0% {
+        transform: translateX(40px);
+        opacity: 0.5;
+      }
+    }
+    .sub_chara {
+      animation: sub-character-animation 2s cubic-bezier(0,1.1,0,.98) 0s;
+      cursor: pointer;
+    }
+    @keyframes sub-character-animation {
+      0% {
+        transform: translateX(-40px);
+        opacity: 0.5;
+      }
+    }
+
     .str{
       color: $str;
     }
     .dex{
       color: $dex;
     }
-    .def{
-      color: $def;
+    .vit{
+      color: $vit;
     }
     .agi{
       color: $agi;
@@ -457,7 +521,7 @@ export default {
     }
 
     .bar_area{
-      width: 80%;
+      width: 89%;
       height: 1px;
       display: flex;
       opacity: 0.9;
@@ -470,8 +534,8 @@ export default {
       .dex{
         background-color: $dex;
       }
-      .def{
-        background-color: $def;
+      .vit{
+        background-color: $vit;
       }
       .agi{
         background-color: $agi;
@@ -514,62 +578,63 @@ export default {
       padding: $space;
     }
 
-    .player_rank{
-      position: absolute;
-      left: $space;
-      top: 110px;
-      padding: 2px;
-      border: 1px solid $gray3;
-      border-radius: $radius;
-      .desc{
-        font-size: $font-size-mini;
-        line-height: 105%;
+    .total_chara_status{
+      @include checker-background;
+      font-size: $font-size-mini;
+      padding-bottom: $thin_space;
+      padding-top: $thin_space;
+      .label{
+        display: inline-block;
       }
-      .rank{
-        font-size: $font-size-large;
+      .status{
+        padding: $space;
         width: 100%;
-        text-align: right;
-        line-height: 105%;
-      }
-    }
-
-    .reinforcements{
-      .reinforcement_list{
         display: flex;
+        align-items: center;
         flex-direction: column;
-        flex-wrap: wrap;
-        height: $reinforcement-list-height - $font-size-large;
-        padding: $thin_space;
-        .reinforcement{
-          margin: $thin_space;
-          border-bottom: 1px solid $gray3;
-          width: 45%;
-          text-align: center;
-          &::before{
-            content: "◇";
-          }
-        }
-      }
-      .no-reinforcement{
-        display: flex;
-        height: $reinforcement-list-height - $font-size-large;
-        justify-content: space-around;
-        flex-direction: column;
-        .message{
-          font-size: $font-size-mini;
+        .param{
+          padding: $thin_space;
+          font-size: $font-size-normal;
           width: 100%;
-          height: $font-size-normal;
-          line-height: 100%;
-          text-align: center;
+          .bar_area{
+            width: 100%;
+            height: 1px;
+            .bar{
+              width: 100%;
+              height: 1px;
+            }
+          }
         }
       }
     }
 
     .sub_chara_status{
+      @include checker-background;
       font-size: $font-size-mini;
-      padding-bottom: $space;
+      padding-bottom: $thin_space;
+      padding-top: $thin_space;
+      .label{
+        display: inline-block;
+      }
       .status{
-        padding: $thin_space;
+        padding: $space;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        .param{
+          padding: $thin_space;
+          font-size: $font-size-normal;
+          width: 100%;
+          .bar_area{
+            width: 100%;
+            height: 1px;
+            .bar{
+              width: 100%;
+              height: 1px;
+            }
+          }
+        }
       }
       .equips{
         display: flex;
@@ -577,87 +642,103 @@ export default {
         justify-content: space-around;
         padding-left: $thin_space;
         .equip{
+          margin-top: $thin_space;
           font-size: $font-size-mini;
+          padding-right: 0;
         }
       }
     }
 
     .item{
-      padding: $thin_space;
+      padding: $space 0 0 0;
+      @include checker_background;
+      cursor: pointer;
       .param_area{
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-end;
         height: 20px;
         .param{
           display: inline-block;
           width: 90%;
           .item_name{
             display: inline-block;
-            width: 77%;
+            width: 71%;
           }
           .value{
             display: inline-block;
-            width: 23%;
+            width: 29%;
             text-align: right;
             padding-right: $thin_space;
           }
         }
         .go_to_detail{
-          @include centering($height:30px);
+          @include centering($height:28px);
           width: 10%;
         }
       }
     }
 
     .item_list_main{
-      .misc{
-        height: 50px;
-        border-bottom: 1px solid $gray3;
+      .misc_area{
         display: flex;
-        width: 400px;
-        padding: $thin_space;
-        align-items: baseline;
-        justify-content: center;
-        .pager_button{
-          text-align: center;
-          width: 70px;
-          padding: $thin_space;
-          color: $gray1;
-          font-size: $font-size-large;
-          &:hover{
-            filter: brightness(120%);
-            transform: scale(1.2);
+        border-bottom: 1px solid $gray3;
+        .label_block{
+          height: 52px;
+          width: 80px;
+          .label{
+            display: inline-block;
           }
         }
-        .state{
-        }
-      }
-      .order{
-        @include centering($height: 36px);
-        width: 100px;
-      }
-      .select_order{
-        position: absolute;
-        top: 65px;
-        left: 100px;
-        .close{
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-        .in_window{
-          position: absolute;
-          z-index: 1;
-          padding: $thin_space;
-          background-color: $background_with_opacity;
-          width: 230px;
+        .misc{
+          height: 52px;
           display: flex;
-          flex-wrap: wrap;
-          .order{
-            margin: $thin_space;
+          width: 300px;
+          align-items: center;
+          justify-content: center;
+          .pager_button{
+            text-align: center;
+            width: 70px;
+            padding: $thin_space;
+            color: $gray1;
+            font-size: 30px;
+            cursor: pointer;
+            &:hover{
+              filter: brightness(120%);
+              transform: scale(1.2);
+            }
+          }
+          .state { 
+            width: 60px;
+            text-align: center;
+          }
+        }
+        .order{
+          @include centering($height: 36px);
+          width: 100px;
+        }
+        .select_order{
+          position: absolute;
+          top: 53px;
+          left: 140px;
+          .close{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+          .in_window{
+            position: absolute;
+            z-index: 1;
+            padding: $thin_space;
+            @include checker_background;
+            width: 230px;
+            display: flex;
+            flex-wrap: wrap;
+            .order{
+              margin: $thin_space;
+            }
           }
         }
       }
@@ -665,7 +746,7 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: column;
-        height: calc(100% - 50px - #{$font-size-normal});
+        height: calc(100% - 54px);
         padding: $thin_space;
       }
     }
@@ -675,6 +756,9 @@ export default {
 
     .detail{
       font-size: $font-size-mini;
+      .label{
+        display: inline-block;
+      }
       .item_name{
         margin: $thin_space;
         height: 25px;
@@ -694,6 +778,11 @@ export default {
           .index{
             display: inline-block;
             width: 30%;
+            .sep{
+              display: inline-block;
+              width: 1rem;
+              text-align: center;
+            }
           }
           .value{
             display: inline-block;
@@ -704,7 +793,7 @@ export default {
       .flavor_text{
         line-height: 115%;
         margin: $thin_space;
-        height: 135px;
+        height: 126px;
       }
       .open_detail_window{
         margin: $thin_space;
@@ -716,24 +805,28 @@ export default {
       .label_box{
         display: flex;
         flex-direction: row;
-        color: $accent-color;
         align-content: flex-end;
+        justify-content: space-between;
+        .topic_medium{
+          display: inline-block;
+        }
         .label{
-          width: 43%;
+          width: 36%;
         }
         .current_parameters_label{
-          width: 17%;
+          width: 20%;
         }
         .this_item_label{
-          width: 17%;
+          width: 20%;
         }
         .to_status_label{
-          width: 17%;
+          width: 20%;
         }
       }
       .main{
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         height: calc(100% - #{$font-size-large});
         .kos{
           position: absolute;
@@ -744,12 +837,11 @@ export default {
           }
           .upper{
             top: 10px;
-            left: 565px;
-
+            left: 585px;
           }
           .downer{
             top: 75px;
-            left: 565px;
+            left: 585px;
           }
         }
         .around_block{
@@ -759,28 +851,18 @@ export default {
           font-size: $font-size-mini;
         }
         .equips{
-          width: 43%;
+          width: 36%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
+          margin: $subtle_space;
           .equip{
-            padding: 2px;
-            flex-grow: 1;
+            padding: 0 0 0 $space;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            &:nth-child(1){
-              padding-left: 8px;
-            }
-            &:nth-child(2){
-              padding-left: 16px;
-            }
-            &:nth-child(3){
-              padding-left: 24px;
-            }
-            &:nth-child(4){
-              padding-left: 32px;
-            }
+            cursor: pointer;
+            height: $font-size-normal + 1px + $space * 2;
           }
         }
         .current_parameters{
@@ -831,7 +913,7 @@ export default {
         }
         .to_status{
           margin: $space 0 $space*3 0;
-          width: 17%;
+          width: 20%;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -863,23 +945,23 @@ export default {
     .sub_chara{
       position: absolute;
       bottom: 250px;
-      left: 100px;
+      left: 80px;
       width: $sub-character-width;
       height: $sub-character-height;
     }
-    .reinforcements{
+    .total_chara_status{
       position: absolute;
-      top: $thin_space;
+      top: 0;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: $reinforcement-list-height;
+      height: 100px;
     }
     .sub_chara_status{
       position: absolute;
-      top: $reinforcement-list-height + $thin_space * 2;
+      top: 100px;
       left: $character-width;
       width: calc(100% - #{$item_list-main-width} - #{$detail-width} - #{$character-width} - #{$thin_space * 3});
-      height: calc(100% - #{$main-chara-equip-height} - #{$reinforcement-list-height} - #{$thin_space * 5});
+      height: 260px;
     }
     .item_list_main{
       position: absolute;
@@ -893,7 +975,7 @@ export default {
       top: $thin_space;
       right: $thin_space;
       width: $detail-width;
-      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 3});
+      height: calc(100% - #{$main-chara-equip-height} - #{$thin_space * 5});
     }
     .main_chara_equips{
       position: absolute;

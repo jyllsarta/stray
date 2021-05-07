@@ -44,6 +44,9 @@ RSpec.describe "User::Item", type: :request do
             count: 1
         }
       end
+      before do
+        user.status.update!(coin: 0)
+      end
       subject do
         do_post
         response

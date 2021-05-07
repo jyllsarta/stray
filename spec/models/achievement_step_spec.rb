@@ -13,7 +13,8 @@
 #
 # Indexes
 #
-#  index_achievement_steps_on_achievement_id  (achievement_id)
+#  index_achievement_steps_on_achievement_id               (achievement_id)
+#  index_achievement_steps_on_achievement_id_and_progress  (achievement_id,progress) UNIQUE
 #
 
 require 'rails_helper'

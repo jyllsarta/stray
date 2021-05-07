@@ -6,7 +6,7 @@
 #  token      :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer
+#  user_id    :integer          not null
 #
 
 require 'rails_helper'
@@ -34,8 +34,25 @@ RSpec.describe User::AccessToken, type: :model do
     end
     context "with no token" do
       let(:token) { "" }
-      it "returns user" do
+      it "raises" do
         expect{subject}.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
+  describe "#fetch_user_id" do
+    let(:user){ create(:user) }
+    subject { User::AccessToken.fetch_user_id(token) }
+    context "token exists" do
+      let!(:token) { User::AccessToken.generate(user) }
+      it "returns users id" do
+        expect(subject).to eq(user.id)
+      end
+    end
+    context "with no token" do
+      let(:token) { "" }
+      it "returns nil" do
+        expect(subject).to eq(nil)
       end
     end
   end

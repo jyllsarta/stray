@@ -36,6 +36,7 @@ export default {
   height: 38px;
   width: 165px;
   margin-bottom: 2px;
+  cursor: pointer;
   .name{
     line-height: 100%;
   }
@@ -66,6 +67,7 @@ export default {
   opacity: 0.5;
   pointer-events: none;
   animation: darken 0.2s;
+  cursor: default;
 }
 .left_side{
   background: linear-gradient(80deg, transparent 0%, $gray3-opacity 5%, $gray3-opacity 95%, transparent 100%);

@@ -1,22 +1,18 @@
 <template lang="pug">
   .menu
     .full_covered_window(@click.right.prevent="removeLastCard")
-      transition(name="open_window")
-        .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
-          | メニュー
-      transition(name="open_window")
-        .battle_menu(v-if="showMenu")
-          .back(@click="showMenu = false")
-          .items
-            .item.clickable(@click="showMenu = false")
-              | メニューをとじる
-            .item.clickable(@click="retire()")
-              | 諦める
+
+      // キャラ
+
+      .battle_background
+        BattleBackgroundGraduation(:field-effect-state="battle.fieldEffectState")
+        BattleBackground(:field-effect-state="battle.fieldEffectState" :turn-in-progress="isTurnInProgress")
       .player_character
         .tirol
           BattleCharacter(
             :character-name="'tirol'"
-            :images="{normal: 'normal', magic:'magic', default: 'default'}"
+            :images="tirolImageLibrary"
+            :scale-type="1",
             :status="tirolStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -24,7 +20,8 @@
         .spica
           BattleCharacter(
             :character-name="'spica'"
-            :images="{normal: 'normal', attack:'attack', draw:'draw', lose:'lose', default: 'default'}"
+            :images="spicaImageLibrary"
+            :scale-type="1",
             :status="spicaStatus"
             :isPlayer="true"
             :currentSkillName="skillName"
@@ -34,11 +31,54 @@
         BattleCharacter(
           :character-name="enemyImageName"
           :images="enemyImageLibrary",
+          :scale-type="enemyScaleType",
           :status="enemyStatus"
           :isPlayer="false"
           :currentSkillName="skillName"
           :shield="enemyShield > 0"
         )
+      .battle_foreground
+        BattleForegroundMaster(:turn-in-progress="isTurnInProgress", :field-effect-state="battle.fieldEffectState")
+
+      // UI
+
+      transition(name="open_window")
+        .show_battle_menu.clickable(v-if="!showMenu" @click="showMenu = true")
+          | メニュー
+      transition(name="open_window")
+        .battle_menu(v-if="showMenu")
+          ._back(@click="showMenu = false")
+          .items
+            .item.clickable(@click="showMenu = false")
+              | メニューをとじる
+            .item.clickable(@click="retire()")
+              | 諦める
+      .field_effect_area
+        FieldEffect(:field-effect-state="battle.fieldEffectState")
+      .turn_area
+        .index
+          | Turn
+        .values
+          span.current(:key="currentTurn")
+            | {{currentTurn}}
+          span.limit
+            | / {{currentTurnLimit}}
+      BlankCardList.player_hands(
+        :right-side="false"
+        :max-item-count="parameters.maxHandCardCount"
+      )
+      BlankCardList.enemy_hands(
+        :right-side="true"
+        :max-item-count="parameters.maxHandCardCount"
+      )
+      BlankCardList.player_selecting_cards(
+        :right-side="false"
+        :max-item-count="parameters.maxSelectCardCount"
+      )
+      BlankCardList.enemy_selecting_cards(
+        :right-side="true"
+        :max-item-count="parameters.maxSelectCardCount"
+      )
       CardList.player_hands(
         :cards="playerHands"
         :right-side="false"
@@ -88,19 +128,71 @@
             | {{playerShield}}
         .hps
           .hp
-            NumeratableNumber(:number="playerHp")
+            ZeroPaddingedNumeratableNumber(:number="playerHp", :digits="2")
           .hp_max
             | / {{playerHpMax}}
         .mp
-          NumeratableNumber(:number="playerMp")
+          div
+            NumeratableNumber(:number="playerMp")
+          .diff(v-if="consumeMp > 0 && !isTurnInProgress")
+            | -
+          .diff(v-if="consumeMp > 0 && !isTurnInProgress")
+            | {{consumeMp}}
         .bars
-          Slider(:width="400", :height="4", :ratio="playerHpRatio", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :height="4", :ratio="playerMpRatio", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+          Slider(
+            :width="400",
+            :height="4",
+            :ratio="playerHpRatio",
+            :reversed="true",
+            :main-color="colors.hpColor",
+            :blank-color="colors.hpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="parameters.hpDelay",
+            :update-ratio="parameters.updateRatio",
+          )
+          Slider(
+            :width="250",
+            :height="4",
+            :ratio="playerMpRatio",
+            :reversed="true",
+            :main-color="colors.mpColor",
+            :blank-color="colors.mpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="1",
+            :update-ratio="parameters.updateRatio",
+          )
         .ghost_bars
-          Slider(:width="380", :height="1", :ratio="playerHpRatio - 1", :reversed="true", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :height="1", :ratio="playerMpRatio - 1", :reversed="true", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
-        .damage_parameters
-          DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
+          Slider(
+            :width="380", 
+            :height="1",
+            :ratio="playerHpRatio - 1",
+            :reversed="true",
+            :main-color="colors.hpColor",
+            :blank-color="colors.hpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="parameters.hpDelay",
+            :update-ratio="parameters.updateRatio",
+          )
+          Slider(
+            :width="250",
+            :height="1",
+            :ratio="playerMpRatio - 1",
+            :reversed="true",
+            :main-color="colors.mpColor",
+            :blank-color="colors.mpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="1",
+            :update-ratio="parameters.updateRatio",
+          )
+        .etc
+          .states
+            StateInstance(
+              v-for="state in playerStates"
+              :state-instance="state"
+              :key="state.id"
+            )
+          .damage_parameters
+            DamageParameters(:power="playerPowerDamage", :tech="playerTechDamage", :special="playerSpecialDamage", :basic-power="playerBasicPowerDamage", :basic-tech="playerBasicTechDamage", :basic-special="playerBasicSpecialDamage")
       .enemy_status.status
         .shield(v-if="enemyShield > 0")
           img.icon(src="/images/icons/misc/shield.gif")
@@ -108,21 +200,84 @@
             | {{enemyShield}}
         .hps
           .hp
-            NumeratableNumber(:number="enemyHp")
+            ZeroPaddingedNumeratableNumber(:number="enemyHp", :digits="2")
           .hp_max
             | / {{enemyHpMax}}
         .mp
           NumeratableNumber(:number="enemyMp")
         .bars
-          Slider(:width="400", :height="4", :ratio="enemyHpRatio", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :height="4", :ratio="enemyMpRatio", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
+          Slider(
+            :width="400",
+            :height="4",
+            :ratio="enemyHpRatio",
+            :main-color="colors.hpColor",
+            :blank-color="colors.hpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="parameters.hpDelay",
+            :update-ratio="parameters.updateRatio",
+          )
+          Slider(
+            :width="250",
+            :height="4",
+            :ratio="enemyMpRatio",
+            :main-color="colors.mpColor",
+            :blank-color="colors.mpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="1",
+            :update-ratio="parameters.updateRatio",
+          )
         .ghost_bars
-          Slider(:width="380", :height="1", :ratio="enemyHpRatio - 1", :main-color="colors.hpColor", :blank-color="colors.hpBlankColor" )
-          Slider(:width="250", :height="1", :ratio="enemyMpRatio - 1", :main-color="colors.mpColor", :blank-color="colors.mpBlankColor" )
-        .damage_parameters
-          DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
-      BattleSkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
-      BattleSkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
+          Slider(
+            :width="380",
+            :height="1",
+            :ratio="enemyHpRatio - 1",
+            :main-color="colors.hpColor",
+            :blank-color="colors.hpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="parameters.hpDelay",
+            :update-ratio="parameters.updateRatio",
+          )
+          Slider(
+            :width="250",
+            :height="1",
+            :ratio="enemyMpRatio - 1",
+            :main-color="colors.mpColor",
+            :blank-color="colors.mpBlankColor",
+            :damage-color="colors.damageColor",
+            :update-delayms="1",
+            :update-ratio="parameters.updateRatio",
+          )
+        .etc
+          .damage_parameters
+            DamageParameters(:power="enemyPowerDamage", :tech="enemyTechDamage", :special="enemySpecialDamage", :basic-power="enemyBasicPowerDamage", :basic-tech="enemyBasicTechDamage", :basic-special="enemyBasicSpecialDamage")
+          .states
+            StateInstance(
+              v-for="state in enemyStates"
+              :state-instance="state"
+              :key="state.id"
+            )
+      SkillList(:isPlayer="true", :skills="playerSkills" @onClick="selectSkill", :battle="battle")
+      SkillList(:isPlayer="false", :skills="enemySkills", :battle="battle")
+
+      // 表に出したいエフェクト
+
+      .fragments
+        TurnStart(v-if="$store.state.battle.fragments.turn_start")
+        BossBattleStart(v-if="$store.state.battle.fragments.boss_battle_start")
+        LastTurn(v-if="$store.state.battle.fragments.last_turn")
+        PlayerSkillCutin(v-if="$store.state.battle.fragments.player_skill")
+        EnemySkillCutin(v-if="$store.state.battle.fragments.enemy_skill")
+        OutcomeCutin(v-if="$store.state.battle.fragments.battle_outcome", :last-attack-result="battle.lastAttackResult")
+        PlayerDamage(v-if="$store.state.battle.fragments.player_damage")
+        EnemyDamage(v-if="$store.state.battle.fragments.enemy_damage")
+        PlayerDamageEffect(v-if="$store.state.battle.fragments.player_damage_effect")
+        EnemyDamageEffect(v-if="$store.state.battle.fragments.enemy_damage_effect")
+        PlayerHealEffect(v-if="$store.state.battle.fragments.player_heal_effect")
+        EnemyHealEffect(v-if="$store.state.battle.fragments.enemy_heal_effect")
+        PlayerStateEffect(v-if="$store.state.battle.fragments.player_state_effect")
+        EnemyStateEffect(v-if="$store.state.battle.fragments.enemy_state_effect")
+        ParalyzeEffect(v-if="$store.state.battle.fragments.paralyze_effect")
+        ParalyzeEffectWatcher(:battle="battle")
       transition(name="open_window")
         .result_popup(v-if="finished")
           .done.clickable(@click="endGame()")
@@ -146,22 +301,67 @@ import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
 import BattleFactory from "./packs/quest/battle_factory"
-import BattleSkillList from "./BattleSkillList.vue";
+import SkillList from "./SkillList.vue";
 import CardList from "./CardList.vue";
+import BlankCardList from "./BlankCardList.vue";
 import Slider from "./Slider.vue";
 import DamageParameters from "./DamageParameters.vue";
 import BattleCharacter from "./BattleCharacter.vue";
 import NumeratableNumber from "./NumeratableNumber.vue";
-
+import ZeroPaddingedNumeratableNumber from "./ZeroPaddingedNumeratableNumber.vue";
+import TurnStart from "./fragments/TurnStart.vue";
+import BossBattleStart from "./fragments/BossBattleStart.vue";
+import LastTurn from "./fragments/LastTurn.vue";
+import PlayerSkillCutin from "./fragments/PlayerSkillCutin.vue";
+import EnemySkillCutin from "./fragments/EnemySkillCutin.vue";
+import OutcomeCutin from "./fragments/OutcomeCutin.vue";
+import PlayerDamage from "./fragments/PlayerDamage.vue";
+import PlayerDamageEffect from "./fragments/PlayerDamageEffect.vue";
+import PlayerHealEffect from "./fragments/PlayerHealEffect.vue";
+import PlayerStateEffect from "./fragments/PlayerStateEffect.vue";
+import EnemyDamageEffect from "./fragments/EnemyDamageEffect.vue";
+import EnemyHealEffect from "./fragments/EnemyHealEffect.vue";
+import EnemyStateEffect from "./fragments/EnemyStateEffect.vue";
+import EnemyDamage from "./fragments/EnemyDamage.vue";
+import StateInstance from "./StateInstance.vue";
+import FieldEffect from "./FieldEffect.vue";
+import BattleBackground from "./BattleBackground.vue";
+import BattleBackgroundGraduation from "./BattleBackgroundGraduation.vue";
+import BattleForegroundMaster from "./BattleForegroundMaster.vue";
+import ParalyzeEffectWatcher from "./fragments/ParalyzeEffectWatcher.vue";
+import ParalyzeEffect from "./fragments/ParalyzeEffect.vue";
 
 export default {
   components: {
-    BattleSkillList,
+    SkillList,
     CardList,
+    BlankCardList,
     Slider,
     DamageParameters,
     BattleCharacter,
     NumeratableNumber,
+    ZeroPaddingedNumeratableNumber,
+    TurnStart,
+    BossBattleStart,
+    LastTurn,
+    PlayerSkillCutin,
+    EnemySkillCutin,
+    OutcomeCutin,
+    PlayerDamage,
+    PlayerDamageEffect,
+    PlayerHealEffect,
+    PlayerStateEffect,
+    EnemyDamageEffect,
+    EnemyHealEffect,
+    EnemyStateEffect,
+    EnemyDamage,
+    StateInstance,
+    FieldEffect,
+    BattleBackground,
+    BattleBackgroundGraduation,
+    BattleForegroundMaster,
+    ParalyzeEffectWatcher,
+    ParalyzeEffect,
   },
   data: function () {
     return {
@@ -177,16 +377,28 @@ export default {
         hpBlankColor: "rgba(255,192,145,0.32)",
         mpColor: "rgba(145,229,255,0.99)",
         mpBlankColor: "rgba(145,229,255,0.32)",
+        damageColor: "rgba(255,255,255,1)",
+      },
+      parameters: {
+        hpDelay: 100,
+        updateRatio: 0.3,
+        maxHandCardCount: 8,
+        maxSelectCardCount: 2,
       },
       showMenu: false,
     };
   },
   store,
   mounted(){
+    this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
+    this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
     this.postEngage();
   },
   computed: {
     isPlayerCardLocked(){
+      return this.battle?.turnInProgress;
+    },
+    isTurnInProgress(){
       return this.battle?.turnInProgress;
     },
     turnStatus(){
@@ -198,20 +410,29 @@ export default {
     enemyImageName(){
       return this.battle?.enemy?.imageName || "faily";
     },
+    spicaImageLibrary(){
+      return Constants.battleCharacter.imageLibrary.spica || {};
+    },
+    tirolImageLibrary(){
+      return Constants.battleCharacter.imageLibrary.tirol || {};
+    },
     enemyImageLibrary(){
-      return Constants.battleCharacter.imageLibrary[this.enemyImageName] || {};
+      return Constants.battleCharacter.imageLibrary[this.enemyImageName] || Constants.battleCharacter.imageLibrary.default;
+    },
+    enemyScaleType(){
+      return this.battle?.enemy?.scaleType || 3;
     },
     playerHp(){
       return this.battle?.player?.hp || 0;
     },
     playerHpMax(){
-      return this.battle?.player?.hp_max || 0;
+      return ("00" + this.battle?.player?.hp_max).slice(-2) || "00";
     },
     enemyHp(){
       return this.battle?.enemy?.hp || 0;
     },
     enemyHpMax(){
-      return this.battle?.enemy?.hp_max || 0;
+      return ("00" + this.battle?.enemy?.hp_max).slice(-2) || "00";
     },
     playerShield(){
       return this.battle?.player?.tempBuffs?.shield || 0;
@@ -237,29 +458,38 @@ export default {
     enemyMp(){
       return this.battle?.enemy?.mp || 0;
     },
+    consumeMp(){
+      return this.battle?.player?.consumingMp() || 0;
+    },
+    playerStates(){
+      return this.battle?.player?.states || [];
+    },
+    enemyStates(){
+      return this.battle?.enemy?.states || [];
+    },
     playerHands(){
-      return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.selectingCardIds?.includes(x.id)) || [];
+      return this.battle?.player?.deck?.currentHands()?.filter((x)=>!this.battle?.player?.selectingCardIds?.includes(x.id)) || [];
     },
     enemyHands(){
-      return this.battle?.enemy?.deck?.currentHands()?.filter((x)=>!this.battle?.enemyCardIds?.includes(x.id)) || [];
+      return this.battle?.enemy?.deck?.currentHands()?.filter((x)=>!this.battle?.enemy?.selectingCardIds?.includes(x.id)) || [];
     },
     playerSelectingCards(){
-      return this.battle.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
+      return this.battle.player?.selectingCardIds?.map((cardId)=>this.battle.player.deck.findCard(cardId));
     },
     enemySelectingCards(){
-      return this.battle.enemyCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
+      return this.battle.enemy?.selectingCardIds?.map((cardId)=>this.battle.enemy.deck.findCard(cardId));
     },
     playerPower(){
-      return this.battle.player?.powerAt(this.battle.selectingCardIds) || 0;
+      return this.battle.player?.powerAt(this.battle.player.selectingCardIds) || 0;
     },
     playerTech(){
-      return this.battle.player?.techAt(this.battle.selectingCardIds) || 0;
+      return this.battle.player?.techAt(this.battle.player.selectingCardIds) || 0;
     },
     enemyPower(){
-      return this.battle.enemy?.powerAt(this.battle.enemyCardIds) || 0;
+      return this.battle.enemy?.powerAt(this.battle.enemy.selectingCardIds) || 0;
     },
     enemyTech(){
-      return this.battle.enemy?.techAt(this.battle.enemyCardIds) || 0;
+      return this.battle.enemy?.techAt(this.battle.enemy.selectingCardIds) || 0;
     },
     playerPowerDamage(){
       return this.battle.player?.damageAt("power");
@@ -304,22 +534,87 @@ export default {
       return this.battle.enemy?.skills;
     },
     spicaStatus(){
-      return this.battle?.characterStatus?.spica || 'normal';
+      return this.battle?.characterStatus?.spica || 'waiting';
     },
     tirolStatus(){
-      return this.battle?.characterStatus?.tirol || 'normal';
+      return this.battle?.characterStatus?.tirol || 'waiting';
     },
     enemyStatus(){
-      return this.battle?.characterStatus?.enemy || 'normal';
+      return this.battle?.characterStatus?.enemy || "waiting";
     },
     isDecidable(){
-      return this.battle.selectingCardIds?.length === 3 && this.battle.turnInProgress === false;
+      return this.battle?.player?.selectingCardIds?.length === 2 && this.battle.turnInProgress === false;
     },
     decideButtonClass(){
-      return this.isDecidable ? "startable" : "disabled";
-    }
+      return this.isDecidable ? "super_clickable" : "not_clickable";
+    },
+    currentTurn(){
+      const turn = this.battle?.turn || 1;
+      const limit = this.battle?.turnLimit || 10;
+      return Math.min(turn, limit);
+    },
+    currentTurnLimit(){
+      return this.battle?.turnLimit || 10;
+    },
+  },
+  watch: {
+    "battle.player.hp": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        this.$store.commit("battle/showFragment", "player_damage");
+        if(newVal < oldVal){ // is Damage
+          this.$store.commit("battle/showFragment", "player_damage_effect");
+        }
+        else{
+          this.$store.commit("battle/showFragment", "player_heal_effect");
+        }
+        this.$store.commit("battle/setDamageDiff", {target: 'player', value: newVal - oldVal});
+      }
+    },
+    "battle.player.states.length": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        if(newVal > oldVal){ // is Add
+          this.$store.commit("battle/showFragment", "player_state_effect");
+        }
+      }
+    },
+    "battle.enemy.hp": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        this.$store.commit("battle/showFragment", "enemy_damage");
+        if(newVal < oldVal){ // is Damage
+          this.$store.commit("battle/showFragment", "enemy_damage_effect");
+        }
+        else{
+          this.$store.commit("battle/showFragment", "enemy_heal_effect");
+        }
+        this.$store.commit("battle/setDamageDiff", {target: 'enemy', value: newVal - oldVal});
+      }
+    },
+    "battle.enemy.states.length": {
+      handler: function(newVal, oldVal){
+        if(!this.battle.turnInProgress){
+          return;
+        }
+        if(newVal > oldVal){ // is Add
+          this.$store.commit("battle/showFragment", "enemy_state_effect");
+        }
+      }
+    },
   },
   methods: {
+
+    // **
+    // Controllers
+    // **
+
     localBattleStart(){
       if(!this.input){
         console.warn("まだエンゲージしてない");
@@ -333,10 +628,10 @@ export default {
     },
 
     removeLastCard(){
-      if(this.battle.selectingCardIds.length === 0){
+      if(this.battle.player.selectingCardIds.length === 0){
         return;
       }
-      this.battle?.selectCard(this.battle.selectingCardIds.slice(-1)[0]);
+      this.battle?.selectCard(this.battle.player.selectingCardIds.slice(-1)[0]);
     },
 
     selectSkill(emittedObject){
@@ -344,59 +639,151 @@ export default {
       this.battle?.selectSkill(skillIndex);
     },
 
-    playTurn(){
-      if(!this.isDecidable){
-        console.log("ちゃんと3まいきっかり選んで");
-        return;
-      }
+    retire(){
+      this.outcome = "retired";
+      this.endGame();
+    },
 
-      this.battle.onTurnStart();
+    endGame(){
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
+        this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
+        this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
+        this.$store.dispatch('user/fetchUserModel'); // 報酬の反映
+    },
 
-      Promise.resolve()
+    // **
+    // Turn Sequences
+    // ** 
+
+    playTurnStartPhase(){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "turn_start");
+        setTimeout( ()=>{
+          resolve();
+        }, 800);
+      });
+    },
+
+    playTurnStartStateEffectPhase(){
+      return new Promise((resolve) => {
+        this.battle.invokeTurnStartStateEffect();
+        let timeout = 10;
+        if(this.battle.shouldStopWith('onTurnStart')){
+          timeout = 600;
+        }
+        setTimeout(()=>{
+          resolve();
+        }, timeout);
+      });
+    },
+
+    playPlayerSingleSkill(skillIndex){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "player_skill");
+        const skill = this.battle.player.skills[skillIndex];
+        this.$store.commit("battle/setSkillCutinDetail", {name: skill.name, description: skill.description});
+        this.skillName = "スキル発動！";
+        this.battle.setCharacterStatusAll("normal");
+        setTimeout( ()=>{
+          this.battle.invokePlayerMagic(skillIndex);
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+      });
+    },
+
+    playEnemySingleSkill(skillIndex){
+      return new Promise((resolve) => {
+        this.$store.commit("battle/showFragment", "enemy_skill");
+        const skill = this.battle.enemy.skills[skillIndex];
+        this.$store.commit("battle/setSkillCutinDetail", {name: skill.name, description: skill.description});
+        this.skillName = "敵スキル発動！";
+        this.battle.setCharacterStatusAll("normal");
+        setTimeout( ()=>{
+          this.battle.invokeEnemyMagic(skillIndex);
+          setTimeout(()=>{
+            resolve();
+          }, 1000);
+        }, 1000); // なんかこれだいぶ地獄っぽいぞ！ どうするといいんだろう
+      });
+    },
+
+    playPlayerSkillPhase(){
+      return new Promise((resolve) => {
+        this.battle.invokePlayerMagicStart();
+        // プレイヤー魔法を使っていなかったらスルー
+        if(this.battle.player.selectingSkillIndexes.length === 0){
+          resolve();
+          return;
+        }
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+
+
+        this.battle.player.selectingSkillIndexes.reduce((acc, cur)=>{
+          return acc.then(()=>{
+            return this.playPlayerSingleSkill(cur);
+          })
+        }, Promise.resolve())
+        .then(()=>{
+          resolve();
+        });
+      });
+    },
+
+    playEnemySkillPhase(){
+      return new Promise((resolve) => {
+        this.battle.invokeEnemyMagicStart();
+        // 敵が魔法を使っていなかったらスルー
+        if(this.battle.enemy.selectingSkillIndexes.length === 0){
+          resolve();
+          return;
+        }
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+        this.battle.enemy.selectingSkillIndexes.reduce((acc, cur)=>{
+          return acc.then(()=>{
+            return this.playEnemySingleSkill(cur);
+          })
+        }, Promise.resolve())
+        .then(()=>{
+          resolve();
+        });
+      });
+    },
+
+    playAttackPhase(){
+      return new Promise((resolve) => {
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+
+        Promise.resolve()
         .then(()=>{
           return new Promise((resolve) => {
-            // プレイヤー魔法を使っていなかったらスルー
-            if(this.battle.player.selectingSkillIndex === null){
+            this.battle.invokePowerAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
+            this.skillName = "力判定！";
+            setTimeout(()=>{
               resolve();
-              return;
-            }
-            setTimeout( ()=>{
-              this.battle.invokePlayerMagic();
-              this.skillName = "プレイヤー魔法";
-              resolve();
-            }, 0);
+            }, 550);
           });
         })
         .then(()=>{
           return new Promise((resolve) => {
-            // 敵が魔法を使っていなかったらスルー
-            if(this.battle.enemy.selectingSkillIndex === null){
-              resolve();
-              return;
-            }
+            this.battle.invokeTechAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
+            this.skillName = "技判定！";
             setTimeout(()=>{
-              this.battle.invokeEnemyMagic();
-              this.skillName = "敵魔法";
               resolve();
-            }, 800);
-          });
-        })
-        .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.battle.invokePowerAttack();
-              this.skillName = "力判定！";
-              resolve();
-            }, 900);
-          });
-        })
-        .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.battle.invokeTechAttack();
-              this.skillName = "技判定！";
-              resolve();
-            }, 900);
+            }, 550);
           });
         })
         .then(()=>{
@@ -406,42 +793,93 @@ export default {
               return;
             }
 
+            this.battle.invokeSPAttack();
+            this.$store.commit("battle/showFragment", "battle_outcome");
+            this.skillName = "SPアタック！";
             setTimeout(()=>{
-              this.battle.invokeSPAttack();
-              this.skillName = "SPアタック！";
               resolve();
-            }, 900);
+            }, 550);
           });
         })
         .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.battle.onTurnEnd();
-              resolve();
-            }, 900);
-          });
+          resolve(); // めちゃわかりにくいけど親promiseのresolve
+        })
+      });
+    },
+
+    playTurnEndStateEffectPhase(){
+      return new Promise((resolve) => {
+        if(this.battle.isGameEnd()){
+          resolve();
+          return;
+        }
+        this.battle.invokeTurnEndStateEffect();
+        let timeout = 10;
+        if(this.battle.shouldStopWith("onTurnEnd")){
+          timeout = 600;
+        }
+        setTimeout(()=>{
+          resolve();
+        }, timeout);
+      });
+    },
+
+    playEndPhase(){
+      return new Promise((resolve) => {
+        this.battle.onTurnEnd();
+        setTimeout(()=>{
+          resolve();
+        }, 100);
+      });
+    },
+
+    playCheckGameEndPhase(){
+      return new Promise((resolve) => {
+        this.checkGameEnd();
+        resolve();
+      });
+    },
+
+    playTurn(){
+      if(!this.isDecidable){
+        console.log("ちゃんと3まいきっかり選んで");
+        return;
+      }
+      this.battle.onTurnStart();
+      Promise.resolve()
+        .then(()=>{
+          return this.playTurnStartPhase();
         })
         .then(()=>{
-          return new Promise((resolve) => {
-            setTimeout(()=>{
-              this.checkGameEnd();
-              resolve();
-            }, 10);
-          });
+          return this.playTurnStartStateEffectPhase();
+        })
+        .then(()=>{
+          return this.playPlayerSkillPhase();
+        })
+        .then(()=>{
+          return this.playEnemySkillPhase();
+        })
+        .then(()=>{
+          return this.playAttackPhase();
+        })
+        .then(()=>{
+          return this.playTurnEndStateEffectPhase();
+        })
+        .then(()=>{
+          return this.playEndPhase();
+        })
+        .then(()=>{
+          return this.playCheckGameEndPhase();
         });
     },
 
-    checkGameEnd(){
-      if(this.battle.isGameEnd()){
-        console.log("決着！ショーダウン!");
-        console.log(this.input.seed);
-        console.log(this.battle.battleLog);
-        this.postShowdown();
-      }
-    },
+
+    // **
+    // API calls
+    // **
 
     postEngage(){
-      const enemyId = this.$store.state.battle.enemy_id;
+      const enemyId = this.$store.state.battle.enemy_id || 101;
       const path = `/enemies/${enemyId}/engage.json`;
       const params = {
         enemy_id: enemyId
@@ -450,6 +888,10 @@ export default {
         .then((results) => {
           console.log(results);
           this.input = results.data;
+          this.$store.commit("battle/setEnemyImageName", this.input.enemyImageName);
+          if(this.input.enemyIsBoss){
+            this.$store.commit("battle/showFragment", "boss_battle_start");
+          }
           this.localBattleStart();
           // バトルデバッグ用に開発環境ではwindowにダイレクトアタックでバックドアを仕込む
           if (process.env.NODE_ENV !== 'production') {
@@ -457,6 +899,7 @@ export default {
           }
         })
         .catch((error) => {
+          console.warn(error);
           console.warn(error.response);
           console.warn("NG");
         });
@@ -465,14 +908,13 @@ export default {
     postShowdown(){
       const path = `/enemies/-1/showdown.json`;
       const params = {
-        operation_history: this.battle.operationHistory
+        operation_history: this.battle.player.operationHistory
       };
       ax.post(path, params)
         .then((results) => {
           console.log(results);
           console.log(`サーバでの戦闘結果： isWin: ${results.data.isWin}`);
-          this.finished = true;
-          this.rewards = results.data.rewards;
+          this.rewards = results.data.rewards || [];
           if(results.data.isDraw){
             this.outcome = "draw";
           }
@@ -482,6 +924,7 @@ export default {
           else{
             this.outcome = "lose";
           }
+          this.showFinishDialog();
           this.$store.dispatch("achievement/fetchAchievements");
           this.$store.dispatch("achievement/fetchAchievementCache");
         })
@@ -491,17 +934,20 @@ export default {
         });
     },
 
-    retire(){
-        this.outcome = "retired";
-        this.endGame();
-    },
+    // **
+    // Private Utility
+    // **
 
-    endGame(){
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle_prepare", state: false});
-        this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: false});
-        this.$store.commit("window/updateWindowShowState", {windowName: "quest", state: false});
-        this.$store.commit("event/addEventLog", {message: this.getLogMessage()});
-        this.$store.dispatch('user/fetchUserModel'); // 報酬の反映
+    checkGameEnd(){
+      if(this.battle.turn == this.battle.turnLimit && !this.battle.isGameEnd()){
+        this.$store.commit("battle/showFragment", "last_turn");
+      }
+      if(this.battle.isGameEnd()){
+        console.log("決着！ショーダウン!");
+        console.log(this.input.seed);
+        console.log(this.battle.battleLog);
+        this.postShowdown();
+      }
     },
 
     getLogMessage(){
@@ -550,6 +996,17 @@ export default {
           return false;
       }
     },
+ 
+    showFinishDialog(){
+      const isFirstTimeLastBossWin = (this.outcome === "win") && (this.rewards.length > 0) && ( this.$store.state.battle.enemy_id === Constants.enemy.lastBossEnemyId );
+      if(isFirstTimeLastBossWin){
+        this.$store.commit("window/updateWindowShowState", {windowName: "ending", state: true});
+        setTimeout(_=>{this.finished = true}, 2000);
+      }
+      else{
+        this.finished = true;
+      }
+    }
   },
 }
 </script>
@@ -576,9 +1033,10 @@ export default {
   top: $space;
   right: $space;
   width: 160px;
-  .back{
+  ._back{
     position: absolute;
-    left: -1000px; // 起点がダメすぎてきつい宣言になった...
+    // 画面横幅のなにもない領域 - 20px まで当たり判定を持つ
+    right: calc((#{$window-width} - 100vw + 20px)/2);
     top: -100px;
     width: 100vw;
     height: 100vh;
@@ -596,6 +1054,59 @@ export default {
   }
 }
 
+.battle_background{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.battle_foreground{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.field_effect_area{
+  position: absolute;
+  top: $space;
+  left: $space;
+}
+
+.turn_area{
+  position: absolute;
+  top: $space;
+  right: $space * 2 + 160px;
+  font-family: 'Forum', cursive;
+  $color: rgb(143, 151, 255);
+  text-shadow: 0px 0px 12px $color, 0px 0px 12px $color, 0px 0px 12px $color;
+  width: 70px;
+  line-height: 100%;
+  .index{
+    width: 100%;
+    font-style: italic;
+  }
+  .values{
+    width: 100%;
+    text-align: right;
+    .current{
+      display: inline-block;
+      font-size: $font-size-large * 1.5;
+      padding-right: $thin_space;
+      animation: turn-text-in 0.7s;
+    }
+  }
+}
+
+@keyframes turn-text-in {
+  0% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+
 .player_character{
   pointer-events: none;
   .spica{
@@ -608,7 +1119,7 @@ export default {
     width: 256px;
     height: 256px;
     position: absolute;
-    left: -70px;
+    left: -50px;
   }
 }
 
@@ -675,8 +1186,12 @@ export default {
   }
   .mp{
     position: absolute;
-    top: 20px;
+    top: 18px;
     font-size: $font-size-normal;
+    display: flex;
+    .diff{
+      color: $rarity3;
+    }
   }
   .bars{
     width: 100%;
@@ -700,13 +1215,6 @@ export default {
   @include centering($height: 40px);
   border: 1px solid $gray3;
   border-radius: $radius;
-  &.startable{
-    border: 1px solid $yellow;
-    background-color: $gray3;
-  }
-  &.disabled{
-    opacity: 0.5;
-  }
 }
 
 .player_status{
@@ -729,10 +1237,24 @@ export default {
     right: 90px;
     align-items: flex-end;
   }
-  .damage_parameters{
-    width: 100%;
+  .etc{
+    position: relative;
+    top: -4px;
     display: flex;
-    flex-direction: row-reverse;
+    width: 100%;
+    justify-content: flex-end;
+    .damage_parameters{
+      padding-top: 4px;
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    .states{
+      height: 24px;
+      width: 200px;
+      display: flex;
+      flex-direction: row-reverse;
+      margin-right: $space;
+    }
   }
 }
 
@@ -756,9 +1278,31 @@ export default {
     left: 90px;
     align-items: flex-start;
   }
-  .damage_parameters{
+  .etc{
+    position: relative;
+    top: -4px;
+    display: flex;
     width: 100%;
+    .damage_parameters{
+      padding-top: 4px;
+      display: flex;
+    }
+    .states{
+      height: 24px;
+      width: 200px;
+      display: flex;
+      margin-right: $space;
+    }
   }
+}
+
+.fragments{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 .result_popup{
@@ -788,8 +1332,8 @@ export default {
   .rewards{
     position: absolute;
     bottom: 150px;
-    right: 275px;
-    width: 250px;
+    right: 235px;
+    width: 330px;
     border-radius: $radius;
     padding: $thin_space;
     color: $gray3;
@@ -806,7 +1350,6 @@ export default {
       }
     }
   }
-
 }
 
 @keyframes skill-name {
@@ -862,7 +1405,7 @@ export default {
   height: $window-height;
   background-color: $background;
   opacity: 1;
-  padding: $space;
+  overflow: hidden;
 }
 
 .player_character{
@@ -875,37 +1418,37 @@ export default {
 .enemy_character{
   position: absolute;
   top: 0;
-  right: 200px;
+  right: 180px;
   width: 256px;
   height: 256px;
 }
 .player_hands{
   position: absolute;
-  top: 90px;
+  top: 85px;
   left: $space;
   width: 198px;
   height: 310px;
 }
 .enemy_hands{
   position: absolute;
-  top: 90px;
+  top: 85px;
   right: $space;
   width: 198px;
   height: 310px;
 }
 .player_selecting_cards{
   position: absolute;
-  top: 260px;
+  top: 290px;
   left: 250px;
   width: 198px;
-  height: 150px;
+  height: 100px;
 }
 .enemy_selecting_cards{
   position: absolute;
-  top: 260px;
+  top: 290px;
   right: 250px;
   width: 198px;
-  height: 150px;
+  height: 100px;
 }
 .skill_name{
   position: absolute;
@@ -920,10 +1463,10 @@ export default {
 }
 .current_strength{
   position: absolute;
-  top: 260px;
+  top: 265px;
   left: calc( #{$window-width / 2} - 75px );
   width: 150px;
-  height: 80px;
+  height: 70px;
 }
 .decide{
   position: absolute;
@@ -934,14 +1477,14 @@ export default {
 }
 .player_status{
   position: absolute;
-  top: 420px;
+  top: 410px;
   left: 20px;
   width: 470px;
   height: 50px;
 }
 .enemy_status{
   position: absolute;
-  top: 420px;
+  top: 410px;
   right: 20px;
   width: 470px;
   height: 50px;

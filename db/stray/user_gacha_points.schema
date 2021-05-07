@@ -1,0 +1,7 @@
+create_table "user_gacha_points", force: :cascade  do |t|
+  t.integer :user_id, default: 0
+  t.integer :point, default: 0
+  t.timestamps
+end
+
+add_index :user_gacha_points, [:user_id], unique: true

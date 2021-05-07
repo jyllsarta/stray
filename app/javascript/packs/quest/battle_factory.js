@@ -8,13 +8,14 @@ let Effect = require("./effect");
 
 module.exports = class BattleFactory{
     constructor(input) {
-        this.player = new Player("プレイヤー", "", input.playerHp, input.playerPower, input.playerTech, input.playerSpecial, this.makeDeck(input.playerCards), this.makeSkills(input.playerSkills));
-        this.enemy = new Enemy(input.enemyName, input.enemyImageName, input.enemyHp, input.enemyPower, input.enemyTech, input.enemySpecial, this.makeDeck(input.enemyCards), this.makeSkills(input.enemySkills));
+        this.player = new Player("プレイヤー", "", 1, input.playerHp, input.playerPower, input.playerTech, input.playerSpecial, this.makeDeck(input.playerCards), this.makeSkills(input.playerSkills));
+        this.enemy = new Enemy(input.enemyName, input.enemyImageName, input.enemyScaleType, input.enemyHp, input.enemyPower, input.enemyTech, input.enemySpecial, this.makeDeck(input.enemyCards), this.makeSkills(input.enemySkills));
         this.seed = input.seed;
+        this.fieldEffectStateId = input.fieldEffectStateId;
     }
 
     getBattle(){
-        return new Battle(this.player, this.enemy, this.seed);
+        return new Battle(this.player, this.enemy, this.seed, this.fieldEffectStateId);
     }
 
     // private
@@ -36,7 +37,7 @@ module.exports = class BattleFactory{
                     effects.push(new Effect(skill[`effect${i}_category`], skill[`effect${i}_to_self`], skill[`effect${i}_value`]));
                 }
             }
-            skills.push(new Skill(skill.id, skill.name, skill.cost, skill.reusable, skill.is_defence, effects));
+            skills.push(new Skill(skill.id, skill.name, skill.description, skill.cost, skill.reusable, skill.is_defence, skill.is_exhaust, skill.is_passive, skill.threshold_hp, effects));
         }
         return skills;
     }

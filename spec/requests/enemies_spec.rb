@@ -38,11 +38,13 @@ RSpec.describe "Enemies", type: :request do
                                                      id: Integer,
                                                      name: String,
                                                      image_name: String,
+                                                     scale_type: Integer,
+                                                     is_boss: Boolean,
                                                      hp: Integer,
                                                      power: Integer,
                                                      tech: Integer,
                                                      special: Integer,
-                                                     rank: Integer,
+                                                     strength: Integer,
                                                      cards: [
                                                          {
                                                              name:String,
@@ -71,8 +73,11 @@ RSpec.describe "Enemies", type: :request do
                                                              name: String,
                                                              description: String,
                                                              reusable: Boolean,
+                                                             is_exhaust: Boolean,
                                                              is_defence: Boolean,
+                                                             is_passive: Boolean,
                                                              cost: Integer,
+                                                             threshold_hp: nil,
                                                              effect1_category: String,
                                                              effect1_to_self: Boolean,
                                                              effect1_value: Integer,
@@ -115,7 +120,8 @@ RSpec.describe "Enemies", type: :request do
 
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy) }
+    let!(:quest) { create(:quest) }
+    let!(:enemy) { create(:enemy, quest: quest) }
     let(:user){ User.create }
     let(:do_post) { post enemy_engage_path(enemy_id: enemy.id)}
     let(:params) do
@@ -138,8 +144,10 @@ RSpec.describe "Enemies", type: :request do
                                                      playerPower: Integer,
                                                      playerTech: Integer,
                                                      playerSpecial: Integer,
+                                                     enemyIsBoss: Boolean,
                                                      enemyId: Integer,
                                                      enemyImageName: String,
+                                                     enemyScaleType: Integer,
                                                      enemyName: String,
                                                      enemyHp: Integer,
                                                      enemyPower: Integer,
@@ -149,6 +157,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerSkills: Array,
                                                      enemyCards: Array,
                                                      enemySkills: Array,
+                                                     fieldEffectStateId: Integer,
                                                      seed: Integer,
                                                  }
                                              )

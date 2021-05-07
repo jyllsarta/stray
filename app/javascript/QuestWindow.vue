@@ -4,12 +4,13 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'quest', state: false})")
+          .arrow
         .title
           | クエスト
       .description
         | 強敵と戦い、クエストを進行させます。
       .body
-        .quest_list_tab
+        .quest_list_tab.scrollable
           .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
@@ -30,9 +31,19 @@
             .descriptions
               .quest_title(:key="selectingQuestId")
                 | {{ selectingQuest.name }}
-              .description
+              .descri
                 | {{ selectingQuest.description }}
               .progress
+                .field_effect
+                  .index
+                    span
+                      | フィールドエフェクト：
+                    span.icon(v-if="currenFieldEffectState.icon")
+                      img(:src="`/images/icons/states/${currenFieldEffectState.icon}`")
+                    span
+                      | {{currenFieldEffectState.title}}
+                  .desc
+                    | {{currenFieldEffectState.description}}
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
                 .go.button.clickable(@click="openBattlePrepareWindow")
@@ -45,11 +56,18 @@ import Constants from "./packs/constants.ts";
 import store from './packs/store.ts'
 import axios from 'axios'
 import ax from "./packs/axios_default_setting.ts";
+import StateLibrary from './packs/quest/state_library'
 
 export default {
   data: function () {
     return {
       quests: [],
+      stateLibrary: null,
+      defaultState: {
+        icon: null,
+        title: "なし",
+        description: "",
+      }
     };
   },
   props: {
@@ -57,6 +75,7 @@ export default {
   store,
   mounted(){
     this.fetchPlayerQuests();
+    this.stateLibrary = new StateLibrary();
   },
   computed: {
     selectingQuestId(){
@@ -65,8 +84,24 @@ export default {
     selectingQuest(){
       return this.quests.find((x)=>x.id===this.selectingQuestId) || {};
     },
+    currenFieldEffectState(){
+      const stateId = this.quests.find((x)=>x.id===this.selectingQuestId)?.field_effect_state_id
+      if(!this.stateLibrary || !stateId){
+        return this.defaultState;
+      }
+      const state = this.stateLibrary.findState(stateId);
+      return state || this.defaultState;
+    }
   },
   methods: {
+    selectFirstUnclearedQuest(){
+      for(let quest of this.quests){
+        if(quest.won_enemy_count !== quest.enemy_count){
+          this.selectQuest(quest.id);
+          return;
+        }
+      }
+    },
     selectQuest(questId){
       this.$store.commit("quest/setQuest", questId);
     },
@@ -76,7 +111,7 @@ export default {
         .then((results) => {
           console.log(results);
           this.quests = results.data.quests;
-          this.selectQuest(results.data.quests[0]?.id || 1);
+          this.selectFirstUnclearedQuest();
         })
         .catch((error) => {
           console.warn(error.response);
@@ -111,7 +146,7 @@ export default {
     display: flex;
   }
   .quest_list_tab{
-    padding: $space;
+    margin: $thin_space;
     display: flex;
     flex-direction: column;
     height: 430px;
@@ -119,7 +154,7 @@ export default {
     .quest{
       margin: $thin_space;
       padding: $space;
-      width: 100%;
+      width: calc(100% - 10px);
       .name{
         display: inline-block;
         width: 70%;
@@ -157,27 +192,54 @@ export default {
     .controls{
       margin-top: $space;
       height: 232px;
+      margin-right: $space;
       .descriptions{
-        padding: $thin_space;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         .quest_title{
           padding-left: $space;
+          padding-bottom: $thin_space;
           font-size: $font-size-large;
           border-bottom: 1px solid $gray3;
-          height: 20%;
+          height: calc($font-size-lage + $thin_space * 2);
         }
-        .description{
+        .descri{
+          height: 114px;
           font-size: $font-size-mini;
-          height: 50%;
+          border-bottom: 1px solid $gray3;
+          padding: $space;
         }
         .progress{
           padding: $space;
           display: flex;
           justify-content: flex-end;
           align-items: flex-end;
-          height: 30%;
+          height: 86px;
+          .field_effect{
+            height: 100%;
+            .index{
+              display: flex;
+              align-items: center;
+              height: 24px;
+              min-width: 1px;
+              margin-bottom: 2px;
+            }
+            .desc{
+              width: 340px;
+              line-height: 120%;
+              font-size: $font-size-mini;
+              white-space: pre-wrap;
+            }
+            .icon{
+              margin-right: $thin_space;
+            }
+            padding-right: $thin_space;
+          }
           .text{
             font-size: $font-size-large;
             padding-right: $space;
+            width: 130px;
           }
           .go{
             height: 50px;

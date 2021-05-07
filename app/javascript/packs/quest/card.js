@@ -1,4 +1,5 @@
-module.exports = class Card {
+module.exports = class
+Card {
     constructor(id, name, power, tech) {
         this.id = id;
         this.name = name;

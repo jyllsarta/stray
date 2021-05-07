@@ -36,13 +36,15 @@ class QuestBattle
     {
         seed: @seed,
         playerHp: 5 + @user.status.quest_battle_additional_hp,
-        playerPower: 1,
-        playerTech: 1,
-        playerSpecial: 1,
+        playerPower: 1 + @user.status.quest_battle_additional_power_tech_damage,
+        playerTech: 1 + @user.status.quest_battle_additional_power_tech_damage,
+        playerSpecial: 1 + @user.status.quest_battle_additional_special_damage,
         enemyId: @enemy.id,
-        enemyName: @enemy.name,
+        enemyName: @enemy.name_with_plus(@user.status.player_strength[:atk], @user.status.player_strength[:def]),
         enemyImageName: @enemy.image_name,
-        enemyHp: @enemy.hp,
+        enemyScaleType: @enemy.scale_type,
+        enemyIsBoss: @enemy.is_boss,
+        enemyHp: @enemy.multiplied_hp(@user.status.player_strength[:atk]),
         enemyPower: @enemy.power,
         enemyTech: @enemy.tech,
         enemySpecial: @enemy.special,
@@ -50,11 +52,16 @@ class QuestBattle
         playerSkills: @user.skills.order(skill_id: :asc).equipped.map(&:skill).map(&:to_battle_skill),
         enemyCards: enemy_cards,
         enemySkills: @enemy.enemy_skills.order(order: :asc).map(&:skill).map(&:to_battle_skill),
+        fieldEffectStateId: @enemy.quest&.field_effect_state_id,
     }.to_json
   end
 
   def win?
     @result['isWin'] == true
+  end
+
+  def lose?
+    @result['isWin'] == false && @result['isDraw'] == false
   end
 
   private
@@ -80,7 +87,7 @@ class QuestBattle
   end
 
   def enemy_cards
-    @enemy.cards(@user.status.average_item_rank).each_with_index{|x, i| x.merge!(id: i+1)}
+    @enemy.cards(@user.status.player_strength[:def]).each_with_index{|x, i| x.merge!(id: i+1)}
   end
 
   def node_command(cache, operation_history)

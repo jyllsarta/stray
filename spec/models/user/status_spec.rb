@@ -7,12 +7,13 @@
 #  current_dungeon_depth :integer          default(1), not null
 #  event_updated_at      :datetime
 #  resurrect_timer       :integer          default(0), not null
+#  returns_on_death      :boolean          default(FALSE), not null
 #  star                  :integer          default(0), not null
 #  velocity              :integer          default(100), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
-#  user_id               :integer          default(0), not null
+#  user_id               :integer          not null
 #
 
 require 'rails_helper'
@@ -36,35 +37,6 @@ RSpec.describe User::Status, type: :model do
     end
     it "returns dungeon's progress record" do
       expect(subject.dungeon_id).to eq(user.status.dungeon.id)
-    end
-  end
-
-  describe "#at_boss_floor?" do
-    subject { status.at_boss_floor? }
-    context "not boss floor" do
-      before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 2)
-      end
-      it "returns false" do
-        expect(subject).to eq(false)
-      end
-    end
-    context "boss floor" do
-      before do
-        status.update!(current_dungeon_depth: Constants.dungeon.boss_floor_frequency - 1)
-      end
-      it "returns true" do
-        expect(subject).to eq(true)
-      end
-
-      context "already reached" do
-        before do
-          status.current_dungeon_progress.update!(max_depth: Constants.dungeon.boss_floor_frequency + 1)
-        end
-        it "returns true" do
-          expect(subject).to eq(false)
-        end
-      end
     end
   end
 
@@ -513,6 +485,38 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#max_item_rank_for_rankup" do
+    subject { status.max_item_rank_for_rankup }
+    context "without relic" do
+      it "100" do
+        expect(subject).to eq(100)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :item_rank) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      it "returns max rank" do
+        expect(subject).to eq(150)
+      end
+    end
+  end
+
+  describe "#skill_slot_count" do
+    subject { status.skill_slot_count }
+    context "without relic" do
+      it "3" do
+        expect(subject).to eq(3)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :skill_slot) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      it "returns max rank" do
+        expect(subject).to eq(4)
+      end
+    end
+  end
+
   describe "#quest_battle_additional_hp" do
     subject { status.quest_battle_additional_hp }
     context "without relic" do
@@ -531,10 +535,46 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#quest_battle_additional_power_tech_damage" do
+    subject { status.quest_battle_additional_power_tech_damage }
+    context "without relic" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :power_tech_damage) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      let(:relic2){ create(:relic, category: :power_tech_damage) }
+      let!(:user_relic2){ create(:user_relic, user: user, relic: relic2) }
+      it "returns max rank" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
+
+  describe "#quest_battle_additional_special_damage" do
+    subject { status.quest_battle_additional_special_damage }
+    context "without relic" do
+      it "0" do
+        expect(subject).to eq(0)
+      end
+    end
+    context "with relic" do
+      let(:relic){ create(:relic, category: :special_damage) }
+      let!(:user_relic){ create(:user_relic, user: user, relic: relic) }
+      let(:relic2){ create(:relic, category: :special_damage) }
+      let!(:user_relic2){ create(:user_relic, user: user, relic: relic2) }
+      it "returns max rank" do
+        expect(subject).to eq(2)
+      end
+    end
+  end
+
   describe "#average_item_rank" do
     let!(:dungeon){ create(:dungeon) }
-    let!(:item1){ create(:item, str: 100, def: 100, dex: 100, agi: 100) }
-    let!(:item2){ create(:item, str:   0, def: 100, dex:   0, agi: 100, base_rank: 8) }
+    let!(:item1){ create(:item, str: 100, vit: 100, dex: 100, agi: 100) }
+    let!(:item2){ create(:item, str:   0, vit: 100, dex:   0, agi: 100, base_rank: 8) }
     let!(:user_item1){ create(:user_item, user: user, item: item1, rank: 16) }
     let!(:user_item2){ create(:user_item, user: user, item: item2, rank: 8) }
     let!(:equip1){ create(:user_character_equip, user_character: user.characters.spica.first, user_item: user_item1)}
@@ -548,6 +588,56 @@ RSpec.describe User::Status, type: :model do
     subject { user.status.average_item_rank }
     it "4" do
       expect(subject).to eq(4)
+    end
+  end
+
+  describe "#average_item_rank" do
+    let(:user){ create(:user) }
+    let(:user_status){ create(:user_status, user: user) }
+
+    subject { status.won_last_boss? }
+    it "default false" do
+      expect(subject).to be_falsey
+    end
+
+    context "won" do
+      before do
+        Enemy.delete_all
+      end
+      let!(:enemy){ create(:enemy, id: 705)}
+      let!(:won_enemy){ create(:user_won_enemy, user: user, enemy: enemy) }
+
+      it do
+        expect(subject).to be_truthy
+      end
+    end
+  end
+
+  describe "#return_floor_on_death" do
+    let(:user){ create(:user) }
+    let(:user_status){ create(:user_status, user: user, returns_on_death: returns_on_death, current_dungeon_depth: depth) }
+
+    subject { user_status.return_floor_on_death }
+    let(:returns_on_death){ false }
+    let(:depth){ 101 }
+    it "default false" do
+      expect{subject}.to_not change(user_status, :current_dungeon_depth)
+    end
+
+    context "on" do
+      let(:returns_on_death){ true }
+      context ">100" do
+        let!(:depth){ 101 }
+        it do
+          expect{subject}.to change(user_status, :current_dungeon_depth).by(-100)
+        end
+      end
+      context "<100" do
+        let!(:depth){ 100 }
+        it do
+          expect{subject}.to change(user_status, :current_dungeon_depth).to(1)
+        end
+      end
     end
   end
 end

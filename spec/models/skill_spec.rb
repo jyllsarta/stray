@@ -17,8 +17,11 @@
 #  for_player       :boolean          default(TRUE), not null
 #  icon_image_path  :string(255)
 #  is_defence       :boolean          default(FALSE), not null
+#  is_exhaust       :boolean          default(FALSE), not null
+#  is_passive       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null
+#  threshold_hp     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -75,6 +78,9 @@ RSpec.describe Skill, type: :model do
                                    "effect3_value" => 5,
                                    "id"=>Integer,
                                    "is_defence"=>false,
+                                   "is_exhaust"=>false,
+                                   "is_passive"=>false,
+                                   "threshold_hp"=>nil,
                                    "name"=>"ファイア",
                                    "reusable"=>false
                                })  # 適当なので、モデル変更などでわずらわしくなったタイミングでちゃんと書き直す

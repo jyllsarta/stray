@@ -1,5 +1,5 @@
 create_table "relic_skills", force: :cascade  do |t|
-  t.belongs_to :relic
-  t.belongs_to :skill
+  t.belongs_to :relic, null: false
+  t.belongs_to :skill, null: false
   t.timestamps
 end

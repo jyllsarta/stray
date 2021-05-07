@@ -7,12 +7,13 @@
 #  current_dungeon_depth :integer          default(1), not null
 #  event_updated_at      :datetime
 #  resurrect_timer       :integer          default(0), not null
+#  returns_on_death      :boolean          default(FALSE), not null
 #  star                  :integer          default(0), not null
 #  velocity              :integer          default(100), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  current_dungeon_id    :integer          default(1), not null
-#  user_id               :integer          default(0), not null
+#  user_id               :integer          not null
 #
 
 class User::Status < ApplicationRecord
@@ -36,11 +37,6 @@ class User::Status < ApplicationRecord
 
   def current_dungeon_rank
     dungeon.rank(current_dungeon_depth)
-  end
-
-  def at_boss_floor?
-    # 「その次のフロアを踏んだことがない」ならばそのフロアのボスを倒していない
-    dungeon.is_boss_floor?(current_dungeon_depth) && current_dungeon_progress.unexplored?(current_dungeon_depth + 1)
   end
 
   def switch_dungeon!(dungeon_id, depth)
@@ -162,14 +158,51 @@ class User::Status < ApplicationRecord
     @_event_wait_reduction_seconds ||= user.relics.joins(:relic).where(relics: {category: :event_time}).count * 2
   end
 
+  def max_item_rank_for_rankup
+    @_max_item_rank_for_rankup ||= (user.relics.joins(:relic).where(relics: {category: :item_rank}).count * Constants.item.additional_item_rank_per_relic + Constants.item.default_max_rank)
+  end
+
+  def skill_slot_count
+    @_skill_slot_count ||= (user.relics.joins(:relic).where(relics: {category: :skill_slot}).count + Constants.skill.default_skill_slot_count)
+  end
+
   def quest_battle_additional_hp
     # HP追加レリックの個数そのものが性能
     user.relics.joins(:relic).where(relics: {category: :hp}).count
   end
 
+  def quest_battle_additional_power_tech_damage
+    # 力技追加レリックの個数そのものが性能
+    user.relics.joins(:relic).where(relics: {category: :power_tech_damage}).count
+  end
+
+  def quest_battle_additional_special_damage
+    # SP追加レリックの個数そのものが性能
+    user.relics.joins(:relic).where(relics: {category: :special_damage}).count
+  end
+
   def average_item_rank
     preload_item_associations!
     user.characters.map(&:equips).flatten.map(&:user_item).compact.map(&:item_rank).sum / (Constants.equip.max_count * 2)
+  end
+
+  def won_last_boss?
+    user.won_enemies.exists?(enemy_id: Constants.enemy.last_boss_id)
+  end
+
+  def player_strength
+    return @_strength if @_strength
+    preload_item_associations!
+    @_strength = user.characters.map(&:strength).each_with_object({atk: 0, def: 0}) do |strength, hash|
+      hash[:atk] += strength[:atk]
+      hash[:def] += strength[:def]
+    end
+  end
+
+  def return_floor_on_death
+    return unless returns_on_death
+    self.current_dungeon_depth -= Constants.dungeon.return_floors_on_death
+    self.current_dungeon_depth = 1 if current_dungeon_depth <= 0
   end
 
   private

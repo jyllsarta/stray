@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'account', state: false})")
+          .arrow
         .title
           | アカウント管理
       .account
@@ -13,7 +14,7 @@
           | もしアカウントをなくしても復旧措置が可能になるので、登録してスクリーンショットを保存しておくのがおすすめです。
         .windows
           form.backup(onsubmit="return false;")
-            .head
+            .head.topic_medium
               | アカウントを登録
             .item
               .label
@@ -37,7 +38,7 @@
                 .desc_without_border
                   | {{register.message}}
           form.restore(onsubmit="return false;")
-            .head
+            .head.topic_medium
               | アカウントを復元(再ログイン)
             .item
               .desc_without_border
@@ -153,16 +154,16 @@ export default {
     display: flex;
     flex-direction: row;
     padding: $space;
-    height: 80%;
+    height: 70%;
     .backup{
       border-right: 1px solid $gray3;
     }
     .backup, .restore{
       width: 50%;
-      padding-top: 8%;
+      margin-top: 4%;
+      padding: 4%;
       .head{
-        text-align: center;
-        color: $accent-color;
+        display: inline-block;
       }
       .item{
         text-align: center;
@@ -170,7 +171,7 @@ export default {
         .label{
           display: inline-block;
           margin-right: $space;
-          width: 30%;
+          width: 40%;
           text-align: left;
           &::after{
             content: "：";

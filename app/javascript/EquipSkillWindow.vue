@@ -4,6 +4,7 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'equip_skill', state: false})")
+          .arrow
         .title
           | スキル選択
       .description
@@ -13,12 +14,18 @@
           .skill_select_area
             .head
               | 所持スキル
-            .all_skills.skills
+            .all_skills.skills.scrollable
               SkillList(:isPlayer="true", :skills="remainingSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
             .head
               | 装備中のスキル
-            .selected_skills.skills
-              SkillList(:isPlayer="true", :skills="selectedSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
+            .selected_skills_area
+              .skills
+                SkillList(:isPlayer="true", :skills="selectedSkills", :clickable="true", @onClick="selectSkill", @onPoint="pointSkill")
+              .limit
+                span(:class="isSkillSlotMax ? 'limit' : ''")
+                  | {{ selectedSkills.length }}
+                span
+                  | / {{ $store.state.user.status.skill_slot_count }}
           .detail_area
             .head
               | スキル詳細
@@ -37,18 +44,37 @@
                   | 使用回数
                 .value
                   | {{pointingSkill.reusable ? '∞' : '1'}}
-              .detail(v-if="pointingSkill.is_defence===true")
+              .detail(
+                v-if="pointingSkill.threshold_hp"
+                @mouseover="$store.commit('guide/updateGuide', '特定HP以下になると発動可能。')"
+              )
                 .key
-                  | 防御スキル
+                  | 条件
                 .value
-                  |
+                  | {{pointingSkill.threshold_hp}}≦HP
+              .detail(
+                v-if="pointingSkill.is_defence===true"
+                @mouseover="$store.commit('guide/updateGuide', '防御スキルの使用ターンはMPが増加しない。')"
+                )
+                .center_key
+                  | 防御スキル
+              .detail(
+                v-if="pointingSkill.is_passive===true"
+                @mouseover="$store.commit('guide/updateGuide', 'パッシブスキル。バトル開始時に自動発動する。')"
+                )
+                .center_key
+                  | パッシブ
+              .detail(
+                v-if="pointingSkill.is_exhaust===true"
+                @mouseover="$store.commit('guide/updateGuide', 'イグゾーストスキルはMPがマイナスでなければいつでも使用できる。')"
+                )
+                .center_key
+                  | イグゾースト
               .descri
                 | {{pointingSkill.description}}
         .decide_area
           .decide.clickable(@click="decide")
             | 確定して閉じる
-
-
 
 </template>
 
@@ -91,7 +117,10 @@
                   is_defence: "false",
               };
               return this.$store.state.skill.skills.find((x)=>x.id===this.pointingSkillId) || stub;
-          }
+          },
+          isSkillSlotMax(){
+            return this.selectingSkillIds.length === this.$store.state.user.status.skill_slot_count
+          },
       },
       methods: {
         iconImagePath(skillId){
@@ -106,7 +135,7 @@
                   this.selectingSkillIds = this.selectingSkillIds.filter(n => n !== id);
                   return;
               }
-              if(this.selectingSkillIds.length === 5){ //Constants 依存のがいいかな？
+              if(this.isSkillSlotMax){
                   return;
               }
               this.selectingSkillIds.push(id);
@@ -174,13 +203,28 @@
         .all_skills{
           height: 230px;
           .skill_list{
+            height: 100%;
+            align-items: flex-start;
             flex-wrap: wrap;
+            align-content: flex-start;
           }
         }
-        .selected_skills{
+        .selected_skills_area{
+          display: flex;
           height: 70px;
-          .skill_list{
-            flex-wrap: wrap;
+          width: 100%;
+          .skills{
+            width: 85%;
+            height: 100%;
+            align-items: flex-start;
+          }
+          .limit{
+            width: 15%;
+            text-align: right;
+            font-size: $font-size-large;
+            .limit{
+              color: $yellow;
+            }
           }
         }
       }
@@ -200,7 +244,6 @@
           height: 40px;
           display: flex;
           align-items: center;
-          margin-bottom: $space;
           .name{
             line-height: 100%;
             padding-top: 2px;
@@ -218,21 +261,21 @@
           .detail{
             display: flex;
             align-items: baseline;
-            padding: $space;
+            padding: $thin_space;
             border-bottom: 1px solid $gray3;
             .key{
               text-align: right;
               width: 50%;
-              height: $font-size-normal;
-              line-height: 100%;
-              padding-right: $space;
               border-right: 1px solid $gray3;
+              padding-right: $thin_space;
             }
             .value{
-              padding-left: $space;
               width: 50%;
-              height: $font-size-normal;
-              line-height: 100%;
+              padding-left: $thin_space;
+            }
+            .center_key{
+              width: 100%;
+              text-align: center;
             }
           }
         }

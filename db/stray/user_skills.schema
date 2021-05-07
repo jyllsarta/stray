@@ -4,3 +4,5 @@ create_table "user_skills", force: :cascade  do |t|
   t.boolean :is_equipped, default: false
   t.timestamps
 end
+
+add_index :user_skills, [:user_id, :skill_id], unique: true

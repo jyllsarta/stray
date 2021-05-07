@@ -23,7 +23,8 @@ RSpec.describe Achievement::Event::ClientComplete, type: :model do
       expect( subject ).to eq([
         'Achievement::Type::OpenLog',
         'Achievement::Type::ClickFieldCharacter',
-        'Achievement::Type::SignIn',  
+        'Achievement::Type::SignIn',
+        'Achievement::Type::CloseEndingWindow',
       ])
     end
   end

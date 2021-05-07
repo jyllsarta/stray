@@ -17,8 +17,11 @@
 #  for_player       :boolean          default(TRUE), not null
 #  icon_image_path  :string(255)
 #  is_defence       :boolean          default(FALSE), not null
+#  is_exhaust       :boolean          default(FALSE), not null
+#  is_passive       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null
+#  threshold_hp     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -27,6 +30,8 @@ FactoryBot.define do
   factory :skill, class: 'Skill' do
     name { "ファイア" }
     description { "基本の魔法" }
+    is_defence { false }
+    is_exhaust { false }
     effect1_category { "Damage" }
     effect1_to_self { false }
     effect1_value { 1 }
