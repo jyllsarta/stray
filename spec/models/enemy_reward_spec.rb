@@ -8,7 +8,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  enemy_id      :bigint           not null
-#  giftable_id   :integer
+#  giftable_id   :integer          not null
 #
 # Indexes
 #

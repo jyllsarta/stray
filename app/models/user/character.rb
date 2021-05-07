@@ -3,14 +3,14 @@
 # Table name: user_characters
 #
 #  id           :bigint           not null, primary key
-#  exp          :integer          default(0)
-#  hp           :integer          default(0)
-#  hp_max       :integer          default(0)
-#  level        :integer          default(0)
+#  exp          :integer          default(0), not null
+#  hp           :integer          default(0), not null
+#  hp_max       :integer          default(0), not null
+#  level        :integer          default(0), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  character_id :integer          default(NULL)
-#  user_id      :integer          default(0)
+#  character_id :integer          default(NULL), not null
+#  user_id      :integer          not null
 #
 
 class User::Character < ApplicationRecord
@@ -60,7 +60,7 @@ class User::Character < ApplicationRecord
 
   def parameters
     return @_parameters if @_parameters
-    default_parameters = Constants.character.default_parameters["rank_#{rank}"].to_h
+    default_parameters = Constants.character.default_parameters.to_h
     @_parameters = compacted_equips.each_with_object(default_parameters) do |equip, hash|
       hash.merge!(equip.user_item.parameter){|_, a, b| a + b}
     end
@@ -72,15 +72,20 @@ class User::Character < ApplicationRecord
     params = parameters
     {
       atk: lambda.call(params[:str], params[:dex]),
-      def: lambda.call(params[:def], params[:agi])
+      def: lambda.call(params[:vit], params[:agi])
     }
   end
 
   def gain_exp(value)
+    return if level_max?
     increment(:exp, value)
     while can_level_up?
       level_up
     end
+  end
+
+  def level_max?
+    level >= Constants.character.level_max
   end
 
   private
@@ -90,8 +95,9 @@ class User::Character < ApplicationRecord
   end
 
   def level_up
-    self.decrement(:exp, Constants.character.level_up_exp - 1)
+    self.decrement(:exp, Constants.character.level_up_exp)
     self.increment(:level)
+    self.exp = 0 if level >= Constants.character.level_max
     self.hp_max = hp_max_at(level)
   end
 

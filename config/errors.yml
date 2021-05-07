@@ -43,4 +43,9 @@ Relic::AlreadyObtained:
 User::Skill::TooManySkill:
   status: bad_request
   message: 不正なスキル指定です。
-
+User::GachaPoint::OverPotLimit:
+  status: bad_request
+  message: 一度に投入できるコイン量を超えています。
+ActionController::RoutingError:
+  status: bad_request
+  message: RoutingErrorですね

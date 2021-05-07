@@ -7,8 +7,8 @@ const battle = new BattleFactory(input).getBattle();
 
 while(!battle.isGameEnd()){
   const oh = operationHistory.shift()
-  battle.selectingCardIds = oh.cards;
-  battle.player.selectingSkillIndex = oh.skillIndex;
+  battle.player.selectingCardIds = oh.cards;
+  battle.player.selectingSkillIndexes = oh.skillIndex;
   battle.playTurn();
 }
 

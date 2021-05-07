@@ -1,7 +1,8 @@
 module.exports = class Character{
-    constructor(name, imageName, hp, power, tech, special, deck, skills) {
+    constructor(name, imageName, scaleType, hp, power, tech, special, deck, skills) {
         this.name = name;
         this.imageName = imageName;
+        this.scaleType = scaleType;
         this.hp = hp;
         this.hp_max = hp;
         this.power = power;
@@ -9,15 +10,55 @@ module.exports = class Character{
         this.special = special;
         this.mp = 0;
         this.mp_max = 100;
-        this.handCardCount = 6;
+        this.handCardCount = 5;
         this.deck = deck;
         this.skills = skills;
         this.resetTempBuffs();
-        this.selectingSkillIndex = null;
+        this.selectingSkillIndexes = [];
+        this.selectingCardIds = [];
+        this.states = [];
+        this.operationHistory = [];
     }
 
-    selectingSkill(){
-        return this.skills[this.selectingSkillIndex];
+    canUseSkill(skillIndex){
+        const skill = this.skills[skillIndex];
+
+        if(!skill){
+            return false;
+        }
+
+        // パッシブスキルは能動的に発動できない
+        if (skill.is_passive){
+            return false;
+        }
+
+        // MPが足りてないとダメ
+        if (!skill.isMpSufficient(this.mp)){
+            return false;
+        }
+
+        // reusable = false のスキルは一回使ってたらダメ
+        if ( !skill.reusable && this.operationHistory.map((x)=>x.skillIndex).flat().includes(skillIndex)){
+            return false;
+        }
+
+        // HP条件があるときはそれを満たしていないとダメ
+        if ( skill.threshold_hp && skill.threshold_hp < this.hp ) {
+            return false;
+        }
+        return true;
+    }
+
+    selectingSkills(){
+        return this.selectingSkillIndexes.map(x=>this.skills[x]);
+    }
+
+    consumingMp(){
+        return this.selectingSkills().reduce((a,b)=>a+b.cost, 0);
+    }
+
+    removeSKillBySkillIndex(index){
+        this.selectingSkillIndexes = this.selectingSkillIndexes.filter(x=>x!==index);
     }
 
     isAlive(){
@@ -39,18 +80,6 @@ module.exports = class Character{
         }
     }
 
-    hpRatio(){
-        return this.hp / this.hp_max;
-    }
-
-    hasMp(value){
-        return this.mp >= value
-    }
-
-    useMp(value){
-        this.mp -= value;
-    }
-
     addMp(value){
         if(this.tempBuffs.usedDefenceSkill){
             return; // 防御スキルを使ったターンはMPが回復しない
@@ -64,8 +93,28 @@ module.exports = class Character{
         }
     }
 
+    setHp(value){
+        this.hp = value;
+    }
+
+    setMp(value){
+        this.mp = value;
+    }
+
+    hpRatio(){
+        return this.hp / this.hp_max;
+    }
+
     mpRatio(){
         return this.mp / this.mp_max;
+    }
+
+    hasMp(value){
+        return this.mp >= value
+    }
+
+    useMp(value){
+        this.mp -= value;
     }
 
     addShield(value){
@@ -91,7 +140,7 @@ module.exports = class Character{
         };
     }
 
-    damage(value){
+    damage(value, isPhysical = false){
         if(this.tempBuffs.shield > 0){
             // 防ぎきれたならシールドがダメージ値だけ減る
             if(this.tempBuffs.shield >= value){
@@ -105,6 +154,21 @@ module.exports = class Character{
             }
         }
         this.hp -= value;
+        if(value > 0){
+            for(let state of this.states.slice().reverse()){
+                state.onDamage(value, isPhysical);
+            }
+        }
+    }
+
+    damageMp(value){
+        if(this.mp < 0){
+            return;
+        }
+        this.mp -= value;
+        if(this.mp < 0){
+            this.mp = 0;
+        }
     }
 
     powerAt(cardIds){
@@ -129,5 +193,38 @@ module.exports = class Character{
             return 0;
         }
         return cards.map((c)=>c.tech).reduce((a,b)=>(a+b)) + this.tempBuffs.tech;
+    }
+
+    addState(stateInstance){
+        this.states.push(stateInstance);
+        stateInstance.onAdd();
+    }
+
+    // stateId 指定で states を検索し、見つかったら返す、なければnullを返す
+    findStateById(stateId){
+        for(let state of this.states){
+            if(state.stateId === stateId){
+                return state;
+            }
+        }
+        return null;
+    }
+
+    attenuateAndSweepStates(){
+        for(let state of this.states){
+            if(state.ttl > 0){
+                state.ttl -= 1;
+            }
+        }
+        this.states = this.states.filter(state=>state.ttl!==0);
+    }
+
+    hasSpecificCallbackState(callbackName){
+        for(let state of this.states){
+            if(state.stateMaster[callbackName]){
+               return true;
+            }
+        }
+        return false;
     }
 };

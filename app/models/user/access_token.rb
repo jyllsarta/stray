@@ -6,7 +6,7 @@
 #  token      :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer
+#  user_id    :integer          not null
 #
 
 class User::AccessToken < ApplicationRecord
@@ -21,6 +21,11 @@ class User::AccessToken < ApplicationRecord
 
   def self.find_user_by_token!(raw_token)
     self.find_by!(token: self.hash_method(raw_token))&.user
+  end
+
+  def self.fetch_user_id(raw_token)
+    return nil unless raw_token
+    self.find_by(token: self.hash_method(raw_token))&.user_id
   end
 
 private

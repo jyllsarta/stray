@@ -1,11 +1,11 @@
 create_table "items", force: :cascade  do |t|
   t.string :name
-  t.integer :base_rank, default: 0
-  t.integer :str, default: 0
-  t.integer :dex, default: 0
-  t.integer :def, default: 0
-  t.integer :agi, default: 0
-  t.integer :rarity, default: 1
+  t.integer :base_rank, null:false, default: 0
+  t.integer :str,       null:false, default: 0
+  t.integer :dex,       null:false, default: 0
+  t.integer :vit,       null:false, default: 0
+  t.integer :agi,       null:false, default: 0
+  t.integer :rarity,    null:false, default: 1
   t.string :flavor_text
   t.timestamps
 end

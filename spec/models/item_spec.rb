@@ -3,14 +3,14 @@
 # Table name: items
 #
 #  id          :bigint           not null, primary key
-#  agi         :integer          default(0)
-#  base_rank   :integer          default(0)
-#  def         :integer          default(0)
-#  dex         :integer          default(0)
+#  agi         :integer          default(0), not null
+#  base_rank   :integer          default(0), not null
+#  dex         :integer          default(0), not null
 #  flavor_text :string(255)
 #  name        :string(255)
-#  rarity      :integer          default(1)
-#  str         :integer          default(0)
+#  rarity      :integer          default(1), not null
+#  str         :integer          default(0), not null
+#  vit         :integer          default(0), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -69,6 +69,19 @@ RSpec.describe Item, type: :model do
           item2.id => item2,
         }
       )
+    end
+  end
+
+  describe "#max_rank" do
+    before do
+      Item.delete_all
+    end
+    subject { Item.max_rank }
+    let!(:item){ create :item, base_rank: 100}
+    let!(:item2){ create :item, base_rank: 105}
+    let!(:item3){ create :item, base_rank: 80}
+    it "returns string" do
+      expect(subject).to eq(105)
     end
   end
 end

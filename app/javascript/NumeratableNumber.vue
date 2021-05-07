@@ -43,18 +43,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .bar{
-    display: flex;
-    border-radius: 1px;
-    .on{
-      height: 100%;
-    }
-    .blank{
-      height: 100%;
-      flex: 1;
-    }
-  }
-  .reversed{
-    flex-direction: row-reverse;
-  }
 </style>

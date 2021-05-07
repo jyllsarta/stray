@@ -25,6 +25,7 @@ RSpec.describe Achievement::Event::EditEquip, type: :model do
         'Achievement::Type::MaxAttack',
         'Achievement::Type::MaxDefence',
         'Achievement::Type::FillEquipSlot',
+        'Achievement::Type::BeNude',
       ])
     end
   end

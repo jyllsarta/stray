@@ -1,3 +1,4 @@
+import Vue from "vue";
 import Constants from "../constants.ts";
 
 export default {
@@ -16,12 +17,22 @@ export default {
       spica: [],
       tirol: [],
     },
+    user_items: {},
+    max_effect_value: 100,
+    mock_item: {
+      id: -1,
+      effectValueOf: _=>0,
+      tech: ()=>0,
+      power: ()=>0,
+    },
+    // 書くとこないのでここにユーティリティ書くわるハック
+    recalculateMaxEffectValue: (state)=>{return Object.values(state.user_items).map(ui=>ui.effectValue).reduce((p,x)=>(Math.max(p, x)), 0)},
   },
   getters: {
     getCurrentEquipsByCharacterId: (state, getters, rootState, rootGetters) => (characterId) => {
       const characterName = [null, "spica", "tirol"][characterId];
       const equips = state.draft[characterName];
-      return equips?.map(c => getters.getUserItem(c));
+      return equips?.map(c => state.user_items[c] || state.mock_item);
     },
     getSubCharacterId: (state) => {
       // これでいいのか感はある
@@ -43,67 +54,61 @@ export default {
       switch(id){
         case 0:
           return {
-            lambda: (a, b) => { return (b.id - a.id) },
+            lambda: (a) => { return a.id },
             name: "ID順",
           };
         case 1:
           return {
-            lambda: (a, b) => { return (getters.getItemEffectValue(b.id) - getters.getItemEffectValue(a.id)) },
+            lambda: (a) => { return state.user_items[a.id].effectValue },
             name: "総合順",
           };
         case 2:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('str') - getters.getUserItem(a.id).effectValueOf('str')) },
+            lambda: (a) => { return state.user_items[a.id].effectValueOf('str') },
             name: "STR順",
           };
         case 3:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('dex') - getters.getUserItem(a.id).effectValueOf('dex')) },
+            lambda: (a) => { return state.user_items[a.id].effectValueOf('dex') },
             name: "DEX順",
           };
         case 4:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('def') - getters.getUserItem(a.id).effectValueOf('def')) },
-            name: "DEF順",
+            lambda: (a) => { return state.user_items[a.id].effectValueOf('vit') },
+            name: "VIT順",
           };
         case 5:
           return {
-            lambda: (a, b) => { return (getters.getUserItem(b.id).effectValueOf('agi') - getters.getUserItem(a.id).effectValueOf('agi')) },
+            lambda: (a) => { return state.user_items[a.id].effectValueOf('agi') },
             name: "AGI順",
           };
         case 6:
           return {
-            lambda: (a, b) => {
-              let item_b = (getters.getUserItem(b.id));
-              let item_a = (getters.getUserItem(a.id));
-              return (item_b.rank + item_b.base_rank) - (item_a.rank + item_a.base_rank)
+            lambda: (a) => {
+              const item_a = state.user_items[a.id];
+              return item_a.rank + item_a.base_rank;
             },
             name: "ランク順",
           };
         case 7:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
-              const item_a = (getters.getUserItem(a.id));
-              return (item_b.tech() + item_b.power()) - (item_a.tech() + item_a.power());
+            lambda: (a) => {
+              const item_a = state.user_items[a.id];
+              return item_a.tech() + item_a.power();
             },
             name: "力+技順",
           };
         case 8:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
-              const item_a = (getters.getUserItem(a.id));
-              return (item_b.power()) - (item_a.power());
+            lambda: (a) => {
+              return state.user_items[a.id].power();
             },
             name: "力順",
           };
         case 9:
           return {
-            lambda: (a, b) => {
-              const item_b = (getters.getUserItem(b.id));
-              const item_a = (getters.getUserItem(a.id));
-              return (item_b.tech()) - (item_a.tech());
+            lambda: (a) => {
+              return state.user_items[a.id].tech();
             },
             name: "技順",
           };
@@ -112,67 +117,34 @@ export default {
           return null;
       }
     },
+    getCurrentSortKey: (state, getters) => {
+      return getters.sortLambdas(state.current_sort_id);
+    },
     getCurrentSortLambda: (state, getters) => {
-      return getters.sortLambdas(state.current_sort_id).lambda;
+      const sort = getters.getCurrentSortKey;
+      return (a, b) => {return sort.lambda(b) - sort.lambda(a)};
+    },
+    getStrongestSortLambda: (state, getters) => {
+      const sort = getters.sortLambdas(1);
+      return (a, b) => {return sort.lambda(b) - sort.lambda(a)};
     },
     getCurrentSortName: (state, getters) => {
       return getters.sortLambdas(state.current_sort_id).name;
     },
-    getUserItemRank: (state, getters, rootState, rootGetters) => (itemId) => {
-      return rootState.user?.items[itemId]?.rank || 0;
-    },
     // 画面表示用(ランク0ならプラスを表示しない)
     getUserItemRankTextForDisplay: (state, getters) => (itemId) => {
-      const rank = getters.getUserItemRank(itemId);
+      const rank = state.user_items[itemId]?.rank || 0;
       // 0 はfalsy なことを使ったハック
       return rank ? `+${rank}`: "";
     },
-    getItems: (state, getters, rootState, rootGetters) => {
-      return Object.values(rootState.user.items).map(item=>getters.getUserItem(item.item_id));
-    },
-    getItemsWithPager: (state, getters, rootState, rootGetters) => {
-      return Object.values(rootState.user.items)
-        .map(item=>getters.getUserItem(item.item_id))
-        .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
-        .filter(x=>x);
-    },
     getItemsWithPagerSorted: (state, getters, rootState, rootGetters) => {
-      return Object.values(rootState.user.items)
-        .map(item=>getters.getUserItem(item.item_id))
+      return Object.values(state.user_items)
         .sort(getters.getCurrentSortLambda)
         .slice((state.current_page - 1) * Constants.itemsPerPage ,(state.current_page) * Constants.itemsPerPage)
         .filter(x=>x);
     },
-    getUserItem: (state, getters, rootState, rootGetters) => (itemId, rankDelta=0) => {
-      if(!rootState.user.items[itemId] || !rootState.masterdata.items[itemId]){
-        return null;
-      }
-      let ui = Object.assign(rootState.user.items[itemId], rootState.masterdata.items[itemId]);
-      ui.effectValueOf = function (paramName) {
-        return Math.floor(this[paramName] / 100 * rootGetters['user/' +
-        'rankFactor'](this.rank + this.base_rank + rankDelta) * rootGetters['user/rarityFactor'](this.rarity));
-      };
-      // NOTE: user/item.rb とがんばって共有すること
-      // tech: ((item.dex + item.agi) * rarity_factor(item.rarity) / 40).floor,
-      ui.tech = function () {
-        return Math.floor((this.dex + this.agi) * rootGetters['user/rarityFactor'](this.rarity) / 40);
-      };
-      ui.power = function () {
-        return Math.floor((this.str + this.def) * rootGetters['user/rarityFactor'](this.rarity) / 40);
-      };
-
-      ui.effectValue = ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + ui.effectValueOf(x)), 0);
-      return ui;
-    },
-    getItemEffectValue: (state, getters) => (itemId) => {
-      const item = getters.getUserItem(itemId);
-      if(!item){
-        return 0;
-      }
-      return ['str', 'dex', 'def', 'agi'].reduce((p,x)=>(p + item.effectValueOf(x)), 0);
-    },
     getItemRarityIcon: (state, getters, rootState, rootGetters) => (itemId) => {
-      const item = rootState.masterdata.items[itemId];
+      const item = state.user_items[itemId];
       if(!item){
         return "";
       }
@@ -184,25 +156,28 @@ export default {
     getCharacterParameter: (state, getters, rootState) => (characterId, paramName, isCurrent) => {
       const env = isCurrent ? 'draft' : 'initial';
       const characterName =  [null, "spica", "tirol"][characterId];
-      const equipParameter = state[env][characterName].reduce((p,x)=>(p + getters.getUserItem(x).effectValueOf(paramName)), 0);
-      const characterRank = rootState.user.characters[characterName]?.rank || 1;
-      const defaultParameter = Constants.character.defaultParameters[`rank${characterRank}`][paramName];
+      const equipParameter = state[env][characterName].reduce((p,x)=>(p + state.user_items[x]?.effectValueOf(paramName) || 0), 0);
+      const defaultParameter = Constants.character.defaultParameters[paramName];
       return equipParameter + defaultParameter;
     },
     getCharacterStrength: (state, getters) => (characterId, paramName, isCurrent) => {
-      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['def', 'agi'];
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['vit', 'agi'];
       const params = sourceParamNames.map(p=>getters.getCharacterParameter(characterId, p, isCurrent));
       return Math.floor((params[0] + params[1]) / 2) + Math.min(params[0], params[1]);
     },
     getCharacterStrengthDiff: (state, getters) => (characterId, paramName) => {
       return getters.getCharacterStrength(characterId, paramName, true) - getters.getCharacterStrength(characterId, paramName, false);
     },
-    averageItemRank: (state, getters) => () => {
-      let sum = 0;
-      for(let characterName of ['spica', 'tirol']){
-         sum += state['draft'][characterName].reduce((p,x)=>(p + getters.getUserItem(x).rank + getters.getUserItem(x).base_rank), 0);
-      }
-      return Math.floor(sum / (Constants.maxEquipCount * 2));
+    getTotalStrength: (state, getters) => (paramName, isCurrent) => {
+      const sourceParamNames = paramName == 'atk' ? ['str', 'dex'] : ['vit', 'agi'];
+      const spicaParams = sourceParamNames.map(p=>getters.getCharacterParameter(1, p, isCurrent));
+      const spicaTotal = Math.floor((spicaParams[0] + spicaParams[1]) / 2) + Math.min(spicaParams[0], spicaParams[1]);
+      const tirolParams = sourceParamNames.map(p=>getters.getCharacterParameter(2, p, isCurrent));
+      const tirolTotal = Math.floor((tirolParams[0] + tirolParams[1]) / 2) + Math.min(tirolParams[0], tirolParams[1]);
+      return spicaTotal + tirolTotal;
+    },
+    getTotalStrengthDiff: (state, getters) => (paramName) => {
+      return getters.getTotalStrength(paramName, true) - getters.getTotalStrength(paramName, false);
     },
   },
   mutations: {
@@ -212,12 +187,41 @@ export default {
         state.initial[characterName] = payload[characterName];
       });
     },
+    constructUserItems(state, payload){
+      const items = payload.items;
+      const user_items = payload.user_items;
+      for(let user_item of Object.values(user_items)){
+        let ui = Object.assign({}, user_item, items[user_item.item_id]);
+        Object.assign(ui, items[user_item.item_id]);
+        ui.rankFactor = function(rank) {
+          return Math.floor(Math.pow(Constants.item.rankFactor, rank) * 100) - 100;
+        },
+        ui.rarityFactor = function(rarity) {
+          return Constants.item.rarityFactor[rarity];
+        },
+        ui.effectValueOf = function (paramName, rankDelta=0) {
+          return Math.floor(this[paramName] / 100 * this.rankFactor(this.rank + this.base_rank + rankDelta) * this.rarityFactor(this.rarity));
+        };
+        ui.tech = function (rankDelta=0) {
+          return Math.floor((this.dex + this.agi) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
+        };
+        ui.power = function (rankDelta=0) {
+          return Math.floor((this.str + this.vit) * this.rarityFactor(this.rarity) * Math.min(Math.max(((this.rank + this.base_rank + rankDelta) / 250 + 1), 1), 3) / 80) + 2;
+        };
+        ui.recalculate = function(){
+          this.effectValue = ['str', 'dex', 'vit', 'agi'].reduce((p,x)=>(p + this.effectValueOf(x)), 0);
+        }
+        ui.recalculate();
+        Vue.set(state.user_items, ui.item_id, ui);
+      }
+      state.max_effect_value = state.recalculateMaxEffectValue(state);
+    },
     updateSelectingItemId(state, payload){
       state.selecting_item_id = payload;
     },
     removeEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
-      state.draft[characterName] = state.draft[characterName].filter(i=>i!==payload.itemId)
+      state.draft[characterName] = state.draft[characterName].filter(i=>i!==payload.itemId);
     },
     attachEquip(state, payload){
       const characterName = [null, "spica", "tirol"][payload.characterId];
@@ -229,14 +233,20 @@ export default {
     switchMainCharacter(state){
       state.main_character_id = state.main_character_id === 1 ? 2 : 1;
     },
-    reverseItemSortOrder(state){
-      state.current_sort_order *= -1;
-    },
     switchItemSortLambda(state, payload){
       state.current_sort_id = payload;
     },
     changePage(state, payload){
       state.current_page = payload;
-    }
-  }
+    },
+    syncInitialToDraft(state){
+      Object.assign(state.initial, state.draft);
+    },
+    updateUserItemRank(state, payload){
+      state.user_items[payload.item_id].rank = payload.rank;
+      state.user_items[payload.item_id].recalculate();
+      // bar_areaの再計算
+      state.max_effect_value = state.recalculateMaxEffectValue(state);
+    },
+  },
 }

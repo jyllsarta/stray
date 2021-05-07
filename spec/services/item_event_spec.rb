@@ -9,7 +9,7 @@ RSpec.describe ItemEvent, type: :model do
   let(:user){create(:user)}
   let!(:status){create(:user_status, user: user)}
   let(:event){ ItemEvent.new(rank) }
-  let(:rank){1}
+  let(:rank){ 0 }
   let!(:item1){create(:item, id: 1, rarity: 1)}
   let!(:item2){create(:item, id: 2, rarity: 2)}
   let!(:item3){create(:item, id: 3, rarity: 3)}
@@ -98,7 +98,7 @@ RSpec.describe ItemEvent, type: :model do
         it "ランクは上昇せずコインがもらえる" do
           subject
           expect(user.items.find(user_item.id).rank).to eq(Constants.item.default_max_rank)
-          expect(user.status.coin).to eq(rank)
+          expect(user.status.coin).to eq(50) # rank / 4 + 50
         end
       end
       context "それがすでに最大ランクを超えていても" do
@@ -121,6 +121,16 @@ RSpec.describe ItemEvent, type: :model do
           subject
           expect(event.logs[0][:message].include?("まとめて")).to eq(false)
         end
+
+        context "ランク最大値付近でも上限突破していたら" do
+          before do
+            allow_any_instance_of(ItemEvent).to receive(:max_rank).and_return(150)
+          end
+          it "新しい上限までは取得できる" do
+            subject
+            expect(user.items.find(user_item.id).rank).to eq(102)
+          end
+        end
       end
     end
 
@@ -130,6 +140,31 @@ RSpec.describe ItemEvent, type: :model do
         subject
         # このspec内ではアイテムIDは 1 ~ 5 しか存在しない
         expect((1..5).include?(event.instance_variable_get("@item_id"))).to be_truthy
+      end
+
+      it "ランダムアイテムのランク + ベースランクの合計値が元ランク+10の範囲にある" do
+        subject
+        user_item = user.items.reload.first
+        expect((rank..(rank+Constants.item.higher_rank_jitter)).include?(user_item.item_rank)).to eq(true)
+      end
+
+      it "なんらか強化したメッセージが入っている" do
+        subject
+        expect(event.logs[0][:message].include?("強化した")).to eq(true)
+      end
+
+      context "もう全種類の十分に強化されたアイテムを持ってる時" do
+        before do
+          user.items.create(item_id: item1.id, rank: rank + Constants.item.higher_rank_jitter)
+          user.items.create(item_id: item2.id, rank: rank + Constants.item.higher_rank_jitter)
+          user.items.create(item_id: item3.id, rank: rank + Constants.item.higher_rank_jitter)
+          user.items.create(item_id: item4.id, rank: rank + Constants.item.higher_rank_jitter)
+          user.items.create(item_id: item5.id, rank: rank + Constants.item.higher_rank_jitter)
+        end
+        it "アイテムはコインに変換されてて、コイン量はキャップされている" do
+          expect{subject}.to change(user.status, :coin).by(Constants.event.max_coin_amount_per_event)
+          expect(event.logs[0][:message].include?("コインに変換した")).to eq(true)
+        end  
       end
     end
   end

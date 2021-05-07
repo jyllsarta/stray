@@ -4,19 +4,35 @@
     .window.content
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'relic', state: false})")
+          .arrow
         .title
           | 能力解放
       .description
         | 星のカケラを使って、新しい能力を解放します。
       .body
         .field
+          .tabs
+            .tab.selectable(:class="currentPage===1 ? 'selected' : ''", @click="switchPage(1)")
+              | スピカのスキル
+            .tab.selectable(:class="currentPage===2 ? 'selected' : ''", @click="switchPage(2)")
+              | チロルのスキル
+            .tab.selectable(:class="currentPage===3 ? 'selected' : ''", @click="switchPage(3)")
+              | なんでもスキル
+            .tab.selectable(:class="currentPage===4 ? 'selected' : ''", @click="switchPage(4)" v-if="showsUltimateSkill")
+              | きゅうきょくスキル
+          .cussion
           .relics
-            .relic(
-              v-for="relic in $store.state.masterdata.relics"
-              :class="[`relic_${relic.id}`, relicStatus(relic.id), obtainRelicClass(relic.id), selectingRelicClass(relic.id)]"
-              @click="selectRelic(relic.id)"
+            .obtain_animation(
+                v-for="relic in displayRelics"
+                :class="obtainRelicClass(relic.id)"
+                @click="selectRelic(relic.id)"
+                :style="relicStyle(relic)"
+                :key="relic.id"
+            )
+              .relic.selectable(
+                :class="[`relic_${relic.id}`,relicStatus(relic.id), selectingRelicClass(relic.id)]"
               )
-              img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
+                img.icon(:src="`/images/icons/relic/${relic.id}.gif`")
         .detail
           .relic_detail
             .title
@@ -48,10 +64,10 @@
                 | 消費
               .icon
               .value(:class="hasSufficientStar ? '' : 'red'")
-                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.2")
+                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.4")
           .button
             .get(
-              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'clickable' : '']"
+              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'super_clickable' : '']"
               @click="obtainRelic(selectingRelicId)"
               )
               | {{relicLabels[relicStatus(selectingRelicId)]}}
@@ -72,6 +88,7 @@ export default {
   data: function () {
     return {
       selectingRelicId: null,
+      currentPage: 1,
       relicLabels: {
         disabled: "取得不可",
         got: "取得済み",
@@ -85,6 +102,7 @@ export default {
   },
   store,
   mounted(){
+    this.switchPage(1);
   },
   computed: {
     selectingRelic(){
@@ -102,6 +120,15 @@ export default {
     hasSufficientStar(){
       return this.$store.state.user?.status?.star >= (this.selectingRelic.cost || 0);
     },
+    displayRelics(){
+      return Object.values(this.$store.state.masterdata.relics).filter(relic=>relic.page===this.currentPage);
+    },
+    showsUltimateSkill(){
+      if(!this.$store.state.user?.dungeon_progresses){
+        return false;
+      }
+      return this.$store.state.user.dungeon_progresses[Constants.dungeon.lastDungeonId]?.max_depth || 0 > 0;
+    }
   },
   methods: {
     relic(id){
@@ -150,7 +177,22 @@ export default {
       return relicId === this.obtainEffectRelicId ? "obtained" : "";
     },
     selectingRelicClass(relicId){
-      return relicId === this.selectingRelicId ? "selecting" : "";
+      return relicId === this.selectingRelicId ? "selected" : "";
+    },
+    relicStyle(relic){
+      return {
+        left: 8 + (relic.grid_x - 1) * 58,
+        top: 8 + (relic.grid_y - 1) * 58,
+      }
+    },
+    selectDefaultRelic(){
+      this.selectingRelicId = Object.values(this.$store.state.masterdata.relics)
+                                    .filter(relic=>relic.page===this.currentPage)
+                                    .sort((a,b)=>{return (a.grid_x - b.grid_x) * 100000 + (a.grid_y - b.grid_y)})[0].id;
+    },
+    switchPage(toPage){
+      this.currentPage = toPage;
+      this.selectDefaultRelic();
     }
   }
 }
@@ -168,20 +210,44 @@ export default {
     height: 300px;
     width: 100%;
     border-bottom: 1px solid $gray3;
+    display: flex;
+    .tabs{
+      width: 200px;
+      height: 100%;
+      padding: $space;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .tab{
+        width: 100%;
+        height: 100px;
+        margin: $space;
+        @include centering($height: 50px);
+      }
+    }
+    .cussion{
+      width: 90px;
+    }
     .relics{
-      position: absolute;
-      .relic{
+      position: relative;
+      margin-left: (58 * 2)px;
+      .obtain_animation{
         position: absolute;
         width: 50px;
         height: 50px;
-        background-color: #323749;
-        &:hover{
-          filter: brightness(150%);
-        }
-        .icon{
-          width: 48px;
-          height: 48px;
-          image-rendering: pixelated;
+        .relic{
+          width: 50px;
+          height: 50px;
+          background-color: #323749;
+          animation: relic-show-in 0.3s;
+          &:hover{
+            filter: brightness(150%);
+          }
+          .icon{
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+          }
         }
       }
     }
@@ -297,139 +363,13 @@ export default {
   .available{
     border: 1px solid $gray1;
   }
-  .disabled{
-    border: 1px solid $gray2;
-    opacity: 0.6;
-    &:hover{
-      filter: brightness(100%);
-    }
-  }
   .got{
     border: 1px solid $yellow;
   }
-  .selecting{
-    filter: brightness(150%);
+  .selected{
+    border: 1px solid $yellow;
   }
 }
-
-
-// 各レリックの場所定義
-// 置き方を自由に決めたいので、flexではなく全部absoluteでゴリ押す
-
-// イベント短縮
-.relic_31{
-  top:   20px;
-  left:  20px;
-}
-.relic_32{
-  top:   80px;
-  left:  20px;
-}
-.relic_33{
-  top:  140px;
-  left:  20px;
-}
-
-.relic_11{
-  top:  100px;
-  left: 100px;
-}
-
-.relic_12{
-  top:  180px;
-  left: 100px;
-}
-
-.relic_21{
-  top:  100px;
-  left: 320px;
-}
-
-.relic_22{
-  top:  180px;
-  left: 320px;
-}
-
-// HPレリック
-
-.relic_41{
-  top:   20px;
-  left: 540px;
-}
-
-.relic_42{
-  top:   74px;
-  left: 540px;
-}
-
-.relic_43{
-  top:  128px;
-  left: 540px;
-}
-
-.relic_44{
-  top:  182px;
-  left: 540px;
-}
-
-.relic_45{
-  top:  236px;
-  left: 540px;
-}
-
-// スピカスキル
-.relic_101{
-  top:   20px;
-  left: 170px;
-}
-.relic_102{
-  top:   20px;
-  left: 240px;
-}
-.relic_103{
-  top:  100px;
-  left: 170px;
-}
-.relic_104{
-  top:  100px;
-  left: 240px;
-}
-.relic_105{
-  top:  180px;
-  left: 170px;
-}
-.relic_106{
-  top:  180px;
-  left: 240px;
-}
-
-// チロルスキル
-.relic_201{
-  top:   20px;
-  left: 390px;
-}
-.relic_202{
-  top:   20px;
-  left: 460px;
-}
-.relic_203{
-  top:  100px;
-  left: 390px;
-}
-.relic_204{
-  top:  100px;
-  left: 460px;
-}
-.relic_205{
-  top:  180px;
-  left: 390px;
-}
-.relic_206{
-  top:  180px;
-  left: 460px;
-}
-
-
 
 @keyframes vertical-text-in {
   0% {
@@ -466,6 +406,13 @@ export default {
   100%{
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes relic-show-in {
+  0% {
+    transform: translate(0, -5px) scale(0.5);
+    opacity: 0;
   }
 }
 

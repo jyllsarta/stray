@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  card_id    :bigint
-#  enemy_id   :bigint
+#  card_id    :bigint           not null
+#  enemy_id   :bigint           not null
 #
 # Indexes
 #

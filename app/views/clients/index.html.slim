@@ -2,30 +2,25 @@ header
   a[href="/"]
     img.logo[src="images/ui/logo.png"]
     .title
-      | スピカとチロル(アルファ)
+      | スピカとチロル
 #window
 
-.this_is_alpha
+.informations
   p
     span
-      | リリースノート機能ができました！ 現在のVer: #{ @version }　
+      | 現在のVer: #{ @version }　
     a[href="/release_notes"]
       | 更新履歴を見る
   p
-    | スピカとチロルはまだまだアルファバージョンです。
-  ul
-    li
-      | 未実装の機能・アップデート予定のコンテンツがたくさんあります！
-    li
-      | アップデート・仕様変更により、常に進行状況が破棄される可能性があります...
-    li
-      | 詰まったところ、わからなかったところ、不便だと感じたところはすぐ上のお便り欄に書き込んでくださいね！開発の参考にします。画像付きのがわかりやすい場合は、
-      a(href="https://twitter.com/search?q=%23%E3%82%B9%E3%83%94%E3%82%AB%E3%81%A8%E3%83%81%E3%83%AD%E3%83%AB&src=typed_query")
-        | #スピカとチロル
-      | で投稿してもらえると嬉しいです！
-    li
-      | まだ少人数からのフィードバックをもらいながら大枠を軌道修正していくところです。お友達に広めるのは待っててくださいね。正式リリース時に大々的に宣伝します！
+    a[href="manual"]
+      | 仕様のややこしいところを大ざっぱに解説するプレイガイドはこちら！
+  p
+    | (マニュアルページ閲覧中もロスなくゲームは進行します)
+
+link rel="preconnect" href="https://fonts.gstatic.com"
 link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:300|Roboto:300&display=swap" rel="stylesheet"
+link href="https://fonts.googleapis.com/css2?family=Forum&display=swap" rel="stylesheet"
+
 = stylesheet_link_tag 'reset'
 = stylesheet_link_tag 'stray'
 

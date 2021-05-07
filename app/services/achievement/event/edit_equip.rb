@@ -13,6 +13,7 @@ class Achievement::Event::EditEquip < Achievement::Event::Base
       'Achievement::Type::MaxAttack',
       'Achievement::Type::MaxDefence',
       'Achievement::Type::FillEquipSlot',
+      'Achievement::Type::BeNude',
     ]
   end
 end

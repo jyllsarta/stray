@@ -1,15 +1,21 @@
 <template lang="pug">
   .images
     transition(name="showing")
-      img.showing.character.normal.stay(:src="normalImagePath" v-if="status === 'normal'" :style="{animationDelay: delay + 's', animationDuration: duration + 's'}" :class="isPlayer ? 'player' : 'enemy'")
+      img.showing.character.waiting(:src="normalImagePath" v-if="status === 'waiting'" :style="{animationDuration: duration + 's'}" :class="characterClass")
     transition(name="showing")
-      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.normal(:src="normalImagePath" v-if="status === 'normal'" :class="characterClass")
     transition(name="showing")
-      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.attack(:src="attackImagePath" v-if="status === 'attack'" :class="characterClass" :key="currentSkillName")
+    transition(name="upper_attack")
+      img.showing.character.attack2(:src="attack2ImagePath" v-if="status === 'attack2'" :class="characterClass")
+    transition(name="down_attack")
+      img.showing.character.attack3(:src="attack3ImagePath" v-if="status === 'attack3'" :class="characterClass")
     transition(name="showing")
-      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.draw(:src="drawImagePath" v-if="status === 'draw'" :class="characterClass" :key="currentSkillName")
     transition(name="showing")
-      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="isPlayer ? 'player' : 'enemy'" :key="currentSkillName")
+      img.showing.character.lose(:src="loseImagePath" v-if="status === 'lose'" :class="characterClass" :key="currentSkillName")
+    transition(name="showing")
+      img.showing.character.magic(:src="magicImagePath" v-if="status === 'magic'" :class="characterClass")
     transition(name="showing")
       img.shield(
         v-if="shield"
@@ -27,11 +33,14 @@ export default {
     images: {
       normal: String,
       attack: String,
+      attack2: String,
+      attack3: String,
       draw: String,
       lose: String,
       magic: String,
       default: String,
     },
+    scaleType: Number,
     reversed: Boolean,
     shield: Boolean,
     isPlayer: Boolean,
@@ -40,15 +49,17 @@ export default {
   },
   data: () => {
     return {
-      delay: 2,
       duration: 4
     }
   },
   mounted() {
-    this.delay = Math.random() * 2;
-    this.duration = Math.random() + 3;
+    const multiplier = this.isPlayer ? 1 : 4;
+    this.duration = (Math.random() - 0.5) * multiplier + 3;
   },
   computed: {
+    characterClass(){
+      return `${this.isPlayer ? 'player' : 'enemy'} scale_${this.scaleType || 1}`
+    },
     normalImagePath(){
         if(!this.images.normal){
             return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
@@ -56,10 +67,22 @@ export default {
         return `/images/battle/characters/${this.characterName}_${this.images.normal}.png`
     },
     attackImagePath(){
-        if(!this.images.attack){
-            return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
-        }
-        return `/images/battle/characters/${this.characterName}_${this.images.attack}.png`
+      if(!this.images.attack){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack}.png`
+    },
+    attack2ImagePath(){
+      if(!this.images.attack2){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack2}.png`
+    },
+    attack3ImagePath(){
+      if(!this.images.attack3){
+        return `/images/battle/characters/${this.characterName}_${this.images.default}.png`
+      }
+      return `/images/battle/characters/${this.characterName}_${this.images.attack3}.png`
     },
     drawImagePath(){
         if(!this.images.draw){
@@ -81,30 +104,42 @@ export default {
     },
     playerBarrierPosition(){
         switch(this.status){
-            case "normal":
-                return 30;
-            case "attack":
-                return 175;
-            case "draw":
-                return 50;
-            case "lose":
-                return -10;
-            case "magic":
-                return 30;
+          case "waiting":
+            return 30;
+          case "normal":
+            return 30;
+          case "attack":
+            return 175;
+          case "attack2":
+            return 175;
+          case "attack3":
+            return 175;
+          case "draw":
+            return 50;
+          case "lose":
+            return -10;
+          case "magic":
+            return 30;
         }
     },
     enemyBarrierPosition(){
         switch(this.status){
-            case "normal":
-                return -30;
-            case "attack":
-                return -175;
-            case "draw":
-                return -50;
-            case "lose":
-                return 10;
-            case "magic":
-                return -30;
+          case "waiting":
+            return -30;
+          case "normal":
+            return -30;
+          case "attack":
+            return -175;
+          case "attack2":
+            return -175;
+          case "attack3":
+            return -175;
+          case "draw":
+            return -50;
+          case "lose":
+            return 10;
+          case "magic":
+            return -30;
         }
     }
   }
@@ -115,42 +150,67 @@ export default {
 .images{
   .character{
     position: absolute;
-    width: 256px;
-    height: 256px;
     image-rendering: pixelated;
   }
+
+  .scale_1{
+    width: 256px;
+    height: 256px;
+  }
+
+  .scale_2{
+    top: 35px;
+    width: 220px;
+    height: 220px;
+  }
+
+  .scale_3{
+    top: 60px;
+    width: 180px;
+    height:180px;
+  }
+
   .shield{
     position: absolute;
     width: 256px;
     height: 256px;
   }
 
-  .stay{
+  .waiting{
     animation-name: waving;
     animation-iteration-count: infinite;
-
   }
 
   @keyframes waving {
     0% {
-      transform: translateY(0px);
+      transform: translateY(0px) scale(0.7);
     }
     25% {
-      transform: translateY(1px);
+      transform: translateY(1px) scale(0.7);
     }
     75% {
-      transform: translateY(-1px);
+      transform: translateY(-1px) scale(0.7);
     }
     100% {
-      transform: translateY(0px);
+      transform: translateY(0px) scale(0.7);
     }
   }
 
   // 多少冗長だけど、まあこれでいいか
+  .player.waiting{
+    left: -20px;
+    top: 40px;
+  }
   .player.normal{
     left: 0;
   }
   .player.attack{
+    left: 145px;
+  }
+  .player.attack2{
+    left: 145px;
+  }
+  .player.attack3{
     left: 145px;
   }
   .player.draw{
@@ -164,6 +224,19 @@ export default {
   }
   .player.shield{
     left: 20px;
+  }
+
+  .enemy.waiting.scale_1{
+    left: 40px;
+    top: 30px;
+  }
+  .enemy.waiting.scale_2{
+    left: 40px;
+    top: 70px;
+  }
+  .enemy.waiting.scale_3{
+    left: 40px;
+    top: 60px;
   }
   .enemy.normal{
     left: 0;
@@ -186,18 +259,44 @@ export default {
 }
 
 .showing-enter-active {
-  transition: all .3s;
+  transition: all .4s;
 }
 .showing-leave-active {
-  transition: all .3s;
+  transition: all .4s;
 }
 .showing-enter{
-  transform: translateX(-30px);
-  opacity: 0;
+  transform: translateX(-30px) scale(0.9, 1);
+  opacity: -0.5;
 }
 .showing-leave-to{
-  transform: translateX(-30px);
+  transform: translateX(-30px) scale(0.9, 1);
   opacity: 0;
 }
 
+.upper_attack-enter-active {
+  transition: all .4s;
+}
+.upper_attack-leave-active {
+  transition: all .4s;
+}
+.upper_attack-enter{
+  transform: translateY(40px) scale(1.15, 0.98);
+  opacity: 0;
+}
+.upper_attack-leave-to{
+  opacity: 0;
+}
+.down_attack-enter-active {
+  transition: all .4s;
+}
+.down_attack-leave-active {
+  transition: all .4s;
+}
+.down_attack-enter{
+  transform: translateY(-40px) scale(0.98, 1.15);
+  opacity: 0;
+}
+.down_attack-leave-to{
+  opacity: 0;
+}
 </style>

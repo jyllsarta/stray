@@ -1,6 +1,6 @@
 
 <template lang="pug">
-  .status.window
+  .status.window.floating_window
     .spica
       .profile
         .name

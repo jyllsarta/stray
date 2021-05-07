@@ -1,33 +1,47 @@
 $main-color: #8294cb;
 $accent-color: #f2cfff;
+$accent-color-opacity: #f2cfff23;
 $white: #f0f4f0;
 $gray1: #a7acd1;
 $gray2: #747796;
-$gray3: #575a73;
+$gray3: #61647e;
 $gray3-opacity: rgba(87, 90, 115, 0.36);
 
 $rarity1: #f0f4f0;
-$rarity2: #f8d66a;
-$rarity3: #b0fcff;
-$rarity4: #f898b7;
-$rarity5: #c1b7ff;
+$rarity2: #f8d255;
+$rarity3: #7af4f8;
+$rarity4: #f3769e;
+$rarity5: #b2a7fd;
+$rarity1-less: #cecece;
+$rarity2-less: #d1af40;
+$rarity3-less: #47b7bb;
+$rarity4-less: #c75177;
+$rarity5-less: #7367c0;
 
-$plus: #f8779d;
-$minus: #779af8;
+$plus: #f0769a;
+$minus: #7595ee;
 
 $str: $rarity4;
-$dex: #79f850;
-$def: $rarity2;
+$dex: #64f734;
+$vit: $rarity2;
 $agi: $rarity3;
 
 $yellow: $rarity2;
-$yellow-opacity: rgba(248, 214, 106, 0.69);
-$clickable-color: #303152;
-$clickable-hover-color: #4e557a;
-$background: rgb(17, 23, 40);
-$background_with_opacity: rgba(17, 23, 40, 0.7);
+$yellow-opacity: rgba(248, 214, 106, 0.65);
+$yellow-opacity-low: rgba(248, 214, 106, 0.20);
+$red-opacity: rgba(240, 118, 154, 0.65);
+$blue-opacity: rgba(117, 149, 238, 0.65);
+$yellow-opacity2: rgba(248, 214, 106, 0.25);
+$red-opacity2: rgba(240, 118, 154, 0.25);
+$blue-opacity2: rgba(117, 149, 238, 0.25);
+$clickable-color: #222247;
+$clickable-highlight-color: #565888;
+$clickable-hover-color: #080808;
+$background: rgb(8, 11, 30);
+$background_with_opacity: rgba(8, 11, 30, 0.85);
 $space: 8px;
 $thin_space: 4px;
+$subtle_space: 2px;
 $radius: 4px;
 
 $guide-height: 30px;

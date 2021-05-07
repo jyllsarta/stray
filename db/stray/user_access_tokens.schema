@@ -1,5 +1,5 @@
 create_table "user_access_tokens", force: :cascade  do |t|
-  t.integer :user_id
+  t.integer :user_id, null: false
   t.string :token
   t.timestamps
 end

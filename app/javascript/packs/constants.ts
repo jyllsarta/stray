@@ -13,73 +13,62 @@ const Constants = {
   character: {
     // constants.yml とそれぞれ重複定義しているので注意...(つらい)
     defaultParameters: {
-      rank1: {
-        str: 10,
-        dex: 10,
-        def: 10,
-        agi: 10,
-      },
-      rank2: {
-        str: 500,
-        dex: 500,
-        def: 500,
-        agi: 500,
-      },
-      rank3: {
-        str: 3500,
-        dex: 3500,
-        def: 3500,
-        agi: 3500,
-      },
-      rank4: {
-        str: 50000,
-        dex: 50000,
-        def: 50000,
-        agi: 50000,
-      },
+      str: 10,
+      dex: 10,
+      vit: 10,
+      agi: 10,
     },
     expMax: 1000,
   },
   log: {
-    maxLength: 300,
+    maxLength: 50,
   },
   item: {
-    rankFactor: 1.015,
+    rankFactor: 1.01,
     rarityFactor: {
       1: 1.0,
       2: 1.1,
       3: 1.3,
-      4: 1.65,
-      5: 2.2,
+      4: 1.5,
+      5: 1.8,
     },
+    maxRankUpCost: 9999,
   },
   dungeon: {
     bossFloorFrequency: 100,
     bossLoseRewindFloor: 3,
+    lastDungeonId: 7,
   },
   achievements: {
     ids: {
-      clickFieldCharacter: 25,
-      signIn: 26,
-      openLog: 27,
+      clickFieldCharacter: 101,
+      signIn: 102,
+      openLog: 103,
     }
   },
   // 次回イベント発生予測時間から何秒バッファをもたせてからリクエストするか
   nextEventDelaySeconds: 2,
-  itemsPerPage: 50,
+  itemsPerPage: 20,
   maxEquipCount: 4,
   eventIllustShowMilliSeconds: 2000,
+  enemy: {
+    // サーバと値を共有してるので注意
+    plusValueThreshold: 0.7,
+    lastBossEnemyId: 705,
+  },
   battleCharacter: {
     imageLibrary: {
       spica: {
         normal:  'normal',
         attack:  'attack',
+        attack2:  'attack2',
+        attack3:  'attack3',
         draw:    'draw',
         lose:    'lose',
         default: 'normal',
       },
       tirol: {
-        normal:  'tirol',
+        normal:  'normal',
         magic:   'magic',
         default: 'normal',
       },
@@ -89,70 +78,10 @@ const Constants = {
         magic:   'magic',
         default: 'normal',
       },
-      faily: {
+      default: {
         normal:  'normal',
         default: 'normal',
-      },
-      faily_eleki: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      faily_book: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      faily_queen: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      kani: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      kani_gold: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      kani_mage: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      kani_white: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      nya: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      nya_black: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      nya_blue: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      nya_king: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      gob: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      gob_rance: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      gob_mage: {
-        normal:  'normal',
-        default: 'normal',
-      },
-      gob_fighter: {
-        normal:  'normal',
-        default: 'normal',
-      },
+      }
     }
   }
 };

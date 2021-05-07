@@ -45,7 +45,7 @@ class BattleEvent < Event
   private
 
   def base_coin_amount
-    @rank * 10
+    [@rank / 2 + 50, Constants.event.max_coin_amount_per_event].min
   end
 
   def process_win(user)
@@ -62,30 +62,41 @@ class BattleEvent < Event
 
   def fluctuate_velocity(user)
     if @battle.is_win
-      delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
-      user.status.fluctuate_velocity(delta)
+      @velocity_delta = Constants.event.battle.velocity_delta.send("turn#{@battle.turn}") || Constants.event.battle.velocity_delta.other
+      user.status.fluctuate_velocity(@velocity_delta)
     else
       user.status.fluctuate_velocity(-9999)
     end
   end
 
   def process_lose(user)
+    user.status.return_floor_on_death
     user.status.start_resurrect_timer
   end
 
   def rank_ratio(enemy_rank, character_rank)
-    [(enemy_rank - character_rank) / 2, 1].max
+    [(enemy_rank - character_rank), 1].max
   end
 
   def log_messages
     damages = @battle.damages
-    "[#{battle_result_mark_message}]戦闘だ!#{@battle.turn}T継続,スピカ#{damages[0]},チロル#{damages[1]}ダメージ。#{coin_message}"
+    "[#{battle_result_mark_message}] 戦闘だ! #{@battle.turn}ターン継続,\nスピカ#{damages[0]}, チロル#{damages[1]}ダメージ。\n#{return_message}#{coin_message} #{velocity_message}"
   end
 
   def coin_message
     return "" unless @battle.is_win
     multiplied = @coin_multiplier > 1 ? '多めに' : ''
-    "#{multiplied}#{@coin_amount}コイン手にいれた！"
+    "#{multiplied}#{@coin_amount}コイン獲得！"
+  end
+
+  def return_message
+    return "" if @battle.is_win || !@user.status.returns_on_death
+    "#{Constants.dungeon.return_floors_on_death}フロア退却した！"
+  end
+
+  def velocity_message
+    return "" unless @velocity_delta.present?
+    "(速度#{@velocity_delta.positive? ? '+' : ''}#{@velocity_delta})"
   end
 
   def battle_result_mark_message

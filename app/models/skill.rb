@@ -17,8 +17,11 @@
 #  for_player       :boolean          default(TRUE), not null
 #  icon_image_path  :string(255)
 #  is_defence       :boolean          default(FALSE), not null
+#  is_exhaust       :boolean          default(FALSE), not null
+#  is_passive       :boolean          default(FALSE), not null
 #  name             :string(255)      not null
 #  reusable         :boolean          default(FALSE), not null
+#  threshold_hp     :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

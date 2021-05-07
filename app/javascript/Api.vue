@@ -12,6 +12,7 @@ export default {
     return {
       session_started_at: 0,
       session_id: 0,
+      eventFetching: false,
     };
   },
   mounted(){
@@ -29,8 +30,10 @@ export default {
       if(now - next_event_at < 60){
         return; // 60秒以上イベントを溜め込まなかったのであれば、正常
       }
+      if(this.$store.getters["window/isOnFullScreen"]){
+        return; // フルスクリーン中はすやすやタイム
+      }
       // 本来イベントが有るはずの時刻から60秒以上経っているのはおかしいので、再取得を試みさせる
-      console.log("はっ　寝てた！？");
       this.retryFetchLatestEvents();
     },
     fillDebugUserId(){
@@ -51,10 +54,8 @@ export default {
       this.$store.commit("event/setNextEventAtTo", ten_seconds_after);
     },
     init(){
-      console.log("mounted api system!");
       this.initializeSession();
-      this.fetchMasterData();
-      this.loadUserData();
+      this.fetchMasterDataThenUserData();
       if(this.isAuthorized()){
         this.fetchLatestEvents();
       }
@@ -65,7 +66,6 @@ export default {
     },
     loadUserData(){
       if(localStorage.access_token){
-        console.log("fetch user model");
         this.fetchUserModel();
         this.fetchAchievements();
         this.sendSignInAchievement();
@@ -75,12 +75,13 @@ export default {
         this.signUp();
       }
     },
-    fetchMasterData(){
+    fetchMasterDataThenUserData(){
       const path = `/masterdata.json`;
       axios.get(path)
         .then((results) => {
           console.log(results);
           this.$store.commit("masterdata/updateMasterData", results.data);
+          this.loadUserData();
         })
         .catch((error) => {
           console.warn(error.response);
@@ -90,16 +91,18 @@ export default {
     fetchUserModel(){
       this.$store.dispatch("user/fetchUserModel").then(()=>{
         this.$store.commit("equip_window/initializeEquipWindow", this.$store.state.user.equips);
+        this.$store.commit("equip_window/constructUserItems", {items: this.$store.state.masterdata.items, user_items: this.$store.state.user.items});
       });
     },
     fetchLatestEvents(){
       //return;
       const user_id = localStorage.user_id;
       const path = `/users/${user_id}/events.json`;
-      if(!user_id){
+      if(!user_id || this.eventFetching){
         this.retryFetchLatestEvents();
         return;
       }
+      this.eventFetching = true;
       ax.post(path,{}, {headers: {
           "X-SessionId": this.session_id,
           "X-SessionStartedAt": this.session_started_at,
@@ -114,10 +117,12 @@ export default {
           this.$store.commit("event/queueEvents", results.data);
           this.$store.dispatch("achievement/fetchAchievements");
           this.$store.dispatch("achievement/fetchAchievementCache");
+          this.eventFetching = false;
         })
         .catch((error) => {
           console.warn(error.response);
           console.warn("NG");
+          this.eventFetching = false;
           if(error.response?.status == 400){
             this.$store.commit("window/updateWindowShowState", {windowName: "session_expired_frame", state: true});
           }
@@ -170,9 +175,13 @@ export default {
           this.retryFetchLatestEvents();
           return;
         }
-        if(oldVal > 0 && newVal == 0){
-          this.fetchLatestEvents();
+        if(this.$store.getters["window/isOnFullScreen"]){
+          return; // フルスクリーン中はすやすやタイム
         }
+        if(newVal > 0){
+          return;
+        }
+        this.fetchLatestEvents();
       }
     }
   }

@@ -9,6 +9,10 @@
 #  updated_at  :datetime         not null
 #  target_id   :integer
 #
+# Indexes
+#
+#  index_achievements_on_type  (type)
+#
 
 require 'rails_helper'
 

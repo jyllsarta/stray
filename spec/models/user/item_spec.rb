@@ -1,3 +1,4 @@
+
 # == Schema Information
 #
 # Table name: user_items
@@ -9,6 +10,10 @@
 #  item_id    :integer          default(0)
 #  user_id    :integer          default(0)
 #
+# Indexes
+#
+#  index_user_items_on_user_id_and_item_id  (user_id,item_id) UNIQUE
+#
 
 require 'rails_helper'
 
@@ -19,27 +24,27 @@ RSpec.describe User::Item, type: :model do
     subject { user_item.to_card }
 
     context "ベース検証" do
-      let(:item){ create(:item, str: 100, dex: 100, def: 200, agi: 0, rarity: 1, name: "ぴよ") }
+      let(:item){ create(:item, str: 100, dex: 100, vit: 200, agi: 0, rarity: 1, name: "ぴよ") }
       let(:user_item){ create(:user_item, user: user, item: item) }
 
       it "returns parameter for card" do
         expect(subject).to eq({
                                   name: "ぴよ",
-                                  power: 7,
-                                  tech: 2
+                                  power: 5,
+                                  tech: 3
                               })
       end
     end
 
     context "高レアリティアイテム" do
-      let(:item){ create(:item, str: 100, dex: 100, def: 200, agi: 0, rarity: 5, name: "ぴよ") }
+      let(:item){ create(:item, str: 100, dex: 100, vit: 200, agi: 0, rarity: 5, name: "ぴよ") }
       let(:user_item){ create(:user_item, user: user, item: item) }
 
       it "returns parameter for card" do
         expect(subject).to eq({
                                   name: "ぴよ",
-                                  power: 16,
-                                  tech: 5
+                                  power: 8,
+                                  tech: 4
                               })
       end
     end
@@ -50,29 +55,29 @@ RSpec.describe User::Item, type: :model do
     subject { user_item.parameter }
 
     context "テスト用アイテム" do
-      let(:item){ create(:item, str: 100, dex: 100, def: 200, agi: 0, base_rank: 5) }
+      let(:item){ create(:item, str: 100, dex: 100, vit: 200, agi: 0, base_rank: 5) }
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
 
       it "returns character's parameter" do
         expect(subject).to eq({
-                                  str: 16,
-                                  dex: 16,
-                                  def: 32,
+                                  str: 10,
+                                  dex: 10,
+                                  vit: 20,
                                   agi: 0
                               })
       end
     end
 
     context "実在アイテム" do
-      let(:item){ create(:item, str: 201, dex: 104, def: 13, agi: 185, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
+      let(:item){ create(:item, str: 126, dex: 65, vit: 65, agi: 160, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
       let(:user_item){ create(:user_item, user: user, item: item, rank: 0) }
 
       it "設計シート通りの値をビタで返すか" do
         expect(subject).to eq({
-                                  str: 1588,
-                                  dex: 821,
-                                  def: 102,
-                                  agi: 1462
+                                  str: 421,
+                                  dex: 217,
+                                  vit: 217,
+                                  agi: 535
                               })
       end
     end
@@ -83,12 +88,16 @@ RSpec.describe User::Item, type: :model do
     subject { user_item.rank_up!(user, count) }
     let(:count){ 1 }
 
+    before do
+      user.status.update!(coin: 0)
+    end
+
     context "succeeds" do
       let(:item){ create(:item, base_rank: 5) }
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
 
       before do
-        user.status.add_coin!(100)
+        user.status.add_coin!(100000)
       end
 
       it "rank up" do
@@ -96,7 +105,7 @@ RSpec.describe User::Item, type: :model do
       end
       it "uses coin" do
         subject
-        expect(user.status.reload.coin).to eq(0)
+        expect(user.status.reload.coin).to_not eq(100000)
       end
       
       context "achievement" do
@@ -115,7 +124,7 @@ RSpec.describe User::Item, type: :model do
       let(:user_item){ create(:user_item, user: user, item: item, rank: 5) }
 
       before do
-        user.status.add_coin!(24)
+        user.status.add_coin!(5)
       end
 
       it "raises error" do
@@ -125,17 +134,13 @@ RSpec.describe User::Item, type: :model do
 
     context "about rank" do
       let(:item){ create(:item, base_rank: 10) }
-      let(:user_item){ create(:user_item, user: user, item: item, rank: 19) }
+      let(:user_item){ create(:user_item, user: user, item: item, rank: 101) }
 
       before do
         user.status.add_coin!(1000000)
       end
 
       context "insufficient" do
-        before do
-          allow(user.status).to receive(:max_item_rank).and_return(19)
-        end
-
         it "raises error" do
           expect{subject}.to raise_error(User::Item::InsufficientRank)
         end
@@ -143,7 +148,7 @@ RSpec.describe User::Item, type: :model do
 
       context "sufficient" do
         before do
-          allow(user.status).to receive(:max_item_rank).and_return(20)
+          allow(user.status).to receive(:max_item_rank_for_rankup).and_return(150)
         end
         it "rank up" do
           expect{subject}.to change(user_item, :rank).by(1)
@@ -165,7 +170,7 @@ RSpec.describe User::Item, type: :model do
 
       it "uses coin" do
         subject
-        expect(user.status.reload.coin).to eq(1000000 - 110)
+        expect(user.status.reload.coin).to_not eq(1000000)
       end
     end
 
@@ -183,14 +188,14 @@ RSpec.describe User::Item, type: :model do
       end
       it "現状の設計通りの値を返す" do
         subject
-        expect(user.status.reload.coin).to eq(97815)
+        expect(user.status.reload.coin).to eq(98983)
       end
     end
   end
 
   describe "full_name" do
     let(:user){ create(:user) }
-    let(:item){ create(:item, str: 201, dex: 104, def: 13, agi: 185, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
+    let(:item){ create(:item, str: 201, dex: 104, vit: 13, agi: 185, base_rank: 118, rarity: 4, name: "博麗の巫女装束") }
     let(:subject){ user_item.full_name }
 
     context "no rank" do

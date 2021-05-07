@@ -3,14 +3,14 @@
 # Table name: user_characters
 #
 #  id           :bigint           not null, primary key
-#  exp          :integer          default(0)
-#  hp           :integer          default(0)
-#  hp_max       :integer          default(0)
-#  level        :integer          default(0)
+#  exp          :integer          default(0), not null
+#  hp           :integer          default(0), not null
+#  hp_max       :integer          default(0), not null
+#  level        :integer          default(0), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  character_id :integer          default(NULL)
-#  user_id      :integer          default(0)
+#  character_id :integer          default(NULL), not null
+#  user_id      :integer          not null
 #
 
 require 'rails_helper'
@@ -176,8 +176,8 @@ RSpec.describe User::Character, type: :model do
 
   describe "#parameters" do
     let(:character){ create(:user_character, character_id: "spica" , user: user) }
-    let!(:item1){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
-    let!(:item2){ create(:item, str: 100, dex: 200, def: 300, agi: 0, base_rank: 1) }
+    let!(:item1){ create(:item, str: 100, dex: 200, vit: 300, agi: 0, base_rank: 1) } # [1,2,3,0] の装備ができる
+    let!(:item2){ create(:item, str: 100, dex: 200, vit: 300, agi: 0, base_rank: 1) }
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}
@@ -188,29 +188,16 @@ RSpec.describe User::Character, type: :model do
       expect(subject).to eq({
                                 str: 12, # 1 + 1 + 10(default)
                                 dex: 14, # 2 + 2 + 10(default)
-                                def: 16, # 3 + 3 + 10(default)
+                                vit: 16, # 3 + 3 + 10(default)
                                 agi: 10, # 0 + 0 + 10(default)
                             })
-    end
-
-    context "has rank relic" do
-      let!(:relic){create(:relic, category: :spica_rank)}
-      let!(:user_relic){create(:user_relic, relic: relic, user: user)}
-      it "grows up with rank" do
-        expect(subject).to eq({
-                                  str: 502, # 1 + 1 + 500(rank2)
-                                  dex: 504, # 2 + 2 + 500
-                                  def: 506, # 3 + 3 + 500
-                                  agi: 500, # 0 + 0 + 500
-                              })
-      end
     end
   end
 
   describe "#strength" do
     let(:character){ create(:user_character, user: user) }
-    let!(:item1){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
-    let!(:item2){ create(:item, str: 1000, dex: 1000, def: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
+    let!(:item1){ create(:item, str: 1000, dex: 1000, vit: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
+    let!(:item2){ create(:item, str: 1000, dex: 1000, vit: 2000, agi: 0, base_rank: 1) } # [10,10,20,0] の装備ができる
     let!(:user_item1){ create(:user_item, user: user, item: item1) }
     let!(:user_item2){ create(:user_item, user: user, item: item2) }
     let!(:equip1){ create(:user_character_equip, user_character: character, user_item: user_item1)}
@@ -242,6 +229,21 @@ RSpec.describe User::Character, type: :model do
       end
       it "grows hp_max" do
         expect{subject}.to change(character, :hp_max).by(Constants.character.gain_hp_per_level * 2)
+      end
+    end
+
+    context "level max" do
+      let(:character){ create(:user_character, user: user, level: Constants.character.level_max) }
+      let(:value){ 1 }
+      it "grows hp_max" do
+        expect{subject}.to_not change(character, :exp)
+      end
+    end
+    context "level up to max" do
+      let(:character){ create(:user_character, user: user, exp: 999, level: Constants.character.level_max - 1) }
+      let(:value){ 10 }
+      it "grows hp_max" do
+        expect{subject}.to change(character, :exp).to(0)
       end
     end
   end

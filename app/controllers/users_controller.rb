@@ -33,10 +33,14 @@ class UsersController < ApplicationController
     @tirol_equips = current_user.characters.tirol.first.equip_item_ids.compact
     @quest_battle_parameters = {
       hp: 5 + current_user.status.quest_battle_additional_hp,
-      power: 1,
-      tech: 1,
-      special: 1
+      power: 1 + current_user.status.quest_battle_additional_power_tech_damage,
+      tech: 1 + current_user.status.quest_battle_additional_power_tech_damage,
+      special: 1 + current_user.status.quest_battle_additional_special_damage,
     }
+  end
+
+  def profile
+    @profile = ProfileBuilder.new(current_user)
   end
 
   def deck
@@ -66,6 +70,11 @@ class UsersController < ApplicationController
   def switch_dungeon
     current_user.status.switch_dungeon!(params[:dungeon_id].to_i, params[:depth].to_i)
     render json: {success: true}, status: :ok
+  end
+
+  def switch_returns_on_death
+    current_user.status.update!(returns_on_death: params[:returns_on_death])
+    render json: {success: true, returns_on_death: current_user.status.returns_on_death}, status: :ok
   end
 
   private

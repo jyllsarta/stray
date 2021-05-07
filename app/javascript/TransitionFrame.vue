@@ -46,7 +46,7 @@ export default {
       width: $window-width;
       height: $window-height / 2;
       background-color: $background;
-      animation: left-out .4s cubic-bezier(.34,.76,.63,.97) 0s;
+      animation: left-out .25s cubic-bezier(.34,.76,.63,.97) 0s;
     }
     .downer{
       position: absolute;
@@ -55,7 +55,7 @@ export default {
       width: $window-width;
       height: $window-height / 2;
       background-color: $background;
-      animation: right-out .4s cubic-bezier(.34,.76,.63,.97) 0s;
+      animation: right-out .25s cubic-bezier(.34,.76,.63,.97) 0s;
     }
   }
   .logo{
@@ -80,15 +80,15 @@ export default {
     }
     .brown{
       background-color: #50435B;
-      animation-delay: 0.17s;
+      animation-delay: 0.15s;
     }
     .yellow{
       background-color: #FCD99A;
-      animation-delay: 0.24s;
+      animation-delay: 0.20s;
     }
     .blue{
       background-color: #93baeb;
-      animation-delay: 0.31s;
+      animation-delay: 0.25s;
     }
     @keyframes swing-in {
       0% {
@@ -99,13 +99,13 @@ export default {
     @keyframes left-out {
       0% {
         opacity: 0.2;
-        width: 40%;
+        width: 70%;
       }
     }
     @keyframes right-out {
       0% {
         opacity: 0.2;
-        width: 40%;
+        width: 70%;
       }
     }
 
@@ -114,14 +114,14 @@ export default {
 
 .frame {
   &-move {
-    transition: transform 0.5s;
+    transition: transform 0.4s;
   }
 
   &-enter {
     &-active {
       opacity: 0;
-      transform: translate3d(0, -30px, 0);
-      transition: opacity 0.5s, transform 0.5s;
+      transform: translate3d(0, -10px, 0);
+      transition: opacity 0.2s, transform 0.2s;
     }
     &-to {
       opacity: 1;
@@ -132,11 +132,11 @@ export default {
   &-leave {
     &-active {
       position: absolute;
-      transition: opacity 0.5s, transform 0.5s;
+      transition: opacity 0.4s, transform 0.4s;
     }
     &-to {
       opacity: 0;
-      transform: translate3d(0, -30px, 0);
+      transform: translate3d(0, -10px, 0);
     }
   }
 }

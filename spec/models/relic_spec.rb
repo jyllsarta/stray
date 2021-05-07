@@ -4,9 +4,12 @@
 #
 #  id              :bigint           not null, primary key
 #  category        :integer          default(NULL)
-#  cost            :integer          default(0)
+#  cost            :integer          default(0), not null
 #  description     :string(255)
+#  grid_x          :integer          default(0)
+#  grid_y          :integer          default(0)
 #  name            :string(255)
+#  page            :integer          default(0)
 #  rank            :integer          default(0)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -37,6 +40,16 @@ RSpec.describe Relic, type: :model do
       it "gets" do
         expect{subject}.to change(user.relics, :count).by(1)
       end
+
+      context "achievement" do
+        before do
+          allow(user).to receive_message_chain(:achievement_logger, :post)
+        end
+        it "posts achievement" do
+          subject
+          expect(user).to have_received(:achievement_logger)
+        end
+      end  
 
       context "about associated skills" do
         context "if associated" do

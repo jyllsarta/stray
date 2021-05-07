@@ -152,6 +152,10 @@ RSpec.describe "Users", type: :request do
                                                            coin: Integer,
                                                            star: Integer,
                                                            velocity: Integer,
+                                                           max_item_rank_for_rankup: Integer,
+                                                           won_last_boss: Boolean,
+                                                           returns_on_death: Boolean,
+                                                           skill_slot_count: Integer,
                                                        },
                                                        characters: {
                                                            spica: Hash,
@@ -162,6 +166,25 @@ RSpec.describe "Users", type: :request do
                                                            tirol: Array,
                                                        }
                                                    }
+                                               }
+                                           )
+    end
+  end
+
+  describe "GET /users/:id/profile" do
+    include_context("stub_current_user")
+    let(:user){ User.create }
+    let(:do_get) { get user_profile_path(user_id: user.id) + ".json" }
+    subject do
+      do_get
+      response
+    end
+    it 'succeeds' do
+      subject
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to match_json_expression(
+                                               {
+                                                   profile: Hash, # ProfileBuilder で細かく検証するのでこっちでは雑でOK
                                                }
                                            )
     end
@@ -182,7 +205,6 @@ RSpec.describe "Users", type: :request do
                                                {
                                                    class_cards: Array,
                                                    item_cards: Array,
-                                                   average_item_rank: Integer,
                                                }
                                            )
     end
@@ -371,6 +393,37 @@ RSpec.describe "Users", type: :request do
                                                      message: String
                                                  }
                                              )
+      end
+    end
+  end
+
+  describe "POST /users/:id/switch_returns_on_death" do
+    include_context("stub_current_user")
+    let(:dungeon){ create(:dungeon) }
+    let(:user){ User.create }
+    let(:do_post) { post user_switch_returns_on_death_path(user_id: -1)+ ".json", params: params }
+    let(:params) do
+      {
+          returns_on_death: true,
+      }
+    end
+    subject do
+      do_post
+      response
+    end
+    context "succeeds" do
+      it 'returns nothing' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     success: true,
+                                                     returns_on_death: true,
+                                                 }
+                                             )
+      end
+
+      it "changes status" do
+        expect{subject}.to change(user.status, :returns_on_death).to(true)
       end
     end
   end

@@ -1,9 +1,8 @@
-version: 0.5.2
+version: 1.0.0
 
 default_event_interval_seconds: <%= Rails.env.production? ? 30 : 30 %>
 minimum_event_interval_seconds: 4
 max_event_consume_time_seconds: <%= Rails.env.production? ? 3600*12 : 3600*12 %>
-max_charge_absent_time_seconds: <%= 3600*12 %>
 resurrect_time_seconds: <%= Rails.env.production? ? 3600 : 3600 %>
 
 user:
@@ -13,40 +12,37 @@ user:
     ui_max: 333
     max: 350
 
+profile:
+  achievements:
+    total_coin: 201
+    unique_item_count: 212
+    deepest_floor: 204
+    total_event: 203
+    total_play_time: 205
+
 character:
-  initial_hp_max: 100
-  gain_hp_per_level: 100
+  initial_hp_max: 1000
+  gain_hp_per_level: 20
+  level_max: 1000
   # constants.tsと定義を共有しているので注意
   default_parameters:
-    rank_1:
-      str: 10
-      dex: 10
-      def: 10
-      agi: 10
-    rank_2:
-      str: 500
-      dex: 500
-      def: 500
-      agi: 500
-    rank_3:
-      str: 3500
-      dex: 3500
-      def: 3500
-      agi: 3500
-    rank_4:
-      str: 50000
-      dex: 50000
-      def: 50000
-      agi: 50000
+    str: 10
+    dex: 10
+    vit: 10
+    agi: 10
+
   level_up_exp: 1000
 
 item:
   # アイテム設計の係数やクライアントパラメータ計算に使ってる値といっしょ
-  rank_factor: 1.015
-  rarity_factor: [0, 1, 1.1, 1.3, 1.65, 2.2]
+  rank_factor: 1.01
+  rarity_factor: [0, 1, 1.1, 1.3, 1.5, 1.8]
   default_max_rank: 100
+  additional_item_rank_per_relic: 50
+  higher_rank_jitter: 10
   random_item_max_rarity_weight: 1000 # 10000分率での、ランダムアイテム受領時の最大レアリティアイテムを拾う確率
   random_item_recent_threshold: 5 # 最近引いたX件のアイテムはランダムアイテム報酬の対象外とする
+  max_rank_up_cost: 9999,
 
 equip:
   max_count: 4
@@ -55,6 +51,7 @@ event:
   attenuate_velocity_per_event: 1
   attenuate_increase_threshold: 250
   long_time_absent_threshold_seconds: <%= 3600*6 %>
+  max_coin_amount_per_event: 500
   item:
     max_rarity: 5
     # item_idが 1 ~ id_range のあいだにすべてのレアリティが出現するようにマスタを設定する必要あり
@@ -63,7 +60,7 @@ event:
     weights: [0, 8000, 1500, 450, 48, 2]
   battle:
     # base + (0 ~ additional) 点の経験値を得る
-    base_exp: 10
+    base_exp: 20
     additional_exp_range: 5
     boss_additional_rank: 5
     boss_lose_rewind_floor: 2
@@ -85,9 +82,43 @@ event:
 
 dungeon:
   boss_floor_frequency: 100
+  return_floors_on_death: 100
 
 card:
   max_parameter: 99
 
 skill:
-  max_equip_count: 5
+  default_skill_slot_count: 3
+
+enemy:
+  # プレイヤー能力がX%以下なら++扱い
+  strength_threshold: 0.7
+  # [無印の強さ, +, ++]
+  strength_multiplier: [1, 1.3, 1.8]
+  last_boss_id: 705
+  max_hp: 99
+
+gacha:
+  max_item_rank: 800
+  variations:
+    - id: 1
+      title: "神秘の鍋"
+      min_point: 0
+      reward_frequency: 1000
+      weights: [0, 7290, 2200, 400, 100, 10]
+      additional_rank: 20
+      limit: 10000
+    - id: 2
+      title: "神秘の大鍋"
+      min_point: 100000
+      reward_frequency: 5000
+      weights: [0, 6750, 2400, 600, 200, 50]
+      additional_rank: 40
+      limit: 50000
+    - id: 3
+      title: "不可思議の大鍋"
+      min_point: 1000000
+      reward_frequency: 10000
+      weights: [0, 1400, 4400, 2650, 1250, 300]
+      additional_rank: 40
+      limit: 100000
