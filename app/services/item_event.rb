@@ -58,7 +58,6 @@ class ItemEvent < Event
         @_message = "#{item.name}を拾って#{coin_amount}コインに変換した！"
       end
     end
-
     @after_rank = user_item.rank
     @done = true
     user.achievement_logger.post(Achievement::Event::ItemEvent.new(user, self))
