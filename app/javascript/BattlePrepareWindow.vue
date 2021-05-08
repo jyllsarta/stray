@@ -521,7 +521,7 @@
       right: $space;
       top: 100px;
       width: 200px;
-      height: 200px;
+      height: 240px;
       .enemy{
         @include centering($height: 30px);
         margin: 2px;
