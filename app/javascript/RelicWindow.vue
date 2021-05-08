@@ -192,6 +192,7 @@ export default {
     },
     switchPage(toPage){
       this.currentPage = toPage;
+      this.obtainEffectRelicId = 0;
       this.selectDefaultRelic();
     }
   }
