@@ -60,7 +60,7 @@ RSpec.describe User::Character, type: :model do
     let!(:equip2){ create(:user_character_equip, user_character: character)}
     let!(:item){ create(:item) }
     let!(:user_item){ create(:user_item, user: user, item: item) }
-    subject { character.force_set_equips(item_ids) }
+    subject { character.force_set_equips(item_ids, user) }
     context "equip is set" do
       let(:item_ids){[item.id]}
       it "updates equips to  [item, nil]" do

@@ -10,8 +10,8 @@ RSpec.describe ProfileBuilder, type: :model do
   let!(:achievement_rank){ create(:achievement_rank) }
 
   before do
-    user.characters.spica.first.force_set_equips([item.id])
-    user.characters.tirol.first.force_set_equips([item2.id])
+    user.characters.spica.first.force_set_equips([item.id], user)
+    user.characters.tirol.first.force_set_equips([item2.id], user)
   end
 
   describe "#extract" do

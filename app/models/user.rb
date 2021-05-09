@@ -44,8 +44,8 @@ class User < ApplicationRecord
       end
       user.items.create!(item_id: 1, rank: 0)
       user.items.create!(item_id: 2, rank: 0)
-      user.characters.spica.first.force_set_equips([1])
-      user.characters.tirol.first.force_set_equips([2])
+      user.characters.spica.first.force_set_equips([1], user)
+      user.characters.tirol.first.force_set_equips([2], user)
       User::GachaPoint.create(user: user)
       user.status.add_coin!(10000)
     end

@@ -25,8 +25,8 @@ RSpec.describe Achievement::Type::BeNude, type: :model do
     context "正常系" do
       let(:progress){ 100 }
       before do
-        user.characters.spica.first.force_set_equips(user_items.slice(0, 0).map(&:item_id))
-        user.characters.tirol.first.force_set_equips(user_items.slice(4, 0).map(&:item_id))
+        user.characters.spica.first.force_set_equips(user_items.slice(0, 0).map(&:item_id), user)
+        user.characters.tirol.first.force_set_equips(user_items.slice(4, 0).map(&:item_id), user)
         user.characters.reload
       end
       it "proceeds user_achievement" do
@@ -37,8 +37,8 @@ RSpec.describe Achievement::Type::BeNude, type: :model do
     end
     context "伸びないとき" do
       before do
-        user.characters.spica.first.force_set_equips(user_items.slice(0, 0).map(&:item_id))
-        user.characters.tirol.first.force_set_equips(user_items.slice(4, 1).map(&:item_id))
+        user.characters.spica.first.force_set_equips(user_items.slice(0, 0).map(&:item_id), user)
+        user.characters.tirol.first.force_set_equips(user_items.slice(4, 1).map(&:item_id), user)
         user.characters.reload
       end
       let(:progress){ 200 }
