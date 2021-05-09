@@ -26,7 +26,7 @@
           .main_image(:style="{backgroundImage: `url('images/backgrounds/${selectingDungeonId}/cateneted.png')`}" :key="selectingDungeonId")
           .controls.window
             .depth_slider
-              input(type="range" orient="vertical" v-model="selectingDungeonDepth" min="1" :max="currentDungeonMaxDepthCanSwitch" :style="{width: sliderWidthPercent}")
+              input(type="range" v-model="selectingDungeonDepth" min="1" :max="currentDungeonMaxDepthCanSwitch" :style="{width: sliderWidthPercent}")
             .go.button.clickable(@click="gotoDungeon")
               | Go!
             .go_to_floor
@@ -247,6 +247,12 @@ export default {
           background-position: top;
           height: 120px;
           width: 45px;
+        }
+        input[type=range]::-moz-range-thumb{
+          -webkit-appearance: slider-vertical;
+          border-radius: $radius;
+          height: 15px;
+          width: 15px;
         }
       }
       .go{

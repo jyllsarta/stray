@@ -124,8 +124,9 @@ export default {
           console.log(results);
           localStorage.user_id = results.data.user_id;
           localStorage.access_token = results.data.access_token;
-          this.restore.message = "成功しました！";
+          this.restore.message = "成功しました！\n5秒後にページを再読込します。";
           this.restore.status = "completed";
+          setTimeout(()=>{ window.location.reload() }, 5000)
         })
         .catch((error) => {
           console.log(error.response);
@@ -186,8 +187,9 @@ export default {
         }
         .desc_without_border{
           display: inline-block;
-          width: 30%;
-          text-align: left;
+          width: 80%;
+          text-align: center;
+          white-space: pre;
           height: $font-size-normal * 1.5;
         }
         .copy_button{
