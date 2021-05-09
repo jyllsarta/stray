@@ -4,7 +4,7 @@
       span.description
         | ~おたより欄~ バグ報告、改善要望、なんでもどうぞ！ おたよりはプレイヤーIDとともにすべて公開されます。
       span.link
-        a(href="/messages")
+        a(href="/messages" target="_blank" rel="noopener noreferrer")
           | みんなのおたよりを見る
     .message_box
       textarea.input(v-model="message", cols=100)
