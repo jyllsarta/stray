@@ -25,8 +25,8 @@ RSpec.describe Achievement::Type::FillEquipSlot, type: :model do
     context "正常系" do
       let(:progress){ 100 }
       before do
-        user.characters.spica.first.force_set_equips(user_items.slice(0, 4).map(&:item_id))
-        user.characters.tirol.first.force_set_equips(user_items.slice(4, 4).map(&:item_id))
+        user.characters.spica.first.force_set_equips(user_items.slice(0, 4).map(&:item_id), user)
+        user.characters.tirol.first.force_set_equips(user_items.slice(4, 4).map(&:item_id), user)
         user.characters.reload
       end
       it "proceeds user_achievement" do
@@ -37,8 +37,8 @@ RSpec.describe Achievement::Type::FillEquipSlot, type: :model do
     end
     context "伸びないとき" do
       before do
-        user.characters.spica.first.force_set_equips(user_items.slice(0, 4).map(&:item_id))
-        user.characters.tirol.first.force_set_equips(user_items.slice(4, 3).map(&:item_id)) # ここが欠けてる
+        user.characters.spica.first.force_set_equips(user_items.slice(0, 4).map(&:item_id), user)
+        user.characters.tirol.first.force_set_equips(user_items.slice(4, 3).map(&:item_id), user) # ここが欠けてる
         user.characters.reload
       end
       let(:progress){ 200 }

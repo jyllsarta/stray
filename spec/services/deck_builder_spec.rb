@@ -26,8 +26,8 @@ RSpec.describe DeckBuilder, type: :model do
   let(:user){ User.create }
 
   before do
-    user.characters.spica.first.force_set_equips([item1.id, item2.id])
-    user.characters.tirol.first.force_set_equips([item3.id, item4.id])
+    user.characters.spica.first.force_set_equips([item1.id, item2.id], user)
+    user.characters.tirol.first.force_set_equips([item3.id, item4.id], user)
     user.characters.reload
   end
 

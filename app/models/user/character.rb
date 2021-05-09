@@ -28,13 +28,14 @@ class User::Character < ApplicationRecord
     self.equips.reload.map(&:user_item).map{|ui| ui&.item_id}
   end
 
-  def force_set_equips(item_ids)
+  def force_set_equips(item_ids, user)
     # 装備重複チェックは複数キャラにまたがる処理なのでこれの外側でトランザクションを張ること
     self.equips.each_with_index do |equip, i|
       # 空き枠がnilになるのは意図通り
       equip.user_item_id = user.items.find_by(item_id: item_ids[i])&.id
     end
     User::Character::Equip.import!(self.equips.to_a, on_duplicate_key_update: [:user_item_id])
+    user.characters.reload
     user.achievement_logger.post(Achievement::Event::EditEquip.new(user))
   end
 

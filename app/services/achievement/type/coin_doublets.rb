@@ -7,6 +7,7 @@ class Achievement::Type::CoinDoublets < Achievement
 
   # 下3桁がゾロ目かどうかを判定
   def doublet_floor_three_digits?(num)
+    return false if num == 0
     res = (num % 1000) / 111.0
     res.round == res
   end

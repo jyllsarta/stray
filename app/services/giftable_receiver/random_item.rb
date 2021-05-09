@@ -12,7 +12,7 @@ class GiftableReceiver::RandomItem
   end
 
   def received_content_message
-    "#{@user_item.full_name} 〔R#{@user_item.item_rank}〕"
+    "#{@user_item.full_name} #{rank_diff_text}"
   end
 
   private
@@ -21,7 +21,9 @@ class GiftableReceiver::RandomItem
     item = lot_item!(user, rank)
     user.random_item_receive_histories.create(item: item, received_at: Time.now)
     @user_item = user.items.find_or_initialize_by(item_id: item.id)
-    @user_item.rank = [(rank - item.base_rank), @user_item.rank].max
+    after_rank = [[(rank - item.base_rank), @user_item.rank].max, Constants.gacha.max_item_rank - item.base_rank].min
+    @rank_diff = after_rank - @user_item.rank
+    @user_item.rank = after_rank
     @user_item.save!
     user.achievement_logger.post(Achievement::Event::ReceiveRandomItem.new(user, item.id, @user_item.rank))
   end
@@ -41,5 +43,10 @@ class GiftableReceiver::RandomItem
 
   def lot_rarity
     Random.random_number(10000) < Constants.item.random_item_max_rarity_weight ? 5 : 4
+  end
+
+  def rank_diff_text
+    return "" unless @rank_diff
+    @rank_diff == 0 ? "" : "(+#{@rank_diff})"
   end
 end
