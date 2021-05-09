@@ -81,7 +81,7 @@
             .max.label
               | +{{Math.max(item.rank + rankUpLimit, item.rank + parsedCount)}}
           .slider
-            input(type="range" orient="vertical" v-model="count" min="0" :max="rankUpLimit")
+            input(type="range" v-model="count" min="0" :max="rankUpLimit")
         .controls
           .costs
             .line
