@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/jyllsarta/stray/branch/master/graph/badge.svg)](https://codecov.io/gh/jyllsarta/stray)
+[![codecov](https://codecov.io/gh/jyllsarta/stray/branch/develop/graph/badge.svg?token=OBT93BLO66)](https://codecov.io/gh/jyllsarta/stray)
 
 # スピカとチロル
 
