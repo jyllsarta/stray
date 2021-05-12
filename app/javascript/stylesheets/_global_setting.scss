@@ -167,6 +167,18 @@
   cursor: pointer;
 }
 
+.yellow_clickable{
+  background: linear-gradient(to bottom, $clickable-highlight-color, $yellow-opacity-low2 5%, $yellow-opacity-low2 90%, $clickable-highlight-color);
+  border-radius: $radius;
+  border: 1px solid $gray1;
+  &:hover{
+    background: linear-gradient(to bottom, $clickable-highlight-color, $yellow-opacity-low2 25%, $yellow-opacity-low2 65%, $clickable-highlight-color);
+    filter: brightness(115%);
+    transform: scale(1.10);
+  }
+  cursor: pointer;
+}
+
 .super_clickable {
   animation: animate-stripes 5s linear infinite;
   border-radius: $radius;

@@ -1,10 +1,19 @@
 <template lang="pug">
   .menu(@click.right.prevent="removeLastEquip")
-    .back(@click="closeWindow")
+    .back(@click="confirmClose")
+    transition(name="open_window")
+      .window.confirm_close(v-if="showing_confirm_window")
+        .header
+          | 全体的に弱くなりますが、編集を確定しますか？
+        .buttons
+          .clickable.ok(@click="closeWindow")
+            | 確定
+          .yellow_clickable.cancel(@click="showing_confirm_window = false")
+            | 編集を続ける
     .window.content
       .title_area
         .back_button.clickable(
-          @click="closeWindow"
+          @click="confirmClose"
           @mouseover="$store.commit('guide/updateGuide', '編集を確定してメニューを閉じます。')",
         )
           .arrow
@@ -297,6 +306,7 @@ export default {
       sub_character_position: 0,
       main_character_position: 0,
       showing_select_order_window: false,
+      showing_confirm_window: false,
     };
   },
   store,
@@ -343,6 +353,14 @@ export default {
           console.warn(error.response);
           console.warn("NG");
         });
+    },
+    confirmClose(){
+      if(this.$store.getters['equip_window/willBeNerfed']()){
+        this.showing_confirm_window = true;
+      }
+      else{
+        this.closeWindow();
+      }
     },
     closeWindow(){
       this.submit();
@@ -468,6 +486,37 @@ export default {
 
   .content{
     overflow: hidden;
+  }
+
+  .confirm_close{
+    position: absolute;
+    z-index: 200;
+    left: calc(#{$window-width} / 2 - 200px);
+    top: calc(#{$window-height} / 2 - 100px);
+    width: 400px;
+    height: 200px;
+    @include checker_background;
+    .header{
+      padding: $thin_space;
+      width: 100%;
+      text-align: center;
+      white-space: pre;
+    }
+    .buttons{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 150px;
+      .ok {
+        width: 130px;
+        @include centering($height: 60px);
+      }
+      .cancel {
+        width: 130px;
+        @include centering($height: 60px);
+        background-color: $yellow-opacity;
+      }
+    }
   }
 
   // 通常のスタイル定義
