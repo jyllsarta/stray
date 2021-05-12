@@ -2,10 +2,16 @@
   .message_form.window
     .title
       span.description
-        | ~おたより欄~ バグ報告、改善要望、なんでもどうぞ！ おたよりはプレイヤーIDとともにすべて公開されます。
+        | ~おたより欄~ バグ報告、改善要望、なんでもどうぞ！ 
       span.link
         a(href="/messages" target="_blank" rel="noopener noreferrer")
           | みんなのおたよりを見る
+      span.description
+        | 　画像つきはこちらで！ 
+      span.link
+        a(href="https://twitter.com/search?q=%23%E3%82%B9%E3%83%94%E3%82%AB%E3%81%A8%E3%83%81%E3%83%AD%E3%83%AB&f=live" target="_blank" rel="noopener noreferrer")
+          | #スピカとチロル
+            
     .message_box
       textarea.input(v-model="message", cols=100)
       .send.clickable(@click="sendMessage")
