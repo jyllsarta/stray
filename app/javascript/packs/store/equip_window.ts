@@ -179,6 +179,10 @@ export default {
     getTotalStrengthDiff: (state, getters) => (paramName) => {
       return getters.getTotalStrength(paramName, true) - getters.getTotalStrength(paramName, false);
     },
+    willBeNerfed: (state, getters) => (paramName) => {
+      console.log(getters.getTotalStrengthDiff('atk'));
+      return getters.getTotalStrengthDiff('atk') < 0 && getters.getTotalStrengthDiff('def') < 0;
+    },
   },
   mutations: {
     initializeEquipWindow(state, payload){

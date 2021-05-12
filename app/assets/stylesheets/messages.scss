@@ -1,10 +1,14 @@
 
 .main{
+  display: flex;
+  justify-content: center;
   .body{
-    background-color: rgb(35, 50, 67);
+    background-color: rgb(8, 11, 30);
+    color: #f0f4f0;
     min-width: 800px;
-    color: #f0f4f0;  
+    max-width: 1000px;
     width: 95%;
+    max-width: 1000px;
     margin-left: 2.5%;
     margin-top: 2.5%;
     padding: 8px;  
@@ -18,16 +22,17 @@
         border-bottom: 1px solid #646a74;
       }
       .message{
-        display: flex;
         width: 100%;
+        display: flex;
         .user_id{
-          margin: 2px;
+          margin: 4px;
           width: 10%;
           border-right: 1px solid #646a74;
         }
-        .message{
-          margin: 2px;
-          width: 90%;
+        .content{
+          flex: 1;
+          margin: 4px;
+          word-break: break-all;
         }
       }
     }

@@ -26,6 +26,8 @@
                 v-for="relic in displayRelics"
                 :class="obtainRelicClass(relic.id)"
                 @click="selectRelic(relic.id)"
+                @mouseover="showRelicDetail(relic.id)"
+                @mouseleave="showRelicDetail(selectingRelicId)"
                 :style="relicStyle(relic)"
                 :key="relic.id"
             )
@@ -37,20 +39,20 @@
           .relic_detail
             .title
               transition(name="show-in")
-                img.icon(:src="`/images/icons/relic/${selectingRelic.id || 'nothing'}.gif`" :key="selectingRelic.id")
-              .relic_name(:key="selectingRelic.name")
-                | {{selectingRelic.name}}
+                img.icon(:src="`/images/icons/relic/${showingRelicId || 'nothing'}.gif`" :key="showingRelicId")
+              .relic_name(:key="showingRelic.name")
+                | {{showingRelic.name}}
             .parent
               .descri
                 | 前提：
-              img.icon(:src="`/images/icons/relic/${selectingRelicParent.id || 'nothing'}.gif`")
-              .relic_name(:key="selectingRelicParent.name", :class="parentRelicObtained ? '' : 'red'")
-                | {{selectingRelicParent.name || 'なし'}}
+              img.icon(:src="`/images/icons/relic/${showingRelic.id || 'nothing'}.gif`")
+              .relic_name(:key="showingRelic.name", :class="parentRelicObtained ? '' : 'red'")
+                | {{showingRelicParent.name || 'なし'}}
             .desc
               span.letter(
-                v-for="(t, index) in selectingRelic.description"
-                :key="selectingRelic.id + t + index"
-                :style="{animationDelay: (150 + index*3)+'ms'}"
+                v-for="(t, index) in showingRelic.description"
+                :key="showingRelic.id + t + index"
+                :style="{animationDelay: (50 + index*3)+'ms'}"
                 v-text="t")
           .star
             .line
@@ -64,13 +66,13 @@
                 | 消費
               .icon
               .value(:class="hasSufficientStar ? '' : 'red'")
-                NumeratableNumber(:number="selectingRelic.cost || 0" :speed="0.4")
+                NumeratableNumber(:number="showingRelic.cost || 0" :speed="0.4")
           .button
             .get(
-              :class="[relicStatus(selectingRelicId), (relicStatus(selectingRelicId) === 'available') ? 'super_clickable' : '']"
-              @click="obtainRelic(selectingRelicId)"
+              :class="[relicStatus(showingRelicId), (relicStatus(showingRelicId) === 'available') ? 'super_clickable' : '']"
+              @click="obtainRelic(showingRelicId)"
               )
-              | {{relicLabels[relicStatus(selectingRelicId)]}}
+              | {{relicLabels[relicStatus(showingRelicId)]}}
 </template>
 
 <script lang="ts">
@@ -87,6 +89,7 @@ export default {
 
   data: function () {
     return {
+      showingRelicId: null,
       selectingRelicId: null,
       currentPage: 1,
       relicLabels: {
@@ -108,14 +111,17 @@ export default {
     selectingRelic(){
       return this.$store.state.masterdata.relics[this.selectingRelicId] || {};
     },
-    selectingRelicParent(){
-      return this.$store.state.masterdata.relics[this.selectingRelic.parent_relic_id] || {};
+    showingRelic(){
+      return this.$store.state.masterdata.relics[this.showingRelicId] || {};
+    },
+    showingRelicParent(){
+      return this.$store.state.masterdata.relics[this.showingRelic.parent_relic_id] || {};
     },
     parentRelicObtained(){
-      if(this.selectingRelicParent.id === undefined){
+      if(this.showingRelicParent.id === undefined){
         return true;
       }
-      return !!this.$store.state.user?.relics[this.selectingRelicParent.id];
+      return !!this.$store.state.user?.relics[this.showingRelicParent.id];
     },
     hasSufficientStar(){
       return this.$store.state.user?.status?.star >= (this.selectingRelic.cost || 0);
@@ -136,6 +142,9 @@ export default {
     },
     selectRelic(id){
       this.selectingRelicId = id;
+    },
+    showRelicDetail(id){
+      this.showingRelicId = id;
     },
     relicStatus(relicId){
       const relic = this.relic(relicId);
@@ -368,7 +377,8 @@ export default {
     border: 1px solid $yellow;
   }
   .selected{
-    border: 1px solid $yellow;
+    border: 1px solid $plus;
+    filter: brightness(120%);
   }
 }
 
