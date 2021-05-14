@@ -15,7 +15,7 @@
         .cost(v-if="!skill.threshold_hp && !skill.is_passive")
           | {{skill.cost}}
         .cost(v-if="skill.threshold_hp")
-          | {{skill.threshold_hp}}≦HP
+          | HP≦{{skill.threshold_hp}}
         .additional_text
           | {{additionalText(skill)}}
       .downer
