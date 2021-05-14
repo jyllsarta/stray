@@ -72,7 +72,7 @@ class User::Item < ApplicationRecord
   def rank_up_cost(count)
     sum = 0
     (0..(count-1)).each do |i|
-      sum += [(((rank + item.base_rank + i) ** 2 * rarity_factor(item.rarity)) / 100 + 100).floor, Constants.item.max_rank_up_cost].min
+      sum += [(((rank + item.base_rank + i) ** 2 * rarity_factor(item.rarity)) / 100 + 20).floor, Constants.item.max_rank_up_cost].min
     end
     sum
   end

@@ -198,7 +198,7 @@ export default {
     },
     rankUpCost(rank){
       return Math.min(
-        Math.floor((Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item.rarity)) / 100 + 100),
+        Math.floor((Math.pow(rank , 2) * this.$store.getters['user/rarityFactor'](this.item.rarity)) / 100 + 20),
         Constants.item.maxRankUpCost,
       );
     },

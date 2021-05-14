@@ -188,7 +188,7 @@ RSpec.describe User::Item, type: :model do
       end
       it "現状の設計通りの値を返す" do
         subject
-        expect(user.status.reload.coin).to eq(98983)
+        expect(user.status.reload.coin).to eq(99783)
       end
     end
   end
