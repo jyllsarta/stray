@@ -87,6 +87,7 @@ Rails.application.routes.draw do
   resources :enemies, only: [:index] do
     post :engage
     post :showdown
+    get :daily, on: :collection
   end
 
   resources :skills, only: [:index] do

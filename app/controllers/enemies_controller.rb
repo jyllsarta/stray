@@ -1,8 +1,14 @@
 class EnemiesController < ApplicationController
   def index
-    # TODO: SQL最適化
     @user_strength = current_user.status.player_strength
     @enemies = Enemy.where(quest_id: params[:quest_id]).preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: [])
+  end
+
+  def daily
+    @user_strength = current_user.status.player_strength
+    @today_reward_received = 100
+    @today_reward_limit = 200
+    @enemies = Enemy.where(quest_id: 1)
   end
 
   def engage

@@ -118,6 +118,34 @@ RSpec.describe "Enemies", type: :request do
     end
   end
 
+  describe "GET /enemies/daily" do
+    include_context("stub_current_user")
+    let!(:enemy ) { create(:enemy, :with_card, :with_skill, :with_reward) }
+    let!(:dungeon){ create(:dungeon) }
+    let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+    let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
+    let!(:user){ User.create }
+    let(:do_get) { get daily_enemies_path + ".json" }
+
+    subject do
+      do_get
+      response
+    end
+
+    context "succeeds" do
+      it 'succeeds' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     enemies: Array,
+                                                     today_reward_received: Integer,
+                                                     today_reward_limit: Integer,
+                                                 }
+                                             )
+      end
+    end
+  end
+
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
     let!(:quest) { create(:quest) }
