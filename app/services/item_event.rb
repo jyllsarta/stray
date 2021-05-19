@@ -49,9 +49,9 @@ class ItemEvent < Event
         user_item.rank += @_rank_delta
       end
     else
-      jittered_rank = @rank + Random.rand(Constants.item.higher_rank_jitter)
+      jittered_rank = [@rank + Random.rand(Constants.item.higher_rank_jitter), Constants.gacha.max_item_rank].min
       if item.base_rank + user_item.rank < jittered_rank
-        user_item.rank = @rank - item.base_rank
+        user_item.rank = jittered_rank - item.base_rank
         @_message = "#{item.name}を+#{user_item.rank}に強化した！"
       else
         user.status.add_coin(coin_amount)

@@ -142,10 +142,10 @@ RSpec.describe ItemEvent, type: :model do
         expect((1..5).include?(event.instance_variable_get("@item_id"))).to be_truthy
       end
 
-      it "ランダムアイテムのランク + ベースランクの合計値が元ランク+10の範囲にある" do
+      it "ランダムアイテムのランクは最大値になる" do
         subject
-        user_item = user.items.reload.first
-        expect((rank..(rank+Constants.item.higher_rank_jitter)).include?(user_item.item_rank)).to eq(true)
+        user_item = user.items.first
+        expect(user_item.item_rank).to eq(Constants.gacha.max_item_rank)
       end
 
       it "なんらか強化したメッセージが入っている" do
