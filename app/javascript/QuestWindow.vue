@@ -40,7 +40,7 @@
                 | {{ selectingQuest.name }}
               .descri
                 | {{ selectingQuest.description }}
-              .progress
+              .progress(v-if="selectingQuestId !== dailyQuestId")
                 .field_effect
                   .index
                     span
@@ -53,6 +53,21 @@
                     | {{currenFieldEffectState.description}}
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
+                .go.button.clickable(@click="openBattlePrepareWindow")
+                  | Go!
+              .progress(v-if="selectingQuestId === dailyQuestId")
+                .field_effect
+                  .index
+                    span
+                      | フィールドエフェクト：
+                    span.icon(v-if="currenFieldEffectState.icon")
+                      img(:src="`/images/icons/states/${currenFieldEffectState.icon}`")
+                    span
+                      | {{currenFieldEffectState.title}}
+                  .desc
+                    | 
+                .text
+                  | 0000 / 1400
                 .go.button.clickable(@click="openBattlePrepareWindow")
                   | Go!
 
