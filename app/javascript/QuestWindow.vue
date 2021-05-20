@@ -11,6 +11,13 @@
         | 強敵と戦い、クエストを進行させます。
       .body
         .quest_list_tab.scrollable
+          .daily.quest.hoverable.selectable(@click="selectQuest(dailyQuestId)")
+            .name
+              | ◆デイリー討伐◆
+            .progress
+              .current_progress(:class="questColorClass(dailyQuestId)")
+                | 1400
+              |  / 1400
           .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
@@ -67,6 +74,14 @@ export default {
         icon: null,
         title: "なし",
         description: "",
+      },
+      dailyQuestId: 999,
+      dailyQuestDetail: {
+        name: "◆デイリー討伐◆",
+        description: "一期一会の遭遇戦だ！日替わりランダムな敵と戦って、星のカケラを手に入れよう！(出てくる敵の強さとカケラの取得制限量はダンジョンの解放度によって決まります)",
+        depth: "-",
+        won_enemy_count: "-",
+        enemy_count: "-"
       }
     };
   },
@@ -82,6 +97,9 @@ export default {
       return this.$store.state.quest.quest_id;
     },
     selectingQuest(){
+      if(this.selectingQuestId == this.dailyQuestId){
+        return this.dailyQuestDetail;
+      }
       return this.quests.find((x)=>x.id===this.selectingQuestId) || {};
     },
     currenFieldEffectState(){
@@ -151,20 +169,17 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
+    line-height: 100%;
     .quest{
       margin: $thin_space;
-      padding: $space;
+      padding: $space * 1.5;
       width: calc(100% - 10px);
+      display: flex;
       .name{
-        display: inline-block;
         width: 70%;
       }
       .clear_mark{
-        display: inline-block;
         width: 15%;
-        .clear{
-          display: inline-block;
-        }
       }
       .progress{
         .current_progress{
@@ -173,8 +188,7 @@ export default {
         .cleared{
           color: $yellow;
         }
-        display: inline-block;
-        width: 15%;
+        flex: 1;
         text-align: right;
       }
     }
