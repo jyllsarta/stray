@@ -5,11 +5,20 @@
       .title_area
         .back_button.clickable(@click="$store.commit('window/updateWindowShowState', {windowName: 'battle_prepare', state: false})")
           .arrow
-        .title
+        .title(v-if="!isDailyQuest")
           | クエスト戦・準備
-      .description
+        .title(v-if="isDailyQuest")
+          | デイリー討伐
+      .description(v-if="!isDailyQuest")
         | クエスト対象の敵と戦います。初めて倒す敵の場合は報酬がもらえます。
+      .description(v-if="isDailyQuest")
+        | 毎日違う敵(0:00更新)と戦えます。敵の強さと一日の最大カケラ獲得量はダンジョンの解放度で決まります。
       .body
+        .reward_status(v-if="isDailyQuest")
+          .index
+            | 本日のカケラ取得
+          .value
+            | {{todayRewardReceived}} / {{todayRewardLimit}}
         .characters
           img.tirol(src="/images/battle/characters/tirol_normal.png")
           img.spica(src="/images/battle/characters/spica_normal.png")
@@ -144,6 +153,9 @@
               classCardsResponse: [],
               itemCardsResponse: [],
               wonEnemyIds: [],
+              dailyQuestId: 999,
+              todayRewardLimit: 0,
+              todayRewardReceived: 0,
           };
       },
       store,
@@ -154,6 +166,9 @@
           this.fetchPlayerWonEnemies();
       },
       computed: {
+          isDailyQuest(){
+            return this.$store.state.quest.quest_id === this.dailyQuestId;
+          },
           notificationText(){
             let text = "";
             if(this.$store.getters['user/hasEmptySlot']){
@@ -360,6 +375,32 @@
           },
 
           fetchEnemyList(){
+            if(this.isDailyQuest){
+              this.fetchEnemyListDaily();
+            }
+            else{
+              this.fetchEnemyListNormal();
+            }
+          },
+
+          fetchEnemyListDaily(){
+              const path = `/enemies/daily.json`;
+              const params = {};
+              ax.get(path, { params: params})
+                  .then((results) => {
+                      console.log(results);
+                      this.enemyList = results.data.enemies;
+                      this.todayRewardLimit = results.data.today_reward_limit;
+                      this.todayRewardReceived = results.data.today_reward_received;
+                      this.selectFirstAliveEnemy();
+                  })
+                  .catch((error) => {
+                      console.warn(error.response);
+                      console.warn("NG");
+                  });
+          },
+
+          fetchEnemyListNormal(){
               const path = `/enemies.json`;
               const params = {
                   quest_id: this.$store.state.quest.quest_id,
@@ -439,6 +480,18 @@
 
 <style lang="scss" scoped>
   @import "stylesheets/global_setting";
+
+  .reward_status{
+    position: absolute;
+    top: $space;
+    right: $space;
+    width: 300px;
+    height: 100px;
+    text-align: right;
+    .value{
+      font-size: $font-size-large;
+    }
+  }
 
   .description{
     padding: $space;
