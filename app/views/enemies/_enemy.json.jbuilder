@@ -10,7 +10,7 @@ json.special enemy.special
 json.strength enemy.strength
 json.cards enemy.cards(user_strength[:def])
 json.skills do
-  json.array! enemy.enemy_skills.order(order: :asc) do |enemy_skill|
+  json.array! enemy.enemy_skills do |enemy_skill|
     enemy_skill.skill.to_battle_skill.keys.each do |attribute|
       json.extract! enemy_skill.skill, attribute
     end

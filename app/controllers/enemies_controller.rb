@@ -8,7 +8,7 @@ class EnemiesController < ApplicationController
     @user_strength = current_user.status.player_strength
     @today_reward_received = 100
     @today_reward_limit = 200
-    @enemies = Enemy.where(quest_id: 1)
+    @enemies = RaidEnemyMatchMaker.new(current_user).enemies
   end
 
   def engage

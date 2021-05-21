@@ -24,6 +24,9 @@
 
 class RaidEnemy < Enemy
   class NotPermanentEntity < StandardError; end
+  attr_accessor :enemy_cards
+  attr_accessor :enemy_skills
+
   def save
     raise NotPermanentEntity
   end
@@ -32,6 +35,20 @@ class RaidEnemy < Enemy
   end
 
   def self.generate_from(enemy_id)
-    self.new(Enemy.find(enemy_id).attributes)
+    enemy = Enemy.find(enemy_id)
+    model = self.new(enemy.attributes)
+    model.enemy_cards = enemy.enemy_cards.to_a
+    model.enemy_skills = enemy.enemy_skills.to_a
+    model
+  end
+
+  def enemy_rewards
+    [
+      EnemyReward.new(
+        giftable_type: "Coin",
+        giftable_id: 1,
+        amount: 5000
+      )
+    ]
   end
 end
