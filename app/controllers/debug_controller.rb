@@ -56,6 +56,11 @@ class DebugController < ApplicationController
     redirect_to clients_path
   end
 
+  def reset_daily_quest
+    current_user.won_enemies.where("enemy_id > 1000").map(&:destroy)
+    redirect_to clients_path
+  end
+
   def set_achievement
     achievement = current_user.achievements.find_or_initialize_by(achievement_id: params[:achievement_id])
     achievement.progress = params[:progress]
