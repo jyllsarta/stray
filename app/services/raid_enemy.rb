@@ -24,6 +24,7 @@
 
 class RaidEnemy < Enemy
   class NotPermanentEntity < StandardError; end
+  attr_accessor :id
   attr_accessor :enemy_cards
   attr_accessor :enemy_skills
 
@@ -34,6 +35,29 @@ class RaidEnemy < Enemy
     raise NotPermanentEntity
   end
 
+  # 年月日クエストID+数値指定で敵を作って返す
+  # キャッシュがもし生きてればそれを使っちゃう
+  def self.restore_or_generate(year, month, day, quest_id, stage_id)
+    # TODO: キャッシュがあるならそれを使うようにする
+    raid_enemy_id = year % 100 * 1000000 + month * 10000 + day * 100 + quest_id * 10 + stage_id
+    generate(raid_enemy_id, quest_id, stage_id)
+  end
+
+  # raid_enemy_idのキャッシュを読みに行ってあればそれを返す、
+  # キャッシュがなければraid_enemy_idをパースしてquest_id, stage_idが有効な値だったらキャッシュの再構築
+  def self.find_by_id(raid_enemy_id)
+    generate(raid_enemy_id, nil, nil)    
+  end
+
+  # 素体をランダムピックしてランダムピックしたエネミーを作って返す
+  def self.generate(raid_enemy_id, quest_id, stage_id)
+    # TODO: ちゃんと作る
+    raid_enemy = generate_from(Enemy.first.id)
+    raid_enemy.id = raid_enemy_id
+    raid_enemy
+  end
+
+  # 「素体」からコピーして作るだけ 
   def self.generate_from(enemy_id)
     enemy = Enemy.find(enemy_id)
     model = self.new(enemy.attributes)
@@ -42,6 +66,7 @@ class RaidEnemy < Enemy
     model
   end
 
+  # TODO: レイドカケラにする
   def enemy_rewards
     [
       EnemyReward.new(

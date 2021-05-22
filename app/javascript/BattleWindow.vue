@@ -880,9 +880,11 @@ export default {
 
     postEngage(){
       const enemyId = this.$store.state.battle.enemy_id || 101;
+      const isDaily = this.$store.state.battle.is_daily || false;
       const path = `/enemies/${enemyId}/engage.json`;
       const params = {
-        enemy_id: enemyId
+        enemy_id: enemyId,
+        is_daily: isDaily,
       };
       ax.post(path, params)
         .then((results) => {

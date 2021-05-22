@@ -6,10 +6,11 @@ RSpec.describe QuestBattle, type: :model do
   let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
   let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
   let!(:enemy){ create(:enemy, :with_card) }
+  let(:is_daily){ false }
   let(:user){ User.create }
 
   describe "#engage!" do
-    subject { quest_battle.engage!(enemy.id) }
+    subject { quest_battle.engage!(enemy.id, is_daily) }
     it "sets random cache" do
       subject
       expect(Rails.cache.read("quest:#{user.id}")).to_not be_nil
@@ -40,7 +41,7 @@ RSpec.describe QuestBattle, type: :model do
 
     context "with cache" do
       before do
-        quest_battle.engage!(enemy.id)
+        quest_battle.engage!(enemy.id, false)
       end
       it "no error" do
         expect{ subject }.to_not raise_error
@@ -50,7 +51,7 @@ RSpec.describe QuestBattle, type: :model do
     context "reward" do
       let!(:enemy_reward){ create(:enemy_reward, enemy: enemy, giftable_type: 'Coin', amount: 123) }
       before do
-        quest_battle.engage!(enemy.id)
+        quest_battle.engage!(enemy.id, false)
       end
       it "gives reward" do
         expect{subject}.to change(user.status.reload, :coin).by(123)
@@ -124,7 +125,7 @@ RSpec.describe QuestBattle, type: :model do
 
     before do
       allow(Open3).to receive(:capture2).and_return([node_response, 0])
-      quest_battle.engage!(enemy.id)
+      quest_battle.engage!(enemy.id, false)
       quest_battle.showdown!(history)
     end
 

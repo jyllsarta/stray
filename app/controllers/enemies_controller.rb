@@ -13,7 +13,7 @@ class EnemiesController < ApplicationController
 
   def engage
     quest = QuestBattle.new(current_user)
-    quest.engage!(params[:enemy_id])
+    quest.engage!(params[:enemy_id], params[:is_daily].to_s == "true")
     render json: quest.content, status: :ok
   end
 

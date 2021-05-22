@@ -19,7 +19,7 @@ RSpec.describe RaidEnemy, type: :model do
     subject { RaidEnemy.generate_from(enemy.id) }
     let(:enemy){ create(:enemy) }
     it "builds model object equals to base enemy" do
-      expect(subject.attributes).to eq(enemy.attributes)
+      expect(subject.attributes.except("id")).to eq(enemy.attributes.except("id"))
     end
   end
 end

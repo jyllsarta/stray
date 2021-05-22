@@ -16,5 +16,5 @@
 
 class User::WonEnemy < ApplicationRecord
   belongs_to :user
-  belongs_to :enemy, class_name: "::Enemy"
+  belongs_to :enemy, class_name: "::Enemy", required: false
 end

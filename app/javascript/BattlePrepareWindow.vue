@@ -461,6 +461,7 @@
 
           startBattle(){
               this.$store.commit("battle/setEnemyId", this.selectingEnemyId);
+              this.$store.commit("battle/setIsDaily", this.isDailyQuest);
               this.$store.commit("window/updateWindowShowState", {windowName: "battle", state: true})
           },
 

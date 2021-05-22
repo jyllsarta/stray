@@ -151,9 +151,11 @@ RSpec.describe "Enemies", type: :request do
     let!(:quest) { create(:quest) }
     let!(:enemy) { create(:enemy, quest: quest) }
     let(:user){ User.create }
-    let(:do_post) { post enemy_engage_path(enemy_id: enemy.id)}
+    let(:do_post) { post enemy_engage_path(enemy_id: enemy.id), params: params}
     let(:params) do
-      {}
+      {
+        is_daily: false
+      }
     end
     subject do
       do_post
@@ -174,6 +176,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerSpecial: Integer,
                                                      enemyIsBoss: Boolean,
                                                      enemyId: Integer,
+                                                     isDaily: Boolean,
                                                      enemyImageName: String,
                                                      enemyScaleType: Integer,
                                                      enemyName: String,
@@ -205,7 +208,7 @@ RSpec.describe "Enemies", type: :request do
     end
 
     before do
-      QuestBattle.new(user).engage!(enemy.id)
+      QuestBattle.new(user).engage!(enemy.id, false)
       allow_any_instance_of(QuestBattle).to receive(:capture_result).and_return({'isWin'=>true, 'isDraw'=>false})
     end
 

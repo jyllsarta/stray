@@ -7,11 +7,10 @@ class QuestBattle
     @user = user
   end
 
-  def engage!(enemy_id)
+  def engage!(enemy_id, is_daily)
     ActiveRecord::Associations::Preloader.new.preload( @user, {characters: {equips: {user_item: [:item]}}})
-
-    @enemy = Enemy.find(enemy_id)
-
+    @is_daily = is_daily
+    @enemy = @is_daily ? RaidEnemy.find_by_id(enemy_id) : Enemy.find(enemy_id)
     cache = Cache.new(@user)
     if cache.exist?
       # 多重エンゲージはかつて例外対象としていたが、リロード時とかに余計な例外を吐くだけだったので黙ってキャッシュ削除でいいことにした
@@ -40,6 +39,7 @@ class QuestBattle
         playerTech: 1 + @user.status.quest_battle_additional_power_tech_damage,
         playerSpecial: 1 + @user.status.quest_battle_additional_special_damage,
         enemyId: @enemy.id,
+        isDaily: @is_daily,
         enemyName: @enemy.name_with_plus(@user.status.player_strength[:atk], @user.status.player_strength[:def]),
         enemyImageName: @enemy.image_name,
         enemyScaleType: @enemy.scale_type,
@@ -51,7 +51,7 @@ class QuestBattle
         playerCards: DeckBuilder.new(@user).deck,
         playerSkills: @user.skills.order(skill_id: :asc).equipped.map(&:skill).map(&:to_battle_skill),
         enemyCards: enemy_cards,
-        enemySkills: @enemy.enemy_skills.order(order: :asc).map(&:skill).map(&:to_battle_skill),
+        enemySkills: @enemy.enemy_skills.map(&:skill).map(&:to_battle_skill),
         fieldEffectStateId: @enemy.quest&.field_effect_state_id,
     }.to_json
   end
@@ -79,11 +79,14 @@ class QuestBattle
     end.compact
     @result.merge!({'rewards'=> received_content_messages})
 
-    @user.won_enemies.find_or_create_by!(enemy: @enemy)
+    @user.won_enemies.find_or_create_by!(enemy_id: @enemy.id)
   end
 
   def restore_enemy!(cache)
-    @enemy = Enemy.find(JSON.parse(cache)['enemyId'])
+    parsed_cache = JSON.parse(cache)
+    is_daily = parsed_cache['isDaily']
+    enemy_id = parsed_cache['enemyId']
+    @enemy = is_daily ? RaidEnemy.find_by_id(enemy_id) : Enemy.find(enemy_id)
   end
 
   def enemy_cards
