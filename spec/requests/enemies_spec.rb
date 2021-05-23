@@ -77,6 +77,7 @@ RSpec.describe "Enemies", type: :request do
                                                              is_defence: Boolean,
                                                              is_passive: Boolean,
                                                              cost: Integer,
+                                                             grade: Integer,
                                                              threshold_hp: nil,
                                                              effect1_category: String,
                                                              effect1_to_self: Boolean,
@@ -120,7 +121,11 @@ RSpec.describe "Enemies", type: :request do
 
   describe "GET /enemies/daily" do
     include_context("stub_current_user")
-    let!(:enemy ) { create(:enemy, :with_card, :with_skill, :with_reward) }
+    before do
+      Quest.delete_all
+    end
+    let!(:quest) { create(:quest, id: 1) }
+    let!(:enemy) { create(:enemy, :with_card, :with_skill, :with_reward, quest: quest) }
     let!(:dungeon){ create(:dungeon) }
     let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
     let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }

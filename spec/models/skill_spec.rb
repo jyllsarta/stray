@@ -83,7 +83,8 @@ RSpec.describe Skill, type: :model do
                                    "is_passive"=>false,
                                    "threshold_hp"=>nil,
                                    "name"=>"ファイア",
-                                   "reusable"=>false
+                                   "reusable"=>false,
+                                   "grade"=>Integer
                                })  # 適当なので、モデル変更などでわずらわしくなったタイミングでちゃんと書き直す
       end
     end

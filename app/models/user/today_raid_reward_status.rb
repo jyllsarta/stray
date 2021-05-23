@@ -18,5 +18,5 @@
 class User::TodayRaidRewardStatus < ApplicationRecord
   belongs_to :user
 
-  scope :today, -> { where(day: Time.current)}
+  scope :today, -> { where(day: Time.now)}
 end
