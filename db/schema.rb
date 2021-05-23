@@ -342,6 +342,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_today_raid_reward_statuses", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "received_amount", null: false
+    t.date "day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "day"], name: "index_user_today_raid_reward_statuses_on_user_id_and_day", unique: true
+    t.index ["user_id"], name: "index_user_today_raid_reward_statuses_on_user_id"
+  end
+
   create_table "user_won_enemies", charset: "utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "enemy_id", null: false
