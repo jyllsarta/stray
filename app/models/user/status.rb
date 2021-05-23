@@ -129,7 +129,7 @@ class User::Status < ApplicationRecord
   end
 
   def today_raid_reward_status
-    @today_reward_status ||= user.today_raid_reward_statuses.find_or_initialize_by(day: Time.current)
+    @today_reward_status ||= user.today_raid_reward_statuses.find_or_initialize_by(day: Time.now)
   end
 
   def raid_reward_receivable_limit
