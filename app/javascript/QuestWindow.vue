@@ -16,8 +16,8 @@
               | ◆デイリー討伐◆
             .progress
               .current_progress(:class="questColorClass(dailyQuestId)")
-                | 1400
-              |  / 1400
+                | {{todayRewardReceived}}
+              |  / {{todayRewardLimit}}
           .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
@@ -67,7 +67,7 @@
                   .desc
                     | 
                 .text
-                  | 0000 / 1400
+                  | {{todayRewardReceived}} / {{todayRewardLimit}}
                 .go.button.clickable(@click="openBattlePrepareWindow")
                   | Go!
 
@@ -97,7 +97,9 @@ export default {
         depth: "-",
         won_enemy_count: "-",
         enemy_count: "-"
-      }
+      },
+      todayRewardLimit: 0,
+      todayRewardReceived: 0,
     };
   },
   props: {
@@ -144,6 +146,8 @@ export default {
         .then((results) => {
           console.log(results);
           this.quests = results.data.quests;
+          this.todayRewardLimit = results.data.today_reward_limit;
+          this.todayRewardReceived = results.data.today_reward_received;
           this.selectFirstUnclearedQuest();
         })
         .catch((error) => {

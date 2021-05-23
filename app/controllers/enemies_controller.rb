@@ -6,8 +6,8 @@ class EnemiesController < ApplicationController
 
   def daily
     @user_strength = current_user.status.player_strength
-    @today_reward_received = 100
-    @today_reward_limit = 200
+    @today_reward_received = current_user.status.today_raid_reward_status.received_amount
+    @today_reward_limit = current_user.status.raid_reward_receivable_limit
     @enemies = RaidEnemyMatchMaker.new(current_user).enemies
   end
 

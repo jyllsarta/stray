@@ -9,6 +9,6 @@ class GiftableReceiver::RaidStar
   end
 
   def received_content_message
-    "コインx#{@received_amount || 0}枚"
+    "星のカケラx#{@received_amount || 0}個"
   end
 end

@@ -203,6 +203,9 @@
                   case 'star':
                       message = "星のカケラがもらえる。";
                       break;
+                  case 'raidstar':
+                      message = "星のカケラがもらえる。(一日の取得制限総量に制限あり)";
+                      break;
                   case 'skill':
                       message = "新たなスキルを教えてもらえる。";
                       break;

@@ -408,7 +408,7 @@ RSpec.describe User::Status, type: :model do
 
     context "has many wo enemies" do
       before do
-        allow(user).to receive_message_chain(:won_enemies, :count).and_return(5)
+        allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(5)
       end
       it "become to 260" do
         expect(subject).to eq(275)

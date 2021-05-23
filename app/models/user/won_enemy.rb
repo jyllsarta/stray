@@ -17,4 +17,7 @@
 class User::WonEnemy < ApplicationRecord
   belongs_to :user
   belongs_to :enemy, class_name: "::Enemy", required: false
+
+  # だいぶ雑だけどデイリーは8桁になるので... ちゃんとやるならjoins(:enemy).select(presence: true) 的な絞り込みをする
+  scope :normal, -> { where("enemy_id < 10000000")}
 end

@@ -70,9 +70,9 @@ class RaidEnemy < Enemy
   def enemy_rewards
     [
       EnemyReward.new(
-        giftable_type: "Coin",
+        giftable_type: "RaidStar",
         giftable_id: 1,
-        amount: 5000
+        amount: 50
       )
     ]
   end
