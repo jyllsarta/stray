@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "special", default: 0, null: false
     t.integer "strength", default: 0, null: false
     t.integer "rank", default: 0, null: false
+    t.integer "grade", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quest_id"], name: "index_enemies_on_quest_id"
@@ -211,6 +212,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "is_defence", default: false, null: false
     t.boolean "is_passive", default: false, null: false
     t.integer "cost", default: 0, null: false
+    t.integer "grade", default: 0, null: false
     t.integer "threshold_hp"
     t.string "effect1_category"
     t.boolean "effect1_to_self"

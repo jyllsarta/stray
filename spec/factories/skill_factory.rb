@@ -15,6 +15,7 @@
 #  effect3_to_self  :boolean
 #  effect3_value    :integer
 #  for_player       :boolean          default(TRUE), not null
+#  grade            :integer          default(0), not null
 #  icon_image_path  :string(255)
 #  is_defence       :boolean          default(FALSE), not null
 #  is_exhaust       :boolean          default(FALSE), not null
