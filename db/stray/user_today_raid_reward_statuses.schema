@@ -1,6 +1,6 @@
 create_table "user_today_raid_reward_statuses", force: :cascade do |t|
   t.belongs_to :user, null: false
-  t.integer :received_amount, null: false
+  t.integer :received_amount, null: false, default: 0
   t.date :day
   t.timestamps
 end

@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :achievements
   has_many :achievement_steps
   has_one :gacha_point
+  has_many :today_raid_reward_statuses
 
   class AlreadyUsed < StandardError; end
   class EmptyName < StandardError; end

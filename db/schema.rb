@@ -344,7 +344,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "user_today_raid_reward_statuses", charset: "utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "received_amount", null: false
+    t.integer "received_amount", default: 0, null: false
     t.date "day"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

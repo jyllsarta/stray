@@ -4,7 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  day             :date
-#  received_amount :integer          not null
+#  received_amount :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  user_id         :bigint           not null
@@ -17,4 +17,6 @@
 
 class User::TodayRaidRewardStatus < ApplicationRecord
   belongs_to :user
+
+  scope :today, -> { where(day: Time.current)}
 end
