@@ -47,7 +47,9 @@ class Enemy < ApplicationRecord
   end
 
   def parameter_multiplier(player_strength)
-    strength_coefficient(player_strength) * rank_coefficient
+    multiplier = strength_coefficient(player_strength) * rank_coefficient
+    multiplier *= @card_multiplier if @card_multiplier.present?
+    multiplier
   end
 
   private

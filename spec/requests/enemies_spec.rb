@@ -137,6 +137,11 @@ RSpec.describe "Enemies", type: :request do
       response
     end
 
+    # マッチメーカーのロジックはここでは検証しない
+    before do
+      allow_any_instance_of(RaidEnemyMatchMaker).to receive(:enemies).and_return([])
+    end
+
     context "succeeds" do
       it 'succeeds' do
         expect(subject).to have_http_status(200)

@@ -28,6 +28,9 @@ class RaidEnemy < Enemy
   attr_accessor :enemy_cards
   attr_accessor :enemy_skills
   attr_accessor :grade
+  attr_accessor :card_multiplier
+  attr_accessor :strength_multiplier
+  attr_accessor :hp_multiplier
   
   def save
     raise NotPermanentEntity
@@ -68,9 +71,17 @@ class RaidEnemy < Enemy
     enemies = Enemy.where(quest_id: 1..quest_id)
     source_enemy = seed.sample(enemies)
     raid_enemy = generate_from(source_enemy.id)
+    raid_enemy.grade = grade
+    raid_enemy.card_multiplier = 1
+    raid_enemy.hp_multiplier = 1
+    raid_enemy.strength_multiplier = 1
 
-    # TODO: grade に応じて様々な強化をする
+    raid_enemy.set_primary_buff!(seed)
+    raid_enemy.set_secondary_buff!(seed)
 
+    raid_enemy.hp *= raid_enemy.hp_multiplier
+    raid_enemy.strength *= raid_enemy.strength_multiplier
+    # card_multiplier は enemy#parameter_multiplier で適用する
     raid_enemy.id = raid_enemy_id
     raid_enemy
   end
@@ -80,9 +91,99 @@ class RaidEnemy < Enemy
       EnemyReward.new(
         giftable_type: "RaidStar",
         giftable_id: 1,
-        amount: 50 #TODO 量をエネミーのグレード依存にする
+        amount: (grade + 1) * 100
       )
     ]
+  end
+
+  # 型を決める
+  def set_primary_buff!(seed)
+    patterns = [
+      # 高HP高カード値、スキルなし
+      ->(re, seed) do
+        re.hp_multiplier = 1.4
+        re.card_multiplier = 1.4
+        re.strength_multiplier = 1.4
+        re.enemy_skills = []
+      end,
+      # 中HP中カード値、スキルは最初のひとつだけ
+      ->(re, seed) do
+        re.hp_multiplier = 1.2
+        re.card_multiplier = 1.2
+        re.strength_multiplier = 1.2
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+      end,
+      # 低HP高カード値、スキルは最初のひとつだけ
+      ->(re, seed) do
+        re.hp_multiplier = 0.8
+        re.card_multiplier = 1.5
+        re.strength_multiplier = 1
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+      end,
+      # 高HP低カード値、スキルは最初のひとつだけ
+      ->(re, seed) do
+        re.hp_multiplier = 1.5
+        re.card_multiplier = 0.8
+        re.strength_multiplier = 1
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+      end,
+      # 中HP低カード値、格上スキルをふたつだけ持つ
+      ->(re, seed) do
+        re.hp_multiplier = 1.3
+        re.card_multiplier = 0.8
+        re.strength_multiplier = 1.2
+        re.enemy_skills = []
+        re.add_random_skill!(re.quest_id + 1, seed)
+        re.add_random_skill!(re.quest_id + 1, seed)
+      end,  
+      # 低HP低カード値スキル1, グレード補正大盛り
+      ->(re, seed) do
+        re.hp_multiplier = 0.7
+        re.card_multiplier = 0.7
+        re.strength_multiplier = 1.4
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+        re.grade += 5
+      end,
+      # 低HP高カード値スキル1火力盛り
+      ->(re, seed) do
+        re.hp_multiplier = 0.7
+        re.card_multiplier = 1.2
+        re.strength_multiplier = 1.2
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+        re.power += 1
+        re.tech += 1
+        re.special += 1
+      end,  
+      # 低HP低カード値スキル1火力爆盛り
+      ->(re, seed) do
+        re.hp_multiplier = 0.7
+        re.card_multiplier = 0.7
+        re.strength_multiplier = 1.1
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+        re.power += 2
+        re.tech += 2
+        re.special = 0
+      end,
+      # 中HP中カード値、スキル爆盛り
+      ->(re, seed) do
+        re.hp_multiplier = 1.2
+        re.card_multiplier = 1.2
+        re.strength_multiplier = 1.3
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+      end,      
+    ]
+    lambda = seed.sample(patterns)
+    lambda.call(self, seed)
+  end
+
+  def set_secondary_buff!(seed)
+    # TODO 中身を実装する
+  end
+
+  def add_random_skill!(grade, seed)
+    return if self.enemy_skills.count >= 5
+    sample_skill = seed.sample(Skill.where(grade: grade).to_a)
+    self.enemy_skills.push(EnemySkill.new(enemy: self, skill: sample_skill))
   end
 
   private
@@ -96,4 +197,5 @@ class RaidEnemy < Enemy
     model.enemy_skills = enemy.enemy_skills.to_a
     model
   end
+
 end
