@@ -76,6 +76,7 @@ class RaidEnemy < Enemy
     raid_enemy.hp_multiplier = 1
     raid_enemy.strength_multiplier = 1
 
+    raid_enemy.set_quest_id_diff_buff!(quest_id - source_enemy.quest_id)
     raid_enemy.set_primary_buff!(seed)
     raid_enemy.set_secondary_buff!(seed)
 
@@ -95,60 +96,77 @@ class RaidEnemy < Enemy
       )
     ]
   end
+  
+  def set_quest_id_diff_buff!(quest_id_delta)
+    self.card_multiplier += quest_id_delta * 0.3
+    self.hp += quest_id_delta * 4
+    self.strength *= 5 ** ([quest_id_delta - 1, 0].max)
+    self.power += 1 if quest_id_delta >= 2
+    self.tech += 1 if quest_id_delta >= 2
+    self.special += quest_id_delta / 2
+  end
 
-  # 型を決める
+  #  敵の「基本型」を決める　スキル中心なのか、カードの強さ中心なのか
   def set_primary_buff!(seed)
     patterns = [
       # 高HP高カード値、スキルなし
       ->(re, seed) do
-        re.hp_multiplier = 1.4
-        re.card_multiplier = 1.4
-        re.strength_multiplier = 1.4
+        re.hp_multiplier += 0.3
+        re.card_multiplier += 0.3
+        re.strength_multiplier += 0.3
         re.enemy_skills = []
       end,
       # 中HP中カード値、スキルは最初のひとつだけ
       ->(re, seed) do
-        re.hp_multiplier = 1.2
-        re.card_multiplier = 1.2
-        re.strength_multiplier = 1.2
+        re.hp_multiplier += 0.2
+        re.card_multiplier += 0.2
+        re.strength_multiplier += 0.2
         re.enemy_skills = re.enemy_skills.slice(0, 1)
       end,
       # 低HP高カード値、スキルは最初のひとつだけ
       ->(re, seed) do
-        re.hp_multiplier = 0.8
-        re.card_multiplier = 1.5
-        re.strength_multiplier = 1
+        re.hp_multiplier += -0.2
+        re.card_multiplier += 0.5
+        re.strength_multiplier += 0
         re.enemy_skills = re.enemy_skills.slice(0, 1)
       end,
       # 高HP低カード値、スキルは最初のひとつだけ
       ->(re, seed) do
-        re.hp_multiplier = 1.5
-        re.card_multiplier = 0.8
-        re.strength_multiplier = 1
+        re.hp_multiplier += 0.4
+        re.card_multiplier += -0.1
+        re.strength_multiplier += 0
         re.enemy_skills = re.enemy_skills.slice(0, 1)
       end,
       # 中HP低カード値、格上スキルをふたつだけ持つ
       ->(re, seed) do
-        re.hp_multiplier = 1.3
-        re.card_multiplier = 0.8
-        re.strength_multiplier = 1.2
+        re.hp_multiplier += 0.1
+        re.card_multiplier += -0.1
+        re.strength_multiplier += 0.1
         re.enemy_skills = []
         re.add_random_skill!(re.quest_id + 1, seed)
         re.add_random_skill!(re.quest_id + 1, seed)
       end,  
       # 低HP低カード値スキル1, グレード補正大盛り
       ->(re, seed) do
-        re.hp_multiplier = 0.7
-        re.card_multiplier = 0.7
-        re.strength_multiplier = 1.4
+        re.hp_multiplier += -0.3
+        re.card_multiplier += -0.3
+        re.strength_multiplier += 0.2
         re.enemy_skills = re.enemy_skills.slice(0, 1)
         re.grade += 5
       end,
+      # 低HP低カード値スキル1, グレード補正中盛り
+      ->(re, seed) do
+        re.hp_multiplier += -0.2
+        re.card_multiplier += -0.2
+        re.strength_multiplier += 0.1
+        re.enemy_skills = re.enemy_skills.slice(0, 1)
+        re.grade += 3
+      end,
       # 低HP高カード値スキル1火力盛り
       ->(re, seed) do
-        re.hp_multiplier = 0.7
-        re.card_multiplier = 1.2
-        re.strength_multiplier = 1.2
+        re.hp_multiplier += -0.3
+        re.card_multiplier += 0.2
+        re.strength_multiplier += 0.2
         re.enemy_skills = re.enemy_skills.slice(0, 1)
         re.power += 1
         re.tech += 1
@@ -156,20 +174,21 @@ class RaidEnemy < Enemy
       end,  
       # 低HP低カード値スキル1火力爆盛り
       ->(re, seed) do
-        re.hp_multiplier = 0.7
-        re.card_multiplier = 0.7
-        re.strength_multiplier = 1.1
+        re.hp_multiplier += -0.3
+        re.card_multiplier += -0.3
+        re.strength_multiplier += 0.1
         re.enemy_skills = re.enemy_skills.slice(0, 1)
         re.power += 2
         re.tech += 2
         re.special = 0
       end,
-      # 中HP中カード値、スキル爆盛り
+      # 中HP中カード値、スキルいっこ
       ->(re, seed) do
-        re.hp_multiplier = 1.2
-        re.card_multiplier = 1.2
-        re.strength_multiplier = 1.3
+        re.hp_multiplier += 0.1
+        re.card_multiplier += 0.1
+        re.strength_multiplier += 0.2
         re.enemy_skills = re.enemy_skills.slice(0, 1)
+        re.grade += 3
       end,      
     ]
     lambda = seed.sample(patterns)
@@ -177,8 +196,66 @@ class RaidEnemy < Enemy
   end
 
   def set_secondary_buff!(seed)
-    # TODO 中身を実装する
+    patterns = [
+      ->(re, seed) do
+        re.hp_multiplier += 0.1
+      end,
+      ->(re, seed) do
+        re.hp_multiplier += 0.2
+        re.card_multiplier -= 0.1
+      end,
+      ->(re, seed) do
+        re.card_multiplier += 0.1
+      end,
+      ->(re, seed) do
+        re.hp_multiplier -= 0.1
+        re.card_multiplier += 0.2
+      end,
+      # 同ランク帯のスキルを選択する確率は2倍にするので同じものをふたつ置く
+      ->(re, seed) do
+        re.add_random_skill!(re.quest_id, seed)
+      end,
+      ->(re, seed) do
+        re.add_random_skill!(re.quest_id, seed)
+      end,
+      ->(re, seed) do
+        re.card_multiplier -= 0.1
+        re.add_random_skill_range!(1..re.quest_id, seed)
+        re.add_random_skill_range!(1..re.quest_id, seed)
+      end,
+      ->(re, seed) do
+        re.card_multiplier -= 0.1
+        re.add_random_skill!([re.quest_id + 2, 7].min, seed)
+      end,
+      ->(re, seed) do
+        re.card_multiplier -= 0.05
+        re.add_random_skill!([re.quest_id + 1, 8].min, seed)
+      end,
+      ->(re, seed) do
+        re.add_random_skill!([re.quest_id - 1, 1].max, seed)
+      end,
+      ->(re, seed) do
+        re.add_random_skill_range!(1..re.quest_id, seed)
+      end,
+      ->(re, seed) do
+        re.card_multiplier -= 0.2
+        re.power += 1
+        re.tech += 1
+      end,
+      ->(re, seed) do
+        re.card_multiplier -= 0.1
+        re.special += 1
+      end,
+    ]
+    ([(grade + 1) / 2, 2].max).times do
+      lambda = seed.sample(patterns)
+      lambda.call(self, seed)        
+    end
   end
+
+  def add_random_skill_range!(grade_range, seed)
+    add_random_skill!(seed.sample(grade_range.to_a), seed)
+  end  
 
   def add_random_skill!(grade, seed)
     return if self.enemy_skills.count >= 5
