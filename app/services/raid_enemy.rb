@@ -71,6 +71,7 @@ class RaidEnemy < Enemy
     enemies = Enemy.where(quest_id: 1..quest_id)
     source_enemy = seed.sample(enemies)
     raid_enemy = generate_from(source_enemy.id)
+    raid_enemy.override_name = RandomNameLibrary.random_name(raid_enemy.image_name.split("_")[0].to_sym, seed)
     raid_enemy.grade = grade
     raid_enemy.card_multiplier = 1
     raid_enemy.hp_multiplier = 1

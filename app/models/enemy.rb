@@ -28,10 +28,11 @@ class Enemy < ApplicationRecord
   has_many :enemy_cards
   has_many :enemy_skills
   has_many :enemy_rewards
+  attr_accessor :override_name
 
   # TODO 続き
   def name_with_plus(player_atk, player_def)
-    n = name
+    n = self.override_name || name
     n += "+" if strength_coefficient(player_atk) > 1
     n += "+" if strength_coefficient(player_def) > 1
     n
