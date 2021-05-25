@@ -46,6 +46,8 @@
           .enemy.selectable.hoverable(v-for="enemy in enemyList" @click="selectEnemy(enemy.id)" :class="enemyListClass(enemy.id)")
             .name
               | {{enemy.is_boss ?  "★" : ""}}{{enemy.name}}
+            .reward(v-if="isDailyQuest")
+              | {{enemy.rewards[0].amount}}
         .notifications
           | {{notificationText}}
         .status_area
@@ -584,11 +586,15 @@
         margin: 2px;
         width: calc(100% - 6px);
         font-size: $font-size-mini;
+        display: inline-flex;
         .name{
           padding-left: $thin_space;
           display: inline-block;
           text-align: left;
-          width: 100%;
+          flex: 1;
+        }
+        .reward{
+          padding-right: $thin_space;
         }
       }
       .disabled{
