@@ -133,7 +133,7 @@ class User::Status < ApplicationRecord
   end
 
   def raid_reward_receivable_limit
-    @_raid_reward_receivable_limit ||= user.won_enemies.normal.count * 25 + 150
+    @_raid_reward_receivable_limit ||= (user.won_enemies.normal.count / 5 + 2) * 100
   end
 
   def consume_star!(amount)

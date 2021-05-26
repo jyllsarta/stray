@@ -403,7 +403,7 @@ RSpec.describe User::Status, type: :model do
       User::WonEnemy.delete_all
     end
     it "default 160" do
-      expect(subject).to eq(150)
+      expect(subject).to eq(200)
     end
 
     context "has many wo enemies" do
@@ -411,7 +411,7 @@ RSpec.describe User::Status, type: :model do
         allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(5)
       end
       it "become to 260" do
-        expect(subject).to eq(275)
+        expect(subject).to eq(300)
       end  
     end
   end

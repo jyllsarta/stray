@@ -98,7 +98,7 @@ class RaidEnemy < Enemy
       EnemyReward.new(
         giftable_type: "RaidStar",
         giftable_id: 1,
-        amount: (grade + 1) * 100
+        amount: grade * 100
       )
     ]
   end
