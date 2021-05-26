@@ -5,8 +5,8 @@ class RaidEnemyMatchMaker
 
   def enemies
     year = 2021
-    month = 5
-    day = 16
+    month = 6
+    day = 4
     # TODO ちゃんとしたのを作る
     [
       RaidEnemy.from_raw_informations(year, month, day, 1, 1),
@@ -23,6 +23,8 @@ class RaidEnemyMatchMaker
       RaidEnemy.from_raw_informations(year, month, day, 6, 2),
       RaidEnemy.from_raw_informations(year, month, day, 7, 1),
       RaidEnemy.from_raw_informations(year, month, day, 7, 2),
+      RaidEnemy.from_raw_informations(year, month, day, 8, 1),
+      RaidEnemy.from_raw_informations(year, month, day, 8, 2),
     ]
   end
 end

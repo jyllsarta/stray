@@ -202,6 +202,9 @@ class RaidEnemy < Enemy
         re.hp_multiplier += 0.1
       end,
       ->(re, seed) do
+        re.hp_multiplier += 0.15
+      end,
+      ->(re, seed) do
         re.hp_multiplier += 0.2
         re.card_multiplier -= 0.1
       end,
@@ -222,7 +225,7 @@ class RaidEnemy < Enemy
       ->(re, seed) do
         re.card_multiplier -= 0.1
         re.add_random_skill_range!(1..re.quest_id, seed)
-        re.add_random_skill_range!(1..re.quest_id, seed)
+        re.add_random_skill_range!(2..re.quest_id, seed)
       end,
       ->(re, seed) do
         re.card_multiplier -= 0.1
@@ -261,6 +264,8 @@ class RaidEnemy < Enemy
   def add_random_skill!(grade, seed)
     return if self.enemy_skills.count >= 5
     sample_skill = seed.sample(Skill.where(grade: grade).to_a)
+    return if sample_skill.nil?
+    return if self.enemy_skills.map(&:skill).include?(sample_skill)
     self.enemy_skills.push(EnemySkill.new(enemy: self, skill: sample_skill))
   end
 
@@ -268,12 +273,10 @@ class RaidEnemy < Enemy
 
   # 「素体」からコピーして作るだけ 
   def self.generate_from(enemy_id)
-    enemy = Enemy.find(enemy_id)
-    # TODO preload
+    enemy = Enemy.preload(enemy_cards: [:card], enemy_skills: [:skill], enemy_rewards: []).find(enemy_id)
     model = self.new(enemy.attributes)
     model.enemy_cards = enemy.enemy_cards.to_a
     model.enemy_skills = enemy.enemy_skills.to_a
     model
   end
-
 end
