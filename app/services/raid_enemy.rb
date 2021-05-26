@@ -24,6 +24,9 @@
 
 class RaidEnemy < Enemy
   class NotPermanentEntity < StandardError; end
+
+  CACHE_VERSION = 1
+
   attr_accessor :id
   attr_accessor :enemy_cards
   attr_accessor :enemy_skills
@@ -58,6 +61,8 @@ class RaidEnemy < Enemy
   # raid_enemy_idのキャッシュを読みに行ってあればそれを返す、
   # キャッシュがなければraid_enemy_idをパースしてquest_id, stage_idを復元し、キャッシュの再構築
   def self.find_by_id(raid_enemy_id)
+    cache = cached_raid_enemy(raid_enemy_id)
+    return cache if cache.present?
     guessed_quest_id = raid_enemy_id % 100 / 10
     guessed_grade = raid_enemy_id % 10
     grade = guessed_quest_id + guessed_grade
@@ -67,7 +72,6 @@ class RaidEnemy < Enemy
   # 素体をランダムピックしてランダムピックしたエネミーを作って返す
   def self.generate(raid_enemy_id, quest_id, grade)
     seed = SeededRandom.new(raid_enemy_id)
-
     enemies = Enemy.where(quest_id: 1..quest_id)
     source_enemy = seed.sample(enemies)
     raid_enemy = generate_from(source_enemy.id)
@@ -85,6 +89,7 @@ class RaidEnemy < Enemy
     raid_enemy.strength *= raid_enemy.strength_multiplier
     # card_multiplier は enemy#parameter_multiplier で適用する
     raid_enemy.id = raid_enemy_id
+    raid_enemy.write_cache!
     raid_enemy
   end
 
@@ -267,6 +272,48 @@ class RaidEnemy < Enemy
     return if sample_skill.nil?
     return if self.enemy_skills.map(&:skill).include?(sample_skill)
     self.enemy_skills.push(EnemySkill.new(enemy: self, skill: sample_skill))
+  end
+
+  def self.cached_raid_enemy(id)
+    raw_cache = Rails.cache.read(cache_key(id))
+    return nil unless raw_cache.present?
+    restore_raid_enemy(JSON.parse(raw_cache, symbolize_names: true))
+  end
+
+  def self.restore_raid_enemy(cache_hash)
+    raid_enemy = self.new(cache_hash[:attributes])
+    raid_enemy.enemy_cards = cache_hash[:enemy_cards].map{|ec| EnemyCard.new(ec)}
+    raid_enemy.enemy_skills = cache_hash[:enemy_skills].map{|es| EnemySkill.new(es)}
+    raid_enemy.card_multiplier = cache_hash[:card_multiplier]
+    raid_enemy.hp_multiplier = cache_hash[:hp_multiplier]
+    raid_enemy.strength_multiplier = cache_hash[:strength_multiplier]
+    raid_enemy.id = cache_hash[:id]
+    raid_enemy.grade = cache_hash[:grade]
+    ActiveRecord::Associations::Preloader.new.preload(raid_enemy.enemy_cards, {card: []}) # この書き方で動いてくれるの賢すぎ
+    ActiveRecord::Associations::Preloader.new.preload(raid_enemy.enemy_skills, {skill: []})
+    raid_enemy
+  end
+
+  def write_cache!
+    # 遅れてショーダウンする人用に2day待つ
+    Rails.cache.write(RaidEnemy.cache_key(self.id), to_cache_hash, expires_in: 2.days)
+  end
+
+  def to_cache_hash
+    {
+      attributes: self.attributes,
+      id: self.id,
+      enemy_cards: self.enemy_cards,
+      enemy_skills: self.enemy_skills,
+      card_multiplier: self.card_multiplier,
+      hp_multiplier: self.hp_multiplier,
+      strength_multiplier: self.strength_multiplier,
+      grade: self.grade,
+    }.to_json
+  end
+
+  def self.cache_key(raid_enemy_id)
+    "raid_enemy:#{CACHE_VERSION}:#{raid_enemy_id}"
   end
 
   private
