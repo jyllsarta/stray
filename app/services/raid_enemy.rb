@@ -289,6 +289,7 @@ class RaidEnemy < Enemy
     raid_enemy.strength_multiplier = cache_hash[:strength_multiplier]
     raid_enemy.id = cache_hash[:id]
     raid_enemy.grade = cache_hash[:grade]
+    raid_enemy.override_name = cache_hash[:override_name]
     ActiveRecord::Associations::Preloader.new.preload(raid_enemy.enemy_cards, {card: []}) # この書き方で動いてくれるの賢すぎ
     ActiveRecord::Associations::Preloader.new.preload(raid_enemy.enemy_skills, {skill: []})
     raid_enemy
@@ -308,6 +309,7 @@ class RaidEnemy < Enemy
       card_multiplier: self.card_multiplier,
       hp_multiplier: self.hp_multiplier,
       strength_multiplier: self.strength_multiplier,
+      override_name: self.override_name,
       grade: self.grade,
     }.to_json
   end
