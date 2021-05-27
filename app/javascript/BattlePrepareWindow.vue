@@ -12,11 +12,11 @@
       .description(v-if="!isDailyQuest")
         | クエスト対象の敵と戦います。初めて倒す敵の場合は報酬がもらえます。
       .description(v-if="isDailyQuest")
-        | 毎日違う敵(0:00更新)と戦えます。敵の強さと一日の最大カケラ獲得量はダンジョンの解放度で決まります。
+        | 毎日違う敵(0:00更新)と戦えます。敵の強さと一日の最大カケラ獲得量は通常クエストで倒した敵の数で決まります。
       .body
         .reward_status(v-if="isDailyQuest")
           .index
-            | 本日のカケラ取得
+            | 本日のカケラ取得上限
           .value
             | {{todayRewardReceived}} / {{todayRewardLimit}}
         .characters
