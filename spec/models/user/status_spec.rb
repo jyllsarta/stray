@@ -416,6 +416,25 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#raid_grade" do
+    subject { status.raid_grade }
+    before do
+      User::WonEnemy.delete_all
+    end
+    it "default 1" do
+      expect(subject).to eq(1)
+    end
+
+    context "has many wo enemies" do
+      before do
+        allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(25)
+      end
+      it "become to 6" do
+        expect(subject).to eq(6)
+      end  
+    end
+  end
+
   describe "#fluctuate_velocity" do
     subject { status.fluctuate_velocity(delta) }
     let(:delta){100}
