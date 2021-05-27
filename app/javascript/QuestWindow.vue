@@ -11,7 +11,7 @@
         | 強敵と戦い、クエストを進行させます。
       .body
         .quest_list_tab.scrollable
-          .daily.quest.hoverable.selectable(@click="selectQuest(dailyQuestId)")
+          .daily.quest.hoverable.selectable(@click="selectQuest(dailyQuestId)" :class="questClass(dailyQuestId)")
             .name
               | ◆デイリー討伐◆
             .progress
