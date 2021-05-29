@@ -114,161 +114,13 @@ class RaidEnemy < Enemy
 
   #  敵の「基本型」を決める　スキル中心なのか、カードの強さ中心なのか
   def set_primary_buff!(seed)
-    patterns = [
-      # 高HP高カード値、スキルなし
-      ->(re, seed) do
-        re.hp_multiplier += 0.3
-        re.card_multiplier += 0.3
-        re.strength_multiplier += 0
-        re.enemy_skills = []
-      end,
-      # 中HP中カード値、スキルは最初のひとつだけ
-      ->(re, seed) do
-        re.hp_multiplier += 0.2
-        re.card_multiplier += 0.2
-        re.strength_multiplier += 0
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-      end,
-      # 低HP高カード値、スキルは最初のひとつだけ
-      ->(re, seed) do
-        re.hp_multiplier += -0.2
-        re.card_multiplier += 0.5
-        re.strength_multiplier += 0
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-      end,
-      # 高HP低カード値、スキルは最初のひとつだけ
-      ->(re, seed) do
-        re.hp_multiplier += 0.4
-        re.card_multiplier += -0.1
-        re.strength_multiplier += 0
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-      end,
-      # 中HP低カード値、格上スキルをふたつだけ持つ
-      ->(re, seed) do
-        re.hp_multiplier += 0.1
-        re.card_multiplier += -0.1
-        re.strength_multiplier += 0.1
-        re.enemy_skills = []
-        re.add_random_skill!(re.quest_id + 1, seed)
-        re.add_random_skill!(re.quest_id + 1, seed)
-      end,  
-      # 低HP低カード値スキル1, グレード補正大盛り
-      ->(re, seed) do
-        re.hp_multiplier += -0.3
-        re.card_multiplier += -0.3
-        re.strength_multiplier += 0.2
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-        re.grade += 5
-      end,
-      # 低HP低カード値スキル1, グレード補正中盛り
-      ->(re, seed) do
-        re.hp_multiplier += -0.2
-        re.card_multiplier += -0.2
-        re.strength_multiplier += 0.1
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-        re.grade += 3
-      end,
-      # 低HP高カード値スキル1火力盛り
-      ->(re, seed) do
-        re.hp_multiplier += -0.3
-        re.card_multiplier += 0.2
-        re.strength_multiplier += 0.2
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-        re.power += 1
-        re.tech += 1
-        re.special += 1
-      end,  
-      # 低HP低カード値スキル1火力爆盛り
-      ->(re, seed) do
-        re.hp_multiplier += -0.3
-        re.card_multiplier += -0.3
-        re.strength_multiplier += 0.1
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-        re.power += 2
-        re.tech += 2
-        re.special = 0
-      end,
-      # 中HP中カード値、スキルいっこ
-      ->(re, seed) do
-        re.hp_multiplier += 0.1
-        re.card_multiplier += 0.1
-        re.strength_multiplier += 0.2
-        re.enemy_skills = re.enemy_skills.slice(0, 1)
-        re.grade += 3
-      end,      
-    ]
-    lambda = seed.sample(patterns)
+    lambda = seed.sample(RaidEnemy::PRIMARY_BUFF_PATTERNS)
     lambda.call(self, seed)
   end
 
-  def set_secondary_buff!(seed)
-    patterns = [
-      ->(re, seed) do
-        re.hp_multiplier += 0.1
-      end,
-      ->(re, seed) do
-        re.hp_multiplier += 0.15
-      end,
-      ->(re, seed) do
-        re.hp_multiplier += 0.05
-        re.card_multiplier += 0.05
-      end,
-      ->(re, seed) do
-        re.hp_multiplier += 0.2
-        re.card_multiplier -= 0.1
-      end,
-      ->(re, seed) do
-        re.card_multiplier += 0.05
-      end,
-      ->(re, seed) do
-        re.hp_multiplier -= 0.1
-        re.card_multiplier += 0.1
-      end,
-      ->(re, seed) do
-        re.card_multiplier += 0.05
-        re.add_random_skill!(re.quest_id, seed)
-      end,
-      ->(re, seed) do
-        re.add_random_skill!(re.quest_id, seed)
-      end,
-      ->(re, seed) do
-        re.card_multiplier -= 0.1
-        re.add_random_skill_range!(1..re.quest_id, seed)
-        re.add_random_skill_range!(2..re.quest_id, seed)
-      end,
-      ->(re, seed) do
-        re.card_multiplier -= 0.1
-        re.add_random_skill!([re.quest_id + 2, 7].min, seed)
-      end,
-      ->(re, seed) do
-        re.card_multiplier -= 0.05
-        re.add_random_skill!([re.quest_id + 1, 8].min, seed)
-      end,
-      ->(re, seed) do
-        re.add_random_skill!([re.quest_id - 1, 1].max, seed)
-      end,
-      ->(re, seed) do
-        re.add_random_skill_range!(1..re.quest_id, seed)
-      end,
-      ->(re, seed) do
-        re.hp_multiplier -= 0.2
-        re.card_multiplier -= 0.1
-        re.power += 1
-        re.tech += 1
-        re.special += 1
-      end,
-      ->(re, seed) do
-        re.card_multiplier -= 0.2
-        re.power += 1
-        re.tech += 1
-      end,
-      ->(re, seed) do
-        re.card_multiplier -= 0.1
-        re.special += 1
-      end,
-    ]
+  def set_secondary_buff!(seed) 
     ([(grade + 1) / 2, 2].max).times do
-      lambda = seed.sample(patterns)
+      lambda = seed.sample(RaidEnemy::SECONDARY_BUFF_PATTERNS)
       lambda.call(self, seed)        
     end
   end
@@ -328,6 +180,156 @@ class RaidEnemy < Enemy
   def self.cache_key(raid_enemy_id)
     "raid_enemy:#{CACHE_VERSION}:#{raid_enemy_id}"
   end
+
+  PRIMARY_BUFF_PATTERNS = [
+    # 高HP高カード値、スキルなし
+    ->(re, seed) do
+      re.hp_multiplier += 0.3
+      re.card_multiplier += 0.3
+      re.strength_multiplier += 0
+      re.enemy_skills = []
+    end,
+    # 中HP中カード値、スキルは最初のひとつだけ
+    ->(re, seed) do
+      re.hp_multiplier += 0.2
+      re.card_multiplier += 0.2
+      re.strength_multiplier += 0
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+    end,
+    # 低HP高カード値、スキルは最初のひとつだけ
+    ->(re, seed) do
+      re.hp_multiplier += -0.2
+      re.card_multiplier += 0.5
+      re.strength_multiplier += 0
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+    end,
+    # 高HP低カード値、スキルは最初のひとつだけ
+    ->(re, seed) do
+      re.hp_multiplier += 0.4
+      re.card_multiplier += -0.1
+      re.strength_multiplier += 0
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+    end,
+    # 中HP低カード値、格上スキルをふたつだけ持つ
+    ->(re, seed) do
+      re.hp_multiplier += 0.1
+      re.card_multiplier += -0.1
+      re.strength_multiplier += 0.1
+      re.enemy_skills = []
+      re.add_random_skill!(re.quest_id + 1, seed)
+      re.add_random_skill!(re.quest_id + 1, seed)
+    end,  
+    # 低HP低カード値スキル1, グレード補正大盛り
+    ->(re, seed) do
+      re.hp_multiplier += -0.3
+      re.card_multiplier += -0.3
+      re.strength_multiplier += 0.2
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+      re.grade += 5
+    end,
+    # 低HP低カード値スキル1, グレード補正中盛り
+    ->(re, seed) do
+      re.hp_multiplier += -0.2
+      re.card_multiplier += -0.2
+      re.strength_multiplier += 0.1
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+      re.grade += 3
+    end,
+    # 低HP高カード値スキル1火力盛り
+    ->(re, seed) do
+      re.hp_multiplier += -0.3
+      re.card_multiplier += 0.2
+      re.strength_multiplier += 0.2
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+      re.power += 1
+      re.tech += 1
+      re.special += 1
+    end,  
+    # 低HP低カード値スキル1火力爆盛り
+    ->(re, seed) do
+      re.hp_multiplier += -0.3
+      re.card_multiplier += -0.3
+      re.strength_multiplier += 0.1
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+      re.power += 2
+      re.tech += 2
+      re.special = 0
+    end,
+    # 中HP中カード値、スキルいっこ
+    ->(re, seed) do
+      re.hp_multiplier += 0.1
+      re.card_multiplier += 0.1
+      re.strength_multiplier += 0.2
+      re.enemy_skills = re.enemy_skills.slice(0, 1)
+      re.grade += 3
+    end,      
+  ]
+
+  SECONDARY_BUFF_PATTERNS = [
+    ->(re, seed) do
+      re.hp_multiplier += 0.1
+    end,
+    ->(re, seed) do
+      re.hp_multiplier += 0.15
+    end,
+    ->(re, seed) do
+      re.hp_multiplier += 0.05
+      re.card_multiplier += 0.05
+    end,
+    ->(re, seed) do
+      re.hp_multiplier += 0.2
+      re.card_multiplier -= 0.1
+    end,
+    ->(re, seed) do
+      re.card_multiplier += 0.05
+    end,
+    ->(re, seed) do
+      re.hp_multiplier -= 0.1
+      re.card_multiplier += 0.1
+    end,
+    ->(re, seed) do
+      re.card_multiplier += 0.05
+      re.add_random_skill!(re.quest_id, seed)
+    end,
+    ->(re, seed) do
+      re.add_random_skill!(re.quest_id, seed)
+    end,
+    ->(re, seed) do
+      re.card_multiplier -= 0.1
+      re.add_random_skill_range!(1..re.quest_id, seed)
+      re.add_random_skill_range!(2..re.quest_id, seed)
+    end,
+    ->(re, seed) do
+      re.card_multiplier -= 0.1
+      re.add_random_skill!([re.quest_id + 2, 7].min, seed)
+    end,
+    ->(re, seed) do
+      re.card_multiplier -= 0.05
+      re.add_random_skill!([re.quest_id + 1, 8].min, seed)
+    end,
+    ->(re, seed) do
+      re.add_random_skill!([re.quest_id - 1, 1].max, seed)
+    end,
+    ->(re, seed) do
+      re.add_random_skill_range!(1..re.quest_id, seed)
+    end,
+    ->(re, seed) do
+      re.hp_multiplier -= 0.2
+      re.card_multiplier -= 0.1
+      re.power += 1
+      re.tech += 1
+      re.special += 1
+    end,
+    ->(re, seed) do
+      re.card_multiplier -= 0.2
+      re.power += 1
+      re.tech += 1
+    end,
+    ->(re, seed) do
+      re.card_multiplier -= 0.1
+      re.special += 1
+    end,
+  ]
 
   private
 

@@ -22,4 +22,37 @@ RSpec.describe RaidEnemy, type: :model do
       expect(subject.attributes.except("id")).to eq(enemy.attributes.except("id"))
     end
   end
+
+  describe "#set_primary_buff!" do
+    let(:enemy){ create(:enemy) }
+    # バランスは見ない。全パターンチェックしてエラーさえ出なければ良しとする
+    it "sets with no error" do
+      expect do
+        (0..(RaidEnemy::PRIMARY_BUFF_PATTERNS.length - 1)).each do |i|
+          seed = SeededRandom.new(0)
+          allow(seed).to receive(:sample).and_return(RaidEnemy::PRIMARY_BUFF_PATTERNS[i])
+          re = RaidEnemy.generate(enemy.id, 1, 1)
+          allow(re).to receive(:add_random_skill!) # ここではスキル付与はテストしない
+          re.set_primary_buff!(seed)
+        end
+      end.to_not raise_error
+    end
+  end
+
+  describe "#set_secondary_buff!!" do
+    let(:enemy){ create(:enemy) }
+    # バランスは見ない。全パターンチェックしてエラーさえ出なければ良しとする
+    it "sets with no error" do
+      expect do
+        (0..(RaidEnemy::SECONDARY_BUFF_PATTERNS.length - 1)).each do |i|
+          seed = SeededRandom.new(0)
+          allow(seed).to receive(:sample).and_return(RaidEnemy::SECONDARY_BUFF_PATTERNS[i])
+          re = RaidEnemy.generate(enemy.id, 1, 1)
+          allow(re).to receive(:add_random_skill!) # ここではスキル付与はテストしない
+          allow(re).to receive(:add_random_skill_range!) # ここではスキル付与はテストしない
+          re.set_secondary_buff!!(seed)
+        end
+      end.to_not raise_error
+    end
+  end
 end
