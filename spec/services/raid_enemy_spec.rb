@@ -39,7 +39,7 @@ RSpec.describe RaidEnemy, type: :model do
     end
   end
 
-  describe "#set_secondary_buff!!" do
+  describe "#set_secondary_buff!" do
     let(:enemy){ create(:enemy) }
     # バランスは見ない。全パターンチェックしてエラーさえ出なければ良しとする
     it "sets with no error" do
@@ -50,7 +50,7 @@ RSpec.describe RaidEnemy, type: :model do
           re = RaidEnemy.generate(enemy.id, 1, 1)
           allow(re).to receive(:add_random_skill!) # ここではスキル付与はテストしない
           allow(re).to receive(:add_random_skill_range!) # ここではスキル付与はテストしない
-          re.set_secondary_buff!!(seed)
+          re.set_secondary_buff!(seed)
         end
       end.to_not raise_error
     end
