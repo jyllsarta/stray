@@ -363,6 +363,78 @@ RSpec.describe User::Status, type: :model do
     end
   end
 
+  describe "#add_raid_star!" do
+    subject { status.add_raid_star!(amount) }
+    let(:amount){100}
+    it "increments star" do
+      expect{subject}.to change(status, :star).by(amount)
+    end
+
+    context "already did a lot" do
+      before do
+        status.add_raid_star!(100000)
+      end
+      it "increments star" do
+        expect{subject}.to_not change(status, :star)
+      end
+    end
+
+    context "around max" do
+      before do
+        status.add_raid_star!(status.raid_reward_receivable_limit - 10)
+      end
+      it "increments star to max" do
+        expect{subject}.to change(status, :star).by(10)
+      end
+    end
+  end
+
+  describe "#today_raid_reward_status" do
+    subject { status.today_raid_reward_status }
+    it "returns today's result" do
+      # ちょっと雑だけどまあいいか
+      expect(subject.day.day).to eq(Time.now.day)
+    end
+  end
+
+  describe "#raid_reward_receivable_limit" do
+    subject { status.raid_reward_receivable_limit }
+    before do
+      User::WonEnemy.delete_all
+    end
+    it "default 160" do
+      expect(subject).to eq(200)
+    end
+
+    context "has many wo enemies" do
+      before do
+        allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(5)
+      end
+      it "become to 260" do
+        expect(subject).to eq(300)
+      end  
+    end
+  end
+
+  describe "#raid_grade" do
+    subject { status.raid_grade }
+    before do
+      User::WonEnemy.delete_all
+    end
+    it "default 1" do
+      expect(subject).to eq(1)
+    end
+
+    context "has many wo enemies" do
+      before do
+        allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(25)
+      end
+      it "become to 6" do
+        expect(subject).to eq(6)
+      end  
+    end
+  end
+
   describe "#fluctuate_velocity" do
     subject { status.fluctuate_velocity(delta) }
     let(:delta){100}

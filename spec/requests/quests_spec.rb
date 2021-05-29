@@ -5,6 +5,7 @@ RSpec.describe "Quest", type: :request do
   describe "GET /quests" do
     include_context("stub_current_user")
     let(:user){ create(:user) }
+    let!(:user_status){ create(:user_status, user: user) }
     let(:do_get) { get quests_path + ".json" }
     let(:params) do
       {}
@@ -34,7 +35,9 @@ RSpec.describe "Quest", type: :request do
                                                              enemy_count: Integer,
                                                              won_enemy_count: Integer
                                                          }
-                                                     ]
+                                                     ],
+                                                     today_reward_received: Integer,
+                                                     today_reward_limit: Integer
                                                  }
                                              )
       end

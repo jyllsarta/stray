@@ -20,7 +20,7 @@ class ProfileBuilder
           total_play_time: @user.achievements.find_by(achievement_id: Constants.profile.achievements.total_play_time)&.progress || 0,
           unique_item_count: @user.achievements.find_by(achievement_id: Constants.profile.achievements.unique_item_count)&.progress || 0,
           total_event: @user.achievements.find_by(achievement_id: Constants.profile.achievements.total_event)&.progress || 0,
-          won_enemy_count: @user.won_enemies.count,
+          won_enemy_count: @user.won_enemies.normal.count,
           relics: @user.relics.count,
           cleared_achievements: @user.achievement_steps.count,
       },

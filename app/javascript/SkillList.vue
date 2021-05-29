@@ -9,7 +9,7 @@
       .mimi(v-if="skillActivationOrder(index)")
         | {{skillActivationOrder(index)}}
       .debug_rank(v-if="debugEnableShowSkillRank")
-        | {{skill.id % 10}}
+        | {{skill.grade}}
       .upper
         img.icon(:src="iconImagePath(skill.id)")
         .cost(v-if="!skill.threshold_hp && !skill.is_passive")

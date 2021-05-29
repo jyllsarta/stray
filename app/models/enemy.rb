@@ -3,6 +3,7 @@
 # Table name: enemies
 #
 #  id         :bigint           not null, primary key
+#  grade      :integer          default(0), not null
 #  hp         :integer          default(0), not null
 #  image_name :string(255)
 #  is_boss    :boolean          not null
@@ -27,10 +28,11 @@ class Enemy < ApplicationRecord
   has_many :enemy_cards
   has_many :enemy_skills
   has_many :enemy_rewards
+  attr_accessor :override_name
 
   # TODO 続き
   def name_with_plus(player_atk, player_def)
-    n = name
+    n = self.override_name || name
     n += "+" if strength_coefficient(player_atk) > 1
     n += "+" if strength_coefficient(player_def) > 1
     n
@@ -46,7 +48,9 @@ class Enemy < ApplicationRecord
   end
 
   def parameter_multiplier(player_strength)
-    strength_coefficient(player_strength) * rank_coefficient
+    multiplier = strength_coefficient(player_strength) * rank_coefficient
+    multiplier *= [@card_multiplier, 0.5].max if @card_multiplier.present?
+    multiplier
   end
 
   private

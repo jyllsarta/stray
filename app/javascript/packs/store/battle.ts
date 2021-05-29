@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     enemy_id: 0,
+    is_daily: false,
     enemy_image_name: "kani",
     fragments: {
       turn_start: false,
@@ -36,6 +37,9 @@ export default {
   mutations: {
     setEnemyId(state, payload){
       state.enemy_id = payload;
+    },
+    setIsDaily(state, payload){
+      state.is_daily = payload;
     },
     setEnemyImageName(state, payload){
       state.enemy_image_name = payload;

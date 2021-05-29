@@ -36,6 +36,7 @@ RSpec.describe "Skill", type: :request do
                                                                           is_exhaust: Boolean,
                                                                           is_passive: Boolean,
                                                                           cost: Integer,
+                                                                          grade: Integer,
                                                                           threshold_hp: nil,
                                                                           effect1_category: String,
                                                                           effect1_to_self: Boolean,

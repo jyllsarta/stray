@@ -117,6 +117,29 @@ class User::Status < ApplicationRecord
     user.achievement_logger.post(Achievement::Event::FluctuateStar.new(amount))
   end
 
+  def add_raid_star!(amount)
+    with_lock do
+      receivable_amount = raid_reward_receivable_limit - today_raid_reward_status.received_amount
+      received_amount = [amount, receivable_amount].min
+      self.add_star!(received_amount)
+      today_raid_reward_status.increment(:received_amount, received_amount)
+      today_raid_reward_status.save!
+      received_amount
+    end
+  end
+
+  def today_raid_reward_status
+    @today_reward_status ||= user.today_raid_reward_statuses.find_or_initialize_by(day: Time.now)
+  end
+
+  def raid_reward_receivable_limit
+    @_raid_reward_receivable_limit ||= (raid_grade + 1) * 100
+  end
+
+  def raid_grade
+    user.won_enemies.normal.count / 5 + 1
+  end
+
   def consume_star!(amount)
     raise InsufficientStar if star < amount
     self.decrement!(:star, amount)

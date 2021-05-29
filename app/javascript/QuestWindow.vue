@@ -11,6 +11,13 @@
         | 強敵と戦い、クエストを進行させます。
       .body
         .quest_list_tab.scrollable
+          .daily.quest.hoverable.selectable(@click="selectQuest(dailyQuestId)" :class="questClass(dailyQuestId)")
+            .name
+              | ◆デイリー討伐◆
+            .progress
+              .current_progress(:class="questColorClass(dailyQuestId)")
+                | {{todayRewardReceived}}
+              |  / {{todayRewardLimit}}
           .quest.hoverable.selectable(
             v-for="quest in quests"
             @click="selectQuest(quest.id)"
@@ -33,7 +40,7 @@
                 | {{ selectingQuest.name }}
               .descri
                 | {{ selectingQuest.description }}
-              .progress
+              .progress(v-if="selectingQuestId !== dailyQuestId")
                 .field_effect
                   .index
                     span
@@ -46,6 +53,21 @@
                     | {{currenFieldEffectState.description}}
                 .text
                   | {{ selectingQuest.won_enemy_count }} / {{ selectingQuest.enemy_count }} 体撃破
+                .go.button.clickable(@click="openBattlePrepareWindow")
+                  | Go!
+              .progress(v-if="selectingQuestId === dailyQuestId")
+                .field_effect
+                  .index
+                    span
+                      | フィールドエフェクト：
+                    span.icon(v-if="currenFieldEffectState.icon")
+                      img(:src="`/images/icons/states/${currenFieldEffectState.icon}`")
+                    span
+                      | {{currenFieldEffectState.title}}
+                  .desc
+                    | 
+                .text
+                  | {{todayRewardReceived}} / {{todayRewardLimit}}
                 .go.button.clickable(@click="openBattlePrepareWindow")
                   | Go!
 
@@ -67,7 +89,17 @@ export default {
         icon: null,
         title: "なし",
         description: "",
-      }
+      },
+      dailyQuestId: 999,
+      dailyQuestDetail: {
+        name: "◆デイリー討伐◆",
+        description: "一期一会の遭遇戦だ！日替わりランダムな超強敵と戦って、星のカケラを手に入れよう！(出てくる敵の強さとカケラの取得制限量は通常クエスト戦で倒した敵の数によって決まります)",
+        depth: "-",
+        won_enemy_count: "-",
+        enemy_count: "-"
+      },
+      todayRewardLimit: 0,
+      todayRewardReceived: 0,
     };
   },
   props: {
@@ -82,6 +114,9 @@ export default {
       return this.$store.state.quest.quest_id;
     },
     selectingQuest(){
+      if(this.selectingQuestId == this.dailyQuestId){
+        return this.dailyQuestDetail;
+      }
       return this.quests.find((x)=>x.id===this.selectingQuestId) || {};
     },
     currenFieldEffectState(){
@@ -111,6 +146,8 @@ export default {
         .then((results) => {
           console.log(results);
           this.quests = results.data.quests;
+          this.todayRewardLimit = results.data.today_reward_limit;
+          this.todayRewardReceived = results.data.today_reward_received;
           this.selectFirstUnclearedQuest();
         })
         .catch((error) => {
@@ -151,20 +188,17 @@ export default {
     flex-direction: column;
     height: 430px;
     width: 380px;
+    line-height: 100%;
     .quest{
       margin: $thin_space;
-      padding: $space;
+      padding: $space * 1.5;
       width: calc(100% - 10px);
+      display: flex;
       .name{
-        display: inline-block;
         width: 70%;
       }
       .clear_mark{
-        display: inline-block;
         width: 15%;
-        .clear{
-          display: inline-block;
-        }
       }
       .progress{
         .current_progress{
@@ -173,8 +207,7 @@ export default {
         .cleared{
           color: $yellow;
         }
-        display: inline-block;
-        width: 15%;
+        flex: 1;
         text-align: right;
       }
     }

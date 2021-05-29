@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "special", default: 0, null: false
     t.integer "strength", default: 0, null: false
     t.integer "rank", default: 0, null: false
+    t.integer "grade", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quest_id"], name: "index_enemies_on_quest_id"
@@ -211,6 +212,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "is_defence", default: false, null: false
     t.boolean "is_passive", default: false, null: false
     t.integer "cost", default: 0, null: false
+    t.integer "grade", default: 0, null: false
     t.integer "threshold_hp"
     t.string "effect1_category"
     t.boolean "effect1_to_self"
@@ -340,6 +342,16 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "returns_on_death", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_today_raid_reward_statuses", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "received_amount", default: 0, null: false
+    t.date "day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "day"], name: "index_user_today_raid_reward_statuses_on_user_id_and_day", unique: true
+    t.index ["user_id"], name: "index_user_today_raid_reward_statuses_on_user_id"
   end
 
   create_table "user_won_enemies", charset: "utf8", force: :cascade do |t|

@@ -77,6 +77,7 @@ RSpec.describe "Enemies", type: :request do
                                                              is_defence: Boolean,
                                                              is_passive: Boolean,
                                                              cost: Integer,
+                                                             grade: Integer,
                                                              threshold_hp: nil,
                                                              effect1_category: String,
                                                              effect1_to_self: Boolean,
@@ -118,14 +119,53 @@ RSpec.describe "Enemies", type: :request do
     end
   end
 
+  describe "GET /enemies/daily" do
+    include_context("stub_current_user")
+    before do
+      Quest.delete_all
+    end
+    let!(:quest) { create(:quest, id: 1) }
+    let!(:enemy) { create(:enemy, :with_card, :with_skill, :with_reward, quest: quest) }
+    let!(:dungeon){ create(:dungeon) }
+    let!(:item){ create(:item, id: 1) unless Item.exists?(id: 1) }
+    let!(:item2){ create(:item, id: 2) unless Item.exists?(id: 2) }
+    let!(:user){ User.create }
+    let(:do_get) { get daily_enemies_path + ".json" }
+
+    subject do
+      do_get
+      response
+    end
+
+    # マッチメーカーのロジックはここでは検証しない
+    before do
+      allow_any_instance_of(RaidEnemyMatchMaker).to receive(:enemies).and_return([])
+    end
+
+    context "succeeds" do
+      it 'succeeds' do
+        expect(subject).to have_http_status(200)
+        expect(JSON.parse(response.body)).to match_json_expression(
+                                                 {
+                                                     enemies: Array,
+                                                     today_reward_received: Integer,
+                                                     today_reward_limit: Integer,
+                                                 }
+                                             )
+      end
+    end
+  end
+
   describe "POST /enemies/:id/engage" do
     include_context("stub_current_user")
     let!(:quest) { create(:quest) }
     let!(:enemy) { create(:enemy, quest: quest) }
     let(:user){ User.create }
-    let(:do_post) { post enemy_engage_path(enemy_id: enemy.id)}
+    let(:do_post) { post enemy_engage_path(enemy_id: enemy.id), params: params}
     let(:params) do
-      {}
+      {
+        is_daily: false
+      }
     end
     subject do
       do_post
@@ -146,6 +186,7 @@ RSpec.describe "Enemies", type: :request do
                                                      playerSpecial: Integer,
                                                      enemyIsBoss: Boolean,
                                                      enemyId: Integer,
+                                                     isDaily: Boolean,
                                                      enemyImageName: String,
                                                      enemyScaleType: Integer,
                                                      enemyName: String,
@@ -177,7 +218,7 @@ RSpec.describe "Enemies", type: :request do
     end
 
     before do
-      QuestBattle.new(user).engage!(enemy.id)
+      QuestBattle.new(user).engage!(enemy.id, false)
       allow_any_instance_of(QuestBattle).to receive(:capture_result).and_return({'isWin'=>true, 'isDraw'=>false})
     end
 

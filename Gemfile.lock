@@ -150,6 +150,8 @@ GEM
     nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
+    nokogiri (1.11.3-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.11.3-x86_64-linux)
       racc (~> 1.4)
     public_suffix (4.0.6)
@@ -284,6 +286,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  x86_64-darwin-18
   x86_64-linux
 
 DEPENDENCIES

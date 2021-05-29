@@ -3,6 +3,7 @@
 # Table name: enemies
 #
 #  id         :bigint           not null, primary key
+#  grade      :integer          default(0), not null
 #  hp         :integer          default(0), not null
 #  image_name :string(255)
 #  is_boss    :boolean          not null
