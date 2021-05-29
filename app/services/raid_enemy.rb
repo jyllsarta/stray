@@ -85,8 +85,8 @@ class RaidEnemy < Enemy
     raid_enemy.set_primary_buff!(seed)
     raid_enemy.set_secondary_buff!(seed)
 
-    raid_enemy.hp *= raid_enemy.hp_multiplier
-    raid_enemy.strength *= raid_enemy.strength_multiplier
+    raid_enemy.hp *= [raid_enemy.hp_multiplier, 0.5].max
+    raid_enemy.strength *= [raid_enemy.strength_multiplier, 0.5].max
     # card_multiplier は enemy#parameter_multiplier で適用する
     raid_enemy.id = raid_enemy_id
     raid_enemy.write_cache!
@@ -119,14 +119,14 @@ class RaidEnemy < Enemy
       ->(re, seed) do
         re.hp_multiplier += 0.3
         re.card_multiplier += 0.3
-        re.strength_multiplier += 0.3
+        re.strength_multiplier += 0
         re.enemy_skills = []
       end,
       # 中HP中カード値、スキルは最初のひとつだけ
       ->(re, seed) do
         re.hp_multiplier += 0.2
         re.card_multiplier += 0.2
-        re.strength_multiplier += 0.2
+        re.strength_multiplier += 0
         re.enemy_skills = re.enemy_skills.slice(0, 1)
       end,
       # 低HP高カード値、スキルは最初のひとつだけ
@@ -210,18 +210,22 @@ class RaidEnemy < Enemy
         re.hp_multiplier += 0.15
       end,
       ->(re, seed) do
+        re.hp_multiplier += 0.05
+        re.card_multiplier += 0.05
+      end,
+      ->(re, seed) do
         re.hp_multiplier += 0.2
         re.card_multiplier -= 0.1
       end,
       ->(re, seed) do
-        re.card_multiplier += 0.1
+        re.card_multiplier += 0.05
       end,
       ->(re, seed) do
         re.hp_multiplier -= 0.1
-        re.card_multiplier += 0.2
+        re.card_multiplier += 0.1
       end,
-      # 同ランク帯のスキルを選択する確率は2倍にするので同じものをふたつ置く
       ->(re, seed) do
+        re.card_multiplier += 0.05
         re.add_random_skill!(re.quest_id, seed)
       end,
       ->(re, seed) do
@@ -245,6 +249,13 @@ class RaidEnemy < Enemy
       end,
       ->(re, seed) do
         re.add_random_skill_range!(1..re.quest_id, seed)
+      end,
+      ->(re, seed) do
+        re.hp_multiplier -= 0.2
+        re.card_multiplier -= 0.1
+        re.power += 1
+        re.tech += 1
+        re.special += 1
       end,
       ->(re, seed) do
         re.card_multiplier -= 0.2
