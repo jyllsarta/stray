@@ -55,4 +55,15 @@ RSpec.describe RaidEnemy, type: :model do
       end.to_not raise_error
     end
   end
+
+  describe "#restore_raid_enemy!" do
+    let(:enemy){ create(:enemy) }
+    # これもエラーだけなければ良し
+    it "no error" do
+      expect do
+        hash = JSON.parse(RaidEnemy.generate(enemy.id, 1, 1).to_cache_hash, symbolize_names: true)
+        RaidEnemy.restore_raid_enemy(hash)
+      end.to_not raise_error
+    end
+  end
 end
