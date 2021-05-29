@@ -20,4 +20,5 @@ class User::WonEnemy < ApplicationRecord
 
   # だいぶ雑だけどデイリーは8桁になるので... ちゃんとやるならjoins(:enemy).select(presence: true) 的な絞り込みをする
   scope :normal, -> { where("enemy_id < 10000000")}
+  scope :daily, -> { where("enemy_id >= 10000000")}
 end

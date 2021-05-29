@@ -10,6 +10,7 @@ class Achievement::Event::Quest < Achievement::Event::Base
     [
       'Achievement::Type::WinEnemy',
       'Achievement::Type::WinEnemyCount',
+      'Achievement::Type::WinRaidEnemyCount',
       'Achievement::Type::LoseEnemy',
       'Achievement::Type::WinEnemyWithNoSkill',
       'Achievement::Type::WinEnemyWithNoEquip',

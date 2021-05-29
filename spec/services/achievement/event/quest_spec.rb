@@ -23,6 +23,7 @@ RSpec.describe Achievement::Event::Quest, type: :model do
       expect( subject ).to eq([
         'Achievement::Type::WinEnemy',
         'Achievement::Type::WinEnemyCount',
+        'Achievement::Type::WinRaidEnemyCount',
         'Achievement::Type::LoseEnemy',
         'Achievement::Type::WinEnemyWithNoSkill',
         'Achievement::Type::WinEnemyWithNoEquip',
