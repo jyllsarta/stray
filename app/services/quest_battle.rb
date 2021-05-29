@@ -63,6 +63,10 @@ class QuestBattle
   def lose?
     @result['isWin'] == false && @result['isDraw'] == false
   end
+  
+  def daily?
+    @is_daily
+  end
 
   private
 
@@ -84,9 +88,9 @@ class QuestBattle
 
   def restore_enemy!(cache)
     parsed_cache = JSON.parse(cache)
-    is_daily = parsed_cache['isDaily']
+    @is_daily = parsed_cache['isDaily']
     enemy_id = parsed_cache['enemyId']
-    @enemy = is_daily ? RaidEnemy.find_by_id(enemy_id) : Enemy.find(enemy_id)
+    @enemy = @is_daily ? RaidEnemy.find_by_id(enemy_id) : Enemy.find(enemy_id)
   end
 
   def enemy_cards

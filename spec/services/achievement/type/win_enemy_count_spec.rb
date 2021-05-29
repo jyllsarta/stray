@@ -17,7 +17,7 @@ RSpec.describe Achievement::Type::WinEnemyCount, type: :model do
     # STI を発動してサブクラスを取得させるために、わざわざfind を通している
     subject{ Achievement.find(achievement.id).progress_achievement(user_achievement, params) }
     before do
-      allow(user).to receive_message_chain(:won_enemies, :count).and_return(won_enemies_count)
+      allow(user).to receive_message_chain(:won_enemies, :normal, :count).and_return(won_enemies_count)
     end
     context "正常系" do
       let(:won_enemies_count){ 1 }
