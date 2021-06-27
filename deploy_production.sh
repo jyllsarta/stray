@@ -2,10 +2,10 @@
 # for production deploy
 
 echo "##### reset hard"
-git reset --hard
+#git reset --hard
 
 echo "##### update repository"
-git pull
+#git pull
 
 echo "##### bundle install"
 bundle install
@@ -37,4 +37,4 @@ if [ PID != "" ]; then
 fi
 
 echo "##### start server"
-RAILS_ENV=production bundle exec rails s -d
+RAILS_ENV=production bundle exec rails s
