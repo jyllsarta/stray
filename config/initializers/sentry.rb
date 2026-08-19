@@ -4,11 +4,7 @@ Sentry.init do |config|
   config.dsn = ENV["SENTRY_DSN"]
   config.breadcrumbs_logger = [:active_support_logger]
 
-  # To activate performance monitoring, set one of these options.
-  # We recommend adjusting the value in production:
-  config.traces_sample_rate = 0.5
-  # or
-  config.traces_sampler = lambda do |context|
-    true
-  end
+  # パフォーマンス計測(Transaction)は無料枠を食い尽くして429を連発するため無効化。
+  # エラーイベントのみ送信する。
+  config.traces_sample_rate = 0.0
 end
